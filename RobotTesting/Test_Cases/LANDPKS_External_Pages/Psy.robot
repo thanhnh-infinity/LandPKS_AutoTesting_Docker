@@ -29,7 +29,7 @@ ${OrgFieldIdLI}    organization
 ${LatFieldIdLI}    latitude
 ${LonFieldIdLI}    longitude
 ${BackButPlotCssLi}    body.grade-a.platform-browser.platform-win32.platform-ready ion-nav-bar.bar-stable.bar.bar-header.bar-balanced.nav-bar-container div.nav-bar-block ion-header-bar.bar-stable.bar.bar-header.bar-balanced.disable-user-behavior div.title.title-left.header-item span.nav-bar-title a.button.button-icon
-${BackButPlotXpathLi}    //div[@nav-bar='active']/ion-header-bar/div[1]/span/a[2]
+${BackButPlotXpathLi}    //div[@nav-bar='active']/ion-header-bar/div[@class='title title-left header-item']/span[@class='nav-bar-title']/a[@class='button button-icon']
 ${LandInfoErrorMessage}    Answer to test plot is required.
 ${AlertPopUpCssLI}    body.grade-a.platform-browser.platform-win32.platform-ready.popup-open div.popup-container.remove-title-class.popup-showing.active div.popup div.popup-buttons button.button.ng-binding.button-positive
 ${ErrorMessageCssLI}    body.grade-a.platform-browser.platform-win32.platform-ready.popup-open div.popup-container.remove-title-class.popup-showing.active div.popup div.popup-body span
@@ -52,10 +52,13 @@ ${TypeOfPhoto}    //p[@class='lpks-p']/b/b/a
 ${PhotoBack}      //div[@nav-bar='active']/ion-header-bar/button
 ${PopUpOkayButXpath}    //div[@class='popup-buttons']/button[@class='button ng-binding button-positive']
 ${LoadingContainerActive}    //div[@class='loading-container visible active']
+${TitleOfPageXpathLi}    //div[@nav-bar='active']/ion-header-bar/div[@class='title title-left header-item']/span[@class='nav-bar-title']/a[@class='button button-icon']/p
 
 *** Test Cases ***
 Photo Test
+    [Documentation]    Runs standard framework but checks phots first and fails explicitly if phots fail as photo fail locks up browser
     [Tags]    Jenkins
+    ${Failed}=    False
     Set Selenium Timeout    15 seconds
     Set Selenium Speed    .3 seconds
     ${Creds}=    Get Sauce Creds Jenkins
@@ -64,10 +67,12 @@ Photo Test
     \    ${caps}=    Set Jenkins Capabilities    ${Browser["browser"]}    ${Browser["platform"]}    ${Browser["version"]}
     \    Open test browser jenkins    ${caps}    ${Creds}
     \    ${Status}=    run keyword and return status    mobile manipulation    true
-    \    ${PassOrFail}    set variable if    ${Status}    PASS    Fail
+    \    ${PassOrFail}=    set variable if    ${Status}    PASS    Fail
     \    Close Test Browser Jenkins    ${Creds}    ${Browser["platform"]} | ${Browser["browser"]} | ${Browser["version"]}    ${PassOrFail}
+    run keyword if    '${Failed}'=='True'    BuiltIn.Fail
 
 Get Jenkins Driver
+    [Documentation]    Runs full blown test suite that tests entire lpks test and manipulates the entire webpage
     [Tags]    Jenkins
     Set Selenium Timeout    15 seconds
     Set Selenium Speed    .3 seconds
@@ -76,6 +81,7 @@ Get Jenkins Driver
     ...    ELSE    Mobile Setup Jenks
 
 Google Login Jenkins
+    [Documentation]    Tests just login interface
     ${ele}=    Run Keyword And Return Status    Element Should Not Be Visible    id=account-chooser-add-account
     Run keyword if    ${ele}    Handle New Google Login
     ...    ELSE    Handle Exisiting Account
@@ -136,10 +142,10 @@ Close test browser
 
 Close test browser Jenkins
     [Arguments]    ${URL}    ${Name}    ${Status}
+    [Documentation]    Closes browsers and submits status to Saucelabs requires passing Remote url, Name of test, Status of test (PASS or FAIL)
     ${Mess}=    Set Variable if    '${Status}'=='Fail'    Failed on ${Function}    Pass
     Run keyword if    '${URL}' != ''    Report Sauce status    ${Mess} | ${Name}    ${Status}    Jenkins    ${URL}
     Close all browsers
-    run keyword unless    '${Status}'=='PASS'    BuiltIn.Fail
 
 Mobile Setup
     Open test browser
@@ -148,6 +154,7 @@ Mobile Setup
     Click element    id=${GoogleLoginBut}
 
 Mobile Multi Setup Jenks
+    [Documentation]    Processes webpage execution when more than one browser is setup
     ${Creds}=    Get Sauce Creds Jenkins
     @{Browsers}=    Get Browsers
     : FOR    ${Browser}    IN    @{Browsers}
@@ -158,12 +165,14 @@ Mobile Multi Setup Jenks
     \    Close Test Browser Jenkins    ${Creds}    ${Browser["platform"]} | ${Browser["browser"]} | ${Browser["version"]}    ${PassOrFail}
 
 Mobile Setup Jenks
+    [Documentation]    Processes website when one browser is requested
     ${Caps}=    Get Jenkins Capabilities
     ${Creds}=    Get Sauce Creds Jenkins
     Open test browser jenkins    ${Caps}    ${Creds}
     mobile manipulation    false
 
 Handle New Google Login
+    [Documentation]    Handles google when existing account is not detected
     Log    Detected Google account not stored adding new one
     @{GoogleCreds}=    Get Uname And Pword Lpks Gmail
     ${window}=    Run keyword and return status    Select window    Title=${GoogleSignIN}
@@ -182,6 +191,7 @@ Handle New Google Login
 
 mobile manipulation
     [Arguments]    ${PhotoTest}
+    [Documentation]    Processes most functions on the webpage requires parameter whether or not photos are to be tested (true or false)
     Set Test Variable    ${Function}    Browser Init
     go to    ${MobileApps}
     Wait Until Element Is Enabled    xpath=${XpathLandHome}
@@ -200,8 +210,14 @@ mobile manipulation
     Check for land info sucess
     run keyword if    '${PhotoTest}'=='true'    Process Photos
     mobile land info using main page
+    Set Test Variable    ${Function}    Adding Second Plot
+    Add New Land Info Plot
+    ${Sucess}=    Check for land info sucess
+    run keyword if    ${Sucess}    Try to submit Land Info
+    Check for land info sucess
 
 Process Photos
+    [Documentation]    Handles Processing the photo types
     Set Test Variable    ${Function}    Processing Photos
     ${PhotoPage}=    Get WebElement    xpath=(${LinksAddPlot})[contains(@href,'landinfo_photos')]
     click link    ${PhotoPage}
@@ -217,6 +233,7 @@ Process Photos
 
 Proc Photo
     [Arguments]    ${PhotoPath}
+    [Documentation]    Processes individual photo passed from "Process Photos"
     Click Link    ${PhotoPath}
     ${PopUpVis}=    run keyword and return status    element should be visible    xpath=${PopUpOkayButXpath}
     run keyword if    ${PopUpVis}    Click Element    xpath=${PopUpOkayButXpath}
@@ -225,6 +242,7 @@ Proc Photo
     click element if visable by locator    xpath=${PhotoBack}
 
 mobile land info using main page
+    [Documentation]    Uses main page of webpage to navigate to and manipulate individual components
     Set Test Variable    ${Function}    Processing Main Page
     ${count}=    Get Matching Xpath Count    ${LinksAddPlot}
     @{Links}=    Get WebElements    xpath=${LinksAddPlot}
@@ -242,6 +260,7 @@ mobile land info using main page
     submit Land Info
 
 proc soil layers
+    [Documentation]    When soil layers has been reached from "mobile land info using main page" this function controls manipulating the layers
     Set Test Variable    ${Function}    Processing Soil Layers
     ${count}=    Get Matching Xpath Count    ${SoilLayersXpsLI}
     : FOR    ${i}    IN RANGE    1    ${count} + 1
@@ -250,6 +269,7 @@ proc soil layers
     \    run keyword if    ${Vis}    proc soil layer
 
 proc soil layer
+    [Documentation]    Processes individual soil layer from "proc soil layer"
     Set Test Variable    ${Function}    Processing Individual Soil Layer
     click button    xpath=//div[@nav-view='active']/ion-view[@cache-view='false']/ion-scroll/div[@class='scroll']/div[2]/button
     wait until page contains element    id=radioBall
@@ -268,6 +288,7 @@ proc soil layer
     click element if visable by locator    xpath=/html/body/ion-nav-bar/div[2]/ion-header-bar/div[1]/span/a[2]
 
 proc current module
+    [Documentation]    Processes a single module from main page
     @{FloodTypes}=    Get WebElements    xpath=${FloodTypesXpsLI}
     : FOR    ${FloodType}    IN    @{FloodTypes}
     \    ${Atrib}=    get element atrrib    ${FloodType}    class
@@ -276,18 +297,21 @@ proc current module
 
 click element if visable
     [Arguments]    ${element}
+    [Documentation]    Clicks an element after verifying it is visible must be passed (WebElement or entire path including the item looking for ie. id=elementID)
     ${Visible}    run keyword and return status    element should be visible    ${element}
     run keyword if    ${Visible}    click element    ${element}
     [Return]    ${Visible}
 
 click element if visable by locator
     [Arguments]    ${locate}
+    [Documentation]    Clicks an element after verifying it is visible only accepts a locator (Id=ElementID, Xpath=ElementCpath, etc)
     ${element}=    get webelement    ${locate}
     ${Visible}    run keyword and return status    element should be visible    ${element}
     run keyword if    ${Visible}    click element    ${element}
     [Return]    ${Visible}
 
 submit Land Info
+    [Documentation]    Submits plot requiring it to pass. Basic error handling contaned.
     Set Test Variable    ${Function}    Submitting Plot
     Click link    xpath=${ReviewPlotXpLi}
     Click element    id=${SubmitPlotButIdLI}
@@ -300,9 +324,11 @@ submit Land Info
     run keyword if    ${success}    element should be visible    xpath=//div[@class='popup-buttons']/button[@class='button ng-binding button-positive']
     run keyword if    ${success}    click element    xpath=//div[@class='popup-buttons']/button[@class='button ng-binding button-positive']
     run keyword unless    ${success}    Proc Error on Submit
+    Run Keyword If    ${success}    Go to Main Plot Page
     [Return]    ${success}
 
 Proc error on submit
+    [Documentation]    Processes an error encountered in "Submit land info"
     Set Test Variable    ${Function}    Processing Errors
     ${PopupBody}=    set variable    //div[@class='popup-body']/span
     ${count}=    Get Matching Xpath Count    ${PopupBody}
@@ -314,13 +340,23 @@ Proc error on submit
     \    run keyword if    ${Long}    Long error found
     \    run keyword if    ${Lat}    Long error found
 
+Go to Main Plot Page
+    [Documentation]    Returns to main page ciontaining plots regardless of distance from main page up to 10 pages uses webpage back to ensure page behaves
+    : FOR    ${i}    IN RANGE    1    11
+    \    ${Title}=    Get Text    xpath=${TitleOfPageXpathLi}
+    \    run keyword if    '${Title}'=='LandInfo'    exit for loop
+    \    Wait Until Element Is Visible    xpath=${BackButPlotXpathLi}
+    \    click element    xpath=${BackButPlotXpathLi}
+
 Long Error Found
+    [Documentation]    Processes error found and drops to indivdual handling
     click element    xpath=//div[@class='popup-buttons']/button[@class='button ng-binding button-positive']
     Proc Lat and Long Error
     exit for loop
     proc error on submit
 
 Proc Lat and Long Error
+    [Documentation]    Processes longitude and latitude handling
     click element    xpath=${BackButPlotXpathLi}
     Wait Until Element Is visible    xpath=//div[@nav-view='active']/ion-view/ion-content/div/a[1]
     click element    xpath=//div[@nav-view='active']/ion-view/ion-content/div/a[1]
@@ -333,6 +369,7 @@ Proc Lat and Long Error
     Click element    id=${SubmitPlotButIdLI}
 
 Try to submit Land Info
+    [Documentation]    Tries to submit plot expecting and error and verifying one did occur
     Click link    xpath=${ReviewPlotXpLi}
     Click element    id=${SubmitPlotButIdLI}
     ${result}=    Run keyword and return status    element should be visible    xpath=${PopupButtonXpath}
@@ -341,7 +378,8 @@ Try to submit Land Info
     [Return]    ${result}
 
 Wait for load
-    Set Test Variable    ${Function}    Waiting for load
+    [Documentation]    Verifies page has loading based upon loading containers
+    log    Waiting for page to load
     : FOR    ${I}    IN RANGE    1    10
     \    ${TextThere}=    run keyword and return status    Element Should Be Visible    xpath=${LoadingContainerXpath}
     \    ${Loading}=    Run keyword and return status    Element should Be visible    xpath=${LoadingContainerActive}
@@ -349,13 +387,13 @@ Wait for load
     \    BuiltIn.Sleep    1s
 
 Add New Land Info Plot
-    Wait Until Element Is visible    xpath=${LandInfoIcon}
-    Click element    xpath=${LandInfoIcon}
+    [Documentation]    Creates a new plot using random information and tries to find location and handles errors and ensures page behaves as expected
+    ${Title}=    Get Text    xpath=${TitleOfPageXpathLi}
+    run keyword if    '${Title}'==' LandPKS Application Selection'    Wait Until Element Is visible    xpath=${LandInfoIcon}
+    run keyword if    '${Title}'==' LandPKS Application Selection'    Click element    xpath=${LandInfoIcon}
     Wait for load
     Wait until element is enabled    xpath=//div[@class='list']
-    BuiltIn.Sleep    1s
     Wait Until Element Is enabled    xpath=${AddNewLandInfo}
-    BuiltIn.Sleep    1s
     ${Clicked}=    run keyword and return status    click element    xpath=${AddNewLandInfo}
     run keyword unless    ${Clicked}    click element    xpath=${AddNewLandInfo}
     Wait Until Element Is visible    xpath=${AddPlotMenuPlotXpLI}
@@ -365,6 +403,7 @@ Add New Land Info Plot
     click element    id=${TestPlotYesRadioIdLI}
     ${RandLength}=    Generate Random String    1    123456789
     ${RandomString}=    Generate Random String    ${RandLength}
+    Set Test Variable    ${PlotName}    ${RandomString}
     @{Elements}=    Get Webelements    tag=input
     : FOR    ${element}    IN    @{Elements}
     \    ${text}=    Get Value    ${element}
@@ -375,17 +414,22 @@ Add New Land Info Plot
     run keyword if    ${GPSError}    click element    xpath=//div[@class='popup-buttons']/button[@class='button ng-binding button-positive']
 
 Check for land info sucess
+    [Documentation]    Goes back a page and expects no error
+    log    Going back a page... Checking for success of last activity
     wait until page contains element    xpath=${BackButPlotXpathLi}
     Click link    xpath=${BackButPlotXpathLi}
     ${result}=    Run keyword and return status    page should not contain element    xpath=${PopupButtonXpath}
     [Return]    ${result}
 
 Check for land info error
+    [Documentation]    Goes back a page expecting an error and dismisses them
+    log    Going back a page... Checking for error of last activity
     wait until page contains element    xpath=${BackButPlotXpathLi}
     Click link    xpath=${BackButPlotXpathLi}
     page should contain element    xpath=${PopupButtonXpath}
     click element    xpath=${PopupButtonXpath}
 
 Handle Exisiting Account
+    [Documentation]    Handles existing google login account
     ${idForAccount}=    get correct account    GoogleEmail
     Page should contain element    id=${idForAccount}
