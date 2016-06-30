@@ -1,8 +1,8 @@
 *** Settings ***
 Library           Selenium2Library
-Library           Framework/SauceLabs.py
+Library           ../../Framework/SauceLabs.py
 Library           String
-Library           Framework/Testing.py
+Library           ../../Framework/Testing.py
 
 *** Variables ***
 @{_tmpFire}       name:Testing RobotFramework Selenium2Library,browserName:firefox, platform:Windows 8,version:14
