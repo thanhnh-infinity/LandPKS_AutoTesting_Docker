@@ -58,7 +58,7 @@ ${TitleOfPageXpathLi}    //div[@nav-bar='active']/ion-header-bar/div[@class='tit
 Photo Test
     [Documentation]    Runs standard framework but checks phots first and fails explicitly if phots fail as photo fail locks up browser
     [Tags]    Jenkins
-    ${Failed}=    False
+    ${Failed}=    set variable    False
     Set Selenium Timeout    15 seconds
     Set Selenium Speed    .3 seconds
     ${Creds}=    Get Sauce Creds Jenkins
@@ -186,8 +186,7 @@ Handle New Google Login
     Wait Until Element Is Enabled    xpath=${GoogleSignINBut}
     Wait Until Element Is visible    xpath=${GoogleSignINBut}
     Click element    xpath=${GoogleSignINBut}
-    Page should contain element    id=${GoogleApproveAccess}
-    click element    id=${GoogleApproveAccess}
+    click button    id=${GoogleApproveAccess}
 
 mobile manipulation
     [Arguments]    ${PhotoTest}
@@ -316,7 +315,7 @@ submit Land Info
     Click link    xpath=${ReviewPlotXpLi}
     Click element    id=${SubmitPlotButIdLI}
     ${success}=    Run keyword and return status    Element Should Contain    xpath=//div[@class='popup-body']/span[1]    Confirm submit. Submitted data may become publicly available.
-    run keyword if    '${success}'=='False'    Proc Error on Submit
+    run keyword unless    ${success}    Proc Error on Submit
     ${result}=    Run keyword and return status    element should be visible    xpath=//div[@class='popup-buttons']/button[@class='button ng-binding button-positive']
     run keyword if    ${result}    click element    xpath=//div[@class='popup-buttons']/button[@class='button ng-binding button-positive']
     Wait for load
