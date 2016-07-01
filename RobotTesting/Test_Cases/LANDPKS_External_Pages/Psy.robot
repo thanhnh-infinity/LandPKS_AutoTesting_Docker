@@ -175,7 +175,9 @@ Handle New Google Login
     [Documentation]    Handles google when existing account is not detected
     Log    Detected Google account not stored adding new one
     @{GoogleCreds}=    Get Uname And Pword Lpks Gmail
-    ${window}=    Run keyword and return status    Select window    Title=${GoogleSignIN}
+    @{ex}=    List Windows
+    ${CountWindows}=    Get Length    ${ex}
+    run keyword if    ${CountWindows}>=2    Select window    popup
     wait until page contains element    id=${GoogleEmailField}
     input text    id=${GoogleEmailField}    @{GoogleCreds}[0]
     Click Element    id=next
@@ -187,6 +189,7 @@ Handle New Google Login
     Wait Until Element Is visible    xpath=${GoogleSignINBut}
     Click element    xpath=${GoogleSignINBut}
     click button    id=${GoogleApproveAccess}
+    Select Window
 
 mobile manipulation
     [Arguments]    ${PhotoTest}
