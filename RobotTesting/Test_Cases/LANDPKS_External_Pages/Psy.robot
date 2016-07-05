@@ -53,8 +53,25 @@ ${PhotoBack}      //div[@nav-bar='active']/ion-header-bar/button
 ${PopUpOkayButXpath}    //div[@class='popup-buttons']/button[@class='button ng-binding button-positive']
 ${LoadingContainerActive}    //div[@class='loading-container visible active']
 ${TitleOfPageXpathLi}    //div[@nav-bar='active']/ion-header-bar/div[@class='title title-left header-item']/span[@class='nav-bar-title']/a[@class='button button-icon']/p
+${LandCoverIcon}    /html/body/ion-nav-view/ion-tabs/ion-nav-view/div/ion-view/ion-content/div/div/div[2]/div[2]/img
 
 *** Test Cases ***
+Land Cover
+    [Documentation]    Runs standard framework but checks phots first and fails explicitly if phots fail as photo fail locks up browser
+    [Tags]    Jenkins
+    ${Failed}=    set variable    False
+    Set Selenium Timeout    15 seconds
+    Set Selenium Speed    .3 seconds
+    ${Creds}=    Get Sauce Creds Jenkins
+    @{Browsers}=    Get Browsers
+    : FOR    ${Browser}    IN    @{Browsers}
+    \    ${caps}=    Set Jenkins Capabilities    ${Browser["browser"]}    ${Browser["platform"]}    ${Browser["version"]}
+    \    Open test browser jenkins    ${caps}    ${Creds}
+    \    ${Status}=    run keyword and return status    mobile manipulation    false    true
+    \    ${PassOrFail}=    set variable if    ${Status}    PASS    Fail
+    \    Close Test Browser Jenkins    ${Creds}    ${Browser["platform"]} | ${Browser["browser"]} | ${Browser["version"]}    ${PassOrFail}
+    run keyword if    '${Failed}'=='True'    BuiltIn.Fail
+
 Photo Test
     [Documentation]    Runs standard framework but checks phots first and fails explicitly if phots fail as photo fail locks up browser
     [Tags]    Jenkins
@@ -66,7 +83,7 @@ Photo Test
     : FOR    ${Browser}    IN    @{Browsers}
     \    ${caps}=    Set Jenkins Capabilities    ${Browser["browser"]}    ${Browser["platform"]}    ${Browser["version"]}
     \    Open test browser jenkins    ${caps}    ${Creds}
-    \    ${Status}=    run keyword and return status    mobile manipulation    true
+    \    ${Status}=    run keyword and return status    mobile manipulation    true    false
     \    ${PassOrFail}=    set variable if    ${Status}    PASS    Fail
     \    Close Test Browser Jenkins    ${Creds}    ${Browser["platform"]} | ${Browser["browser"]} | ${Browser["version"]}    ${PassOrFail}
     run keyword if    '${Failed}'=='True'    BuiltIn.Fail
@@ -160,7 +177,7 @@ Mobile Multi Setup Jenks
     : FOR    ${Browser}    IN    @{Browsers}
     \    ${caps}=    Set Jenkins Capabilities    ${Browser["browser"]}    ${Browser["platform"]}    ${Browser["version"]}
     \    Open test browser jenkins    ${caps}    ${Creds}
-    \    ${Status}=    run keyword and return status    mobile manipulation    false
+    \    ${Status}=    run keyword and return status    mobile manipulation    false    false
     \    ${PassOrFail}    set variable if    ${Status}    PASS    Fail
     \    Close Test Browser Jenkins    ${Creds}    ${Browser["platform"]} | ${Browser["browser"]} | ${Browser["version"]}    ${PassOrFail}
 
@@ -169,7 +186,7 @@ Mobile Setup Jenks
     ${Caps}=    Get Jenkins Capabilities
     ${Creds}=    Get Sauce Creds Jenkins
     Open test browser jenkins    ${Caps}    ${Creds}
-    mobile manipulation    false
+    mobile manipulation    false    false
 
 Handle New Google Login
     [Documentation]    Handles google when existing account is not detected
@@ -192,8 +209,9 @@ Handle New Google Login
     Select Window
 
 mobile manipulation
-    [Arguments]    ${PhotoTest}
+    [Arguments]    ${PhotoTest}    ${LandCoverParam}
     [Documentation]    Processes most functions on the webpage requires parameter whether or not photos are to be tested (true or false)
+    Set Test Variable    ${LandCover}    ${LandCoverParam}
     Set Test Variable    ${Function}    Browser Init
     go to    ${MobileApps}
     Wait Until Element Is Enabled    xpath=${XpathLandHome}
@@ -206,12 +224,16 @@ mobile manipulation
     ...    ELSE    Handle Exisiting Account
     Select Window    ${LandPKSSignIn}
     Set Test Variable    ${Function}    Adding new plot
-    Add New Land Info Plot
+    run keyword if    '${LandCover}'=='true'    Add New Land Cover Plot
+    ...    ELSE    Add New Land Info Plot
     ${Sucess}=    Check for land info sucess
     run keyword if    ${Sucess}    Try to submit Land Info
     Check for land info sucess
     run keyword if    '${PhotoTest}'=='true'    Process Photos
     mobile land info using main page
+    Run keyword unless    '${LandCover}'=='true'    Add Second Plot
+
+Add Second Plot
     Set Test Variable    ${Function}    Adding Second Plot
     Add New Land Info Plot
     ${Sucess}=    Check for land info sucess
@@ -259,7 +281,6 @@ mobile land info using main page
     \    Check for land info sucess
     proc soil layers
     Check for land info sucess
-    submit Land Info
 
 proc soil layers
     [Documentation]    When soil layers has been reached from "mobile land info using main page" this function controls manipulating the layers
@@ -287,7 +308,7 @@ proc soil layer
     ${randomIndex}    Generate Random String    1    1234
     click element    xpath=/html/body/div[4]/div/div[2]/div/ion-view/ion-content/div[1]/a[${randomIndex}]/img
     log    go back
-    click element if visable by locator    xpath=/html/body/ion-nav-bar/div[2]/ion-header-bar/div[1]/span/a[2]
+    click element if visable by locator    xpath=${BackButPlotXpathLi}
 
 proc current module
     [Documentation]    Processes a single module from main page
@@ -326,7 +347,7 @@ submit Land Info
     run keyword if    ${success}    element should be visible    xpath=//div[@class='popup-buttons']/button[@class='button ng-binding button-positive']
     run keyword if    ${success}    click element    xpath=//div[@class='popup-buttons']/button[@class='button ng-binding button-positive']
     run keyword unless    ${success}    Proc Error on Submit
-    Run Keyword If    ${success}    Go to Main Plot Page
+    Run Keyword If    ${success} and '${LandCover}'=='false'    Go to Main Plot Page
     [Return]    ${success}
 
 Proc error on submit
@@ -398,6 +419,22 @@ Add New Land Info Plot
     Wait Until Element Is enabled    xpath=${AddNewLandInfo}
     ${Clicked}=    run keyword and return status    click element    xpath=${AddNewLandInfo}
     run keyword unless    ${Clicked}    click element    xpath=${AddNewLandInfo}
+    add the plot
+
+Add New Land Cover Plot
+    [Documentation]    Creates a new plot using random information and tries to find location and handles errors and ensures page behaves as expected
+    ${Title}=    Get Text    xpath=${TitleOfPageXpathLi}
+    run keyword if    '${Title}'==' LandPKS Application Selection'    Wait Until Element Is visible    xpath=${LandCoverIcon}
+    run keyword if    '${Title}'==' LandPKS Application Selection'    Click element    xpath=${LandCoverIcon}
+    Wait for load
+    Wait until element is enabled    xpath=//div[@class='list']
+    Wait Until Element Is enabled    xpath=${AddNewLandInfo}
+    ${Clicked}=    run keyword and return status    click element    xpath=${AddNewLandInfo}
+    run keyword unless    ${Clicked}    click element    xpath=${AddNewLandInfo}
+    Click Element    id=imgLandInfo
+    add the plot
+
+Add the Plot
     Wait Until Element Is visible    xpath=${AddPlotMenuPlotXpLI}
     click element    xpath=${AddPlotMenuPlotXpLI}
     Set Selenium Speed    .35 seconds
@@ -408,6 +445,8 @@ Add New Land Info Plot
     Set Test Variable    ${PlotName}    ${RandomString}
     @{Elements}=    Get Webelements    tag=input
     : FOR    ${element}    IN    @{Elements}
+    \    ${EleVis}=    run keyword and return status    element should be visible    ${element}
+    \    run keyword unless    ${EleVis}    Continue For Loop
     \    ${text}=    Get Value    ${element}
     \    run keyword unless    '${text}' == 'small' or '${text}' =='medium'    input text    ${element}    ${RandomString}
     Element should not contain    id=${LongitudeInputID}    ${RandomString}
