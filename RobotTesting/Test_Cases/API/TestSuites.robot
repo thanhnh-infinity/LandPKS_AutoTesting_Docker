@@ -7,7 +7,7 @@ Library           String
 
 *** Variables ***
 ${browser}        Firefox
-${host}           http://testapi.landpotential.org:8080/query?
+${host}           http://api.landpotential.org/query?
 ${version}        0.1
 
 *** Test Cases ***
