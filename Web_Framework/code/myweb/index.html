@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+   <head>
+     <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+     <script type="text/javascript">
+       $(document).ready(function() {
+        
+        var animate;
+        var value;
+        
+        function fireit() {
+           var progressbar = $('#progressbar'),
+               max = progressbar.attr('max'),
+               time = (1000/max)*5,    
+               value = progressbar.val(),
+               sec = value;
+ 
+           var loading = function() {
+              value += 1;
+              //sec += 1;
+              addValue = progressbar.val(value);
+         
+              $('.progress-value').html(value + '%');
+ 
+              if (value == max) {
+                     value = 0;
+                     addValue = progressbar.val(value);   
+                     $('.progress-value').html(value + '%');
+              }
+           };
+ 
+           animate = setInterval(function() {
+              loading();
+           }, time);
+        };
+        
+        $("#generate-string").click(function(e) {
+           $('#progressbar').val(0);
+           fireit();
+           async: false;
+           $('button').prop('disabled', true);
+           $('input').prop('disabled', true);
+           $.post("/luncher", {"url": $( "#single" ).val()})
+            .done(function(string) {
+               if(string != '') {
+                  $('button').prop('disabled', false);
+                  $('input').prop('disabled', false);
+                  clearInterval(animate);
+                  $('#progressbar').val(100);
+                  $('.progress-value').html(100 + '%');
+               }
+            });
+           e.preventDefault();
+         });
+       });
+     </script>
+   </head>
+   <body align="left">
+      <table>
+         <tr>
+            <td>
+               <div>
+                  <progress id="progressbar" value="0" max="100"></progress>
+                  <span class="progress-value">0sec</span>
+               </div>
+            </td>
+         </tr>
+         <tr>
+            <td>Please select a test to run:</td>
+            <td>
+               <select id="single">
+                  <option value="DeleteAPI">Delete API</option>
+                  <option value="GetAPI">Get API</option>
+                  <option value="LandCoverAPI">LandCover API</option>
+                  <option value="LandInfoAPI">LandInfo API</option>
+                  <option value="LocalClimateAPI">Local Climate API</option>
+                  <option value="LoginAPI">Login API</option>
+                  <option value="PutAPI">Put API</option>
+                  <option value="SystemAPI">System API</option>
+                  <option value="UpdateAPI">Update API</option>
+               </select>
+            </td>
+            <td><button id="generate-string">Run a test!</button></td></tr>
+         <tr>
+            <td>
+               <form action="/report_html">
+                  <input id="btnReport" type="submit" value="View report file">
+               </form>
+            </td>
+         </tr>
+         <tr>
+            <td>
+               <form action="/log_html">
+                  <input id="btnLog" type="submit" value="View log file">
+               </form>
+            </td>
+         </tr>
+         <tr>
+            <td>
+               <form action="/chart">
+                  <input id="btnchart" type="submit" value="chart">
+               </form>
+            </td>
+         </tr>
+      </table>
+      <p>
+         <br></br>
+         <br></br>
+         <br></br>
+         <strong> To run a test,</strong> please select a desired test from select box and then hit "Run a test!" button.
+         <br></br> <Strong>Reports</strong> belong to last test you run.
+      </p>
+	  <br>
+	  
+	  <div id="Jenkins">
+	 <iframe frameborder="0" height="1000" name="Jenkins" scrolling="yes" src="http://128.123.177.103:8080/" width="970" id="Jenkins"></iframe><p></p>
+	  </div>
+   </body>
+</html>
