@@ -20,9 +20,11 @@ ${PortalLIDataSheetXpath}    xpath=//a[@id='u41866-4']
 ${PortalLCDataSheetXpath}    xpath=//a[@id='u59333-4']
 ${PortalLIDataSheetImgXp}    xpath=//img[@id='u59344_img']
 ${PortalLCDataSheetImgXp}    xpath=//img[@id='u59336_img']
+${LinkForPortalXpath}    xpath=//a[@href='http://portal.landpotential.org/']
 
 *** Test Cases ***
 Portal Testing
+    Set Test Variable    ${Function}    Browser Init
     ${JenkinsSetupSize}=    Get Browser Setup Count
     run keyword if    ${JenkinsSetupSize} >1    Mobile Multi Setup Jenks
     ...    ELSE    Mobile Setup Jenks
@@ -70,6 +72,7 @@ Get Jenkins Driver
     ...    ELSE    Mobile Setup Jenks
 
 Manipulation
+    Set Test Variable    ${Function}    Processing Portal Data Export
     Go to    ${PortalMapHome}
     ${Start}=    Get Time    epoch
     Wait for load    ${LoadingBarXpath}
@@ -90,8 +93,12 @@ Manipulation
     Click Element    ${PortalLIDataSheetXpath}
     Check Popup Occured
     Click Element    ${PortalLCDataSheetXpath}
+    Check Popup Occured
     Click Element    ${PortalLIDataSheetImgXp}
+    Check Popup Occured
     Click Element    ${PortalLCDataSheetImgXp}
+    Check Popup Occured
+    click element    ${LinkForPortalXpath}
 
 Check Popup Occured
     ${Windows}=    List Windows
@@ -100,6 +107,7 @@ Check Popup Occured
     log    ${Windows[1]}
     Select Window    popup
     Close Window
+    select window
 
 Wait for load
     [Arguments]    ${ELE}
@@ -109,3 +117,20 @@ Wait for load
     \    ${TextThere}=    run keyword and return status    Element Should Be Visible    ${ELE}
     \    run keyword unless    ${TextThere}    Exit for Loop
     \    BuiltIn.Sleep    1s
+
+mobile land info using main page
+    [Documentation]    Uses main page of webpage to navigate to and manipulate individual components
+    Set Test Variable    ${Function}    Processing Main Page
+    ${count}=    Get Matching Xpath Count    ${LinksAddPlot}
+    @{Links}=    Get WebElements    xpath=${LinksAddPlot}
+    : FOR    ${i}    IN RANGE    1    ${count} + 1
+    \    ${link}=    Get WebElement    xpath=(${LinksAddPlot})[${i}]
+    \    ${Atrib}=    get element atrrib    ${link}    href
+    \    log    Processing Page | ${Atrib}
+    \    click element if visable    ${link}
+    \    run keyword if    '${Atrib}' == 'http://testlpks.landpotential.org:8105/#/landpks/landinfo_soillayers'    Exit for loop
+    \    proc current module
+    \    Try to submit Land Info
+    \    Check for land info sucess
+    proc soil layers
+    Check for land info sucess
