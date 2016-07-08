@@ -1,15 +1,31 @@
 *** Settings ***
 Library           Selenium2Library
+Library           DateTime
 Library           ../../Framework/SauceLabs.py
 Library           String
 Library           ../../Framework/Testing.py
+Library           Framework/RobotPlugins.py
 
 *** Variables ***
 ${PortalMapHome}    http://portallandpotential.businesscatalyst.com/Export/ExportandMap.html
-${LoadingBarXpath}    //div[@class='progress-bar progress-bar-success progress-bar-striped active']
+${LoadingBarXpath}    xpath=//div[@class='progress-bar progress-bar-success progress-bar-striped active']
+${Browser}        firefox
+${PlotsPulledXpath}    xpath=//strong[@id='total-plots-displayed']
+${ExportLoadingBarXpath}    xpath=//div[@class='progress-bar progress-bar-striped active']
+${ExportLoadingIMGXpath}    img id=loading_msg
+${ExportEmailID}    id=userName
+${ExportButtonID}    id=export-button
+${PortalDataSheets}    http://landpotential.businesscatalyst.com/landpks.html#manuals
+${PortalLIDataSheetXpath}    xpath=//a[@id='u41866-4']
+${PortalLCDataSheetXpath}    xpath=//a[@id='u59333-4']
+${PortalLIDataSheetImgXp}    xpath=//img[@id='u59344_img']
+${PortalLCDataSheetImgXp}    xpath=//img[@id='u59336_img']
 
 *** Test Cases ***
 Portal Testing
+    ${JenkinsSetupSize}=    Get Browser Setup Count
+    run keyword if    ${JenkinsSetupSize} >1    Mobile Multi Setup Jenks
+    ...    ELSE    Mobile Setup Jenks
 
 *** Keywords ***
 Close test browser
@@ -34,7 +50,7 @@ Mobile Multi Setup Jenks
     : FOR    ${Browser}    IN    @{Browsers}
     \    ${caps}=    Set Jenkins Capabilities    ${Browser["browser"]}    ${Browser["platform"]}    ${Browser["version"]}
     \    Open test browser jenkins    ${caps}    ${Creds}
-    \    ${Status}=    run keyword and return status    Manipulation    false    false
+    \    ${Status}=    run keyword and return status    Manipulation
     \    ${PassOrFail}    set variable if    ${Status}    PASS    Fail
     \    Close Test Browser Jenkins    ${Creds}    ${Browser["platform"]} | ${Browser["browser"]} | ${Browser["version"]}    ${PassOrFail}
 
@@ -55,3 +71,41 @@ Get Jenkins Driver
 
 Manipulation
     Go to    ${PortalMapHome}
+    ${Start}=    Get Time    epoch
+    Wait for load    ${LoadingBarXpath}
+    ${Finish}=    Get Time    epoch
+    ${TimeToFinishMapLoad}=    evaluate    ${Finish}-${Start}
+    Element should be visible    ${PlotsPulledXpath}
+    ${NumPlotsPulled}=    Get Text    ${PlotsPulledXpath}
+    ${TimePerPlot}=    Evaluate    ${TimeToFinishMapLoad}/${NumPlotsPulled}
+    Input text    ${ExportEmailID}    all
+    Click Element    ${ExportButtonID}
+    ${IMG}=    Run Keyword And Return Status    Element Should be Visible    ${ExportLoadingIMGXpath}
+    ${Start}=    Get Time    epoch
+    Run Keyword if    ${IMG}    Wait For Load    ${ExportLoadingIMGXpath}
+    ...    ELSE    Wait For Load    ${ExportLoadingBarXpath}
+    ${Finish}=    Get Time    epoch
+    ${TimeToFinishExport}=    evaluate    ${Finish}-${Start}
+    Go To    ${PortalDataSheets}
+    Click Element    ${PortalLIDataSheetXpath}
+    Check Popup Occured
+    Click Element    ${PortalLCDataSheetXpath}
+    Click Element    ${PortalLIDataSheetImgXp}
+    Click Element    ${PortalLCDataSheetImgXp}
+
+Check Popup Occured
+    ${Windows}=    List Windows
+    ${WinCount}=    Get Length    ${Windows}
+    Should Be True    ${WinCount}>1
+    log    ${Windows[1]}
+    Select Window    popup
+    Close Window
+
+Wait for load
+    [Arguments]    ${ELE}
+    [Documentation]    Verifies page has loading based upon loading containers
+    log    Waiting for page to load
+    : FOR    ${I}    IN RANGE    1    60
+    \    ${TextThere}=    run keyword and return status    Element Should Be Visible    ${ELE}
+    \    run keyword unless    ${TextThere}    Exit for Loop
+    \    BuiltIn.Sleep    1s
