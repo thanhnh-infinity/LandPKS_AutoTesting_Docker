@@ -28,9 +28,9 @@ class WebServer(object):
     def get_files(self):
         f = []
         
-        for (dirpath,dirnames,filenames) in walk(os.path.dirname(os.path.abspath(__file__))+"\\robotframework-scripts"):
+        for (dirpath,dirnames,filenames) in walk(os.path.abspath(os.getcwd())+"\\robotframework-scripts"):
             for dirname in dirnames:
-                for (subpath,subdirpaths,subfiles) in walk(os.path.dirname(os.path.abspath(__file__))+"\\robotframework-scripts\\"+dirname):
+                for (subpath,subdirpaths,subfiles) in walk(os.getcwd()+"\\robotframework-scripts\\"+dirname):
                     for file in subfiles:
                         if(".robot" in file):
                             f.append({"Name" : file,
