@@ -40,8 +40,10 @@
            async: false;
            $('button').prop('disabled', true);
            $('input').prop('disabled', true);
-           $.post("/luncher", {"url": $( "#single" ).val()})
-            .done(function(string) {
+           var astrurlParams = $( "#single" ).val().split(",");
+           var strFileName = astrurlParams[0];
+           var strTestCase = astrurlParams[1];
+           $.post("/luncher", {"FileName": strFileName,"TestCase" : strTestCase})            .done(function(string) {
                if(string != '') {
                   $('button').prop('disabled', false);
                   $('input').prop('disabled', false);
@@ -69,18 +71,18 @@
             <td>Please select a test to run:</td>
             <td>
                <select id="single">
-                  <option value="DeleteAPI">Delete API</option>
-                  <option value="GetAPI">Get API</option>
-                  <option value="LandCoverAPI">LandCover API</option>
-                  <option value="LandInfoAPI">LandInfo API</option>
-                  <option value="LocalClimateAPI">Local Climate API</option>
-                  <option value="LoginAPI">Login API</option>
-                  <option value="PutAPI">Put API</option>
-                  <option value="SystemAPI">System API</option>
-                  <option value="UpdateAPI">Update API</option>
-                  <option value="LandCover">LandCover Mobile Web</option>
-                  <option value="LandInfo">Land Info Mobile Web App</option>
-                  <option value="PhotosUpload">Photo Testing</option>
+                  <option value="Test_Cases/API/TestSuites.robot,DeleteAPI">Delete API</option>
+                  <option value="Test_Cases/API/TestSuites.robot,GetAPI">Get API</option>
+                  <option value="Test_Cases/API/TestSuites.robot,LandCoverAPI">LandCover API</option>
+                  <option value="Test_Cases/API/TestSuites.robot,LandInfoAPI">LandInfo API</option>
+                  <option value="Test_Cases/API/TestSuites.robot,LocalClimateAPI">Local Climate API</option>
+                  <option value="Test_Cases/API/TestSuites.robot,LoginAPI">Login API</option>
+                  <option value="Test_Cases/API/TestSuites.robot,PutAPI">Put API</option>
+                  <option value="Test_Cases/API/TestSuites.robot,SystemAPI">System API</option>
+                  <option value="Test_Cases/API/TestSuites.robot,UpdateAPI">Update API</option>
+                  <option value="Test_Cases/LANDPKS_External_Pages/Psy.robot,LandCover">LandCover Mobile Web</option>
+                  <option value="Test_Cases/LANDPKS_External_Pages/Psy.robot,LandInfo">Land Info Mobile Web App</option>
+                  <option value="Test_Cases/LANDPKS_External_Pages/Psy.robot,PhotosUpload">Photo Testing</option>
                </select>
             </td>
             <td><button id="generate-string">Run a test!</button></td></tr>

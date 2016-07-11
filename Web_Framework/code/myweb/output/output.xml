@@ -1,472 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generated="20160709 18:17:55.177" generator="Robot 3.0 (Python 2.7.6 on linux2)">
-<suite source="/home/essa/workspace/code/myweb/robotframework-scripts/TestSuites.robot" id="s1" name="TestSuites">
-<test id="s1-t1" name="Delete API: Delete landinfo by plot id TestCase">
-<kw name="Delete landinfo/landcover by plot id">
-<arguments>
-<arg>delete</arg>
-<arg>landinfo</arg>
-<arg>delete_by_id</arg>
-<arg>200</arg>
-</arguments>
-<kw name="Evaluate" library="BuiltIn">
-<doc>Evaluates the given expression in Python and returns the results.</doc>
-<arguments>
-<arg>random.randint(0, sys.maxint)</arg>
-<arg>modules=random, sys</arg>
-</arguments>
-<assign>
-<var>${random}</var>
-</assign>
-<msg timestamp="20160709 18:17:55.937" level="INFO">${random} = 3594080262425731521</msg>
-<status status="PASS" endtime="20160709 18:17:55.937" starttime="20160709 18:17:55.936"></status>
-</kw>
-<kw name="Catenate" library="BuiltIn">
-<doc>Catenates the given items together and returns the resulted string.</doc>
-<arguments>
-<arg>SEPARATOR=</arg>
-<arg>${host}</arg>
-<arg>version=</arg>
-<arg>${version}</arg>
-<arg>&amp;action=</arg>
-<arg>${action}</arg>
-<arg>&amp;object=</arg>
-<arg>${object}</arg>
-<arg>&amp;type=</arg>
-<arg>${type}</arg>
-<arg>&amp;id=</arg>
-<arg>${random}</arg>
-</arguments>
-<assign>
-<var>${url}</var>
-</assign>
-<msg timestamp="20160709 18:17:55.938" level="INFO">${url} = http://api.landpotential.org/query?version=0.1&amp;action=delete&amp;object=landinfo&amp;type=delete_by_id&amp;id=3594080262425731521</msg>
-<status status="PASS" endtime="20160709 18:17:55.938" starttime="20160709 18:17:55.937"></status>
-</kw>
-<kw name="Create Session" library="RequestsLibrary">
-<doc>Create Session: create a HTTP session to a server</doc>
-<arguments>
-<arg>Land</arg>
-<arg>${url}</arg>
-</arguments>
-<msg timestamp="20160709 18:17:55.938" level="INFO">Creating Session using : alias=Land, url=http://api.landpotential.org/query?version=0.1&amp;action=delete&amp;object=landinfo&amp;type=delete_by_id&amp;id=3594080262425731521, headers={},                     cookies=None, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
-<status status="PASS" endtime="20160709 18:17:55.939" starttime="20160709 18:17:55.938"></status>
-</kw>
-<kw name="Get Request" library="RequestsLibrary">
-<doc>Send a GET request on the session object found using the</doc>
-<arguments>
-<arg>Land</arg>
-<arg>/</arg>
-</arguments>
-<assign>
-<var>${resp}</var>
-</assign>
-<msg timestamp="20160709 18:17:55.945" level="INFO">Starting new HTTP connection (1): api.landpotential.org</msg>
-<msg timestamp="20160709 18:17:57.949" level="INFO">Get Request using : alias=Land, uri=/, headers=None </msg>
-<msg timestamp="20160709 18:17:57.949" level="INFO">${resp} = &lt;Response [400]&gt;</msg>
-<status status="PASS" endtime="20160709 18:17:57.949" starttime="20160709 18:17:55.939"></status>
-</kw>
-<kw name="Should Be Equal As Strings" library="BuiltIn">
-<doc>Fails if objects are unequal after converting them to strings.</doc>
-<arguments>
-<arg>${resp.status_code}</arg>
-<arg>${status_code}</arg>
-</arguments>
-<msg timestamp="20160709 18:17:57.950" level="INFO">Argument types are:
-&lt;type 'int'&gt;
-&lt;type 'unicode'&gt;</msg>
-<msg timestamp="20160709 18:17:57.951" level="FAIL">400 != 200</msg>
-<status status="FAIL" endtime="20160709 18:17:57.951" starttime="20160709 18:17:57.950"></status>
-</kw>
-<status status="FAIL" endtime="20160709 18:17:57.951" starttime="20160709 18:17:55.935"></status>
-</kw>
-<tags>
-<tag>DeleteAPI</tag>
-</tags>
-<status status="FAIL" endtime="20160709 18:17:57.951" critical="yes" starttime="20160709 18:17:55.934">400 != 200</status>
-</test>
-<test id="s1-t2" name="Delete API: Delete landcover by plot id TestCase">
-<kw name="Delete landinfo/landcover by plot id">
-<arguments>
-<arg>delete</arg>
-<arg>landcover</arg>
-<arg>delete_by_id</arg>
-<arg>200</arg>
-</arguments>
-<kw name="Evaluate" library="BuiltIn">
-<doc>Evaluates the given expression in Python and returns the results.</doc>
-<arguments>
-<arg>random.randint(0, sys.maxint)</arg>
-<arg>modules=random, sys</arg>
-</arguments>
-<assign>
-<var>${random}</var>
-</assign>
-<msg timestamp="20160709 18:17:57.954" level="INFO">${random} = 1553121611824136506</msg>
-<status status="PASS" endtime="20160709 18:17:57.954" starttime="20160709 18:17:57.953"></status>
-</kw>
-<kw name="Catenate" library="BuiltIn">
-<doc>Catenates the given items together and returns the resulted string.</doc>
-<arguments>
-<arg>SEPARATOR=</arg>
-<arg>${host}</arg>
-<arg>version=</arg>
-<arg>${version}</arg>
-<arg>&amp;action=</arg>
-<arg>${action}</arg>
-<arg>&amp;object=</arg>
-<arg>${object}</arg>
-<arg>&amp;type=</arg>
-<arg>${type}</arg>
-<arg>&amp;id=</arg>
-<arg>${random}</arg>
-</arguments>
-<assign>
-<var>${url}</var>
-</assign>
-<msg timestamp="20160709 18:17:57.955" level="INFO">${url} = http://api.landpotential.org/query?version=0.1&amp;action=delete&amp;object=landcover&amp;type=delete_by_id&amp;id=1553121611824136506</msg>
-<status status="PASS" endtime="20160709 18:17:57.955" starttime="20160709 18:17:57.954"></status>
-</kw>
-<kw name="Create Session" library="RequestsLibrary">
-<doc>Create Session: create a HTTP session to a server</doc>
-<arguments>
-<arg>Land</arg>
-<arg>${url}</arg>
-</arguments>
-<msg timestamp="20160709 18:17:57.956" level="INFO">Creating Session using : alias=Land, url=http://api.landpotential.org/query?version=0.1&amp;action=delete&amp;object=landcover&amp;type=delete_by_id&amp;id=1553121611824136506, headers={},                     cookies=None, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
-<status status="PASS" endtime="20160709 18:17:57.956" starttime="20160709 18:17:57.955"></status>
-</kw>
-<kw name="Get Request" library="RequestsLibrary">
-<doc>Send a GET request on the session object found using the</doc>
-<arguments>
-<arg>Land</arg>
-<arg>/</arg>
-</arguments>
-<assign>
-<var>${resp}</var>
-</assign>
-<msg timestamp="20160709 18:17:57.957" level="INFO">Starting new HTTP connection (1): api.landpotential.org</msg>
-<msg timestamp="20160709 18:17:58.094" level="INFO">Get Request using : alias=Land, uri=/, headers=None </msg>
-<msg timestamp="20160709 18:17:58.094" level="INFO">${resp} = &lt;Response [404]&gt;</msg>
-<status status="PASS" endtime="20160709 18:17:58.094" starttime="20160709 18:17:57.956"></status>
-</kw>
-<kw name="Should Be Equal As Strings" library="BuiltIn">
-<doc>Fails if objects are unequal after converting them to strings.</doc>
-<arguments>
-<arg>${resp.status_code}</arg>
-<arg>${status_code}</arg>
-</arguments>
-<msg timestamp="20160709 18:17:58.095" level="INFO">Argument types are:
-&lt;type 'int'&gt;
-&lt;type 'unicode'&gt;</msg>
-<msg timestamp="20160709 18:17:58.095" level="FAIL">404 != 200</msg>
-<status status="FAIL" endtime="20160709 18:17:58.095" starttime="20160709 18:17:58.094"></status>
-</kw>
-<status status="FAIL" endtime="20160709 18:17:58.095" starttime="20160709 18:17:57.953"></status>
-</kw>
-<tags>
-<tag>DeleteAPI</tag>
-</tags>
-<status status="FAIL" endtime="20160709 18:17:58.096" critical="yes" starttime="20160709 18:17:57.952">404 != 200</status>
-</test>
-<test id="s1-t3" name="Delete API: Delete landinfo by name and recorder name TestCase">
-<kw name="Delete landinfo/landcover by name and recorder name">
-<arguments>
-<arg>delete</arg>
-<arg>landcover</arg>
-<arg>delete_by_name_recorder_name</arg>
-<arg>200</arg>
-</arguments>
-<kw name="Generate Random String" library="String">
-<doc>Generates a string with a desired ``length`` from the given ``chars``.</doc>
-<arguments>
-<arg>12</arg>
-<arg>[LOWER]</arg>
-</arguments>
-<assign>
-<var>${recorder_name}</var>
-</assign>
-<msg timestamp="20160709 18:17:58.098" level="INFO">${recorder_name} = myudzmmytmwp</msg>
-<status status="PASS" endtime="20160709 18:17:58.098" starttime="20160709 18:17:58.098"></status>
-</kw>
-<kw name="Generate Random String" library="String">
-<doc>Generates a string with a desired ``length`` from the given ``chars``.</doc>
-<arguments>
-<arg>12</arg>
-<arg>[LOWER]</arg>
-</arguments>
-<assign>
-<var>${name}</var>
-</assign>
-<msg timestamp="20160709 18:17:58.098" level="INFO">${name} = bgyxptufoayb</msg>
-<status status="PASS" endtime="20160709 18:17:58.099" starttime="20160709 18:17:58.098"></status>
-</kw>
-<kw name="Catenate" library="BuiltIn">
-<doc>Catenates the given items together and returns the resulted string.</doc>
-<arguments>
-<arg>SEPARATOR=</arg>
-<arg>${host}</arg>
-<arg>version=</arg>
-<arg>${version}</arg>
-<arg>&amp;action=</arg>
-<arg>${action}</arg>
-<arg>&amp;object=</arg>
-<arg>${object}</arg>
-<arg>&amp;type=</arg>
-<arg>${type}</arg>
-<arg>&amp;recorder_name=</arg>
-<arg>${recorder_name}</arg>
-<arg>&amp;name=</arg>
-<arg>${name}</arg>
-</arguments>
-<assign>
-<var>${url}</var>
-</assign>
-<msg timestamp="20160709 18:17:58.099" level="INFO">${url} = http://api.landpotential.org/query?version=0.1&amp;action=delete&amp;object=landcover&amp;type=delete_by_name_recorder_name&amp;recorder_name=myudzmmytmwp&amp;name=bgyxptufoayb</msg>
-<status status="PASS" endtime="20160709 18:17:58.100" starttime="20160709 18:17:58.099"></status>
-</kw>
-<kw name="Create Session" library="RequestsLibrary">
-<doc>Create Session: create a HTTP session to a server</doc>
-<arguments>
-<arg>Land</arg>
-<arg>${url}</arg>
-</arguments>
-<msg timestamp="20160709 18:17:58.100" level="INFO">Creating Session using : alias=Land, url=http://api.landpotential.org/query?version=0.1&amp;action=delete&amp;object=landcover&amp;type=delete_by_name_recorder_name&amp;recorder_name=myudzmmytmwp&amp;name=bgyxptufoayb, headers={},                     cookies=None, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
-<status status="PASS" endtime="20160709 18:17:58.100" starttime="20160709 18:17:58.100"></status>
-</kw>
-<kw name="Get Request" library="RequestsLibrary">
-<doc>Send a GET request on the session object found using the</doc>
-<arguments>
-<arg>Land</arg>
-<arg>/</arg>
-</arguments>
-<assign>
-<var>${resp}</var>
-</assign>
-<msg timestamp="20160709 18:17:58.101" level="INFO">Starting new HTTP connection (1): api.landpotential.org</msg>
-<msg timestamp="20160709 18:17:59.130" level="INFO">Get Request using : alias=Land, uri=/, headers=None </msg>
-<msg timestamp="20160709 18:17:59.130" level="INFO">${resp} = &lt;Response [400]&gt;</msg>
-<status status="PASS" endtime="20160709 18:17:59.130" starttime="20160709 18:17:58.101"></status>
-</kw>
-<kw name="Should Be Equal As Strings" library="BuiltIn">
-<doc>Fails if objects are unequal after converting them to strings.</doc>
-<arguments>
-<arg>${resp.status_code}</arg>
-<arg>${status_code}</arg>
-</arguments>
-<msg timestamp="20160709 18:17:59.131" level="INFO">Argument types are:
-&lt;type 'int'&gt;
-&lt;type 'unicode'&gt;</msg>
-<msg timestamp="20160709 18:17:59.131" level="FAIL">400 != 200</msg>
-<status status="FAIL" endtime="20160709 18:17:59.131" starttime="20160709 18:17:59.130"></status>
-</kw>
-<status status="FAIL" endtime="20160709 18:17:59.131" starttime="20160709 18:17:58.097"></status>
-</kw>
-<tags>
-<tag>DeleteAPI</tag>
-</tags>
-<status status="FAIL" endtime="20160709 18:17:59.132" critical="yes" starttime="20160709 18:17:58.097">400 != 200</status>
-</test>
-<test id="s1-t4" name="Delete API: Delete landcover by name and recorder name TestCase">
-<kw name="Delete landinfo/landcover by name and recorder name">
-<arguments>
-<arg>delete</arg>
-<arg>landinfo</arg>
-<arg>delete_by_name_recorder_name</arg>
-<arg>200</arg>
-</arguments>
-<kw name="Generate Random String" library="String">
-<doc>Generates a string with a desired ``length`` from the given ``chars``.</doc>
-<arguments>
-<arg>12</arg>
-<arg>[LOWER]</arg>
-</arguments>
-<assign>
-<var>${recorder_name}</var>
-</assign>
-<msg timestamp="20160709 18:17:59.134" level="INFO">${recorder_name} = rmnngpbyrrsz</msg>
-<status status="PASS" endtime="20160709 18:17:59.134" starttime="20160709 18:17:59.134"></status>
-</kw>
-<kw name="Generate Random String" library="String">
-<doc>Generates a string with a desired ``length`` from the given ``chars``.</doc>
-<arguments>
-<arg>12</arg>
-<arg>[LOWER]</arg>
-</arguments>
-<assign>
-<var>${name}</var>
-</assign>
-<msg timestamp="20160709 18:17:59.135" level="INFO">${name} = rwqorrzcpqcq</msg>
-<status status="PASS" endtime="20160709 18:17:59.135" starttime="20160709 18:17:59.134"></status>
-</kw>
-<kw name="Catenate" library="BuiltIn">
-<doc>Catenates the given items together and returns the resulted string.</doc>
-<arguments>
-<arg>SEPARATOR=</arg>
-<arg>${host}</arg>
-<arg>version=</arg>
-<arg>${version}</arg>
-<arg>&amp;action=</arg>
-<arg>${action}</arg>
-<arg>&amp;object=</arg>
-<arg>${object}</arg>
-<arg>&amp;type=</arg>
-<arg>${type}</arg>
-<arg>&amp;recorder_name=</arg>
-<arg>${recorder_name}</arg>
-<arg>&amp;name=</arg>
-<arg>${name}</arg>
-</arguments>
-<assign>
-<var>${url}</var>
-</assign>
-<msg timestamp="20160709 18:17:59.136" level="INFO">${url} = http://api.landpotential.org/query?version=0.1&amp;action=delete&amp;object=landinfo&amp;type=delete_by_name_recorder_name&amp;recorder_name=rmnngpbyrrsz&amp;name=rwqorrzcpqcq</msg>
-<status status="PASS" endtime="20160709 18:17:59.136" starttime="20160709 18:17:59.135"></status>
-</kw>
-<kw name="Create Session" library="RequestsLibrary">
-<doc>Create Session: create a HTTP session to a server</doc>
-<arguments>
-<arg>Land</arg>
-<arg>${url}</arg>
-</arguments>
-<msg timestamp="20160709 18:17:59.136" level="INFO">Creating Session using : alias=Land, url=http://api.landpotential.org/query?version=0.1&amp;action=delete&amp;object=landinfo&amp;type=delete_by_name_recorder_name&amp;recorder_name=rmnngpbyrrsz&amp;name=rwqorrzcpqcq, headers={},                     cookies=None, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
-<status status="PASS" endtime="20160709 18:17:59.137" starttime="20160709 18:17:59.136"></status>
-</kw>
-<kw name="Get Request" library="RequestsLibrary">
-<doc>Send a GET request on the session object found using the</doc>
-<arguments>
-<arg>Land</arg>
-<arg>/</arg>
-</arguments>
-<assign>
-<var>${resp}</var>
-</assign>
-<msg timestamp="20160709 18:17:59.138" level="INFO">Starting new HTTP connection (1): api.landpotential.org</msg>
-<msg timestamp="20160709 18:17:59.743" level="INFO">Get Request using : alias=Land, uri=/, headers=None </msg>
-<msg timestamp="20160709 18:17:59.743" level="INFO">${resp} = &lt;Response [404]&gt;</msg>
-<status status="PASS" endtime="20160709 18:17:59.743" starttime="20160709 18:17:59.137"></status>
-</kw>
-<kw name="Should Be Equal As Strings" library="BuiltIn">
-<doc>Fails if objects are unequal after converting them to strings.</doc>
-<arguments>
-<arg>${resp.status_code}</arg>
-<arg>${status_code}</arg>
-</arguments>
-<msg timestamp="20160709 18:17:59.744" level="INFO">Argument types are:
-&lt;type 'int'&gt;
-&lt;type 'unicode'&gt;</msg>
-<msg timestamp="20160709 18:17:59.744" level="FAIL">404 != 200</msg>
-<status status="FAIL" endtime="20160709 18:17:59.744" starttime="20160709 18:17:59.743"></status>
-</kw>
-<status status="FAIL" endtime="20160709 18:17:59.744" starttime="20160709 18:17:59.133"></status>
-</kw>
-<tags>
-<tag>DeleteAPI</tag>
-</tags>
-<status status="FAIL" endtime="20160709 18:17:59.745" critical="yes" starttime="20160709 18:17:59.133">404 != 200</status>
-</test>
-<test id="s1-t5" name="Get API: Get all records of landInfo TestCase">
-<kw name="Get all records of LandInfo/landcover">
-<arguments>
-<arg>get</arg>
-<arg>landinfo</arg>
-<arg>get_all</arg>
-<arg>200</arg>
-</arguments>
+<robot generated="20160711 11:23:03.470" generator="Robot 3.0 (Python 2.7.6 on linux2)">
+<suite source="/home/essa/workspace/code/myweb/robotframework-scripts/Test_Cases/LANDPKS_External_Pages/Psy.robot" id="s1" name="Psy">
+<test id="s1-t1" name="Photo Test">
 <kw name="Set Variable" library="BuiltIn">
 <doc>Returns the given values which can then be assigned to a variables.</doc>
 <arguments>
-<arg>all</arg>
+<arg>False</arg>
 </arguments>
 <assign>
-<var>${recorder_name}</var>
+<var>${Failed}</var>
 </assign>
-<msg timestamp="20160709 18:17:59.747" level="INFO">${recorder_name} = all</msg>
-<status status="PASS" endtime="20160709 18:17:59.747" starttime="20160709 18:17:59.747"></status>
+<msg timestamp="20160711 11:23:03.646" level="INFO">${Failed} = False</msg>
+<status status="PASS" endtime="20160711 11:23:03.646" starttime="20160711 11:23:03.645"></status>
 </kw>
-<kw name="Catenate" library="BuiltIn">
-<doc>Catenates the given items together and returns the resulted string.</doc>
+<kw name="Set Selenium Timeout" library="Selenium2Library">
+<doc>Sets the timeout in seconds used by various keywords.</doc>
 <arguments>
-<arg>SEPARATOR=</arg>
-<arg>${host}</arg>
-<arg>version=</arg>
-<arg>${version}</arg>
-<arg>&amp;action=</arg>
-<arg>${action}</arg>
-<arg>&amp;object=</arg>
-<arg>${object}</arg>
-<arg>&amp;type=</arg>
-<arg>${type}</arg>
-<arg>&amp;recorder_name=</arg>
-<arg>${recorder_name}</arg>
+<arg>15 seconds</arg>
 </arguments>
+<status status="PASS" endtime="20160711 11:23:03.646" starttime="20160711 11:23:03.646"></status>
+</kw>
+<kw name="Set Selenium Speed" library="Selenium2Library">
+<doc>Sets the delay in seconds that is waited after each Selenium command.</doc>
+<arguments>
+<arg>.3 seconds</arg>
+</arguments>
+<status status="PASS" endtime="20160711 11:23:03.647" starttime="20160711 11:23:03.647"></status>
+</kw>
+<kw name="Get Sauce Creds Jenkins" library="SauceLabs">
 <assign>
-<var>${url}</var>
+<var>${Creds}</var>
 </assign>
-<msg timestamp="20160709 18:17:59.748" level="INFO">${url} = http://api.landpotential.org/query?version=0.1&amp;action=get&amp;object=landinfo&amp;type=get_all&amp;recorder_name=all</msg>
-<status status="PASS" endtime="20160709 18:17:59.748" starttime="20160709 18:17:59.747"></status>
+<msg timestamp="20160711 11:23:03.647" level="INFO">${Creds} = http://None:None@ondemand.saucelabs.com:80/wd/hub</msg>
+<status status="PASS" endtime="20160711 11:23:03.647" starttime="20160711 11:23:03.647"></status>
 </kw>
-<kw name="Create Session" library="RequestsLibrary">
-<doc>Create Session: create a HTTP session to a server</doc>
-<arguments>
-<arg>Land</arg>
-<arg>${url}</arg>
-</arguments>
-<msg timestamp="20160709 18:17:59.748" level="INFO">Creating Session using : alias=Land, url=http://api.landpotential.org/query?version=0.1&amp;action=get&amp;object=landinfo&amp;type=get_all&amp;recorder_name=all, headers={},                     cookies=None, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
-<status status="PASS" endtime="20160709 18:17:59.749" starttime="20160709 18:17:59.748"></status>
-</kw>
-<kw name="Get Request" library="RequestsLibrary">
-<doc>Send a GET request on the session object found using the</doc>
-<arguments>
-<arg>Land</arg>
-<arg>/</arg>
-</arguments>
+<kw name="Get Browsers" library="Testing">
 <assign>
-<var>${resp}</var>
+<var>@{Browsers}</var>
 </assign>
-<msg timestamp="20160709 18:17:59.750" level="INFO">Starting new HTTP connection (1): api.landpotential.org</msg>
-<msg timestamp="20160709 18:17:59.915" level="INFO">Get Request using : alias=Land, uri=/, headers=None </msg>
-<msg timestamp="20160709 18:17:59.915" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
-<status status="PASS" endtime="20160709 18:17:59.915" starttime="20160709 18:17:59.749"></status>
+<msg timestamp="20160711 11:23:03.649" level="FAIL">TypeError: expected string or buffer</msg>
+<status status="FAIL" endtime="20160711 11:23:03.649" starttime="20160711 11:23:03.648"></status>
 </kw>
-<kw name="Should Be Equal As Strings" library="BuiltIn">
-<doc>Fails if objects are unequal after converting them to strings.</doc>
-<arguments>
-<arg>${resp.status_code}</arg>
-<arg>${status_code}</arg>
-</arguments>
-<msg timestamp="20160709 18:17:59.916" level="INFO">Argument types are:
-&lt;type 'int'&gt;
-&lt;type 'unicode'&gt;</msg>
-<status status="PASS" endtime="20160709 18:17:59.916" starttime="20160709 18:17:59.915"></status>
-</kw>
-<kw name="Log" library="BuiltIn">
-<doc>Logs the given message with the given level.</doc>
-<arguments>
-<arg>${resp.status_code}</arg>
-</arguments>
-<msg timestamp="20160709 18:17:59.917" level="INFO">200</msg>
-<status status="PASS" endtime="20160709 18:17:59.917" starttime="20160709 18:17:59.916"></status>
-</kw>
-<status status="PASS" endtime="20160709 18:17:59.917" starttime="20160709 18:17:59.746"></status>
-</kw>
+<doc>Runs standard framework but checks phots first and fails explicitly if phots fail as photo fail locks up browser</doc>
 <tags>
-<tag>DeleteAPI</tag>
+<tag>PhotosUpload</tag>
 </tags>
-<status status="PASS" endtime="20160709 18:17:59.917" critical="yes" starttime="20160709 18:17:59.746"></status>
+<status status="FAIL" endtime="20160711 11:23:03.649" critical="yes" starttime="20160711 11:23:03.644">TypeError: expected string or buffer</status>
 </test>
-<status status="FAIL" endtime="20160709 18:17:59.919" starttime="20160709 18:17:55.178"></status>
+<status status="FAIL" endtime="20160711 11:23:03.650" starttime="20160711 11:23:03.471"></status>
 </suite>
 <statistics>
 <total>
-<stat fail="4" pass="1">Critical Tests</stat>
-<stat fail="4" pass="1">All Tests</stat>
+<stat fail="1" pass="0">Critical Tests</stat>
+<stat fail="1" pass="0">All Tests</stat>
 </total>
 <tag>
-<stat fail="4" pass="1">DeleteAPI</stat>
+<stat fail="1" pass="0">PhotosUpload</stat>
 </tag>
 <suite>
-<stat fail="4" id="s1" name="TestSuites" pass="1">TestSuites</stat>
+<stat fail="1" id="s1" name="Psy" pass="0">Psy</stat>
 </suite>
 </statistics>
 <errors>

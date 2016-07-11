@@ -100,19 +100,12 @@ class WebService(object):
          return cherrypy.session['mystring']
 
 
-     def POST(self, url):
-         if('api' in url):
-             url = "sudo pybot --include " + url + " --outputdir /home/essa/workspace/code/myweb/output /home/essa/workspace/code/myweb/robotframework-scripts/TestSuites.robot"
-            # call(["pybot --outputdir output1 ", url])
-             os.system( url)
-             #shutil.copy2('/report.html', '/root/workspace/code/myweb/report.html')
-             #shutil.copy2('/log.html', '/root/workspace/code/myweb/log.html')
-         else:
-             url = "sudo pybot --include " + url + " --outputdir /home/essa/workspace/code/myweb/output /home/essa/workspace/code/myweb/robotframework-scripts/External_Pages/Psy.robot"
-            # call(["pybot --outputdir output1 ", url])
-             os.system( url)
-             #shutil.copy2('/report.html', '/root/workspace/code/myweb/report.html')
-             #shutil.copy2('/log.html', '/root/workspace/code/myweb/log.html')
+     def POST(self, FileName, TestCase):
+         url = "sudo pybot --include {0} --outputdir /home/essa/workspace/code/myweb/output /home/essa/workspace/code/myweb/robotframework-scripts/{1}".format(TestCase,FileName)
+        # call(["pybot --outputdir output1 ", url])
+         os.system( url)
+         #shutil.copy2('/report.html', '/root/workspace/code/myweb/report.html')
+         #shutil.copy2('/log.html', '/root/workspace/code/myweb/log.html')
          return "DONE!"
 
      def PUT(self, another_string):
