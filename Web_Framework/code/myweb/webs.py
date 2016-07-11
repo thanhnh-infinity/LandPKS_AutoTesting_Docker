@@ -10,13 +10,13 @@ import performance_measurement
 import threading
 from os import walk
 import json
-#import git
+import git
 
 class WebServer(object):
     @cherrypy.expose
     def index(self):
 	try:
-		return open('index.html')
+		return open('/output/index.html')
 	except:
 		print("Unexpected error:", sys.exc_info()[0])
 
@@ -25,7 +25,7 @@ class WebServer(object):
 	 return performance_measurement.beforeDateafterDate()
     def git_clone(self):
         git.Repo.clone_from("https://github.com/LandPotential/LANDPKS_TESTING.git",os.path.dirname(os.path.abspath(os.getcwd())))
-   def get_files(self):
+    def get_files(self):
         f = []
         
         for (dirpath,dirnames,filenames) in walk(os.path.abspath(os.getcwd())+"/robotframework-scripts"):
@@ -130,7 +130,7 @@ if __name__ == '__main__':
      }
      webapp = WebServer()
      webapp.luncher = WebService()
-     cherrypy.config.update({'server.socket_host': '127.0.0.1',
-                            'server.socket_port': 7080
+     cherrypy.config.update({'server.socket_host': 'essa.landpotential.org',
+                            'server.socket_port': 7070
                           })
      cherrypy.quickstart(webapp, '/', conf)
