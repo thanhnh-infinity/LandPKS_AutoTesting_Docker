@@ -16,7 +16,7 @@ class WebServer(object):
     @cherrypy.expose
     def index(self):
 	try:
-		return open('/output/index.html')
+		return open('/index.html')
 	except:
 		print("Unexpected error:", sys.exc_info()[0])
 
@@ -130,7 +130,7 @@ if __name__ == '__main__':
      }
      webapp = WebServer()
      webapp.luncher = WebService()
-     cherrypy.config.update({'server.socket_host': 'essa.landpotential.org',
+     cherrypy.config.update({'server.socket_host': '127.0.0.1',
                             'server.socket_port': 7070
                           })
      cherrypy.quickstart(webapp, '/', conf)
