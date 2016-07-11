@@ -25,19 +25,12 @@ class WebServer(object):
 	 return performance_measurement.beforeDateafterDate()
     def git_clone(self):
         git.Repo.clone_from("https://github.com/LandPotential/LANDPKS_TESTING.git",os.path.dirname(os.path.abspath(os.getcwd())))
-    def get_files(self):
+   def get_files(self):
         f = []
-<<<<<<< HEAD
-        p = os.getcwd() +"/robotframework-scripts"
+        
         for (dirpath,dirnames,filenames) in walk(os.path.abspath(os.getcwd())+"/robotframework-scripts"):
             for dirname in dirnames:
                 for (subpath,subdirpaths,subfiles) in walk(os.path.abspath(os.getcwd())+"/robotframework-scripts/"+dirname):
-=======
-        
-        for (dirpath,dirnames,filenames) in walk(os.path.abspath(os.getcwd())+"\\robotframework-scripts"):
-            for dirname in dirnames:
-                for (subpath,subdirpaths,subfiles) in walk(os.getcwd()+"\\robotframework-scripts\\"+dirname):
->>>>>>> 9ce7092deb7b21f8599d42b5e510e90fa863b48f
                     for file in subfiles:
                         if(".robot" in file):
                             f.append({"Name" : file,
