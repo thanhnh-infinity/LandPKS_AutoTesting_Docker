@@ -101,13 +101,19 @@ class WebService(object):
 
 
      def POST(self, url):
-         url = "sudo pybot --include " + url + " --outputdir /home/essa/workspace/code/myweb/output /home/essa/workspace/code/myweb/robotframework-scripts/TestSuites.robot"
-        # call(["pybot --outputdir output1 ", url])
-         os.system( url)
-         #shutil.copy2('/report.html', '/root/workspace/code/myweb/report.html')
-         #shutil.copy2('/log.html', '/root/workspace/code/myweb/log.html')
+         if('api' in url):
+             url = "sudo pybot --include " + url + " --outputdir /home/essa/workspace/code/myweb/output /home/essa/workspace/code/myweb/robotframework-scripts/TestSuites.robot"
+            # call(["pybot --outputdir output1 ", url])
+             os.system( url)
+             #shutil.copy2('/report.html', '/root/workspace/code/myweb/report.html')
+             #shutil.copy2('/log.html', '/root/workspace/code/myweb/log.html')
+         else:
+             url = "sudo pybot --include " + url + " --outputdir /home/essa/workspace/code/myweb/output /home/essa/workspace/code/myweb/robotframework-scripts/External_Pages/Psy.robot"
+            # call(["pybot --outputdir output1 ", url])
+             os.system( url)
+             #shutil.copy2('/report.html', '/root/workspace/code/myweb/report.html')
+             #shutil.copy2('/log.html', '/root/workspace/code/myweb/log.html')
          return "DONE!"
-
 
      def PUT(self, another_string):
          cherrypy.session['mystring'] = another_string

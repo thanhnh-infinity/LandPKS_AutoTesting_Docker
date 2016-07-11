@@ -58,7 +58,7 @@ ${LandCoverIcon}    /html/body/ion-nav-view/ion-tabs/ion-nav-view/div/ion-view/i
 *** Test Cases ***
 Land Cover
     [Documentation]    Runs standard framework but checks phots first and fails explicitly if phots fail as photo fail locks up browser
-    [Tags]    LandCover
+    [Tags]    Jenkins
     ${Failed}=    set variable    False
     Set Selenium Timeout    15 seconds
     Set Selenium Speed    .3 seconds
@@ -74,7 +74,7 @@ Land Cover
 
 Photo Test
     [Documentation]    Runs standard framework but checks phots first and fails explicitly if phots fail as photo fail locks up browser
-    [Tags]    PhotosUpload
+    [Tags]    Jenkins
     ${Failed}=    set variable    False
     Set Selenium Timeout    15 seconds
     Set Selenium Speed    .3 seconds
@@ -90,7 +90,7 @@ Photo Test
 
 Get Jenkins Driver
     [Documentation]    Runs full blown test suite that tests entire lpks test and manipulates the entire webpage
-    [Tags]    LandInfo
+    [Tags]    Jenkins
     Set Selenium Timeout    15 seconds
     Set Selenium Speed    .3 seconds
     ${JenkinsSetupSize}=    Get Browser Setup Count
