@@ -16,7 +16,7 @@ class WebServer(object):
     @cherrypy.expose
     def index(self):
 	try:
-		return open('/home/essa/workspace/code/myweb/index.html')
+		return open('index.html')
 	except:
 		print("Unexpected error:", sys.exc_info()[0])
 
@@ -24,13 +24,13 @@ class WebServer(object):
     def readfile(self):
 	 return performance_measurement.beforeDateafterDate()
     def git_clone(self):
-        git.Repo.clone_from("https://github.com/LandPotential/LANDPKS_TESTING.git",os.path.dirname(os.path.abspath(__file__)))
+        git.Repo.clone_from("https://github.com/LandPotential/LANDPKS_TESTING.git",os.path.dirname(os.path.abspath(os.getcwd())))
     def get_files(self):
         f = []
-        
-        for (dirpath,dirnames,filenames) in walk(os.path.dirname(os.path.abspath(__file__))+"\\robotframework-scripts"):
+        p = os.getcwd() +"/robotframework-scripts"
+        for (dirpath,dirnames,filenames) in walk(os.path.abspath(os.getcwd())+"/robotframework-scripts"):
             for dirname in dirnames:
-                for (subpath,subdirpaths,subfiles) in walk(os.path.dirname(os.path.abspath(__file__))+"\\robotframework-scripts\\"+dirname):
+                for (subpath,subdirpaths,subfiles) in walk(os.path.abspath(os.getcwd())+"/robotframework-scripts/"+dirname):
                     for file in subfiles:
                         if(".robot" in file):
                             f.append({"Name" : file,
@@ -38,7 +38,7 @@ class WebServer(object):
         return json.dumps(f)
     def report_html(self):
 	try:
-        	return open('/home/essa/workspace/code/myweb/output/report.html')
+        	return open('/output/report.html')
 	except:
                 print("Unexpected error:", sys.exc_info()[0])
 
@@ -46,7 +46,7 @@ class WebServer(object):
     
     def log_html(self):
 	try:
-        	return open('/home/essa/workspace/code/myweb/output/log.html')
+        	return open('/output/log.html')
 	except:
                 print("Unexpected error:", sys.exc_info()[0])
 
@@ -130,7 +130,7 @@ if __name__ == '__main__':
      }
      webapp = WebServer()
      webapp.luncher = WebService()
-     cherrypy.config.update({'server.socket_host': 'essa.landpotential.org',
-                            'server.socket_port': 7070
+     cherrypy.config.update({'server.socket_host': '127.0.0.1',
+                            'server.socket_port': 7080
                           })
      cherrypy.quickstart(webapp, '/', conf)
