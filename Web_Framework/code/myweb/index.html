@@ -40,10 +40,13 @@
            async: false;
            $('button').prop('disabled', true);
            $('input').prop('disabled', true);
-           var astrurlParams = $( "#single" ).val().split(",");
+           var astrurlParams = $( "#api" ).val().split(",");
            var strFileName = astrurlParams[0];
            var strTestCase = astrurlParams[1];
-           $.post("/luncher", {"FileName": strFileName,"TestCase" : strTestCase})            .done(function(string) {
+           var host_v_Params = $( "#version" ).val().split(",");
+           var host = host_v_Params[0];
+           var version = host_v_Params[1];
+           $.post("/luncher", {"FileName": strFileName,"TestCase" : strTestCase,"host": host,"version": version})  .done(function(string) {
                if(string != '') {
                   $('button').prop('disabled', false);
                   $('input').prop('disabled', false);
@@ -70,7 +73,7 @@
          <tr>
             <td>Please select a test to run:</td>
             <td>
-               <select id="single">
+               <select id="api">
                   <option value="Test_Cases/API/TestSuites.robot,DeleteAPI">Delete API</option>
                   <option value="Test_Cases/API/TestSuites.robot,GetAPI">Get API</option>
                   <option value="Test_Cases/API/TestSuites.robot,LandCoverAPI">LandCover API</option>
@@ -83,6 +86,13 @@
                   <option value="Test_Cases/LANDPKS_External_Pages/Psy.robot,LandCover">LandCover Mobile Web</option>
                   <option value="Test_Cases/LANDPKS_External_Pages/Psy.robot,LandInfo">Land Info Mobile Web App</option>
                   <option value="Test_Cases/LANDPKS_External_Pages/Psy.robot,PhotosUpload">Photo Testing</option>
+               </select>
+            </td>
+            <td>
+               <select id="version">
+                  <option value="http://api.landpotential.org/query?,0.1">Production V 0.1</option>
+                  <option value="http://testapi.landpotential.org:8080/query?,0.1">Testing V 0.1</option>
+                  <option value="http://128.123.177.103:8008/query?,0.2">New V 0.2</option>
                </select>
             </td>
             <td><button id="generate-string">Run a test!</button></td></tr>
