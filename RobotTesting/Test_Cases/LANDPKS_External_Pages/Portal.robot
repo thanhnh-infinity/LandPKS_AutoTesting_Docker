@@ -4,7 +4,7 @@ Library           DateTime
 Library           ../../Framework/SauceLabs.py
 Library           String
 Library           ../../Framework/Testing.py
-Library           Framework/RobotPlugins.py
+Library           Framework/WebHelpers.py
 
 *** Variables ***
 ${PortalMapHome}    http://portallandpotential.businesscatalyst.com/Export/ExportandMap.html
@@ -26,13 +26,30 @@ ${LandCoverAppURL}    https://play.google.com/store/apps/details?id=com.noisyflo
 ${LandInfoAppXpath}    //span[@id='u13764']
 ${LandCoverAppXpath}    //span[@id='u10901']
 ${LinksPortalXpath}    //nav[@class='MenuBar clearfix grpelem']/div/a
+${WaitTimeout}    60
+${APIExplorerURL}    portal.landpotential.org/api_explorer
+${APIExplorRequestTypeXPRsc}    //ul[@id='resources']/li
+${APIExplorRequestTypeXPRscBut}    /div[@class='heading']/h2/a
+${APIExplorOpenTypeXpStart}    //ul[@id='resources']/li
+${APIExplorOpenTypeXpStop}    /ul/li[@class='endpoint']/ul[@class='operations']/li/div[@class='heading']/h3/span[@class='http_method']/a
 
 *** Test Cases ***
 Portal Testing
+    [Documentation]    Checks portal and makes sure export works properly and all links direct properly. Will error and log detailed message of what failed and on which page
+    [Tags]    Main Portal
     Set Test Variable    ${Function}    Browser Init
+    Set Test Variable    ${Process}    Portal
     ${JenkinsSetupSize}=    Get Browser Setup Count
     run keyword if    ${JenkinsSetupSize} >1    Mobile Multi Setup Jenks
-    ...    ELSE    Mobile Setup Jenks
+    ...    ELSE    Mobile Setup Jenks    Portal
+
+Api Explorer Test
+    [Tags]    API Explorer
+    Set Test Variable    ${Function}    Browser Init
+    Set Test Variable    ${Process}    Api
+    ${JenkinsSetupSize}=    Get Browser Setup Count
+    run keyword if    ${JenkinsSetupSize} >1    Mobile Multi Setup Jenks
+    ...    ELSE    Mobile Setup Jenks    Api
 
 *** Keywords ***
 Close test browser
@@ -61,6 +78,10 @@ Mobile Multi Setup Jenks
     \    ${PassOrFail}    set variable if    ${Status}    PASS    Fail
     \    Close Test Browser Jenkins    ${Creds}    ${Browser["platform"]} | ${Browser["browser"]} | ${Browser["version"]}    ${PassOrFail}
 
+Manipulation
+    Run keyword if    '${Process}'=='Portal'    Portal Manipulation
+    Run keyword if    '${Process}'=='Api'    API Manipulation
+
 Mobile Setup Jenks
     [Documentation]    Processes website when one browser is requested
     ${Caps}=    Get Jenkins Capabilities
@@ -76,24 +97,30 @@ Get Jenkins Driver
     run keyword if    ${JenkinsSetupSize} >1    Mobile Multi Setup Jenks
     ...    ELSE    Mobile Setup Jenks
 
-Manipulation
+API Manipulation
+    Set Test Variable    ${Function}    Processing Api Explorer
+    Go To    ${APIExplorerURL}
+    Open Api Explorer Request type
+
+Portal Manipulation
     Set Test Variable    ${Function}    Processing Portal Data Export
     Go to    ${PortalMapHome}
-    ${Start}=    Get Time    epoch
+    ${StartMap}=    Get Time    epoch
     Wait for load    ${LoadingBarXpath}
-    ${Finish}=    Get Time    epoch
-    ${TimeToFinishMapLoad}=    evaluate    ${Finish}-${Start}
+    ${FinishMap}=    Get Time    epoch
+    ${TimeToFinishMapLoad}=    evaluate    ${FinishMap}-${StartMap}
     Element should be visible    ${PlotsPulledXpath}
     ${NumPlotsPulled}=    Get Text    ${PlotsPulledXpath}
     ${TimePerPlot}=    Evaluate    ${TimeToFinishMapLoad}/${NumPlotsPulled}
     Input text    ${ExportEmailID}    all
     Click Element    ${ExportButtonID}
     ${IMG}=    Run Keyword And Return Status    Element Should be Visible    ${ExportLoadingIMGXpath}
-    ${Start}=    Get Time    epoch
+    ${StartExp}=    Get Time    epoch
     Run Keyword if    ${IMG}    Wait For Load    ${ExportLoadingIMGXpath}
     ...    ELSE    Wait For Load    ${ExportLoadingBarXpath}
-    ${Finish}=    Get Time    epoch
-    ${TimeToFinishExport}=    evaluate    ${Finish}-${Start}
+    ${FinishExp}=    Get Time    epoch
+    ${TimeToFinishExport}=    evaluate    ${FinishExp}-${StartExp}
+    Log Faster Map Export    ${TimeToFinishMapLoad}    ${TimeToFinishExport}
     Go To    ${PortalDataSheets}
     Click Element    ${PortalLIDataSheetXpath}
     Check Popup Occured
@@ -110,7 +137,7 @@ Check Popup Occured
     ${WinCount}=    Get Length    ${Windows}
     Should Be True    ${WinCount}>1
     log    ${Windows[1]}
-    Select Window    popup
+    Wait Until Keyword Succeeds    3x    400ms    Select Window    popup
     Close Window
     select window
 
@@ -118,9 +145,10 @@ Wait for load
     [Arguments]    ${ELE}
     [Documentation]    Verifies page has loading based upon loading containers
     log    Waiting for page to load
-    : FOR    ${I}    IN RANGE    1    60
+    : FOR    ${I}    IN RANGE    1    ${WaitTimeout}
     \    ${TextThere}=    run keyword and return status    Element Should Be Visible    ${ELE}
     \    run keyword unless    ${TextThere}    Exit for Loop
+    \    run keyword if    ${I}>=${WaitTimeout}    Set Test Variable    ${Function}    Timeout at ${I}
     \    BuiltIn.Sleep    1s
 
 click and test links
@@ -131,8 +159,36 @@ click and test links
     : FOR    ${i}    IN RANGE    1    ${count} + 1
     \    ${link}=    Get WebElement    xpath=(${LinksXPath})[${i}]
     \    ${Atrib}=    get element atrrib    ${link}    href
+    \    Set Test Variable    ${Function}    Verifying page at ${Atrib}
     \    log    Processing Page | ${Atrib}
     \    click element    ${link}
     \    select Window    url=${Atrib}
     \    ${url} =    Execute Javascript    return window.location.href;
     \    Run keyword if    '${url}'=='${Atrib}'    Go back
+
+Open Api Explorer Request type
+    [Documentation]    PlaceHolder
+    ${count}=    Get Matching Xpath Count    ${APIExplorRequestTypeXPRsc}
+    @{Links}=    Get WebElements    xpath=${APIExplorRequestTypeXPRsc}
+    : FOR    ${i}    IN RANGE    1    ${count} + 1
+    \    ${CurButXpath}=    Set Variable    (${APIExplorRequestTypeXPRsc})[${i}]${APIExplorRequestTypeXPRscBut}
+    \    ${link}=    Get WebElement    xpath=(${APIExplorRequestTypeXPRsc})[${i}]${APIExplorRequestTypeXPRscBut}
+    \    ${Atrib}=    get element atrrib    ${link}    text
+    \    Set Test Variable    ${Function}    Verifying Request ${Atrib}
+    \    log    Processing Request | ${Atrib}
+    \    click element    ${link}
+    \    Run Api Explorer Request Type    ${Atrib}
+
+Run Api Explorer Request Type
+    [Arguments]    ${ResourceType}
+    [Documentation]    PlaceHolder
+    ${XpathCur}=    Set Variable    ${APIExplorOpenTypeXpStart}[@id='resource_${ResourceType}']${APIExplorOpenTypeXpStop}
+    log    ${XpathCur}
+    ${count}=    Get Matching Xpath Count    ${XpathCur}
+    @{Links}=    Get WebElements    xpath=${XpathCur}
+    : FOR    ${i}    IN RANGE    1    ${count} + 1
+    \    ${link}=    Get WebElement    xpath=(${APIExplorRequestTypeXP})[${i}]
+    \    ${Atrib}=    get element atrrib    ${link}    text
+    \    Set Test Variable    ${Function}    Verifying Request ${Atrib}
+    \    log    Processing Request | ${Atrib}
+    \    click element    ${link}

@@ -57,7 +57,7 @@ ${LandCoverIcon}    /html/body/ion-nav-view/ion-tabs/ion-nav-view/div/ion-view/i
 
 *** Test Cases ***
 Land Cover
-    [Documentation]    Runs the Landcover app and generates a new plot and cover in a random vashion and checks for any bugs during the process. Checks for known bugs during this proccess. On failing sets a message to record what failed and in which section.
+    [Documentation]    Runs the Landcover app and generates a new plot and its cover cover in a random fashion and checks for any bugs during the process. Checks for known bugs during this proccess. When it test encounters known bug test will log that it exists and works around. If bug is fixed logs this as well. On failing sets a message to record what failed and in which section. Tests all browsers set in environmental variable. Set on system or by jenkins
     [Tags]    LandCover
     ${Failed}=    set variable    False
     Set Selenium Timeout    15 seconds
@@ -92,7 +92,7 @@ Photo Test
     run keyword if    '${Failed}'=='True'    BuiltIn.Fail
 
 Get Jenkins Driver
-    [Documentation]    Runs landinfo app and randomly generates new plots. Randomly sets all fields when adding a plot. Checks for known bugs during the test. Test also ensures the error handeling of the app accounts for any mistakes that are made. On failing sets a message to record what failed and in which section.
+    [Documentation]    Runs landinfo app and randomly generates new plots. Randomly sets all fields when adding a plot. Checks for known bugs during the test. If test encounters a bug it will attempt the work around. If new bug is encountered logs what happened and current url Test also ensures the error handeling of the app accounts for any mistakes that are made. On failing sets a message to record what failed and in which section.
     [Tags]    LandInfo
     Set Selenium Timeout    15 seconds
     Set Selenium Speed    .3 seconds
@@ -119,7 +119,7 @@ Test Known Bugs Fast
     \    ${ele}=    Run Keyword And Return Status    Element Should Not Be Visible    id=account-chooser-add-account
     \    Run keyword if    ${ele}    Handle New Google Login
     \    ...    ELSE    Handle Exisiting Account
-    \    Select Window    ${LandPKSSignIn}
+    \    Select Window
     \    Set Test Variable    ${Function}    Adding new plot
     \    Add New Land Info Plot
     \    ${Sucess}=    Check for land info sucess
@@ -151,7 +151,8 @@ Close test browser
 Close test browser Jenkins
     [Arguments]    ${URL}    ${Name}    ${Status}
     [Documentation]    Closes browsers and submits status to Saucelabs requires passing Remote url, Name of test, Status of test (PASS or FAIL)
-    ${Mess}=    Set Variable if    '${Status}'=='Fail'    Failed on ${Function}    Pass
+    ${url} =    Execute Javascript    return window.location.href;
+    ${Mess}=    Set Variable if    '${Status}'=='Fail'    Failed on ${Function} at ${url}    Pass
     Run keyword if    '${URL}' != ''    Report Sauce status    ${Mess} | ${Name}    ${Status}    Jenkins    ${URL}
     Close all browsers
 
@@ -196,6 +197,7 @@ Handle New Google Login
     Wait Until Element Is Enabled    xpath=${GoogleSignINBut}
     Wait Until Element Is visible    xpath=${GoogleSignINBut}
     Click element    xpath=${GoogleSignINBut}
+    Wait Until Element Is Enabled    id=${GoogleApproveAccess}
     click button    id=${GoogleApproveAccess}
     Select Window
 
@@ -459,6 +461,8 @@ Check for land info sucess
     Click link    xpath=${BackButPlotXpathLi}
     ${result}=    Run keyword and return status    page should not contain element    xpath=${PopupButtonXpath}
     Run Keyword if    '${result}'=='True'    Set Test Variable    ${Function}    ${VarBefore}
+    Run Keyword if    '${result}'=='False'    Log    Bug Still present that creates an additional dialog on IE
+    Run Keyword if    '${result}'=='False'    Click Element    xpath=${PopupButtonXpath}
     [Return]    ${result}
 
 Check for land info error
