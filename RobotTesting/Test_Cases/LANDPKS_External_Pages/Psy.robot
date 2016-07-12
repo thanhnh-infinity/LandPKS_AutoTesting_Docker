@@ -57,7 +57,7 @@ ${LandCoverIcon}    /html/body/ion-nav-view/ion-tabs/ion-nav-view/div/ion-view/i
 
 *** Test Cases ***
 Land Cover
-    [Documentation]    Runs standard framework but checks phots first and fails explicitly if phots fail as photo fail locks up browser
+    [Documentation]    Runs the Landcover app and generates a new plot and cover in a random vashion and checks for any bugs during the process. Checks for known bugs during this proccess. On failing sets a message to record what failed and in which section.
     [Tags]    LandCover
     ${Failed}=    set variable    False
     Set Selenium Timeout    15 seconds
@@ -73,7 +73,7 @@ Land Cover
     run keyword if    '${Failed}'=='True'    BuiltIn.Fail
 
 Photo Test
-    [Documentation]    Runs standard framework but checks phots first and fails explicitly if phots fail as photo fail locks up browser
+    [Documentation]    Runs standard framework but checks phots first and fails explicitly if phots fail as photo fail locks up browser. On failing sets a message to record what failed and in which section.
     [Tags]    PhotosUpload
     ${Failed}=    set variable    False
     Set Selenium Timeout    15 seconds
@@ -89,13 +89,45 @@ Photo Test
     run keyword if    '${Failed}'=='True'    BuiltIn.Fail
 
 Get Jenkins Driver
-    [Documentation]    Runs full blown test suite that tests entire lpks test and manipulates the entire webpage
+    [Documentation]    Runs landinfo app and randomly generates new plots. Randomly sets all fields when adding a plot. Checks for known bugs during the test. Test also ensures the error handeling of the app accounts for any mistakes that are made. On failing sets a message to record what failed and in which section.
     [Tags]    LandInfo
     Set Selenium Timeout    15 seconds
     Set Selenium Speed    .3 seconds
     ${JenkinsSetupSize}=    Get Browser Setup Count
     run keyword if    ${JenkinsSetupSize} >1    Mobile Multi Setup Jenks
     ...    ELSE    Mobile Setup Jenks
+
+Test Known Bugs Fast
+    [Documentation]    Checks known bugs quicker by skipping what is not required.
+    [Tags]    Known Bugs
+    ${Creds}=    Get Sauce Creds Jenkins
+    @{Browsers}=    Get Browsers
+    : FOR    ${Browser}    IN    @{Browsers}
+    \    ${caps}=    Set Jenkins Capabilities    ${Browser["browser"]}    ${Browser["platform"]}    ${Browser["version"]}
+    \    Open test browser jenkins    ${caps}    ${Creds}
+    \    Set Test Variable    ${LandCover}    ${LandCoverParam}
+    \    Set Test Variable    ${Function}    Browser Init
+    \    go to    ${MobileApps}
+    \    Wait Until Element Is Enabled    xpath=${XpathLandHome}
+    \    Wait Until Element Is visible    xpath=${XpathLandHome}
+    \    Click element    xpath=${XpathLandHome}
+    \    Set Test Variable    ${Function}    Google Login
+    \    Click element    id=${GoogleLoginBut}
+    \    ${ele}=    Run Keyword And Return Status    Element Should Not Be Visible    id=account-chooser-add-account
+    \    Run keyword if    ${ele}    Handle New Google Login
+    \    ...    ELSE    Handle Exisiting Account
+    \    Select Window    ${LandPKSSignIn}
+    \    Set Test Variable    ${Function}    Adding new plot
+    \    Add New Land Info Plot
+    \    ${Sucess}=    Check for land info sucess
+    \    run keyword if    ${Sucess}    Try to submit Land Info
+    \    Check for land info sucess
+    \    proc soil layers
+    \    submit Land Info
+    \    Check for land info sucess
+    \    Add Second Plot
+    \    ${PassOrFail}    set variable if    ${Status}    PASS    Fail
+    \    Close Test Browser Jenkins    ${Creds}    ${Browser["platform"]} | ${Browser["browser"]} | ${Browser["version"]}    ${PassOrFail}
 
 *** Keywords ***
 Open test browser
@@ -187,6 +219,7 @@ mobile manipulation
     Check for land info sucess
     run keyword if    '${PhotoTest}'=='true'    Process Photos
     mobile land info using main page
+    submit Land Info
     Run keyword unless    '${LandCover}'=='true'    Add Second Plot
 
 Add Second Plot
