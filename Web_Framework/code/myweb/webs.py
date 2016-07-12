@@ -98,10 +98,13 @@ class WebService(object):
     @cherrypy.tools.accept(media='text/plain')
     def GET(self):
         return cherrypy.session['mystring']
-    def POST(self, FileName, TestCase):
-        url = "sudo pybot --include {0} --outputdir /home/essa/workspace/code/myweb/output /home/essa/workspace/code/myweb/robotframework-scripts/{1}".format(TestCase,FileName)
+    def POST(self, FileName, TestCase, host, version):
+        if (FileName == 'Test_Cases/API/TestSuites.robot'):
+        	url = "sudo pybot --include {0} --variable host:{2} --variable version:{3} --outputdir /home/essa/workspace/code/myweb/output /home/essa/workspace/code/myweb/robotframework-scripts/{1}".format(TestCase,FileName,host,version)
+        else:
+        	url = "sudo pybot --include {0} --outputdir /home/essa/workspace/code/myweb/output /home/essa/workspace/code/myweb/robotframework-scripts/{1}".format(TestCase,FileName)
         # call(["pybot --outputdir output1 ", url])
-        os.system( url)
+	os.system( url)
         #shutil.copy2('/report.html', '/root/workspace/code/myweb/report.html')
         #shutil.copy2('/log.html', '/root/workspace/code/myweb/log.html')
         return "DONE!"
