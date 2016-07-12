@@ -171,23 +171,23 @@ Open Api Explorer Request type
     ${count}=    Get Matching Xpath Count    ${APIExplorRequestTypeXPRsc}
     @{Links}=    Get WebElements    xpath=${APIExplorRequestTypeXPRsc}
     : FOR    ${i}    IN RANGE    1    ${count} + 1
-    \    ${CurButXpath}=    Set Variable    (${APIExplorRequestTypeXPRsc})[${i}]${APIExplorRequestTypeXPRscBut}
+    \    ${CurXpath}=    Set Variable    ${APIExplorRequestTypeXPRsc}[${i}]
     \    ${link}=    Get WebElement    xpath=(${APIExplorRequestTypeXPRsc})[${i}]${APIExplorRequestTypeXPRscBut}
     \    ${Atrib}=    get element atrrib    ${link}    text
     \    Set Test Variable    ${Function}    Verifying Request ${Atrib}
     \    log    Processing Request | ${Atrib}
     \    click element    ${link}
-    \    Run Api Explorer Request Type    ${Atrib}
+    \    Run Api Explorer Request Type    ${CurXpath}
 
 Run Api Explorer Request Type
     [Arguments]    ${ResourceType}
     [Documentation]    PlaceHolder
-    ${XpathCur}=    Set Variable    ${APIExplorOpenTypeXpStart}[@id='resource_${ResourceType}']${APIExplorOpenTypeXpStop}
+    ${XpathCur}=    Set Variable    ${ResourceType}${APIExplorOpenTypeXpStop}
     log    ${XpathCur}
     ${count}=    Get Matching Xpath Count    ${XpathCur}
     @{Links}=    Get WebElements    xpath=${XpathCur}
     : FOR    ${i}    IN RANGE    1    ${count} + 1
-    \    ${link}=    Get WebElement    xpath=(${APIExplorRequestTypeXP})[${i}]
+    \    ${link}=    Get WebElement    xpath=(${XpathCur})[${i}]
     \    ${Atrib}=    get element atrrib    ${link}    text
     \    Set Test Variable    ${Function}    Verifying Request ${Atrib}
     \    log    Processing Request | ${Atrib}
