@@ -25,6 +25,7 @@ ${LandInfoAppURL}    https://play.google.com/store/apps/details?id=com.noisyflow
 ${LandCoverAppURL}    https://play.google.com/store/apps/details?id=com.noisyflowers.rangelandhealthmonitor.android
 ${LandInfoAppXpath}    //span[@id='u13764']
 ${LandCoverAppXpath}    //span[@id='u10901']
+${LinksPortalXpath}    //nav[@class='MenuBar clearfix grpelem']/div/a
 
 *** Test Cases ***
 Portal Testing
@@ -102,7 +103,7 @@ Manipulation
     Check Popup Occured
     Click Element    ${PortalLCDataSheetImgXp}
     Check Popup Occured
-    click element    ${LinkForPortalXpath}
+    click and test links    ${LinksPortalXpath}
 
 Check Popup Occured
     ${Windows}=    List Windows
@@ -122,19 +123,16 @@ Wait for load
     \    run keyword unless    ${TextThere}    Exit for Loop
     \    BuiltIn.Sleep    1s
 
-mobile land info using main page
+click and test links
+    [Arguments]    ${LinksXPath}
     [Documentation]    Uses main page of webpage to navigate to and manipulate individual components
-    Set Test Variable    ${Function}    Processing Main Page
-    ${count}=    Get Matching Xpath Count    ${LinksAddPlot}
-    @{Links}=    Get WebElements    xpath=${LinksAddPlot}
+    ${count}=    Get Matching Xpath Count    ${LinksXPath}
+    @{Links}=    Get WebElements    xpath=${LinksXPath}
     : FOR    ${i}    IN RANGE    1    ${count} + 1
-    \    ${link}=    Get WebElement    xpath=(${LinksAddPlot})[${i}]
+    \    ${link}=    Get WebElement    xpath=(${LinksXPath})[${i}]
     \    ${Atrib}=    get element atrrib    ${link}    href
     \    log    Processing Page | ${Atrib}
-    \    click element if visable    ${link}
-    \    run keyword if    '${Atrib}' == 'http://testlpks.landpotential.org:8105/#/landpks/landinfo_soillayers'    Exit for loop
-    \    proc current module
-    \    Try to submit Land Info
-    \    Check for land info sucess
-    proc soil layers
-    Check for land info sucess
+    \    click element    ${link}
+    \    select Window    url=${Atrib}
+    \    ${url} =    Execute Javascript    return window.location.href;
+    \    Run keyword if    '${url}'=='${Atrib}'    Go back

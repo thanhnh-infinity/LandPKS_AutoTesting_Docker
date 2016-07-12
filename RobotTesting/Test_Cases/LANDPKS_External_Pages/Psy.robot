@@ -69,6 +69,8 @@ Land Cover
     \    Open test browser jenkins    ${caps}    ${Creds}
     \    ${Status}=    run keyword and return status    mobile manipulation    false    true
     \    ${PassOrFail}=    set variable if    ${Status}    PASS    Fail
+    \    ${Failed}=    Set Variable If    ${Status}    ${Failed}    True
+    \    Run Keyword unless    ${Status}    Set Test Message    Failed on ${Function}    append=yes
     \    Close Test Browser Jenkins    ${Creds}    ${Browser["platform"]} | ${Browser["browser"]} | ${Browser["version"]}    ${PassOrFail}
     run keyword if    '${Failed}'=='True'    BuiltIn.Fail
 
@@ -85,6 +87,7 @@ Photo Test
     \    Open test browser jenkins    ${caps}    ${Creds}
     \    ${Status}=    run keyword and return status    mobile manipulation    true    false
     \    ${PassOrFail}=    set variable if    ${Status}    PASS    Fail
+    \    ${Failed}=    Set Variable If    ${Status}    ${Failed}    True
     \    Close Test Browser Jenkins    ${Creds}    ${Browser["platform"]} | ${Browser["browser"]} | ${Browser["version"]}    ${PassOrFail}
     run keyword if    '${Failed}'=='True'    BuiltIn.Fail
 
@@ -105,7 +108,7 @@ Test Known Bugs Fast
     : FOR    ${Browser}    IN    @{Browsers}
     \    ${caps}=    Set Jenkins Capabilities    ${Browser["browser"]}    ${Browser["platform"]}    ${Browser["version"]}
     \    Open test browser jenkins    ${caps}    ${Creds}
-    \    Set Test Variable    ${LandCover}    ${LandCoverParam}
+    \    Set Test Variable    ${LandCover}    false
     \    Set Test Variable    ${Function}    Browser Init
     \    go to    ${MobileApps}
     \    Wait Until Element Is Enabled    xpath=${XpathLandHome}
@@ -382,11 +385,14 @@ Proc Lat and Long Error
 
 Try to submit Land Info
     [Documentation]    Tries to submit plot expecting and error and verifying one did occur
+    ${VarBefore}=    Get Variable Value    ${Function}
+    Set Test Variable    ${Function}    Trying to submit plot expecting error
     Click link    xpath=${ReviewPlotXpLi}
     Click element    id=${SubmitPlotButIdLI}
     ${result}=    Run keyword and return status    element should be visible    xpath=${PopupButtonXpath}
     element should contain    xpath=/html/body/div[4]/div/div[@class='popup-body']/span[1]    The following are required
     run keyword if    ${result}    click element    xpath=${PopupButtonXpath}
+    Set Test Variable    ${Function}    ${VarBefore}
     [Return]    ${result}
 
 Wait for load
@@ -426,7 +432,7 @@ Add New Land Cover Plot
 Add the Plot
     Wait Until Element Is visible    xpath=${AddPlotMenuPlotXpLI}
     click element    xpath=${AddPlotMenuPlotXpLI}
-    Set Selenium Speed    .35 seconds
+    Set Selenium Speed    .25 seconds
     Check for land info error
     click element    id=${TestPlotYesRadioIdLI}
     ${RandLength}=    Generate Random String    1    123456789
@@ -445,10 +451,14 @@ Add the Plot
 
 Check for land info sucess
     [Documentation]    Goes back a page and expects no error
+    log    Sucee
+    ${VarBefore}=    Get Variable Value    ${Function}
+    Set Test Variable    ${Function}    Adding plot not successful
     log    Going back a page... Checking for success of last activity
     wait until page contains element    xpath=${BackButPlotXpathLi}
     Click link    xpath=${BackButPlotXpathLi}
     ${result}=    Run keyword and return status    page should not contain element    xpath=${PopupButtonXpath}
+    Run Keyword if    '${result}'=='True'    Set Test Variable    ${Function}    ${VarBefore}
     [Return]    ${result}
 
 Check for land info error
