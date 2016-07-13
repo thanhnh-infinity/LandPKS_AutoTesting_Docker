@@ -5,6 +5,7 @@ Library           ../../Framework/SauceLabs.py
 Library           String
 Library           ../../Framework/Testing.py
 Library           Framework/WebHelpers.py
+Library           Framework/RobotPlugins.py
 
 *** Variables ***
 ${PortalMapHome}    http://portallandpotential.businesscatalyst.com/Export/ExportandMap.html
@@ -31,7 +32,9 @@ ${APIExplorerURL}    portal.landpotential.org/api_explorer
 ${APIExplorRequestTypeXPRsc}    //ul[@id='resources']/li
 ${APIExplorRequestTypeXPRscBut}    /div[@class='heading']/h2/a
 ${APIExplorOpenTypeXpStart}    //ul[@id='resources']/li
-${APIExplorOpenTypeXpStop}    /ul/li[@class='endpoint']/ul[@class='operations']/li/div[@class='heading']/h3/span[@class='http_method']/a
+${APIExplorOpenTypeXpStop}    /ul/li
+${APIExplorerOpenTypeStopBut}    /ul[@class='operations']/li/div[@class='heading']/h3/span[@class='http_method']/a
+${ApiExplorerResponseThrobber}    //span[@class='response_throbber']
 
 *** Test Cases ***
 Portal Testing
@@ -44,9 +47,11 @@ Portal Testing
     ...    ELSE    Mobile Setup Jenks    Portal
 
 Api Explorer Test
+    [Documentation]    Runs all querys on api explorer. Logs queries and type as it proceeds. Verifies the query only contains one query parameter. Verifies that the api returns the same code that the API does directly.
     [Tags]    API Explorer
     Set Test Variable    ${Function}    Browser Init
     Set Test Variable    ${Process}    Api
+    Set Test Variable    ${bCorrect}    false
     ${JenkinsSetupSize}=    Get Browser Setup Count
     run keyword if    ${JenkinsSetupSize} >1    Mobile Multi Setup Jenks
     ...    ELSE    Mobile Setup Jenks    Api
@@ -145,7 +150,7 @@ Wait for load
     [Arguments]    ${ELE}
     [Documentation]    Verifies page has loading based upon loading containers
     log    Waiting for page to load
-    : FOR    ${I}    IN RANGE    1    ${WaitTimeout}
+    : FOR    ${I}    IN RANGE    1    ${WaitTimeout}+1
     \    ${TextThere}=    run keyword and return status    Element Should Be Visible    ${ELE}
     \    run keyword unless    ${TextThere}    Exit for Loop
     \    run keyword if    ${I}>=${WaitTimeout}    Set Test Variable    ${Function}    Timeout at ${I}
@@ -182,13 +187,35 @@ Open Api Explorer Request type
 Run Api Explorer Request Type
     [Arguments]    ${ResourceType}
     [Documentation]    PlaceHolder
-    ${XpathCur}=    Set Variable    ${ResourceType}${APIExplorOpenTypeXpStop}
-    log    ${XpathCur}
-    ${count}=    Get Matching Xpath Count    ${XpathCur}
-    @{Links}=    Get WebElements    xpath=${XpathCur}
+    ${XpathCurRequest}=    Set Variable    ${ResourceType}${APIExplorOpenTypeXpStop}
+    log    ${XpathCurRequest}
+    ${count}=    Get Matching Xpath Count    ${XpathCurRequest}
     : FOR    ${i}    IN RANGE    1    ${count} + 1
-    \    ${link}=    Get WebElement    xpath=(${XpathCur})[${i}]
-    \    ${Atrib}=    get element atrrib    ${link}    text
-    \    Set Test Variable    ${Function}    Verifying Request ${Atrib}
-    \    log    Processing Request | ${Atrib}
-    \    click element    ${link}
+    \    ${XpathToOpenCurRequest}    set variable    ${XpathCurRequest}[${i}]${APIExplorerOpenTypeStopBut}
+    \    ${RequestTypeEle}=    Get WebElement    xpath=${XpathToOpenCurRequest}
+    \    ${Atrib}=    get element atrrib    ${RequestTypeEle}    text
+    \    click element    ${RequestTypeEle}
+    \    Input Data Into API Request    ${XpathCurRequest}[${i}]
+
+Input Data Into API Request
+    [Arguments]    ${ResourceXpath}
+    ${XpathCurInputs}=    Set Variable    ${ResourceXpath}//input
+    ${countInputs}=    Get Matching Xpath Count    ${XpathCurInputs}
+    @{InputEles}=    Get WebElements    xpath=${XpathCurInputs}
+    : FOR    ${element}    IN    @{InputEles}
+    \    ${Type}=    Get Element Atrrib    ${element}    type
+    \    Run Keyword If    '${Type}'=='text'    Input Random String With Random Length Into Input Element    ${element}
+    \    Run Keyword If    '${Type}'=='button'    Submit Form And Read Request Results    ${element}    ${ResourceXpath}
+
+Input Random String With Random Length Into Input Element
+    [Arguments]    ${element}
+    ${RandLength}=    Generate Random String    1    123456789
+    ${RandomString}=    Generate Random String    ${RandLength}
+    Fill Input Api Explorer    ${element}    ${bCorrect}
+
+Submit Form And Read Request Results
+    [Arguments]    ${element}    ${XPathOfRequest}
+    Click Element    ${element}
+    Wait for Load    xpath=${XPathOfRequest}${ApiExplorerResponseThrobber}
+    ${NoTimeout}=    run keyword and return status    Element Should Not Be Visible    xpath=${XPathOfRequest}${ApiExplorerResponseThrobber}
+    Run Keyword if    ${NoTimeout}    read api response    ${XPathOfRequest}    ${bCorrect}

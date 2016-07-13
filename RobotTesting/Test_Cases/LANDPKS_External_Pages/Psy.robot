@@ -122,12 +122,12 @@ Test Known Bugs Fast
     \    Select Window
     \    Set Test Variable    ${Function}    Adding new plot
     \    Add New Land Info Plot
-    \    ${Sucess}=    Check for land info sucess
-    \    run keyword if    ${Sucess}    Try to submit Land Info
-    \    Check for land info sucess
+    \    ${Sucess}=    Go back and Make Sure No Error Displayed
+    \    run keyword if    ${Sucess}    Try to Submit Land Plot
+    \    Go back and Make Sure No Error Displayed
     \    proc soil layers
-    \    submit Land Info
-    \    Check for land info sucess
+    \    Submit Land Plot
+    \    Go back and Make Sure No Error Displayed
     \    Add Second Plot
     \    ${PassOrFail}    set variable if    ${Status}    PASS    Fail
     \    Close Test Browser Jenkins    ${Creds}    ${Browser["platform"]} | ${Browser["browser"]} | ${Browser["version"]}    ${PassOrFail}
@@ -219,20 +219,20 @@ mobile manipulation
     Set Test Variable    ${Function}    Adding new plot
     run keyword if    '${LandCover}'=='true'    Add New Land Cover Plot
     ...    ELSE    Add New Land Info Plot
-    ${Sucess}=    Check for land info sucess
-    run keyword if    ${Sucess}    Try to submit Land Info
-    Check for land info sucess
+    ${Sucess}=    Go back and Make Sure No Error Displayed
+    run keyword if    ${Sucess}    Try to Submit Land Plot
+    Go back and Make Sure No Error Displayed
     run keyword if    '${PhotoTest}'=='true'    Process Photos
-    mobile land info using main page
-    submit Land Info
+    Create Plot Using Main Page To Navigate
+    Submit Land Plot
     Run keyword unless    '${LandCover}'=='true'    Add Second Plot
 
 Add Second Plot
     Set Test Variable    ${Function}    Adding Second Plot
     Add New Land Info Plot
-    ${Sucess}=    Check for land info sucess
-    run keyword if    ${Sucess}    Try to submit Land Info
-    Check for land info sucess
+    ${Sucess}=    Go back and Make Sure No Error Displayed
+    run keyword if    ${Sucess}    Try to Submit Land Plot
+    Go back and Make Sure No Error Displayed
 
 Process Photos
     [Documentation]    Handles Processing the photo types
@@ -259,7 +259,7 @@ Proc Photo
     ${BackButPres}=    Run Keyword And Return Status    Page Should Contain Element    xpath=${PhotoBack}
     click element if visable by locator    xpath=${PhotoBack}
 
-mobile land info using main page
+Create Plot Using Main Page To Navigate
     [Documentation]    Uses main page of webpage to navigate to and manipulate individual components
     Set Test Variable    ${Function}    Processing Main Page
     ${count}=    Get Matching Xpath Count    ${LinksAddPlot}
@@ -270,14 +270,14 @@ mobile land info using main page
     \    log    Processing Page | ${Atrib}
     \    click element if visable    ${link}
     \    run keyword if    '${Atrib}' == 'http://testlpks.landpotential.org:8105/#/landpks/landinfo_soillayers'    Exit for loop
-    \    proc current module
-    \    Try to submit Land Info
-    \    Check for land info sucess
+    \    Process Current Module
+    \    Try to Submit Land Plot
+    \    Go back and Make Sure No Error Displayed
     proc soil layers
-    Check for land info sucess
+    Go back and Make Sure No Error Displayed
 
 proc soil layers
-    [Documentation]    When soil layers has been reached from "mobile land info using main page" this function controls manipulating the layers
+    [Documentation]    When soil layers has been reached from "Create Plot Using Main Page To Navigate" this function controls manipulating the layers
     Set Test Variable    ${Function}    Processing Soil Layers
     ${count}=    Get Matching Xpath Count    ${SoilLayersXpsLI}
     : FOR    ${i}    IN RANGE    1    ${count} + 1
@@ -304,13 +304,13 @@ proc soil layer
     log    go back
     click element if visable by locator    xpath=${BackButPlotXpathLi}
 
-proc current module
+Process Current Module
     [Documentation]    Processes a single module from main page
     @{FloodTypes}=    Get WebElements    xpath=${FloodTypesXpsLI}
     : FOR    ${FloodType}    IN    @{FloodTypes}
     \    ${Atrib}=    get element atrrib    ${FloodType}    class
     \    click element if visable    ${FloodType}
-    Check for land info sucess
+    Go back and Make Sure No Error Displayed
 
 click element if visable
     [Arguments]    ${element}
@@ -327,25 +327,25 @@ click element if visable by locator
     run keyword if    ${Visible}    click element    ${element}
     [Return]    ${Visible}
 
-submit Land Info
+Submit Land Plot
     [Documentation]    Submits plot requiring it to pass. Basic error handling contaned.
     Set Test Variable    ${Function}    Submitting Plot
     Click link    xpath=${ReviewPlotXpLi}
     Click element    id=${SubmitPlotButIdLI}
     ${success}=    Run keyword and return status    Element Should Contain    xpath=//div[@class='popup-body']/span[1]    Confirm submit. Submitted data may become publicly available.
-    run keyword unless    ${success}    Proc Error on Submit
+    run keyword unless    ${success}    Check for Submit Error And Process Error
     ${result}=    Run keyword and return status    element should be visible    xpath=//div[@class='popup-buttons']/button[@class='button ng-binding button-positive']
     run keyword if    ${result}    click element    xpath=//div[@class='popup-buttons']/button[@class='button ng-binding button-positive']
     Wait for load
     ${success}=    Run keyword and return status    Element Should Contain    xpath=//div[@class='popup-body']/span[1]    Plot is submitted
     run keyword if    ${success}    element should be visible    xpath=//div[@class='popup-buttons']/button[@class='button ng-binding button-positive']
     run keyword if    ${success}    click element    xpath=//div[@class='popup-buttons']/button[@class='button ng-binding button-positive']
-    run keyword unless    ${success}    Proc Error on Submit
+    run keyword unless    ${success}    Check for Submit Error And Process Error
     Run Keyword If    ${success} and '${LandCover}'=='false'    Go to Main Plot Page
     [Return]    ${success}
 
-Proc error on submit
-    [Documentation]    Processes an error encountered in "Submit land info"
+Check for Submit Error And Process Error
+    [Documentation]    Processes an error encountered in "Submit Land Plot"
     Set Test Variable    ${Function}    Processing Errors
     ${PopupBody}=    set variable    //div[@class='popup-body']/span
     ${count}=    Get Matching Xpath Count    ${PopupBody}
@@ -370,7 +370,7 @@ Long Error Found
     click element    xpath=//div[@class='popup-buttons']/button[@class='button ng-binding button-positive']
     Proc Lat and Long Error
     exit for loop
-    proc error on submit
+    Check for Submit Error And Process Error
 
 Proc Lat and Long Error
     [Documentation]    Processes longitude and latitude handling
@@ -381,11 +381,11 @@ Proc Lat and Long Error
     input text    id=${LatitudeInputID}    ${RandLat}
     ${RandLong}=    Generate Random String    2    123456789
     input text    id=${LongitudeInputID}    ${RandLong}
-    Check for land info sucess
+    Go back and Make Sure No Error Displayed
     Click link    xpath=${ReviewPlotXpLi}
     Click element    id=${SubmitPlotButIdLI}
 
-Try to submit Land Info
+Try to Submit Land Plot
     [Documentation]    Tries to submit plot expecting and error and verifying one did occur
     ${VarBefore}=    Get Variable Value    ${Function}
     Set Test Variable    ${Function}    Trying to submit plot expecting error
@@ -435,7 +435,7 @@ Add the Plot
     Wait Until Element Is visible    xpath=${AddPlotMenuPlotXpLI}
     click element    xpath=${AddPlotMenuPlotXpLI}
     Set Selenium Speed    .25 seconds
-    Check for land info error
+    Go back and Make Sure Error Is Displayed
     click element    id=${TestPlotYesRadioIdLI}
     ${RandLength}=    Generate Random String    1    123456789
     ${RandomString}=    Generate Random String    ${RandLength}
@@ -451,7 +451,7 @@ Add the Plot
     ${GPSError}=    Run keyword and return status    Element Should Contain    xpath=//div[@class='popup-body']/span[1]    Geolocation
     run keyword if    ${GPSError}    click element    xpath=//div[@class='popup-buttons']/button[@class='button ng-binding button-positive']
 
-Check for land info sucess
+Go back and Make Sure No Error Displayed
     [Documentation]    Goes back a page and expects no error
     log    Sucee
     ${VarBefore}=    Get Variable Value    ${Function}
@@ -465,7 +465,7 @@ Check for land info sucess
     Run Keyword if    '${result}'=='False'    Click Element    xpath=${PopupButtonXpath}
     [Return]    ${result}
 
-Check for land info error
+Go back and Make Sure Error Is Displayed
     [Documentation]    Goes back a page expecting an error and dismisses them
     log    Going back a page... Checking for error of last activity
     wait until page contains element    xpath=${BackButPlotXpathLi}

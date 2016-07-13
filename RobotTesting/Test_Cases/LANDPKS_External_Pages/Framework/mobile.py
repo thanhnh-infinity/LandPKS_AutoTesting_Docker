@@ -20,6 +20,7 @@ from selenium.webdriver.support import expected_conditions as EC, wait
 import time
 from appium.webdriver.webelement import WebElement
 from operator import contains
+from selenium.selenium import selenium
 MOBILE_APP_WEBPAGE = "http://testlpks.landpotential.org:8105/#/landpks/landpks_entry_page"
 XPATH_NEW_MOBILE_TEST = '//html/body/ion-nav-view/ion-tabs/ion-nav-view/div/ion-view/ion-content/div/div[1]/div/img'
 GOOGLE_LOGIN_BUTTON = 'loginGoogleWebBrowser'
@@ -82,7 +83,6 @@ class mobileHandle:
         wait = WebDriverWait(self.driverMain, 3)
         wait.until(EC.visibility_of_element_located(SignInField), "")
         SignInField.click()
-        
     def switch_to_window(self, WindowHandle):
         #Use the handle of window to switch between windows
         Windows = self.driverMain.window_handles
