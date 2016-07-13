@@ -151,8 +151,8 @@ Close test browser
 Close test browser Jenkins
     [Arguments]    ${URL}    ${Name}    ${Status}
     [Documentation]    Closes browsers and submits status to Saucelabs requires passing Remote url, Name of test, Status of test (PASS or FAIL)
-    ${url} =    Execute Javascript    return window.location.href;
-    ${Mess}=    Set Variable if    '${Status}'=='Fail'    Failed on ${Function} at ${url}    Pass
+    ${urlFailed} =    Execute Javascript    return window.location.href;
+    ${Mess}=    Set Variable if    '${Status}'=='Fail'    Failed on ${Function} at ${urlFailed}    Pass
     Run keyword if    '${URL}' != ''    Report Sauce status    ${Mess} | ${Name}    ${Status}    Jenkins    ${URL}
     Close all browsers
 
@@ -453,7 +453,6 @@ Add the Plot
 
 Go back and Make Sure No Error Displayed
     [Documentation]    Goes back a page and expects no error
-    log    Sucee
     ${VarBefore}=    Get Variable Value    ${Function}
     Set Test Variable    ${Function}    Adding plot not successful
     log    Going back a page... Checking for success of last activity
@@ -461,7 +460,7 @@ Go back and Make Sure No Error Displayed
     Click link    xpath=${BackButPlotXpathLi}
     ${result}=    Run keyword and return status    page should not contain element    xpath=${PopupButtonXpath}
     Run Keyword if    '${result}'=='True'    Set Test Variable    ${Function}    ${VarBefore}
-    Run Keyword if    '${result}'=='False'    Log    Bug Still present that creates an additional dialog on IE
+    Run Keyword if    '${result}'=='False'    Log    ERROR    Bug Still present that creates an additional dialog on IE
     Run Keyword if    '${result}'=='False'    Click Element    xpath=${PopupButtonXpath}
     [Return]    ${result}
 

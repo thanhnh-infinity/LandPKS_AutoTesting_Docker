@@ -33,7 +33,6 @@ class RobotPlugins:
         requestEle = self.robotDriverRemote.find_element_by_xpath(requestXpath)
         ResponseCode = responseEle.text
         RequestUrl = requestEle.text
-        logger.info('{0}'.format(ResponseCode))
         response = requests.put(RequestUrl)
         if(response.status_code == int(ResponseCode)):
             logger.info("Response code from API Explorer and API directly were both {0}".format(ResponseCode))
