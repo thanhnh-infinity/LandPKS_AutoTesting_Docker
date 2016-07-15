@@ -58,6 +58,7 @@ class RobotPlugins:
                 strInput = ret.format(self.FillInputDataApiExplorer('number'))
         else:
             strInput = ret.format(self.FillInputDataApiExplorer('Rand'))
+        logger.info('Sending "{0}" to element {1}'.format(strInput, Element))
         Element.send_keys(strInput)
     def FillInputDataApiExplorer(self, type):
         return {

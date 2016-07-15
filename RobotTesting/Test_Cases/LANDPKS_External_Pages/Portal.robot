@@ -51,8 +51,11 @@ Api Explorer Test
     [Tags]    API Explorer
     Set Test Variable    ${Function}    Browser Init
     Set Test Variable    ${Process}    Api
-    Set Test Variable    ${bCorrect}    false
+    Set Test Variable    ${bCorrect}    True
     ${JenkinsSetupSize}=    Get Browser Setup Count
+    run keyword if    ${JenkinsSetupSize} >1    Mobile Multi Setup Jenks
+    ...    ELSE    Mobile Setup Jenks    Api
+    Set Test Variable    ${bCorrect}    true
     run keyword if    ${JenkinsSetupSize} >1    Mobile Multi Setup Jenks
     ...    ELSE    Mobile Setup Jenks    Api
 
@@ -209,8 +212,6 @@ Input Data Into API Request
 
 Input Random String With Random Length Into Input Element
     [Arguments]    ${element}
-    ${RandLength}=    Generate Random String    1    123456789
-    ${RandomString}=    Generate Random String    ${RandLength}
     Fill Input Api Explorer    ${element}    ${bCorrect}
 
 Submit Form And Read Request Results
