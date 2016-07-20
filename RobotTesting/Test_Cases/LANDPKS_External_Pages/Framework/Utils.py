@@ -29,7 +29,6 @@ def GenRandString(type="text"):
             ret = "{0}{1}".format(negLoc, random.randint(0,180))
         elif (dataType == "double"):
             ret = "{0}{1}".format(negLoc, random.uniform(0,180))
-    print ret
     return ret
 def GetDate():
     yr = '{0}'.format(random.randint(1900,2200))
