@@ -17,7 +17,7 @@ class WebServer(object):
     def index(self):
         try:
             hey = os.path.abspath(os.getcwd())
-            return open('/home/essa/workspace/code/myweb/index.html')
+            return open(os.path.abspath(os.getcwd()) + '/index.html')
         except:
             print("Unexpected error:", sys.exc_info()[0])
 
@@ -39,7 +39,7 @@ class WebServer(object):
         return json.dumps(f)
     def report_html(self):
         try:
-            return open('/home/essa/workspace/code/myweb/output/report.html')
+            return open(os.path.abspath(os.getcwd()) + '/output/report.html')
         except:
             print("Unexpected error:", sys.exc_info()[0])
 
@@ -47,7 +47,7 @@ class WebServer(object):
     
     def log_html(self):
         try:
-            return open('/home/essa/workspace/code/myweb/output/log.html')
+            return open(os.path.abspath(os.getcwd()) + '/output/log.html')
         except:
             print("Unexpected error:", sys.exc_info()[0])
 
@@ -128,7 +128,7 @@ if __name__ == '__main__':
      }
     webapp = WebServer()
     webapp.luncher = WebService()
-    cherrypy.config.update({'server.socket_host': 'essa.landpotential.org',
+    cherrypy.config.update({'server.socket_host': '128.123.177.106',
                             'server.socket_port': 7070
                           })
     cherrypy.quickstart(webapp, '/', conf)
