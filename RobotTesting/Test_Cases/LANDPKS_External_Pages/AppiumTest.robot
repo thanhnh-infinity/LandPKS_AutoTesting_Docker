@@ -5,18 +5,20 @@ Library           Framework/appiumTesting.py
 *** Variable ***
 ${REMOTE_URL1}    http://Barnebre:216526d7-706f-4eff-bf40-9d774203e268@ondemand.saucelabs.com:80/wd/hub
 ${PLATFORM}       Android
-${platformVersion}    4.2
+${platformVersion}    5.1
 ${APP}            http://128.123.177.36:8080/job/LandCover_Mobile_Andoird_App/ws/platforms/android/build/outputs/apk/android-debug.apk
 ${DEVICE_NAME}    AndroidEmulator
 ${XpathLandHome}    //div[@class='scroll']/div[@class='row']/div[@class='col col-100 ']/img
 ${REMOTE_URL}     http://localhost:4723/wd/hub
+${appiumVersion}    1.5.3
+${DeviceType}     Phone
 
 *** Test Cases ***
 Adnroid Landinfo
     [Documentation]    Checks portal and makes sure export works properly and all links direct properly. Will error and log detailed message of what failed and on which page
     [Tags]    Landinfo    Online
-    Set Browser    ${REMOTE_URL}    platformName=${PLATFORM}    platformVersion=${platformVersion}    deviceName=Android Emulator    app=${APP}    appWaitActivity=org.landpotential.lpks.landcover.MainActivity
-    ...    appWaitpackage=org.landpotential.lpks.landcover
+    Set Browser    ${REMOTE_URL}    platformName=${PLATFORM}    appiumVersion=${appiumVersion}    platformVersion=${platformVersion}    deviceName=Android Emulator    app=${APP}
+    ...    appWaitActivity=org.landpotential.lpks.landcover.MainActivity    appWaitpackage=org.landpotential.lpks.landcover
     Test Add Plot
 
 Airplane
