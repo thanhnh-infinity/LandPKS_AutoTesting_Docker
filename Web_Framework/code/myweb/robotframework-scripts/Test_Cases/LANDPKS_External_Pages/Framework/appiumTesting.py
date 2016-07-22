@@ -175,9 +175,6 @@ def SetUpApp(Test, AirplaneMode=False, bRobot = True):
     else:
         if(not hasattr(Test, "driver")):
             SetDriver(Test, AirplaneMode)
-        if(AirplaneMode):
-            ClickElementIfVis(Test.driver,By.CLASS_NAME,"android.widget.Image")
-            HandleGoogleLogin(Test.driver)
     SetConections(Test.driver, AirplaneMode)
 def TestCaps():
     caps = {}
@@ -202,8 +199,8 @@ def SetDriver(Test,AirplaneMode):
     desired_caps['device'] = "android"
     desired_caps['deviceType'] = "phone"
     desired_caps = TestCaps()
-    #if not AirplaneMode:
-    desired_caps['app'] = LAND_INFO_ANDROID_APP
+    if not AirplaneMode:
+        desired_caps['app'] = LAND_INFO_ANDROID_APP
     
     Test.driver = webdriver.Remote(command_executor=COMMAND_EXEC, 
                                       desired_capabilities=desired_caps)
@@ -238,19 +235,6 @@ def SwitchToPopupWindow(driver):
     wait = WebDriverWait(driver, TIMEOUT)
     wait.until(lambda driver: len(driver.window_handles) > 1)
     driver.switch_to.window(driver.window_handles[-1])
-def HandleGoogleLogin(driver):
-    driver.switch_to.context("WEBVIEW_org.landpotential.lpks.landcover")
-    ClickElementIfVis(driver,By.XPATH,"//Button[@id='loginGoogleDevice']")
-    SwitchToPopupWindow(driver)
-    ele = GetEleIfVis(driver,By.ID,"Email")
-    ele.send_keys("lpks.testing@gmail.com")
-    ClickElementIfVis(driver,By.ID,"next")
-    ele = GetEleIfVis(driver,By.ID,"Passwd")
-    ele.send_keys("landpotentialtest")
-    ClickElementIfVis(driver,By.ID,"signIn")
-    ClickElementIfVis(driver,By.ID,"submit_approve_access")
-    win = driver.window_handles
-    driver.switch_to.window(win[0])
 def SetConections(driver, AirplaneMode=False):
     curContext = driver.context
     driver.switch_to.context("NATIVE_APP")
@@ -290,8 +274,45 @@ class appiumTesting:#(unittest.TestCase):
     def test_add_plot(self, bRobot = True):
         SetUpApp(self,bRobot=bRobot)
         #self.driver.start_activity(LAND_COVER_ANDROID_PACKAGE, LAND_COVER_ANDROID_ACTIVITY_NAME)
+        log.info("1")
         ClickElementIfVis(self.driver,By.CLASS_NAME,"android.widget.Image")
-        HandleGoogleLogin(self.driver)
+        #eles = self.driver.find_elements_by_class_name("android.widget.Image")
+        #eles[0].click()
+        #contexts = self.driver.window_handles
+        #contexts = self.driver.contexts
+        #self.driver.switch_to.context("LandPKS Sign-In")
+        log.info("2")
+        self.driver.switch_to.context("WEBVIEW_org.landpotential.lpks.landcover")
+        #webViews = self.driver.find_elements_by_class_name("android.webkit.WebView")
+        #eles = self.driver.find_element_by_android_uiautomator(uia_string)("android.widget.Button")
+        log.info("3")
+        ClickElementIfVis(self.driver,By.XPATH,"//Button[@id='loginGoogleDevice']")
+        log.info("Test 2.1.1 Pass")
+        #eles = self.driver.find_elements_by_xpath("//Button[@id='loginGoogleDevice']")
+        #eles = self.driver.find_elements_by_android_uiautomator('new UiSelector().clickable(true)')
+        #for ele in eles:
+            #ele.click()
+        
+        #if(not self.driver.context == "WEBVIEW_com.android.browser"):
+            #self.driver.switch_to.context("WEBVIEW_com.android.browser")
+        SwitchToPopupWindow(self.driver)
+        #self.driver.switch_to.window(win[1])
+        ele = GetEleIfVis(self.driver,By.ID,"Email")
+        ele.send_keys("lpks.testing@gmail.com")
+        ClickElementIfVis(self.driver,By.ID,"next")
+        #ele = self.driver.find_element_by_id("next")
+        #ele.click()
+        ele = GetEleIfVis(self.driver,By.ID,"Passwd")
+        #self.driver.find_element_by_id("Passwd")
+        ele.send_keys("landpotentialtest")
+        #ele = self.driver.find_element_by_id("signIn")
+        ClickElementIfVis(self.driver,By.ID,"signIn")
+        #ele.click()
+        #ele = self.driver.find_element_by_id("submit_approve_access")
+        ClickElementIfVis(self.driver,By.ID,"submit_approve_access")
+        #ele.click()
+        win = self.driver.window_handles
+        self.driver.switch_to.window(win[0])
         ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//img[@src='landpks_img/landinfo_logo.png']")
         log.info(  "Test 2.1 Pass" )
         WaitForLoad(self.driver)
@@ -309,10 +330,25 @@ class appiumTesting:#(unittest.TestCase):
             log.error("WebDriver Exception {0}".format(WDE.message))
     def test_add_plot_airplane_verify_it_appears_in_landcover(self, bRobot = True):
         SetUpApp(self, AirplaneMode=True, bRobot=bRobot)
-        self.driver.close_app()
-        self.driver.start_activity(LAND_COVER_ANDROID_PACKAGE, LAND_COVER_ANDROID_ACTIVITY_NAME)
-        self.driver.switch_to.context("WEBVIEW_org.landpotential.lpks.landcover")
+        #ele = self.driver.find_elements_by_xpath("//")
+        #eles = self.driver.find_elements_by_class_name("android.widget.Image")
+        #eles[0].click()
+        #contexts = self.driver.window_handles
+        #contexts = self.driver.contexts
+        #self.driver.switch_to.context("LandPKS Sign-In")
+        #webViews = self.driver.find_elements_by_class_name("android.webkit.WebView")
+        #eles = self.driver.find_element_by_android_uiautomator(uia_string)("android.widget.Button")
+        #eles = self.driver.find_elements_by_xpath("//Button[@id='loginGoogleDevice']")
+        #eles = self.driver.find_elements_by_android_uiautomator('new UiSelector().clickable(true)')
+        #for ele in eles:
+            #ele.click()
+        
+        #if(not self.driver.context == "WEBVIEW_com.android.browser"):
+            #self.driver.switch_to.context("WEBVIEW_com.android.browser")
+        #ele.click()
         ctxs = self.driver.contexts
+        win = self.driver.window_handles
+        self.driver.switch_to.window(win[-1])
         ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//img[@src='landpks_img/landinfo_logo.png']")
         log.info("4")
         WaitForLoad(self.driver)
@@ -340,7 +376,7 @@ class Testing(unittest.TestCase):
     AppTest = appiumTesting()
     def tester(self):
         
-        #self.AppTest.test_add_plot(bRobot=False)
+        self.AppTest.test_add_plot(bRobot=False)
         self.AppTest.test_add_plot_airplane_verify_it_appears_in_landcover(bRobot=False)
     def tearDown(self):
         self.AppTest.tearDown()

@@ -1,64 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generated="20160711 11:23:03.470" generator="Robot 3.0 (Python 2.7.6 on linux2)">
-<suite source="/home/essa/workspace/code/myweb/robotframework-scripts/Test_Cases/LANDPKS_External_Pages/Psy.robot" id="s1" name="Psy">
-<test id="s1-t1" name="Photo Test">
-<kw name="Set Variable" library="BuiltIn">
-<doc>Returns the given values which can then be assigned to a variables.</doc>
+<robot generated="20160722 13:51:19.433" generator="Robot 3.0 (Python 2.7.11 on win32)">
+<suite source="C:\Users\bbarnett\Documents\GitHub\LANDPKS_TESTING\Web_Framework\code\myweb\robotframework-scripts\Test_Cases\LANDPKS_External_Pages\AppiumTest.robot" id="s1" name="AppiumTest">
+<test id="s1-t1" name="Adnroid Landinfo">
+<kw name="Set Browser" library="appiumTesting">
 <arguments>
-<arg>False</arg>
+<arg>${REMOTE_URL}</arg>
+<arg>platformName=${PLATFORM}</arg>
+<arg>appiumVersion=${appiumVersion}</arg>
+<arg>platformVersion=${platformVersion}</arg>
+<arg>deviceName=Android Emulator</arg>
+<arg>app=${APP}</arg>
+<arg>appWaitActivity=org.landpotential.lpks.landcover.MainActivity</arg>
+<arg>appWaitpackage=org.landpotential.lpks.landcover</arg>
 </arguments>
-<assign>
-<var>${Failed}</var>
-</assign>
-<msg timestamp="20160711 11:23:03.646" level="INFO">${Failed} = False</msg>
-<status status="PASS" endtime="20160711 11:23:03.646" starttime="20160711 11:23:03.645"></status>
+<status status="PASS" endtime="20160722 13:52:32.086" starttime="20160722 13:51:19.702"></status>
 </kw>
-<kw name="Set Selenium Timeout" library="Selenium2Library">
-<doc>Sets the timeout in seconds used by various keywords.</doc>
-<arguments>
-<arg>15 seconds</arg>
-</arguments>
-<status status="PASS" endtime="20160711 11:23:03.646" starttime="20160711 11:23:03.646"></status>
+<kw name="Test Add Plot" library="appiumTesting">
+<msg timestamp="20160722 13:52:46.227" level="INFO">1</msg>
+<msg timestamp="20160722 13:52:47.708" level="INFO">2</msg>
+<msg timestamp="20160722 13:52:48.488" level="INFO">3</msg>
+<msg timestamp="20160722 13:52:50.206" level="INFO">Test 2.1.1 Pass</msg>
+<msg timestamp="20160722 13:53:06.596" level="INFO">Test 2.1 Pass</msg>
+<msg timestamp="20160722 13:53:11.836" level="INFO">Sending QCt to WebElement &lt;appium.webdriver.webelement.WebElement (session="97cb9702af754fa480831e75faca4cb1", element="0.7405249730218202-6")&gt;</msg>
+<msg timestamp="20160722 13:53:14.514" level="INFO">Sending ja to WebElement &lt;appium.webdriver.webelement.WebElement (session="97cb9702af754fa480831e75faca4cb1", element="0.7405249730218202-9")&gt;</msg>
+<msg timestamp="20160722 13:53:15.310" level="INFO">Sending -20.2913884981 to WebElement &lt;appium.webdriver.webelement.WebElement (session="97cb9702af754fa480831e75faca4cb1", element="0.7405249730218202-10")&gt;</msg>
+<msg timestamp="20160722 13:53:17.359" level="INFO">Sending -22 to WebElement &lt;appium.webdriver.webelement.WebElement (session="97cb9702af754fa480831e75faca4cb1", element="0.7405249730218202-11")&gt;</msg>
+<msg timestamp="20160722 13:53:47.289" level="INFO">QCt was submitted</msg>
+<msg timestamp="20160722 13:53:49.071" level="INFO">Test 2.4 Pass</msg>
+<status status="PASS" endtime="20160722 13:53:53.573" starttime="20160722 13:52:32.087"></status>
 </kw>
-<kw name="Set Selenium Speed" library="Selenium2Library">
-<doc>Sets the delay in seconds that is waited after each Selenium command.</doc>
-<arguments>
-<arg>.3 seconds</arg>
-</arguments>
-<status status="PASS" endtime="20160711 11:23:03.647" starttime="20160711 11:23:03.647"></status>
-</kw>
-<kw name="Get Sauce Creds Jenkins" library="SauceLabs">
-<assign>
-<var>${Creds}</var>
-</assign>
-<msg timestamp="20160711 11:23:03.647" level="INFO">${Creds} = http://None:None@ondemand.saucelabs.com:80/wd/hub</msg>
-<status status="PASS" endtime="20160711 11:23:03.647" starttime="20160711 11:23:03.647"></status>
-</kw>
-<kw name="Get Browsers" library="Testing">
-<assign>
-<var>@{Browsers}</var>
-</assign>
-<msg timestamp="20160711 11:23:03.649" level="FAIL">TypeError: expected string or buffer</msg>
-<status status="FAIL" endtime="20160711 11:23:03.649" starttime="20160711 11:23:03.648"></status>
-</kw>
-<doc>Runs standard framework but checks phots first and fails explicitly if phots fail as photo fail locks up browser</doc>
+<doc>Checks portal and makes sure export works properly and all links direct properly. Will error and log detailed message of what failed and on which page</doc>
 <tags>
-<tag>PhotosUpload</tag>
+<tag>Appium</tag>
 </tags>
-<status status="FAIL" endtime="20160711 11:23:03.649" critical="yes" starttime="20160711 11:23:03.644">TypeError: expected string or buffer</status>
+<status status="PASS" endtime="20160722 13:53:53.574" critical="yes" starttime="20160722 13:51:19.701"></status>
 </test>
-<status status="FAIL" endtime="20160711 11:23:03.650" starttime="20160711 11:23:03.471"></status>
+<test id="s1-t2" name="Airplane">
+<kw name="Test Add Plot Airplane Verify It Appears In Landcover" library="appiumTesting">
+<msg timestamp="20160722 13:54:03.082" level="FAIL">WebDriverException: Message: chrome not reachable
+  (Session info: webview=39.0.0.0)
+  (Driver info: chromedriver=2.20.353326 (387014af133a8257dc698960b225254e857711b4),platform=Linux 4.4.0-22-generic x86)
+</msg>
+<status status="FAIL" endtime="20160722 13:54:03.083" starttime="20160722 13:53:53.576"></status>
+</kw>
+<tags>
+<tag>Appium</tag>
+</tags>
+<status status="FAIL" endtime="20160722 13:54:03.083" critical="yes" starttime="20160722 13:53:53.575">WebDriverException: Message: chrome not reachable
+  (Session info: webview=39.0.0.0)
+  (Driver info: chromedriver=2.20.353326 (387014af133a8257dc698960b225254e857711b4),platform=Linux 4.4.0-22-generic x86)
+</status>
+</test>
+<status status="FAIL" endtime="20160722 13:54:03.085" starttime="20160722 13:51:19.435"></status>
 </suite>
 <statistics>
 <total>
-<stat fail="1" pass="0">Critical Tests</stat>
-<stat fail="1" pass="0">All Tests</stat>
+<stat fail="1" pass="1">Critical Tests</stat>
+<stat fail="1" pass="1">All Tests</stat>
 </total>
 <tag>
-<stat fail="1" pass="0">PhotosUpload</stat>
+<stat fail="1" pass="1">Appium</stat>
 </tag>
 <suite>
-<stat fail="1" id="s1" name="Psy" pass="0">Psy</stat>
+<stat fail="1" id="s1" name="AppiumTest" pass="1">AppiumTest</stat>
 </suite>
 </statistics>
 <errors>
