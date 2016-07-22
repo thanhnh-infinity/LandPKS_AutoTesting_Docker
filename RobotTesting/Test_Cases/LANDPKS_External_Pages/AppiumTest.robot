@@ -3,13 +3,13 @@ Library           AppiumLibrary
 Library           Framework/appiumTesting.py
 
 *** Variable ***
-${REMOTE_URL1}    http://Barnebre:216526d7-706f-4eff-bf40-9d774203e268@ondemand.saucelabs.com:80/wd/hub
+${REMOTE_URL}     http://Barnebre:216526d7-706f-4eff-bf40-9d774203e268@ondemand.saucelabs.com:80/wd/hub
 ${PLATFORM}       Android
 ${platformVersion}    5.1
 ${APP}            http://128.123.177.36:8080/job/LandCover_Mobile_Andoird_App/ws/platforms/android/build/outputs/apk/android-debug.apk
 ${DEVICE_NAME}    AndroidEmulator
 ${XpathLandHome}    //div[@class='scroll']/div[@class='row']/div[@class='col col-100 ']/img
-${REMOTE_URL}     http://localhost:4723/wd/hub
+${REMOTE_URL1}    http://localhost:4723/wd/hub
 ${appiumVersion}    1.5.3
 ${DeviceType}     Phone
 
