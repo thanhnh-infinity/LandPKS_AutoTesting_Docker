@@ -19,12 +19,15 @@ from appium.webdriver.webelement import WebElement
 from Utils import GenRandString
 from Utils import SelectBoxSelectRand
 import random
+from appium import SauceTestCase, on_platforms
 from appium.webdriver.connectiontype import ConnectionType
 SAUCE_ACCESS_KEY = 'Barnebre:216526d7-706f-4eff-bf40-9d774203e268'
 LAND_INFO_ANDROID_APP = 'http://128.123.177.36:8080/job/LandInfo_Mobile_Andoird_App/ws/platforms/android/build/outputs/apk/android-debug.apk'
 LAND_COVER_ANDROID_APP = 'http://128.123.177.36:8080/job/LandCover_Mobile_Andoird_App/ws/platforms/android/build/outputs/apk/android-debug.apk'
-LAND_COVER_ANDROID_PACKAGE = 'org.landpotential.lpks.landcover'
-LAND_COVER_ANDROID_ACTIVITY_NAME = 'org.landpotential.lpks.landcover.MainActivity'
+#LAND_COVER_ANDROID_PACKAGE = 'org.landpotential.lpks.landcover'
+LAND_COVER_ANDROID_PACKAGE = 'org.apache.cordova.splashscreen'
+#LAND_COVER_ANDROID_ACTIVITY_NAME = '.MainActivity'
+LAND_COVER_ANDROID_ACTIVITY_NAME = '.SpashScreen'
 LAND_INFO_BACK_BUTTON = "//div[@nav-bar='active']//a[@class='button button-icon']"
 LAND_INFO_MENU_ITEM_PATH = "//ion-view[@cache-view='false']//div[@class='scroll']/a"
 LAND_INFO_PLOT_INFO_PATH = "//ion-view[@cache-view='false']//div[@class='scroll']//div[contains(@class,'col col-5')]/img"
@@ -38,8 +41,8 @@ LAND_INFO_POPUP_BODY = "//div[@class='popup-body']"
 LAND_INFO_POPUP_BODY_MESSAGE = "//div[@class='popup-body']/span"
 LANDCOVER_PLOT_LIST = "//ion-view[@cache-view='false']//div[@class='scroll']//div[@class='list']/ion-item"
 TIMEOUT = 15
-#COMMAND_EXEC = 'http://%s@ondemand.saucelabs.com:80/wd/hub' % (SAUCE_ACCESS_KEY)
-COMMAND_EXEC = 'http://localhost:4723/wd/hub'
+COMMAND_EXEC = 'http://%s@ondemand.saucelabs.com:80/wd/hub' % (SAUCE_ACCESS_KEY)
+#COMMAND_EXEC = 'http://localhost:4723/wd/hub'
 # Returns abs path relative to this file and not cwd
 PATH = lambda p: os.path.abspath(
     os.path.join(os.path.dirname(__file__), p)
@@ -173,20 +176,34 @@ def SetUpApp(Test, AirplaneMode=False, bRobot = True):
         if(not hasattr(Test, "driver")):
             SetDriver(Test, AirplaneMode)
     SetConections(Test.driver, AirplaneMode)
+def TestCaps():
+    caps = {}
+    caps['browserName'] = ""
+    caps['appiumVersion'] = "1.5.3"
+    caps['deviceName'] = "Android Emulator"
+    caps['deviceType'] = "phone"
+    caps['deviceOrientation'] = "portrait"
+    caps['platformVersion'] = "5.1"
+    caps['platformName'] = "Android"
+    return caps
 def SetDriver(Test,AirplaneMode):
     desired_caps = {}
     desired_caps['platformName'] = 'Android'
-    desired_caps['platformVersion'] = '4.2'
+    desired_caps['platformVersion'] = '4.4'
     desired_caps['deviceName'] = 'Android Emulator'
-    desired_caps['appPackage'] = LAND_COVER_ANDROID_PACKAGE
-    desired_caps['appActivity'] = LAND_COVER_ANDROID_ACTIVITY_NAME
-    desired_caps['appWaitActivity']= LAND_COVER_ANDROID_ACTIVITY_NAME
-    desired_caps['appWaitPackage'] = LAND_COVER_ANDROID_PACKAGE
+    desired_caps['automationName']="Selendroid"
+    #desired_caps['appPackage'] = LAND_COVER_ANDROID_PACKAGE
+    #desired_caps['appActivity'] = LAND_COVER_ANDROID_ACTIVITY_NAME
+    #desired_caps['appWaitActivity']= LAND_COVER_ANDROID_ACTIVITY_NAME
+    #desired_caps['appWaitPackage'] = LAND_COVER_ANDROID_PACKAGE
+    desired_caps['device'] = "android"
+    desired_caps['deviceType'] = "phone"
+    desired_caps = TestCaps()
     if not AirplaneMode:
         desired_caps['app'] = LAND_INFO_ANDROID_APP
     
     Test.driver = webdriver.Remote(command_executor=COMMAND_EXEC, 
-                                       desired_capabilities=desired_caps)
+                                      desired_capabilities=desired_caps)
     Test.driver.implicitly_wait(30)
 def GetEleAttribIfVis(driver, ByType, Value, Attirb):
     wait = WebDriverWait(driver, TIMEOUT)
@@ -256,7 +273,7 @@ class appiumTesting:#(unittest.TestCase):
         self.driver.quit()
     def test_add_plot(self, bRobot = True):
         SetUpApp(self,bRobot=bRobot)
-        #ele = self.driver.find_elements_by_xpath("//")
+        #self.driver.start_activity(LAND_COVER_ANDROID_PACKAGE, LAND_COVER_ANDROID_ACTIVITY_NAME)
         log.info("1")
         ClickElementIfVis(self.driver,By.CLASS_NAME,"android.widget.Image")
         #eles = self.driver.find_elements_by_class_name("android.widget.Image")
@@ -329,9 +346,6 @@ class appiumTesting:#(unittest.TestCase):
         #if(not self.driver.context == "WEBVIEW_com.android.browser"):
             #self.driver.switch_to.context("WEBVIEW_com.android.browser")
         #ele.click()
-        self.driver.switch_to.context("WEBVIEW_org.landpotential.lpks.landcover")
-        win = self.driver.window_handles
-        self.driver.switch_to.window(win[0])
         ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//img[@src='landpks_img/landinfo_logo.png']")
         log.info("4")
         WaitForLoad(self.driver)
