@@ -3,6 +3,8 @@ Created on Jun 23, 2016
 
 @author: bbarnett
 '''
+import re
+import requests
 import os
 from robot.api import logger as log
 from time import sleep
@@ -11,6 +13,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 import unittest
 from appium import webdriver
+import simplejson as json
 from selenium.common.exceptions import TimeoutException,\
     ElementNotSelectableException, WebDriverException
 from robot.libraries.BuiltIn import BuiltIn
@@ -24,10 +27,10 @@ from appium.webdriver.connectiontype import ConnectionType
 SAUCE_ACCESS_KEY = 'Barnebre:216526d7-706f-4eff-bf40-9d774203e268'
 LAND_INFO_ANDROID_APP = 'http://128.123.177.36:8080/job/LandInfo_Mobile_Andoird_App/ws/platforms/android/build/outputs/apk/android-debug.apk'
 LAND_COVER_ANDROID_APP = 'http://128.123.177.36:8080/job/LandCover_Mobile_Andoird_App/ws/platforms/android/build/outputs/apk/android-debug.apk'
-#LAND_COVER_ANDROID_PACKAGE = 'org.landpotential.lpks.landcover'
-LAND_COVER_ANDROID_PACKAGE = 'org.apache.cordova.splashscreen'
-#LAND_COVER_ANDROID_ACTIVITY_NAME = '.MainActivity'
-LAND_COVER_ANDROID_ACTIVITY_NAME = '.SpashScreen'
+LAND_COVER_ANDROID_PACKAGE = 'org.landpotential.lpks.landcover'
+#LAND_COVER_ANDROID_PACKAGE = 'org.apache.cordova.splashscreen'
+LAND_COVER_ANDROID_ACTIVITY_NAME = '.MainActivity'
+#LAND_COVER_ANDROID_ACTIVITY_NAME = '.SpashScreen'
 LAND_INFO_BACK_BUTTON = "//div[@nav-bar='active']//a[@class='button button-icon']"
 LAND_INFO_MENU_ITEM_PATH = "//ion-view[@cache-view='false']//div[@class='scroll']/a"
 LAND_INFO_PLOT_INFO_PATH = "//ion-view[@cache-view='false']//div[@class='scroll']//div[contains(@class,'col col-5')]/img"
@@ -42,11 +45,40 @@ LAND_INFO_POPUP_BODY_MESSAGE = "//div[@class='popup-body']/span"
 LANDCOVER_PLOT_LIST = "//ion-view[@cache-view='false']//div[@class='scroll']//div[@class='list']/ion-item"
 TIMEOUT = 15
 COMMAND_EXEC = 'http://%s@ondemand.saucelabs.com:80/wd/hub' % (SAUCE_ACCESS_KEY)
+USERNAME_ACCESS_KEY = re.compile('^(http|https):\/\/([^:]+):([^@]+)@')
 #COMMAND_EXEC = 'http://localhost:4723/wd/hub'
 # Returns abs path relative to this file and not cwd
 PATH = lambda p: os.path.abspath(
     os.path.join(os.path.dirname(__file__), p)
 )
+def report_sauce_status(name, status, tags=[], remote_url='', bRobot = True, driver = None):
+    # Parse username and access_key from the remote_url
+ 
+    username, access_key = USERNAME_ACCESS_KEY.findall(remote_url)[0][1:]
+
+    # Get selenium session id from the keyword library
+    if(bRobot):
+        appium = BuiltIn().get_library_instance('AppiumLibrary')
+        job_id = appiumLib._current_application().session_id
+    else :
+        job_id = driver.session_id
+
+    # Prepare payload and headers
+    token = (':'.join([username, access_key])).encode('base64').strip()
+    payload = {'name': name,
+               'passed': status == 'PASS',
+               'tags': tags}
+    headers = {'Authorization': 'Basic {0}'.format(token)}
+
+    # Put test status to Sauce Labs
+    url = 'https://saucelabs.com/rest/v1/{0}/jobs/{1}'.format(username, job_id)
+    response = requests.put(url, data=json.dumps(payload), headers=headers)
+    assert response.status_code == 200, response.text
+
+    # Log video url from the response
+    video_url = json.loads(response.text).get('video_url')
+    if video_url:
+        logger.info('<a href="{0}">video.flv</a>'.format(video_url), html=True)
 def FillPlotInputs(driver):
     PlotName = ""
     inputs = driver.find_elements_by_tag_name("input")
@@ -285,7 +317,7 @@ class appiumTesting:#(unittest.TestCase):
             self.driver = appiumLib._current_application()
             self.driver.implicitly_wait(30)
     def tearDown(self):
-        # end the session
+        report_sauce_status("AppiumTesting", "PASS", tags="Appium", remote_url=COMMAND_EXEC, bRobot = False, driver = self.driver)
         self.driver.quit()
     def test_add_plot(self, bRobot = True):
         SetUpApp(self,bRobot=bRobot)
