@@ -67,6 +67,12 @@ PATH = lambda p: os.path.abspath(
 def CheckSinglePlotUpload(plotName):
     url = REQUEST_STRING_TO_FIND_PLOT.format(plotName)
     response = requests.put(url)
+    if not response.status_code == 200:
+        LogError("API didn't respond successfully with URL {0}".format(url))
+    else:
+        data = json.loads(response.text)
+        if(len(data) <= 0):
+            LogError("Database didn't find plot {0}".format(plotName))
 def OutputErrors():
     if(len(ERRORS) > 0 ):
         log.error("Encountered {0} recoverable errors or inconsistancies they are as follows".format(len(ERRORS) > 0 ))
@@ -346,6 +352,7 @@ class appiumTesting:#(unittest.TestCase):
     def tearDown(self, PassOrFail = "PASS",bRobot = False):
         report_sauce_status("AppiumTesting", status=PassOrFail, tags="Appium", remote_url=COMMAND_EXEC, bRobot = False, driver = self.driver)
         self.driver.quit()
+        OutputErrors()
         if not(PassOrFail == "PASS")and bRobot:
             BuiltIn().fail("")
     def test_add_plot(self, bRobot = True):
@@ -408,7 +415,7 @@ class appiumTesting:#(unittest.TestCase):
 class Testing(unittest.TestCase):
     AppTest = appiumTesting()
     def tester(self):
-        CheckSinglePlotUpload("nuhypc")
+        CheckSinglePlotUpload("NUHyPC")
         self.AppTest.test_add_plot(bRobot=False)
         self.AppTest.test_add_plot_airplane_verify_it_appears_in_landcover(bRobot=False)
     def tearDown(self):
