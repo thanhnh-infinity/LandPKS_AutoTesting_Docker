@@ -49,3 +49,8 @@ def SelectBoxSelectRand(driver,ByType,ElePath):
     selEle.select_by_index(random.randint(1,options-1))
 def GetSelEle(driver, ByType, ElePath):
     return Select(driver.find_element(ByType,ElePath))
+def GetSauceCreds():
+    creds = 'http://{0}:{1}@ondemand.saucelabs.com:80/wd/hub'.format(os.environ.get("SAUCE_USERNAME"),
+                             os.environ.get("SAUCE_ACCESS_KEY")
+                             )
+    return creds

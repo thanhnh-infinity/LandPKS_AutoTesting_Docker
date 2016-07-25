@@ -21,9 +21,11 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from appium.webdriver.webelement import WebElement
 from Utils import GenRandString
 from Utils import SelectBoxSelectRand
+from Utils import GetSauceCreds
 import random
 from appium import SauceTestCase, on_platforms
 from appium.webdriver.connectiontype import ConnectionType
+REQUEST_STRING_TO_FIND_PLOT = "http://api.landpotential.org/query?version=0.1&action=get&object=landinfo&type=get_by_pair_name_recorder_name&name={0}&recorder_name=lpks.testing%40gmail.com"
 SAUCE_ACCESS_KEY = 'Barnebre:216526d7-706f-4eff-bf40-9d774203e268'
 LAND_INFO_ANDROID_APP = 'http://128.123.177.36:8080/job/LandInfo_Mobile_Andoird_App/ws/platforms/android/build/outputs/apk/android-debug.apk'
 LAND_COVER_ANDROID_APP = 'http://128.123.177.36:8080/job/LandCover_Mobile_Andoird_App/ws/platforms/android/build/outputs/apk/android-debug.apk'
@@ -46,14 +48,37 @@ LANDCOVER_PLOT_LIST = "//ion-view[@cache-view='false']//div[@class='scroll']//di
 TIMEOUT = 15
 COMMAND_EXEC = 'http://%s@ondemand.saucelabs.com:80/wd/hub' % (SAUCE_ACCESS_KEY)
 USERNAME_ACCESS_KEY = re.compile('^(http|https):\/\/([^:]+):([^@]+)@')
+DICT_MESSAGES_NO_DATA_KEY = {
+                 False: {"SubmitPlotText" : "Plot is submitted"},
+                 True:{"SubmitPlotText" : "background upload"}
+                 }
+DICT_OUTPUT_MESSAGE_NO_DATA_KEY = {
+                       True : {"PlotUnsucess" : "Error, no connectivity and plot was not flagged for upload",
+                               "PlotSucess" : "{0} Flagged for Background upload"},
+                       False: {"PlotSucess" : "{0} was submitted",
+                               "PlotUnsucess" : "Error, Plot was not submitted"}
+                       }
 #COMMAND_EXEC = 'http://localhost:4723/wd/hub'
 # Returns abs path relative to this file and not cwd
+ERRORS = []
 PATH = lambda p: os.path.abspath(
     os.path.join(os.path.dirname(__file__), p)
 )
+def CheckSinglePlotUpload(plotName):
+    url = REQUEST_STRING_TO_FIND_PLOT.format(plotName)
+    response = requests.put(url)
+def OutputErrors():
+    if(len(ERRORS) > 0 ):
+        log.error("Encountered {0} recoverable errors or inconsistancies they are as follows".format(len(ERRORS) > 0 ))
+        for error in ERRORS:
+            log.error(error)
+def LogError(errorMessage):
+    log.error(errorMessage)
+    ERRORS.append(errorMessage)
 def report_sauce_status(name, status, tags=[], remote_url='', bRobot = True, driver = None):
     # Parse username and access_key from the remote_url
- 
+    if(len(ERRORS) > 0 ):
+        name.join("| {0} recoverable errors encountered" .format(len(ERRORS)))
     username, access_key = USERNAME_ACCESS_KEY.findall(remote_url)[0][1:]
 
     # Get selenium session id from the keyword library
@@ -78,7 +103,7 @@ def report_sauce_status(name, status, tags=[], remote_url='', bRobot = True, dri
     # Log video url from the response
     video_url = json.loads(response.text).get('video_url')
     if video_url:
-        logger.info('<a href="{0}">video.flv</a>'.format(video_url), html=True)
+        log.info('<a href="{0}">video.flv</a>'.format(video_url), html=True)
 def FillPlotInputs(driver):
     PlotName = ""
     inputs = driver.find_elements_by_tag_name("input")
@@ -142,6 +167,13 @@ def HandleSlope(driver):
     eles = GetElesIfVis(driver, By.XPATH,LAND_INFO_PLOT_INFO_PATH)
     eles[0].click()
     ClickElementIfVis(driver, By.XPATH, LAND_INFO_BACK_BUTTON)
+def FillAllDataForPlot(driver):
+    for i in range(2, 6):
+        ClickElementIfVis(driver, By.XPATH, '{0}[{1}]'.format(LAND_INFO_MENU_ITEM_PATH,i))
+        eles = GetElesIfVis(driver, By.XPATH,LAND_INFO_PLOT_INFO_PATH)
+        for ele in eles:
+            ele.click()
+        ClickElementIfVis(driver, By.XPATH, LAND_INFO_BACK_BUTTON)                        
 def ReviewPlot(driver, Airplane, PlotName):
     ClickElementIfVis(driver, By.XPATH, '{0}{1}'.format(LAND_INFO_MENU_ITEM_PATH,'[9]'))
     ClickElementIfVis(driver, By.XPATH,LAND_INFO_SUBMIT_PLOT_BUTTON)
@@ -154,24 +186,29 @@ def ReviewPlot(driver, Airplane, PlotName):
     WaitForLoad(driver)
     MessageEle = GetEleIfVis(driver, By.XPATH,LAND_INFO_POPUP_BODY_MESSAGE)
     Text = MessageEle.text
-    if Airplane:
-        if ( not "background upload" in Text):
-            log.error( "Error, no connectivity and plot was not flagged for upload" )
-        else:
-            log.info("{0} Flagged for Background upload".format(PlotName))
+    #if Airplane:
+    if ( not DICT_MESSAGES_NO_DATA_KEY[Airplane]["SubmitPlotText"] in Text):
+         LogError(DICT_OUTPUT_MESSAGE_NO_DATA_KEY[Airplane]["PlotUnsucess"])
+        #log.error( "Error, no connectivity and plot was not flagged for upload" )
     else:
-        if ( not "Plot is submitted" == Text):
-            log.error( "Error, Plot was not submitted" )
-        else:
-            log.info("{0} was submitted".format(PlotName))
+        log.info(DICT_OUTPUT_MESSAGE_NO_DATA_KEY[Airplane]["PlotSucess"].format(PlotName))
+        #log.info("{0} Flagged for Background upload".format(PlotName))
+    #else:
+        #if ( not "Plot is submitted" == Text):
+            #log.error( "Error, Plot was not submitted" )
+        #else:
+            #log.info("{0} was submitted".format(PlotName))
     ClickElementIfVis(driver, By.XPATH,POSTIVE_POPUP_BUTTON)
-def FillPlotData(driver, Airplane = False):
+def FillPlotData(driver, Airplane = False, bFullPlot = False):
     #fill plot info
     PlotName = FillPlotInputs(driver)
-    #click Slope
-    HandleSlope(driver)
-    #click soil layer
-    HandleSoilLayer(driver)
+    if(bFullPlot):
+        FillAllDataForPlot(driver)
+    else:
+        #click Slope
+        HandleSlope(driver)
+        #click soil layer
+        HandleSoilLayer(driver)
     #Review Plot
     ReviewPlot(driver, Airplane=Airplane, PlotName=PlotName)
     return PlotName
@@ -182,23 +219,24 @@ def LandCover(driver, plots, Airplane=False):
     try:
         ClickElementIfVis(driver, By.XPATH,POSTIVE_POPUP_BUTTON)
     except Exception:
-        log.error( "Message regarding connectivity did not appear" )
+        LogError( "Message regarding connectivity did not appear" )
     List = []
     for plot in plots:
         String = "{0}{1}".format(LANDCOVER_PLOT_LIST,"[contains(.,'{0}')]".format(plot))
         try:
             PlotFound = GetEleIfVis(driver, By.XPATH, String)
+            log.info("Plot '{0}' found in landcover in airplane mode as expected".format(plot))
         except TimeoutException:
-            log.error( "Plot '{0}' was not found in landcover in airplane mode.".format(plot) )
+            LogError( "Plot '{0}' was not found in landcover in airplane mode.".format(plot) )
         
 def WaitForLoad(driver):
     wait = WebDriverWait(driver, 30)
     wait.until(EC.presence_of_element_located((By.XPATH, "//div[@class='loading-container']")),"")
     wait.until(EC.invisibility_of_element_located((By.XPATH, "//div[@class='loading-container']")),"")
-def SetUpApp(Test, AirplaneMode=False, bRobot = True):
+def SetUpApp(Test, AirplaneMode=False, bRobot = True, iConnection=None):
     if (bRobot):
         appiumLib = BuiltIn().get_library_instance('AppiumLibrary')
-        if(len(appiumLib._cache.get_open_browsers()) > 0):
+        if(len(appiumLib._cache.get_open_browsers()) > 0 and not hasattr(Test, "driver")):
             Test.driver = appiumLib._current_application()
         else:
             if(not hasattr(Test, "driver")):
@@ -207,14 +245,21 @@ def SetUpApp(Test, AirplaneMode=False, bRobot = True):
     else:
         if(not hasattr(Test, "driver")):
             SetDriver(Test, AirplaneMode)
-        if(AirplaneMode):
-            ClickElementIfVis(Test.driver,By.CLASS_NAME,"android.widget.Image")
-            HandleGoogleLogin(Test.driver)
-    SetConections(Test.driver, AirplaneMode)
+    try:
+        ClickElementIfVis(Test.driver,By.CLASS_NAME,"android.widget.Image")
+        HandleGoogleLogin(Test.driver)
+    except TimeoutException as Te:
+        log.info("Login not required")
+    if(iConnection == None):
+        SetConections(Test.driver, 1 if AirplaneMode else 6)
+    else:
+        SetConections(Test.driver, iConnectionMode=iConnection)
+    win = Test.driver.window_handles
+    Test.driver.switch_to.window(win[-1])
 def TestCaps():
     caps = {}
     caps['browserName'] = ""
-    caps['appiumVersion'] = "1.5.3"
+    caps['appiumVersion'] = "1.4.16"
     caps['deviceName'] = "Android Emulator"
     caps['deviceType'] = "phone"
     caps['deviceOrientation'] = "portrait"
@@ -223,16 +268,6 @@ def TestCaps():
     return caps
 def SetDriver(Test,AirplaneMode):
     desired_caps = {}
-    desired_caps['platformName'] = 'Android'
-    desired_caps['platformVersion'] = '4.4'
-    desired_caps['deviceName'] = 'Android Emulator'
-    desired_caps['automationName']="Selendroid"
-    #desired_caps['appPackage'] = LAND_COVER_ANDROID_PACKAGE
-    #desired_caps['appActivity'] = LAND_COVER_ANDROID_ACTIVITY_NAME
-    #desired_caps['appWaitActivity']= LAND_COVER_ANDROID_ACTIVITY_NAME
-    #desired_caps['appWaitPackage'] = LAND_COVER_ANDROID_PACKAGE
-    desired_caps['device'] = "android"
-    desired_caps['deviceType'] = "phone"
     desired_caps = TestCaps()
     #if not AirplaneMode:
     desired_caps['app'] = LAND_INFO_ANDROID_APP
@@ -283,13 +318,12 @@ def HandleGoogleLogin(driver):
     ClickElementIfVis(driver,By.ID,"submit_approve_access")
     win = driver.window_handles
     driver.switch_to.window(win[0])
-def SetConections(driver, AirplaneMode=False):
+def SetConections(driver, iConnectionMode=6):
     curContext = driver.context
     driver.switch_to.context("NATIVE_APP")
-    if AirplaneMode:
-        driver.mobile.set_network_connection(driver.mobile.AIRPLANE_MODE)
-    else:
-        driver.mobile.set_network_connection(driver.mobile.ALL_NETWORK)
+    
+    if not driver.network_connection == iConnectionMode:
+        driver.mobile.set_network_connection(iConnectionMode)
     driver.switch_to.context(curContext)
 def set_test_browser(remoteURL):
     appiumTesting().set_browser(remoteURL)
@@ -299,14 +333,7 @@ class appiumTesting:#(unittest.TestCase):
         appiumLib = BuiltIn().get_library_instance('AppiumLibrary')
         if(kwgs is None or len(kwgs) <= 0):
             log.info(kwgs)
-            desired_caps = {}
-            desired_caps['platformName'] = 'Android'
-            desired_caps['platformVersion'] = '4.2'
-            desired_caps['deviceName'] = 'Android Emulator'
-            desired_caps['appPackage'] = LAND_COVER_ANDROID_PACKAGE
-            desired_caps['appActivity'] = LAND_COVER_ANDROID_ACTIVITY_NAME
-            desired_caps['appWaitActivity']= LAND_COVER_ANDROID_ACTIVITY_NAME
-            desired_caps['appWaitPackage'] = LAND_COVER_ANDROID_PACKAGE
+            desired_caps = TestCaps()
             desired_caps['app'] = LAND_COVER_ANDROID_APP
             self.driver = webdriver.Remote(command_executor=remoteURL, 
                                            desired_capabilities=desired_caps)
@@ -316,14 +343,16 @@ class appiumTesting:#(unittest.TestCase):
             appiumLib.open_application(remoteURL, **kwgs)
             self.driver = appiumLib._current_application()
             self.driver.implicitly_wait(30)
-    def tearDown(self):
-        report_sauce_status("AppiumTesting", "PASS", tags="Appium", remote_url=COMMAND_EXEC, bRobot = False, driver = self.driver)
+    def tearDown(self, PassOrFail = "PASS",bRobot = False):
+        report_sauce_status("AppiumTesting", status=PassOrFail, tags="Appium", remote_url=COMMAND_EXEC, bRobot = False, driver = self.driver)
         self.driver.quit()
+        if not(PassOrFail == "PASS")and bRobot:
+            BuiltIn().fail("")
     def test_add_plot(self, bRobot = True):
         SetUpApp(self,bRobot=bRobot)
         #self.driver.start_activity(LAND_COVER_ANDROID_PACKAGE, LAND_COVER_ANDROID_ACTIVITY_NAME)
-        ClickElementIfVis(self.driver,By.CLASS_NAME,"android.widget.Image")
-        HandleGoogleLogin(self.driver)
+        #ClickElementIfVis(self.driver,By.CLASS_NAME,"android.widget.Image")
+        #HandleGoogleLogin(self.driver)
         ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//img[@src='landpks_img/landinfo_logo.png']")
         log.info(  "Test 2.1 Pass" )
         WaitForLoad(self.driver)
@@ -336,22 +365,24 @@ class appiumTesting:#(unittest.TestCase):
             WaitForLoad(self.driver)
             ClickElementIfVis(self.driver, By.XPATH, LAND_INFO_BACK_BUTTON)
         except TimeoutException as TE:
-            log.error("Timeout Exception {0}".format(TE.message))
+            LogError("Timeout Exception {0}".format(TE.message))
+            self.tearDown("Fail", bRobot=bRobot)
         except WebDriverException as WDE:
-            log.error("WebDriver Exception {0}".format(WDE.message))
+            LogError("WebDriver Exception {0}".format(WDE.message))
+            self.tearDown("Fail", bRobot=bRobot)
     def test_add_plot_airplane_verify_it_appears_in_landcover(self, bRobot = True):
-        SetUpApp(self, AirplaneMode=True, bRobot=bRobot)
-        self.driver.close_app()
-        self.driver.start_activity(LAND_COVER_ANDROID_PACKAGE, LAND_COVER_ANDROID_ACTIVITY_NAME)
+        SetUpApp(self, AirplaneMode=True, bRobot=bRobot, iConnection=1)
+        #self.driver.close_app()
+        #self.driver.start_activity(app_package=LAND_COVER_ANDROID_PACKAGE, app_activity=LAND_COVER_ANDROID_ACTIVITY_NAME)
         self.driver.switch_to.context("WEBVIEW_org.landpotential.lpks.landcover")
-        ctxs = self.driver.contexts
+        win = self.driver.window_handles
+        self.driver.switch_to.window(win[-1])
         ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//img[@src='landpks_img/landinfo_logo.png']")
-        log.info("4")
         WaitForLoad(self.driver)
         try:
             ClickElementIfVis(self.driver, By.XPATH,POSTIVE_POPUP_BUTTON)
         except TimeoutException:
-            log.error( "Message regarding connectivity did not appear" )
+            LogError( "Message regarding connectivity did not appear" )
         ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-bar='active']//span[@class='right-buttons']/a[@class='button button-icon ion-plus-round']")
         ClickElementIfVis(self.driver, By.XPATH, "//a[@class='item item-icon-right plotname']")
         try:
@@ -363,16 +394,22 @@ class appiumTesting:#(unittest.TestCase):
             WaitForLoad(self.driver)
             LandCover(self.driver, self.plotNames, True)
             log.info( "Test 0.3 Pass" )
+            if(bRobot):
+                self.tearDown(bRobot=bRobot)
         except TimeoutException:
-            log.error("TIMEOUT")
+            LogError("TIMEOUT")
+            self.tearDown("Fail", bRobot=bRobot)
+        except WebDriverException:
+            LogError("Web exception")
+            self.tearDown("Fail", bRobot=bRobot)
     def check_interuptions(self):
         SetUpApp(self)
         os.system(command)
 class Testing(unittest.TestCase):
     AppTest = appiumTesting()
     def tester(self):
-        
-        #self.AppTest.test_add_plot(bRobot=False)
+        CheckSinglePlotUpload("nuhypc")
+        self.AppTest.test_add_plot(bRobot=False)
         self.AppTest.test_add_plot_airplane_verify_it_appears_in_landcover(bRobot=False)
     def tearDown(self):
         self.AppTest.tearDown()
