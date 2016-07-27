@@ -1,6 +1,6 @@
 *** Settings ***
 Library           AppiumLibrary
-Library           Framework/appiumTesting.py
+Library           Framework/Test_Case.py
 Library           ../../Framework/SauceLabs.py
 
 *** Variable ***
@@ -14,17 +14,24 @@ ${appiumVersion}    1.4.16
 ${DeviceType}     Phone
 
 *** Test Cases ***
-Launch Android Landinfo app and create plot with data
+Andoid Test Case 2
     [Documentation]    Launches App pulled directly from jenkins and tests addition of a plot and verifies the correct messages are displayed and app doesnt freeze or timeout. Test passes if the plot is submitted, all elements functio and plot is viewable in landcover.
     [Tags]    Appium
     ${Creds}=    Get Sauce Creds Jenkins
     Set Browser    ${Creds}    platformName=${PLATFORM}    appiumVersion=${appiumVersion}    platformVersion=${platformVersion}    deviceName=Android Emulator    app=${APP}
-    Test Add Plot
+    Test Case 2
 
-Launch android landinfo app in airplane mode and submit landcover
-    [Documentation]    Launches App in airplane mode on device and tests addition of a plot and verifies the correct messages are displayed and app doesnt freeze or timeout. Uses plots submitted to fill in landinfo will all data and ensures all elements function as expected. Test is passed if all elements function, plot is submitted and landcover is submitted with plot.
+Andoid Test Case 2.4
+    [Documentation]    Launches App pulled directly from jenkins and tests addition of a plot and verifies the correct messages are displayed and app doesnt freeze or timeout. Test passes if the plot is submitted, all elements functio and plot is viewable in landcover.
     [Tags]    Appium
-    Test Add Plot Airplane Verify It Appears In Landcover
+    Test Case 2 4
+
+Android Test Case 0
+    [Documentation]    Launches App pulled directly from jenkins and tests addition of a plot and verifies the correct messages are displayed and app doesnt freeze or timeout. Test passes if the plot is submitted, all elements functio and plot is viewable in landcover.
+    [Tags]    Appium
+    ${Creds}=    Get Sauce Creds Jenkins
+    Set Browser    ${Creds}    platformName=${PLATFORM}    appiumVersion=${appiumVersion}    platformVersion=${platformVersion}    deviceName=Android Emulator    app=${APP}
+    Test Case 0
 
 *** Keywords ***
 Open test browser jenkins
