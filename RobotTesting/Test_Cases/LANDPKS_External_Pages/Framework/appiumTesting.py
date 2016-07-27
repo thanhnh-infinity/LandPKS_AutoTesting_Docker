@@ -51,7 +51,9 @@ COMMAND_EXEC = 'http://%s@ondemand.saucelabs.com:80/wd/hub' % (SAUCE_ACCESS_KEY)
 USERNAME_ACCESS_KEY = re.compile('^(http|https):\/\/([^:]+):([^@]+)@')
 #LAND_COVER_FOLIGAE_COVER_ROW = "//ion-view[@cache-view='false']//div[@class='scroll']//div[@class='row']"
 LAND_COVER_FOLIGAE_COVER_ROW = "//ion-view[@cache-view='false']//div[@class='scroll']/div[@class='row'][@style='height:100px;']"
+LAND_COVER_SUBMIT_BUTTON = "//ion-view[@cache-view='false']//div[@class='scroll']//button[@id='btnSubmitLandCover']"
 LAND_COVER_FOLIGAE_COL_IMAGE_PATH = "/div[@class='col col-20']"
+LAND_COVER_SITE_SUMMARY = "//div[@class='scroll']/h2[contains(.,'Site Summary')]"
 DICT_MESSAGES_NO_DATA_KEY = {
                  False: {"SubmitPlotText" : "Plot is submitted"},
                  True:{"SubmitPlotText" : "background upload"}
@@ -60,7 +62,10 @@ DICT_OUTPUT_MESSAGE_NO_DATA_KEY = {
                        True : {"PlotUnsucess" : "Error, no connectivity and plot was not flagged for upload",
                                "PlotSucess" : "{0} Flagged for Background upload"},
                        False: {"PlotSucess" : "{0} was submitted",
-                               "PlotUnsucess" : "Error, Plot was not submitted"}
+                               "PlotUnsucess" : "Error, Plot was not submitted"},
+                       "LandCover": {"PlotSucess" : "Landcover for plot {0} was submitted and site summary properly displayec",
+                               "PlotUnsucess" : "Error, Plot was not submitted in landcover and site summary did not appear"}           
+                                   
                        }
 LAND_COVER_HEADINGS = {
                         "North" :{"ElementXpath" : "//img[@id='imgNorth']"},
@@ -105,18 +110,19 @@ def LogSuccess(errorMessage):
 def ProcLandCover(driver):
     for Heading in LAND_COVER_HEADINGS:
         ClickElementIfVis(driver, By.XPATH, LAND_COVER_HEADINGS[Heading]["ElementXpath"])
-        ClickElementIfVis(driver, By.XPATH, "{0}[{1}]".format(LAND_INFO_MENU_ITEM_PATH,"1"))
-        LandCoverRows = GetElesIfVis(driver, By.XPATH, LAND_COVER_FOLIGAE_COVER_ROW)
-        RowXpath = "{0}[{1}]".format(LAND_COVER_FOLIGAE_COVER_ROW,1)
-        ColXpath = "{0}{1}".format(RowXpath,LAND_COVER_FOLIGAE_COL_IMAGE_PATH)
-        ColCount = len(GetElesIfVis(driver, By.XPATH, ColXpath))
-        for iCol in range(1,ColCount):
-            RowXpath = "{0}[{1}]".format(LAND_COVER_FOLIGAE_COVER_ROW,1)#random.randint(1,len(LandCoverRows)))
+        Distances = GetElesIfVis(driver, By.XPATH, LAND_INFO_MENU_ITEM_PATH)
+        for iDist in range(1,len(Distances)+1):
+            ClickElementIfVis(driver, By.XPATH, "{0}[{1}]".format(LAND_INFO_MENU_ITEM_PATH,iDist))
+            LandCoverRows = GetElesIfVis(driver, By.XPATH, LAND_COVER_FOLIGAE_COVER_ROW)
+            RowXpath = "{0}[{1}]".format(LAND_COVER_FOLIGAE_COVER_ROW,1)
             ColXpath = "{0}{1}".format(RowXpath,LAND_COVER_FOLIGAE_COL_IMAGE_PATH)
-            RandCoverType = "{0}[{1}]/img".format(ColXpath,iCol)#random.randint(1,ColCount))
-            Ele = driver.find_element_by_xpath(RandCoverType)
-            Ele.click()
-        ClickElementIfVis(driver, By.XPATH, LAND_INFO_BACK_BUTTON)
+            ColCount = len(GetElesIfVis(driver, By.XPATH, ColXpath))
+            for iCol in range(1,ColCount+1):
+                RowXpath = "{0}[{1}]".format(LAND_COVER_FOLIGAE_COVER_ROW,1)#random.randint(1,len(LandCoverRows)))
+                ColXpath = "{0}{1}".format(RowXpath,LAND_COVER_FOLIGAE_COL_IMAGE_PATH)
+                RandCoverType = "{0}[{1}]/img".format(ColXpath,iCol)#random.randint(1,ColCount))
+                ClickElementIfVis(driver, By.XPATH, RandCoverType)
+            ClickElementIfVis(driver, By.XPATH, LAND_INFO_BACK_BUTTON)
         ClickElementIfVis(driver, By.XPATH, LAND_INFO_BACK_BUTTON)
 def report_sauce_status(name, status, tags=[], remote_url='', bRobot = True, driver = None):
     # Parse username and access_key from the remote_url
@@ -280,6 +286,29 @@ def LandCover(driver, plots, Airplane=False):
             LogSuccess("Plot '{0}' found in landcover in airplane mode as expected".format(plot))
             PlotFound.click()
             ProcLandCover(driver)
+            ClickElementIfVis(driver, By.XPATH, LAND_COVER_SUBMIT_BUTTON)
+            MessageEle = GetEleIfVis(driver, By.XPATH,LAND_INFO_POPUP_BODY_MESSAGE)
+            MessageText = MessageEle.text
+            if(not "Do you want to submit it" in MessageText):
+                LogError("Land Cover did not accept Data of: all bare ground")
+                return
+            ClickElementIfVis(driver, By.XPATH,POSTIVE_POPUP_BUTTON)
+            if(Airplane):
+                MessageEle = GetEleIfVis(driver, By.XPATH,LAND_INFO_POPUP_BODY_MESSAGE)
+                MessageText = MessageEle.text
+                if("Flagged for Background upload" in MessageText):
+                    LogSuccess("Land cover {0} has been submitted for background upload")
+                ClickElementIfVis(driver, By.XPATH,POSTIVE_POPUP_BUTTON)
+            WaitForLoad(driver)
+            SiteSummary = "{0}{1}".format(LAND_COVER_SITE_SUMMARY)
+            MessageEle = GetEleIfVis(driver, By.XPATH,SiteSummary)
+            Text = MessageEle.text
+            #if Airplane:
+            if ( not Text == "Site Summary"):
+                 LogError(DICT_OUTPUT_MESSAGE_NO_DATA_KEY["LandCover"]["PlotUnsucess"])
+            else:
+                LogSuccess(DICT_OUTPUT_MESSAGE_NO_DATA_KEY["LandCover"]["PlotSucess"].format(plot))
+                ClickElementIfVis(driver, By.XPATH, LAND_INFO_BACK_BUTTON)
         except TimeoutException:
             LogError( "Plot '{0}' was not found in landcover in airplane mode.".format(plot) )
         
@@ -433,9 +462,12 @@ class appiumTesting:#(unittest.TestCase):
         except TimeoutException as TE:
             LogError("Timeout Exception {0}".format(TE.message))
             self.tearDown("Fail", bRobot=bRobot)
+            LogError( "Test 2.4 Fail" )
+            LogError( "Test 2.1 Fail" )
         except WebDriverException as WDE:
             LogError("WebDriver Exception {0}".format(WDE.message))
             self.tearDown("Fail", bRobot=bRobot)
+            LogError( "Test 2.4 Fail" )
         OutputErrors(ERRORS)
         OutputSucessful(SUCCESS)
     def test_add_plot_airplane_verify_it_appears_in_landcover(self, bRobot = True):
