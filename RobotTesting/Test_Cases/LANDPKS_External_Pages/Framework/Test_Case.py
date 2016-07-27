@@ -3,28 +3,27 @@ Created on Jun 23, 2016
 
 @author: bbarnett
 '''
-import re
-import requests
 import os
-from robot.api import logger as log
-from time import sleep
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
+import random
+import re
 import unittest
 from appium import webdriver
-import simplejson as json
-from selenium.common.exceptions import TimeoutException,\
-    ElementNotSelectableException, WebDriverException
-from robot.libraries.BuiltIn import BuiltIn
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from appium.webdriver.webelement import WebElement
+import requests
+from robot.api import logger as log
+from robot.libraries.BuiltIn import BuiltIn
+from selenium.common.exceptions import TimeoutException, \
+    ElementNotSelectableException, WebDriverException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait
+
 from Utils import GenRandString
-from Utils import SelectBoxSelectRand
 from Utils import GetSauceCreds
-import random
-from appium import SauceTestCase, on_platforms
-from appium.webdriver.connectiontype import ConnectionType
+from Utils import SelectBoxSelectRand
+import simplejson as json
+
+
 REQUEST_STRING_TO_FIND_PLOT = "http://api.landpotential.org/query?version=0.1&action=get&object=landinfo&type=get_by_pair_name_recorder_name&name={0}&recorder_name=lpks.testing%40gmail.com"
 SAUCE_ACCESS_KEY = 'Barnebre:216526d7-706f-4eff-bf40-9d774203e268'
 LAND_INFO_ANDROID_APP = 'http://128.123.177.36:8080/job/LandInfo_Mobile_Andoird_App/ws/platforms/android/build/outputs/apk/android-debug.apk'
@@ -166,28 +165,28 @@ def FillPlotInputs(driver):
     PlotLat = ""
     PlotLong = ""
     inputs = driver.find_elements_by_tag_name("input")
-    for input in inputs:
-        type = input.get_attribute("type")
-        if(type == "text"):
+    for eleInput in inputs:
+        EleType = eleInput.get_attribute("type")
+        if(EleType == "text"):
             Data = GenRandString()
-            if(input.get_attribute("id") == "name"):
+            if(eleInput.get_attribute("id") == "name"):
                 PlotName = Data
-                LogSuccess("Test 2.4.1.1 Success")
+                LogSuccess("Test 2.4.1.1 Passed")
             else:
-                LogSuccess("Test 2.4.1.2 Success")
-            SendTextToEle(input,Data)
+                LogSuccess("Test 2.4.1.2 Passed")
+            SendTextToEle(eleInput,Data)
             
-        elif(type == "number"):
+        elif(EleType == "number"):
             Data = GenRandString("loc")
-            if(input.get_attribute("id") == "latitude"):
+            if(eleInput.get_attribute("id") == "latitude"):
                 PlotLat = Data
-            if(input.get_attribute("id") == "longitude"):
+            if(eleInput.get_attribute("id") == "longitude"):
                 PlotLong = Data
-            LogSuccess("Test 2.4.1.3.3 Success")
-            SendTextToEle(input,Data)
-        elif(type == "radio" and input.get_attribute("value") == "small"):
-            input.click()
-            LogSuccess("Test 2.4.1.3 Success")
+            LogSuccess("Test 2.4.1.3.3 Passed")
+            SendTextToEle(eleInput,Data)
+        elif(EleType == "radio" and eleInput.get_attribute("value") == "small"):
+            eleInput.click()
+            LogSuccess("Test 2.4.1.3 Passed")
     ClickElementIfVis(driver, By.XPATH, LAND_INFO_BACK_BUTTON)
     PLOT_INFO_PLOTNAME_KEY[PlotName] = {"latitude" : PlotLat,
                                         "longitude" : PlotLong
@@ -299,7 +298,6 @@ def LandCover(driver, plots, Airplane=False):
         ClickElementIfVis(driver, By.XPATH,POSTIVE_POPUP_BUTTON)
     except Exception:
         LogError( "Message regarding connectivity did not appear" )
-    List = []
     for plot in plots:
         String = "{0}{1}".format(LANDCOVER_PLOT_LIST,"[contains(.,'{0}')]".format(plot))
         try:
@@ -317,12 +315,11 @@ def LandCover(driver, plots, Airplane=False):
             if(Airplane):
                 MessageEle = GetEleIfVis(driver, By.XPATH,LAND_INFO_POPUP_BODY_MESSAGE)
                 MessageText = MessageEle.text
-                if("Flagged for Background upload" in MessageText):
+                if("Transect data has been marked for background upload" in MessageText):
                     LogSuccess("Land cover {0} has been submitted for background upload")
                 ClickElementIfVis(driver, By.XPATH,POSTIVE_POPUP_BUTTON)
             WaitForLoad(driver)
-            SiteSummary = "{0}{1}".format(LAND_COVER_SITE_SUMMARY)
-            MessageEle = GetEleIfVis(driver, By.XPATH,SiteSummary)
+            MessageEle = GetEleIfVis(driver, By.XPATH,LAND_COVER_SITE_SUMMARY)
             Text = MessageEle.text
             #if Airplane:
             if ( not Text == "Site Summary"):
@@ -332,7 +329,7 @@ def LandCover(driver, plots, Airplane=False):
                 ClickElementIfVis(driver, By.XPATH, LAND_INFO_BACK_BUTTON)
         except TimeoutException:
             LogError( "Plot '{0}' was not found in landcover in airplane mode.".format(plot) )
-        
+    ClickElementIfVis(driver, By.XPATH, LAND_INFO_BACK_BUTTON)
 def WaitForLoad(driver):
     wait = WebDriverWait(driver, 30)
     wait.until(EC.presence_of_element_located((By.XPATH, "//div[@class='loading-container']")),"")
@@ -371,7 +368,6 @@ def TestCaps():
     caps['platformName'] = "Android"
     return caps
 def SetDriver(Test,AirplaneMode):
-    desired_caps = {}
     desired_caps = TestCaps()
     #if not AirplaneMode:
     desired_caps['app'] = LAND_INFO_ANDROID_APP
@@ -413,7 +409,6 @@ def ClickElementIfVis(driver, ByType, Value):
         log.error("WebDriver exception unknown error while finding element {0} by {1}".format(Value,ByType))
         raise Exception
 def SwitchToPopupWindow(driver):
-    curHandles = driver.window_handles
     wait = WebDriverWait(driver, TIMEOUT)
     wait.until(lambda driver: len(driver.window_handles) > 1)
     driver.switch_to.window(driver.window_handles[-1])
@@ -421,7 +416,7 @@ def HandleGoogleLogin(driver):
     try:
         driver.switch_to.context(LAND_INFO_WEBVIEW_NAME)
         ClickElementIfVis(driver,By.XPATH,"//Button[@id='loginGoogleDevice']")
-        LogSuccess("Test 2.1.1 Success")
+        LogSuccess("Test 2.1.1 Passed")
         SwitchToPopupWindow(driver)
         ele = GetEleIfVis(driver,By.ID,"Email")
         ele.send_keys("lpks.testing@gmail.com")
@@ -498,7 +493,7 @@ class Test_Case:#(unittest.TestCase):
             WaitForLoad(self.driver)
             ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-bar='active']//span[@class='right-buttons']/a[@class='button button-icon ion-plus-round']")
             ClickElementIfVis(self.driver, By.XPATH, "//a[@class='item item-icon-right plotname']")
-            LogSuccess("Test 2.4.1 Success")
+            LogSuccess("Test 2.4.1 Passed")
             PlotName = FillPlotInputs(self.driver)
             FillAllDataForPlot(self.driver)
             #click Slope
@@ -529,9 +524,9 @@ class Test_Case:#(unittest.TestCase):
     def Test_Case_0(self, bRobot = True):
         try:
             self.test_add_plot_airplane_verify_it_appears_in_landcover(bRobot)
-            LogSuccess("Test 0.1 Success")
-            LogSuccess("Test 0.2 Success")
-            LogSuccess("Test 0.3 Success")
+            LogSuccess("Test 0.1 Passed")
+            LogSuccess("Test 0.2 Passed")
+            LogSuccess("Test 0.3 Passed")
             self.tearDown("PASS", bRobot)
         except:
             LogError("Test 0.3 Failed")
@@ -581,6 +576,7 @@ class Test_Case:#(unittest.TestCase):
 class Testing(unittest.TestCase):
     AppTest = Test_Case()
     def tester(self):
+        self.AppTest.Test_Case_0(False)
         self.AppTest.Test_Case_2(False)
         self.AppTest.Test_Case_2_4(False)
         #self.AppTest.test_add_plot(bRobot=False)
