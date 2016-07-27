@@ -3,6 +3,7 @@ Created on Jun 23, 2016
 
 @author: bbarnett
 '''
+import datetime
 import os
 import random
 import re
@@ -22,6 +23,7 @@ from Utils import GenRandString
 from Utils import GetSauceCreds
 from Utils import SelectBoxSelectRand
 import simplejson as json
+from datetime import timedelta
 
 
 REQUEST_STRING_TO_FIND_PLOT = "http://api.landpotential.org/query?version=0.1&action=get&object=landinfo&type=get_by_pair_name_recorder_name&name={0}&recorder_name=lpks.testing%40gmail.com"
@@ -29,6 +31,9 @@ SAUCE_ACCESS_KEY = 'Barnebre:216526d7-706f-4eff-bf40-9d774203e268'
 LAND_INFO_ANDROID_APP = 'http://128.123.177.36:8080/job/LandInfo_Mobile_Andoird_App/ws/platforms/android/build/outputs/apk/android-debug.apk'
 LAND_COVER_ANDROID_APP = 'http://128.123.177.36:8080/job/LandCover_Mobile_Andoird_App/ws/platforms/android/build/outputs/apk/android-debug.apk'
 LAND_COVER_ANDROID_PACKAGE = 'org.landpotential.lpks.landcover'
+LAND_INFO_ADD_PLOT_BUTTON = "//div[@nav-bar='active']//span[@class='right-buttons']/a[@class='button button-icon ion-plus-round']"
+LAND_INFO_WORLD_MAP_BUTTON = "//div[@nav-bar='active']//span[@class='right-buttons']/a[@class='button button-icon ion-ios-world']"
+LAND_INFO_LOCAL_CLIMATE_BUTTON = "//div[@nav-bar='active']//span[@class='right-buttons']/a[@class='button button-icon ion-ios-rainy']"
 #LAND_COVER_ANDROID_PACKAGE = 'org.apache.cordova.splashscreen'
 LAND_COVER_ANDROID_ACTIVITY_NAME = '.MainActivity'
 #LAND_COVER_ANDROID_ACTIVITY_NAME = '.SpashScreen'
@@ -53,6 +58,8 @@ LAND_COVER_FOLIGAE_COVER_ROW = "//ion-view[@cache-view='false']//div[@class='scr
 LAND_COVER_SUBMIT_BUTTON = "//ion-view[@cache-view='false']//div[@class='scroll']//button[@id='btnSubmitLandCover']"
 LAND_COVER_FOLIGAE_COL_IMAGE_PATH = "/div[@class='col col-20']"
 LAND_COVER_SITE_SUMMARY = "//div[@class='scroll']/h2[contains(.,'Site Summary')]"
+LAND_INFO_LOCAL_CLIMATE_GRAPH = "//div[@nav-view='active']//div[@class='scroll']//div[@class='lpks-graph']/div[@class='chart-container']/canvas[@id='bar']"
+LAND_INFO_LOCAL_CLIMATE_LAT = "//div[@class='scroll']/p[contains(.,'Latitude')]"
 DICT_MESSAGES_NO_DATA_KEY = {
                  False: {"SubmitPlotText" : "Plot is submitted"},
                  True:{"SubmitPlotText" : "background upload"}
@@ -84,9 +91,29 @@ LAND_COVER_HEADINGS = {
 ERRORS = []
 SUCCESS = []
 PLOT_INFO_PLOTNAME_KEY = {}
+START_TIME = {}
 PATH = lambda p: os.path.abspath(
     os.path.join(os.path.dirname(__file__), p)
 )
+def CheckClimate(driver):
+    try:
+        Chart = GetEleIfVis(driver, By.XPATH, LAND_INFO_LOCAL_CLIMATE_GRAPH)
+    except:
+        LogError("Climate Information not present, climate graph did not load")
+    try:
+        Lat = GetEleIfVis(driver, By.XPATH, LAND_INFO_LOCAL_CLIMATE_LAT)
+        strLat = Lat.text
+        LatNumStr = strLat.split(":")[-1]
+        LatNumStr = LatNumStr.strip()
+        LatNum = float(LatNumStr)
+        LogSuccess("Test 2.3 Passed")
+        LogSuccess("Test 2.3.1 Passed")
+        LogSuccess("Test 2.3.1.2 Passed")
+    except:
+        LogError("Test 2.3 Failed")
+        LogError("Test 2.3.1 Failed")
+        LogError("Test 2.3.1.2 Failed")
+        LogError("Climate data not present. Location wasn't detected.")
 def CheckSinglePlotUpload(plotName):
     url = REQUEST_STRING_TO_FIND_PLOT.format(plotName)
     response = requests.put(url)
@@ -109,8 +136,10 @@ def OutputSucessful(SuccessList):
             log.info(Msg)
     SuccessList = []    
 def LogError(errorMessage):
+    Start = START_TIME["START"]
+    TimeHappened = datetime.datetime.now() - Start
     log.error(errorMessage)
-    ERRORS.append(errorMessage)
+    ERRORS.append("{0} at {1} in video.".format(errorMessage, TimeHappened))
 def LogSuccess(errorMessage):
     SUCCESS.append(errorMessage)
 def ProcLandCover(driver):
@@ -161,32 +190,36 @@ def report_sauce_status(name, status, tags=[], remote_url='', bRobot = True, dri
     if video_url:
         log.info('<a href="{0}">video.flv</a>'.format(video_url), html=True)
 def FillPlotInputs(driver):
-    PlotName = ""
-    PlotLat = ""
-    PlotLong = ""
-    inputs = driver.find_elements_by_tag_name("input")
-    for eleInput in inputs:
-        EleType = eleInput.get_attribute("type")
-        if(EleType == "text"):
-            Data = GenRandString()
-            if(eleInput.get_attribute("id") == "name"):
-                PlotName = Data
-                LogSuccess("Test 2.4.1.1 Passed")
-            else:
-                LogSuccess("Test 2.4.1.2 Passed")
-            SendTextToEle(eleInput,Data)
-            
-        elif(EleType == "number"):
-            Data = GenRandString("loc")
-            if(eleInput.get_attribute("id") == "latitude"):
-                PlotLat = Data
-            if(eleInput.get_attribute("id") == "longitude"):
-                PlotLong = Data
-            LogSuccess("Test 2.4.1.3.3 Passed")
-            SendTextToEle(eleInput,Data)
-        elif(EleType == "radio" and eleInput.get_attribute("value") == "small"):
-            eleInput.click()
-            LogSuccess("Test 2.4.1.3 Passed")
+    log.info("Adding new Plot using landinfo tab")
+    try:
+        PlotName = ""
+        PlotLat = ""
+        PlotLong = ""
+        inputs = driver.find_elements_by_tag_name("input")
+        for eleInput in inputs:
+            EleType = eleInput.get_attribute("type")
+            if(EleType == "text"):
+                Data = GenRandString()
+                if(eleInput.get_attribute("id") == "name"):
+                    PlotName = Data
+                    LogSuccess("Test 2.4.1.1 Passed")
+                else:
+                    LogSuccess("Test 2.4.1.2 Passed")
+                SendTextToEle(eleInput,Data)
+                
+            elif(EleType == "number"):
+                Data = GenRandString("loc")
+                if(eleInput.get_attribute("id") == "latitude"):
+                    PlotLat = Data
+                if(eleInput.get_attribute("id") == "longitude"):
+                    PlotLong = Data
+                    LogSuccess("Test 2.4.1.3.3 Passed")
+                SendTextToEle(eleInput,Data)
+            elif(EleType == "radio" and eleInput.get_attribute("value") == "small"):
+                eleInput.click()
+                LogSuccess("Test 2.4.1.3 Passed")
+    except:
+        LogError("New plot could not be created in Landinfo")
     ClickElementIfVis(driver, By.XPATH, LAND_INFO_BACK_BUTTON)
     PLOT_INFO_PLOTNAME_KEY[PlotName] = {"latitude" : PlotLat,
                                         "longitude" : PlotLong
@@ -368,6 +401,7 @@ def TestCaps():
     caps['platformName'] = "Android"
     return caps
 def SetDriver(Test,AirplaneMode):
+    START_TIME["START"] = datetime.datetime.now()
     desired_caps = TestCaps()
     #if not AirplaneMode:
     desired_caps['app'] = LAND_INFO_ANDROID_APP
@@ -443,6 +477,7 @@ def set_test_browser(remoteURL):
 class Test_Case:#(unittest.TestCase):
     plotNames = []
     def set_browser(self, remoteURL, **kwgs):
+        START_TIME["START"] = datetime.datetime.now()
         appiumLib = BuiltIn().get_library_instance('AppiumLibrary')
         if(kwgs is None or len(kwgs) <= 0):
             log.info(kwgs)
@@ -472,26 +507,32 @@ class Test_Case:#(unittest.TestCase):
         #log in
         try:
             SetUpApp(self,bRobot=bRobot)
-            ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//img[@src='landpks_img/landinfo_logo.png']")
+            LogSuccess("Test 2.1.1 Passed")
         except:
             LogError("Test 2.1 Failed")
         finally:
             OutputErrors(ERRORS)
             OutputSucessful(SUCCESS)
         #2.4 create plot
-    def Test_Case_3(self, bRobot = True):
+    def Test_Case_2_3(self, bRobot = True):
         SetUpApp(self,bRobot=bRobot)
+        ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//img[@src='landpks_img/landinfo_logo.png']")
+        WaitForLoad(self.driver)
+        ClickElementIfVis(self.driver,By.XPATH,LAND_INFO_LOCAL_CLIMATE_BUTTON)
+        CheckClimate(self.driver)
+        ClickElementIfVis(self.driver, By.XPATH, LAND_INFO_BACK_BUTTON)
         #LandCover
     def Test_Case_2_4(self, bRobot = True):
         try:
-            PassOrFail = "PASS"
             SetUpApp(self,bRobot=bRobot)
+            ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//img[@src='landpks_img/landinfo_logo.png']")
+            PassOrFail = "PASS"
             if(bRobot):
                 appiumLib = BuiltIn().get_library_instance('AppiumLibrary')
                 if(len(appiumLib._cache.get_open_browsers()) > 0 and not hasattr(self, "driver")):
                     self.driver = appiumLib._current_application()
             WaitForLoad(self.driver)
-            ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-bar='active']//span[@class='right-buttons']/a[@class='button button-icon ion-plus-round']")
+            ClickElementIfVis(self.driver,By.XPATH,LAND_INFO_ADD_PLOT_BUTTON)
             ClickElementIfVis(self.driver, By.XPATH, "//a[@class='item item-icon-right plotname']")
             LogSuccess("Test 2.4.1 Passed")
             PlotName = FillPlotInputs(self.driver)
@@ -549,7 +590,7 @@ class Test_Case:#(unittest.TestCase):
             ClickElementIfVis(self.driver, By.XPATH,POSTIVE_POPUP_BUTTON)
         except TimeoutException:
             LogError( "Message regarding connectivity did not appear" )
-        ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-bar='active']//span[@class='right-buttons']/a[@class='button button-icon ion-plus-round']")
+        ClickElementIfVis(self.driver,By.XPATH,LAND_INFO_ADD_PLOT_BUTTON)
         ClickElementIfVis(self.driver, By.XPATH, "//a[@class='item item-icon-right plotname']")
         try:
             plotName = FillPlotData(self.driver, True)
@@ -576,6 +617,7 @@ class Test_Case:#(unittest.TestCase):
 class Testing(unittest.TestCase):
     AppTest = Test_Case()
     def tester(self):
+        self.AppTest.Test_Case_2_3(False)
         self.AppTest.Test_Case_0(False)
         self.AppTest.Test_Case_2(False)
         self.AppTest.Test_Case_2_4(False)
@@ -583,7 +625,7 @@ class Testing(unittest.TestCase):
         #self.AppTest.test_add_plot_airplane_verify_it_appears_in_landcover(bRobot=False)
     def tearDown(self):
         self.AppTest.tearDown()
-if __name__ == '__main__':
+if __name__ == '__main__':    
     suite = unittest.TestLoader().loadTestsFromTestCase(Testing)
     unittest.TextTestRunner(verbosity=2).run(suite)
     #os.system("echo %CD%")

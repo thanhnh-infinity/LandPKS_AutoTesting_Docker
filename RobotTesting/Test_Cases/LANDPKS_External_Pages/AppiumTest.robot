@@ -14,19 +14,26 @@ ${appiumVersion}    1.4.16
 ${DeviceType}     Phone
 
 *** Test Cases ***
-Andoid Test Case 2
+Android Test Case 2.3.x
+    [Documentation]    Launches App pulled directly from jenkins and tests addition of a plot and verifies the correct messages are displayed and app doesnt freeze or timeout. Test passes if the plot is submitted, all elements functio and plot is viewable in landcover.
+    [Tags]    Appium
+    ${Creds}=    Get Sauce Creds Jenkins
+    Set Browser    ${Creds}    platformName=${PLATFORM}    appiumVersion=${appiumVersion}    platformVersion=${platformVersion}    deviceName=Android Emulator    app=${APP}
+    Test Case 2 3
+
+Andoid Test Case 2.1.x
     [Documentation]    Launches App pulled directly from jenkins and tests addition of a plot and verifies the correct messages are displayed and app doesnt freeze or timeout. Test passes if the plot is submitted, all elements functio and plot is viewable in landcover.
     [Tags]    Appium
     ${Creds}=    Get Sauce Creds Jenkins
     Set Browser    ${Creds}    platformName=${PLATFORM}    appiumVersion=${appiumVersion}    platformVersion=${platformVersion}    deviceName=Android Emulator    app=${APP}
     Test Case 2
 
-Andoid Test Case 2.4
+Andoid Test Case 2.4.x
     [Documentation]    Launches App pulled directly from jenkins and tests addition of a plot and verifies the correct messages are displayed and app doesnt freeze or timeout. Test passes if the plot is submitted, all elements functio and plot is viewable in landcover.
     [Tags]    Appium
     Test Case 2 4
 
-Android Test Case 0
+Android Test Case 0.x
     [Documentation]    Launches App pulled directly from jenkins and tests addition of a plot and verifies the correct messages are displayed and app doesnt freeze or timeout. Test passes if the plot is submitted, all elements functio and plot is viewable in landcover.
     [Tags]    Appium
     ${Creds}=    Get Sauce Creds Jenkins
