@@ -498,14 +498,16 @@ class Test_Case:#(unittest.TestCase):
         if(bRobot):
             appiumLib = BuiltIn().get_library_instance('AppiumLibrary')
             appiumLib._cache.close_all()
-            self.driver=None
+            del(self.driver)
             if (not PassOrFail == "PASS"):
                 BuiltIn().fail("")
         else:
             self.driver.quit()
-            
+            del(self.driver)
     def Test_Case_2(self, bRobot = True):
         #log in
+        ERRORS = []
+        SUCCESS = []
         try:
             SetUpApp(self,bRobot=bRobot)
             LogSuccess("Test 2.1.1 Passed")
@@ -516,6 +518,8 @@ class Test_Case:#(unittest.TestCase):
             OutputSucessful(SUCCESS)
         #2.4 create plot
     def Test_Case_2_3(self, bRobot = True):
+        ERRORS = []
+        SUCCESS = []
         try:
             SetUpApp(self,bRobot=bRobot)
             ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//img[@src='landpks_img/landinfo_logo.png']")
@@ -530,6 +534,8 @@ class Test_Case:#(unittest.TestCase):
             OutputSucessful(SUCCESS)
         #LandCover
     def Test_Case_2_4(self, bRobot = True):
+        ERRORS = []
+        SUCCESS = []
         try:
             SetUpApp(self,bRobot=bRobot)
             ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//img[@src='landpks_img/landinfo_logo.png']")
@@ -570,6 +576,8 @@ class Test_Case:#(unittest.TestCase):
             OutputSucessful(SUCCESS)
             self.tearDown(PassOrFail, bRobot)
     def Test_Case_0(self, bRobot = True):
+        ERRORS = []
+        SUCCESS = []
         try:
             self.test_add_plot_airplane_verify_it_appears_in_landcover(bRobot)
             LogSuccess("Test 0.1 Passed")
@@ -624,9 +632,9 @@ class Test_Case:#(unittest.TestCase):
 class Testing(unittest.TestCase):
     AppTest = Test_Case()
     def tester(self):
+        self.AppTest.Test_Case_2(False)
         self.AppTest.Test_Case_2_3(False)
         self.AppTest.Test_Case_0(False)
-        self.AppTest.Test_Case_2(False)
         self.AppTest.Test_Case_2_4(False)
         #self.AppTest.test_add_plot(bRobot=False)
         #self.AppTest.test_add_plot_airplane_verify_it_appears_in_landcover(bRobot=False)
