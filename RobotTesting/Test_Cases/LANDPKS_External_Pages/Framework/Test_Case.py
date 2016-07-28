@@ -24,6 +24,7 @@ from Utils import GetSauceCreds
 from Utils import SelectBoxSelectRand
 import simplejson as json
 from datetime import timedelta
+from selenium import webdriver as selWebDriver
 
 
 REQUEST_STRING_TO_FIND_PLOT = "http://api.landpotential.org/query?version=0.1&action=get&object=landinfo&type=get_by_pair_name_recorder_name&name={0}&recorder_name=lpks.testing%40gmail.com"
@@ -139,7 +140,7 @@ def OutputSucessful(SuccessList):
 def LogError(errorMessage):
     Start = START_TIME["START"]
     TimeHappened = datetime.datetime.now() - Start
-    log.error(errorMessage)
+    log.error("{0} at {1} in video.".format(errorMessage, TimeHappened))
     ERRORS.append("{0} at {1} in video.".format(errorMessage, TimeHappened))
 def LogSuccess(errorMessage):
     SUCCESS.append(errorMessage)
@@ -368,29 +369,55 @@ def WaitForLoad(driver):
     wait = WebDriverWait(driver, 30)
     wait.until(EC.presence_of_element_located((By.XPATH, "//div[@class='loading-container']")),"")
     wait.until(EC.invisibility_of_element_located((By.XPATH, "//div[@class='loading-container']")),"")
-def SetUpApp(Test, AirplaneMode=False, bRobot = True, iConnection=None):
-    if (bRobot):
-        appiumLib = BuiltIn().get_library_instance('AppiumLibrary')
-        if(len(appiumLib._cache.get_open_browsers()) > 0 and not hasattr(Test, "driver")):
-            Test.driver = appiumLib._current_application()
+def SetUpApp(Test, AirplaneMode=False, bRobot = True, iConnection=None, bSelenium = False):
+    if(bSelenium):
+        if (bRobot):
+            SeleniumLib = BuiltIn().get_library_instance('Selenium2Library')
+            if(len(SeleniumLib._cache.get_open_browsers()) > 0 and not hasattr(Test, "driver")):
+                Test.driver = SeleniumLib._current_browser()
+            else:
+                if(not hasattr(Test, "driver")):
+                    SetDriver(Test, AirplaneMode,bSel=bSelenium)
+                    SeleniumLib._cache.register(Test.driver, None)
+        else:
+            if(not hasattr(Test, "driver")):
+                SetDriver(Test, AirplaneMode,bSel=bSelenium)
+        try:
+            Test.driver.set_speed(.5)
+            Test.driver.get("http://testlpks.landpotential.org:8105/#/landpks/landpks_entry_page")
+            Test.driver.switch_to.default_content
+            ClickElementIfVis(Test.driver, By.XPATH, "//div[@nav-view='active']//div[@class='scroll']//img[@src='landpks_img/landinfo_logo.png']")
+            HandleGoogleLogin(Test.driver)
+        except TimeoutException as Te:
+            log.info("Login not required")
+        win = Test.driver.window_handles
+        Test.driver.switch_to.window(win[-1])
+    else:
+        if (bRobot):
+            appiumLib = BuiltIn().get_library_instance('AppiumLibrary')
+            if(len(appiumLib._cache.get_open_browsers()) > 0 and not hasattr(Test, "driver")):
+                Test.driver = appiumLib._current_application()
+            else:
+                if(not hasattr(Test, "driver")):
+                    SetDriver(Test, AirplaneMode)
+                    appiumLib._cache.register(Test.driver, None)
         else:
             if(not hasattr(Test, "driver")):
                 SetDriver(Test, AirplaneMode)
-                appiumLib._cache.register(Test.driver, None)
-    else:
-        if(not hasattr(Test, "driver")):
-            SetDriver(Test, AirplaneMode)
-    try:
-        ClickElementIfVis(Test.driver,By.CLASS_NAME,"android.widget.Image")
-        HandleGoogleLogin(Test.driver)
-    except TimeoutException as Te:
-        log.info("Login not required")
-    if(iConnection == None):
-        SetConections(Test.driver, 1 if AirplaneMode else 6)
-    else:
-        SetConections(Test.driver, iConnectionMode=iConnection)
-    win = Test.driver.window_handles
-    Test.driver.switch_to.window(win[-1])
+        try:
+            ClickElementIfVis(Test.driver,By.CLASS_NAME,"android.widget.Image")
+            Test.driver.switch_to.context(LAND_INFO_WEBVIEW_NAME)
+            HandleGoogleLogin(Test.driver)
+        except TimeoutException as Te:
+            log.info("Login not required")
+        if(iConnection == None):
+            SetConections(Test.driver, 1 if AirplaneMode else 6)
+        else:
+            SetConections(Test.driver, iConnectionMode=iConnection)
+        win = Test.driver.window_handles
+        Test.driver.switch_to.window(win[-1])
+    
+
 def TestCaps():
     caps = {}
     caps['browserName'] = ""
@@ -401,14 +428,29 @@ def TestCaps():
     caps['platformVersion'] = "5.1"
     caps['platformName'] = "Android"
     return caps
-def SetDriver(Test,AirplaneMode):
-    START_TIME["START"] = datetime.datetime.now()
-    desired_caps = TestCaps()
-    #if not AirplaneMode:
-    desired_caps['app'] = LAND_INFO_ANDROID_APP
+def TestCapsSel():
+    caps= {}
     
-    Test.driver = webdriver.Remote(command_executor=COMMAND_EXEC, 
+    caps['platform'] = "linux"
+    caps['browserName'] = "chrome"
+    caps['version'] = ""
+    caps["os"] = "linux"
+    return caps
+def SetDriver(Test,AirplaneMode, bSel = False):
+    
+    START_TIME["START"] = datetime.datetime.now()
+    if(bSel):
+        desired_caps = TestCapsSel()
+        Test.driver = selWebDriver.Remote(command_executor=COMMAND_EXEC, 
                                       desired_capabilities=desired_caps)
+        Test.driver.set_page_load_timeout(30)
+        Test.driver.set_script_timeout(30)
+    else:
+        desired_caps = TestCaps()
+        desired_caps['app'] = LAND_INFO_ANDROID_APP
+        Test.driver = webdriver.Remote(command_executor=COMMAND_EXEC, 
+                                      desired_capabilities=desired_caps)
+    #if not AirplaneMode:
     Test.driver.implicitly_wait(30)
 def GetEleAttribIfVis(driver, ByType, Value, Attirb):
     wait = WebDriverWait(driver, TIMEOUT)
@@ -434,7 +476,7 @@ def ClickElementIfVis(driver, ByType, Value):
     try:
         wait = WebDriverWait(driver, TIMEOUT)
         #wait.until(EC.presence_of_element_located((ByType, Value)), "")
-        wait.until(EC.visibility_of_element_located((ByType, Value)), "")
+        #wait.until(EC.visibility_of_element_located((ByType, Value)), "")
         wait.until(EC.element_to_be_clickable((ByType, Value)), "")
         driver.find_element(ByType,Value).click()
     except TimeoutException as TE:
@@ -449,8 +491,7 @@ def SwitchToPopupWindow(driver):
     driver.switch_to.window(driver.window_handles[-1])
 def HandleGoogleLogin(driver):
     try:
-        driver.switch_to.context(LAND_INFO_WEBVIEW_NAME)
-        ClickElementIfVis(driver,By.XPATH,"//Button[@id='loginGoogleDevice']")
+        ClickElementIfVis(driver,By.XPATH,"//Button[contains(@id, 'loginGoogle')][@style='display: block;']")
         LogSuccess("Test 2.1.1 Passed")
         SwitchToPopupWindow(driver)
         ele = GetEleIfVis(driver,By.ID,"Email")
@@ -477,21 +518,41 @@ def set_test_browser(remoteURL):
     Test_Case().set_browser(remoteURL)
 class Test_Case:#(unittest.TestCase):
     plotNames = []
-    def set_browser(self, remoteURL, **kwgs):
-        START_TIME["START"] = datetime.datetime.now()
-        appiumLib = BuiltIn().get_library_instance('AppiumLibrary')
-        if(kwgs is None or len(kwgs) <= 0):
-            log.info(kwgs)
-            desired_caps = TestCaps()
-            desired_caps['app'] = LAND_COVER_ANDROID_APP
-            self.driver = webdriver.Remote(command_executor=remoteURL, 
-                                           desired_capabilities=desired_caps)
-            self.driver.implicitly_wait(30)
-            appiumLib._cache.register(self.driver, None)
+    def set_browser(self, remoteURL,bSelenium=False, **kwgs):
+        if(bSelenium):
+            START_TIME["START"] = datetime.datetime.now()
+            seleniumLib = BuiltIn().get_library_instance('Selenium2Library')
+            if(kwgs is None or len(kwgs) <= 0):
+                log.info(kwgs)
+                desired_caps = TestCapsSel()
+                self.driver = webdriver.Remote(command_executor=remoteURL, 
+                                               desired_capabilities=desired_caps)
+                self.driver.implicitly_wait(30)
+                self.driver.set_script_timeout(30)
+                self.driver.set_page_load_timeout(30)
+                seleniumLib._cache.register(self.driver, None)
+            else:
+                seleniumLib.open_browser("http://www.google.com",remote_url = remoteURL, desired_capabilities=kwgs)
+                self.driver = seleniumLib._current_browser()
+                self.driver.implicitly_wait(30)
+                self.driver.set_script_timeout(30)
+                self.driver.set_page_load_timeout(30)
         else:
-            appiumLib.open_application(remoteURL, **kwgs)
-            self.driver = appiumLib._current_application()
-            self.driver.implicitly_wait(30)
+            appiumLib = BuiltIn().get_library_instance('AppiumLibrary')
+            START_TIME["START"] = datetime.datetime.now()
+            appiumLib = BuiltIn().get_library_instance('AppiumLibrary')
+            if(kwgs is None or len(kwgs) <= 0):
+                log.info(kwgs)
+                desired_caps = TestCaps()
+                desired_caps['app'] = LAND_COVER_ANDROID_APP
+                self.driver = webdriver.Remote(command_executor=remoteURL, 
+                                               desired_capabilities=desired_caps)
+                self.driver.implicitly_wait(30)
+                appiumLib._cache.register(self.driver, None)
+            else:
+                appiumLib.open_application(remoteURL, **kwgs)
+                self.driver = appiumLib._current_application()
+                self.driver.implicitly_wait(30)
     def tearDown(self, PassOrFail = "PASS",bRobot = False):
         report_sauce_status("AppiumTesting", status=PassOrFail, tags="Appium", remote_url=COMMAND_EXEC, bRobot = False, driver = self.driver)
         
@@ -504,42 +565,47 @@ class Test_Case:#(unittest.TestCase):
         else:
             self.driver.quit()
             del(self.driver)
-    def Test_Case_2(self, bRobot = True):
+    def Test_Case_2(self, bRobot = True, bSelenium=False):
         #log in
         ERRORS = []
         SUCCESS = []
+        PassOrFail = "PASS"
         try:
-            SetUpApp(self,bRobot=bRobot)
+            SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium)
             LogSuccess("Test 2.1.1 Passed")
         except:
             LogError("Test 2.1 Failed")
+            PassOrFail = "Fail"
         finally:
             OutputErrors(ERRORS)
             OutputSucessful(SUCCESS)
+            self.tearDown(PassOrFail, bRobot)
         #2.4 create plot
-    def Test_Case_2_3(self, bRobot = True):
+    def Test_Case_2_3(self, bRobot = True, bSelenium=False):
+        PassOrFail = "PASS"
         ERRORS = []
         SUCCESS = []
         try:
-            SetUpApp(self,bRobot=bRobot)
-            ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//img[@src='landpks_img/landinfo_logo.png']")
+            SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium)
+            ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[contains(@ng-show,'device')][not(contains(@class,'hide'))]/img[@src='landpks_img/landinfo_logo.png']")
             WaitForLoad(self.driver)
             ClickElementIfVis(self.driver,By.XPATH,LAND_INFO_LOCAL_CLIMATE_BUTTON)
             CheckClimate(self.driver)
             ClickElementIfVis(self.driver, By.XPATH, LAND_INFO_BACK_BUTTON)
         except:
-            self.tearDown("FAIL", bRobot)
+            PassOrFail = "FAIL"
         finally:
             OutputErrors(ERRORS)
             OutputSucessful(SUCCESS)
+            self.tearDown(PassOrFail, bRobot)
         #LandCover
-    def Test_Case_2_4(self, bRobot = True):
+    def Test_Case_2_4(self, bRobot = True, bSelenium=False):
         ERRORS = []
         SUCCESS = []
+        PassOrFail = "PASS"
         try:
-            SetUpApp(self,bRobot=bRobot)
-            ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//img[@src='landpks_img/landinfo_logo.png']")
-            PassOrFail = "PASS"
+            SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium)
+            ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[contains(@ng-show,'device')][not(contains(@class,'hide'))]/img[@src='landpks_img/landinfo_logo.png']")
             if(bRobot):
                 appiumLib = BuiltIn().get_library_instance('AppiumLibrary')
                 if(len(appiumLib._cache.get_open_browsers()) > 0 and not hasattr(self, "driver")):
@@ -575,31 +641,60 @@ class Test_Case:#(unittest.TestCase):
             OutputErrors(ERRORS)
             OutputSucessful(SUCCESS)
             self.tearDown(PassOrFail, bRobot)
-    def Test_Case_0(self, bRobot = True):
+    def Test_Case_0(self, bRobot = True, bSelenium=False):
         ERRORS = []
         SUCCESS = []
-        try:
-            self.test_add_plot_airplane_verify_it_appears_in_landcover(bRobot)
-            LogSuccess("Test 0.1 Passed")
-            LogSuccess("Test 0.2 Passed")
-            LogSuccess("Test 0.3 Passed")
-            self.tearDown("PASS", bRobot)
-        except:
-            LogError("Test 0.3 Failed")
-            self.tearDown("FAIL", bRobot)
-        finally:
-            OutputErrors(ERRORS)
-            OutputSucessful(SUCCESS)
+        PassOrFail = "PASS"
+        if(bSelenium):
+            try:
+                SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium)
+                #self.driver.close_app()
+                #self.driver.start_activity(app_package=LAND_COVER_ANDROID_PACKAGE, app_activity=LAND_COVER_ANDROID_ACTIVITY_NAME)
+                ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[contains(@ng-show,'device')][not(contains(@class,'hide'))]/img[@src='landpks_img/landinfo_logo.png']")
+                WaitForLoad(self.driver)
+                ClickElementIfVis(self.driver,By.XPATH,LAND_INFO_ADD_PLOT_BUTTON)
+                ClickElementIfVis(self.driver, By.XPATH, "//a[@class='item item-icon-right plotname']")
+                try:
+                    plotName = FillPlotData(self.driver, True)
+                    self.plotNames.append(plotName)
+                    ClickElementIfVis(self.driver, By.XPATH, LAND_INFO_BACK_BUTTON)
+                    ClickElementIfVis(self.driver, By.XPATH, LAND_INFO_BACK_BUTTON)
+                    ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//img[@src='landpks_img/landcover_logo.png']")
+                    WaitForLoad(self.driver)
+                    LandCover(self.driver, self.plotNames, True)
+                    LogSuccess( "Test 0.3 Pass" )
+                except WebDriverException:
+                    LogError("Web exception")
+                LogSuccess("Test 0.1 Passed")
+                LogSuccess("Test 0.2 Passed")
+                LogSuccess("Test 0.3 Passed")
+            except:
+                LogError("Test 0.3 Failed")
+                PassOrFail = "FAIL"
+            finally:
+                OutputErrors(ERRORS)
+                OutputSucessful(SUCCESS)
+                self.tearDown(PassOrFail, bRobot)
+        else:
+            try:
+                self.test_add_plot_airplane_verify_it_appears_in_landcover(bRobot)
+                LogSuccess("Test 0.1 Passed")
+                LogSuccess("Test 0.2 Passed")
+                LogSuccess("Test 0.3 Passed")
+            except:
+                LogError("Test 0.3 Failed")
+                PassOrFail = "FAIL"
+            finally:
+                OutputErrors(ERRORS)
+                OutputSucessful(SUCCESS)
+                self.tearDown(PassOrFail, bRobot)
             
             
     def test_add_plot_airplane_verify_it_appears_in_landcover(self, bRobot = True):
         SetUpApp(self, AirplaneMode=True, bRobot=bRobot, iConnection=1)
         #self.driver.close_app()
         #self.driver.start_activity(app_package=LAND_COVER_ANDROID_PACKAGE, app_activity=LAND_COVER_ANDROID_ACTIVITY_NAME)
-        self.driver.switch_to.context(LAND_INFO_WEBVIEW_NAME)
-        win = self.driver.window_handles
-        self.driver.switch_to.window(win[-1])
-        ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//img[@src='landpks_img/landinfo_logo.png']")
+        ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[contains(@ng-show,'device')][not(contains(@class,'hide'))]/img[@src='landpks_img/landinfo_logo.png']")
         WaitForLoad(self.driver)
         try:
             ClickElementIfVis(self.driver, By.XPATH,POSTIVE_POPUP_BUTTON)
@@ -616,23 +711,17 @@ class Test_Case:#(unittest.TestCase):
             WaitForLoad(self.driver)
             LandCover(self.driver, self.plotNames, True)
             LogSuccess( "Test 0.3 Pass" )
-            if(bRobot):
-                self.tearDown(bRobot=bRobot)
         except TimeoutException:
             LogError("TIMEOUT")
-            self.tearDown("Fail", bRobot=bRobot)
         except WebDriverException:
             LogError("Web exception")
-            self.tearDown("Fail", bRobot=bRobot)
-        OutputErrors(ERRORS)
-        OutputSucessful(SUCCESS)
     def check_interuptions(self):
         SetUpApp(self)
         #os.system(command)
 class Testing(unittest.TestCase):
     AppTest = Test_Case()
     def tester(self):
-        self.AppTest.Test_Case_2(False)
+        #self.AppTest.Test_Case_2(False,True)
         self.AppTest.Test_Case_2_3(False)
         self.AppTest.Test_Case_0(False)
         self.AppTest.Test_Case_2_4(False)
