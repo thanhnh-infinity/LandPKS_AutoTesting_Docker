@@ -114,6 +114,7 @@ def CheckClimate(driver):
         LogError("Test 2.3.1 Failed")
         LogError("Test 2.3.1.2 Failed")
         LogError("Climate data not present. Location wasn't detected.")
+        raise Exception
 def CheckSinglePlotUpload(plotName):
     url = REQUEST_STRING_TO_FIND_PLOT.format(plotName)
     response = requests.put(url)
@@ -515,12 +516,18 @@ class Test_Case:#(unittest.TestCase):
             OutputSucessful(SUCCESS)
         #2.4 create plot
     def Test_Case_2_3(self, bRobot = True):
-        SetUpApp(self,bRobot=bRobot)
-        ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//img[@src='landpks_img/landinfo_logo.png']")
-        WaitForLoad(self.driver)
-        ClickElementIfVis(self.driver,By.XPATH,LAND_INFO_LOCAL_CLIMATE_BUTTON)
-        CheckClimate(self.driver)
-        ClickElementIfVis(self.driver, By.XPATH, LAND_INFO_BACK_BUTTON)
+        try:
+            SetUpApp(self,bRobot=bRobot)
+            ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//img[@src='landpks_img/landinfo_logo.png']")
+            WaitForLoad(self.driver)
+            ClickElementIfVis(self.driver,By.XPATH,LAND_INFO_LOCAL_CLIMATE_BUTTON)
+            CheckClimate(self.driver)
+            ClickElementIfVis(self.driver, By.XPATH, LAND_INFO_BACK_BUTTON)
+        except:
+            self.tearDown("FAIL", bRobot)
+        finally:
+            OutputErrors(ERRORS)
+            OutputSucessful(SUCCESS)
         #LandCover
     def Test_Case_2_4(self, bRobot = True):
         try:
