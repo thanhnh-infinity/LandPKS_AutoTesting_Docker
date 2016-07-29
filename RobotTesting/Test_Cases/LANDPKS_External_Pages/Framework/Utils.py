@@ -53,10 +53,14 @@ def GenDynaWebAppTests():
 def GenDynaTestCase(PlaceHolderTestCase,NameOfTestCase, bCompletePath,**Changes):
     SYSTEM = platform.system()
     FilePath = ""
+    if SYSTEM == "Windows":
+        PlaceHolderTestCase = PlaceHolderTestCase.replace("/","\\")
+    else:
+        PlaceHolderTestCase = PlaceHolderTestCase.replace("\\","/")
     if(bCompletePath):
         FilePath = PlaceHolderTestCase
     else:
-        FilePath = "{0}{2}{1}".format(GetPath(), PlaceHolderTestCase, "/" if SYSTEM == "Linux" else "\\")
+        FilePath = "{0}{2}{1}".format(GetPath(), PlaceHolderTestCase, "\\" if SYSTEM == "Windows" else "/")
     TestCase = open(FilePath, 'r')
     TestCaseText = TestCase.read()
     TestCase.close()
@@ -64,7 +68,7 @@ def GenDynaTestCase(PlaceHolderTestCase,NameOfTestCase, bCompletePath,**Changes)
         TestCaseText = ProcChangeItem(Changes,Change,TestCaseText)
         #TestCaseText = TypeChange(TestCaseText)
         #TestCaseText = TestCaseText.replace(Changes[Change]["OldText"], Changes[Change]["NewText"])
-    NewTestPath = "{0}{2}{1}".format(os.path.dirname(os.path.realpath(FilePath)), NameOfTestCase, "/" if SYSTEM == "Linux" else "\\")
+    NewTestPath = "{0}{2}{1}".format(os.path.dirname(os.path.realpath(FilePath)), NameOfTestCase, "\\" if SYSTEM == "Windows" else "/")
     NewTest = open( NewTestPath, 'w+')
     NewTest.write(TestCaseText)
     NewTest.close()
