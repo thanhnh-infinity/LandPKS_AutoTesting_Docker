@@ -40,10 +40,8 @@ TestTypes = {
               }
              }
 def GenDynaWebAppTests():
-    if(platform.system() == "Linux"):
-        ExecCommand = "sudo pybot {0}"
-    else:
-        ExecCommand = "pybot {0}"
+    
+    ExecCommand = "pybot {0}"
     for Key in TestTypes:
         
         os.system(ExecCommand.format(
