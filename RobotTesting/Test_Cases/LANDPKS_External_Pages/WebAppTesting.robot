@@ -5,42 +5,40 @@ Library           Framework/Test_Case.py
 Library           ../../Framework/SauceLabs.py
 
 *** Variable ***
-${PLATFORM}       Android
-${platformVersion}    5.1
-${APP}            http://128.123.177.36:8080/job/LandCover_Mobile_Andoird_App/ws/platforms/android/build/outputs/apk/android-debug.apk
-${DEVICE_NAME}    AndroidEmulator
-${XpathLandHome}    //div[@class='scroll']/div[@class='row']/div[@class='col col-100 ']/img
-${REMOTE_URL1}    http://localhost:4723/wd/hub
 ${appiumVersion}    1.4.16
 ${DeviceType}     Phone
+${OS}             linux
+${Platform}       linux
+${BrowserName}    chrome
+${BrowserVersion}    ""
 
 *** Test Cases ***
-Web App Test Case 2.3.x
+Web App Test Case 2.3.x Linux Chrome
     [Documentation]    Launches App pulled directly from jenkins and tests addition of a plot and verifies the correct messages are displayed and app doesnt freeze or timeout. Test passes if the plot is submitted, all elements functio and plot is viewable in landcover.
     [Tags]    Appium
     ${Creds}=    Get Sauce Creds Jenkins
-    Set Browser    ${Creds}    bSelenium=True    platform=linux    os=Linux    browserName=chrome    browser-version=""
+    Set Browser    ${Creds}    bSelenium=True    platform=${Platform}    os=${OS}    browserName=${BrowserName}    browser-version=${BrowserVersion}
     Test Case 2 3    bSelenium=True
 
-Web App Test Case 2.1.x
+Web App Test Case 2.1.x Linux Chrome
     [Documentation]    Launches App pulled directly from jenkins and tests addition of a plot and verifies the correct messages are displayed and app doesnt freeze or timeout. Test passes if the plot is submitted, all elements functio and plot is viewable in landcover.
     [Tags]    Appium
     ${Creds}=    Get Sauce Creds Jenkins
-    Set Browser    ${Creds}    bSelenium=True    platform=linux    os=Linux    browserName=chrome    browser-version=""
+    Set Browser    ${Creds}    bSelenium=True    platform=${Platform}    os=${OS}    browserName=${BrowserName}    browser-version=${BrowserVersion}
     Test Case 2    bSelenium=True
 
-Web App Test Case 2.4.x
+Web App Test Case 2.4.x Linux Chrome
     [Documentation]    Launches App pulled directly from jenkins and tests addition of a plot and verifies the correct messages are displayed and app doesnt freeze or timeout. Test passes if the plot is submitted, all elements functio and plot is viewable in landcover.
     [Tags]    Appium
     ${Creds}=    Get Sauce Creds Jenkins
-    Set Browser    ${Creds}    bSelenium=True    platform=linux    os=Linux    browserName=chrome    browser-version=""
+    Set Browser    ${Creds}    bSelenium=True    platform=${Platform}    os=${OS}    browserName=${BrowserName}    browser-version=${BrowserVersion}
     Test Case 2 4    bSelenium=True
 
-Web App Test Case 0.x
+Web App Test Case 0.x Linux Chrome
     [Documentation]    Launches App pulled directly from jenkins and tests addition of a plot and verifies the correct messages are displayed and app doesnt freeze or timeout. Test passes if the plot is submitted, all elements functio and plot is viewable in landcover.
     [Tags]    Appium
     ${Creds}=    Get Sauce Creds Jenkins
-    Set Browser    ${Creds}    bSelenium=True    platform=linux    os=Linux    browserName=chrome    browser-version=""
+    Set Browser    ${Creds}    bSelenium=True    platform=${Platform}    os=${OS}    browserName=${BrowserName}    browser-version=${BrowserVersion}
     Test Case 0    bSelenium=True
 
 *** Keywords ***
