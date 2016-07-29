@@ -386,7 +386,7 @@ def SetUpApp(Test, AirplaneMode=False, bRobot = True, iConnection=None, bSeleniu
             if(not hasattr(Test, "driver")):
                 SetDriver(Test, AirplaneMode,bSel=bSelenium)
         try:
-            Test.driver.set_speed(.5)
+            #Test.driver.set_speed(.5)
             Test.driver.get("http://testlpks.landpotential.org:8105/#/landpks/landpks_entry_page")
             Test.driver.switch_to.default_content
             ClickElementIfVis(Test.driver, By.XPATH, "//div[@nav-view='active']//div[@class='scroll']//img[@src='landpks_img/landinfo_logo.png']")
@@ -732,7 +732,7 @@ class Testing(unittest.TestCase):
     def tester(self):
         #self.AppTest.Test_Case_2(False,True)
         #self.AppTest.Test_Case_2_4(False)
-        self.AppTest.Test_Case_2_3(False)
+        self.AppTest.Test_Case_2_3(False,True)
         #self.AppTest.Test_Case_0(False)
         #self.AppTest.test_add_plot(bRobot=False)
         #self.AppTest.test_add_plot_airplane_verify_it_appears_in_landcover(bRobot=False)
