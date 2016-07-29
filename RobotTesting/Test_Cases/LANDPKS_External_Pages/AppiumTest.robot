@@ -41,11 +41,6 @@ Android Test Case 0.x
     Set Browser    ${Creds}    platformName=${PLATFORM}    appiumVersion=${appiumVersion}    platformVersion=${platformVersion}    deviceName=Android Emulator    app=${APP}
     Test Case 0
 
-Web App Test Case 2.4.x
-    ${Creds}=    Get Sauce Creds Jenkins
-    Set Browser    ${Creds}    bSelenium=True    platform=linux    os=Linux    browserName=chrome    browser-version=""
-    Test Case 2 4    bSelenium=True
-
 *** Keywords ***
 Open test browser jenkins
     [Arguments]    ${Capa}    ${Remote}

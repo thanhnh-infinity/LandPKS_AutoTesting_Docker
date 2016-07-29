@@ -23,7 +23,7 @@ from Utils import GenRandString
 from Utils import GetSauceCreds
 from Utils import SelectBoxSelectRand
 import simplejson as json
-from datetime import timedelta
+from Utils import GenDynaWebAppTests
 from selenium import webdriver as selWebDriver
 
 
@@ -91,6 +91,7 @@ LAND_COVER_HEADINGS = {
 # Returns abs path relative to this file and not cwd
 ERRORS = []
 SUCCESS = []
+WARNS = []
 PLOT_INFO_PLOTNAME_KEY = {}
 START_TIME = {}
 PATH = lambda p: os.path.abspath(
@@ -125,24 +126,26 @@ def CheckSinglePlotUpload(plotName):
         data = json.loads(response.text)
         if(len(data) <= 0):
             LogError("Database didn't find plot {0}".format(plotName))
-def OutputErrors(ErrorList):
-    if(len(ErrorList)> 0 ):
-        log.error("Encountered {0} recoverable errors or inconsistancies they are as follows".format(len(ErrorList)))
-        for error in ErrorList:
+def OutputErrors():
+    global ERRORS
+    if(len(ERRORS)> 0 ):
+        log.error("Encountered {0} recoverable errors or inconsistancies they are as follows".format(len(ERRORS)))
+        for error in ERRORS:
             log.error(error)
-    ErrorList = []
-def OutputSucessful(SuccessList):
-    if(len(SuccessList) > 0 ):
-        log.info("{0} sucessful activies.".format(len(SuccessList)))
-        for Msg in SuccessList:
+def OutputSucessful():
+    global SUCCESS
+    if(len(SUCCESS) > 0 ):
+        log.info("{0} sucessful activies.".format(len(SUCCESS)))
+        for Msg in SUCCESS:
             log.info(Msg)
-    SuccessList = []    
 def LogError(errorMessage):
+    global ERRORS
     Start = START_TIME["START"]
     TimeHappened = datetime.datetime.now() - Start
     log.error("{0} at {1} in video.".format(errorMessage, TimeHappened))
     ERRORS.append("{0} at {1} in video.".format(errorMessage, TimeHappened))
 def LogSuccess(errorMessage):
+    global SUCCESS
     SUCCESS.append(errorMessage)
 def ProcLandCover(driver):
     for Heading in LAND_COVER_HEADINGS:
@@ -518,6 +521,8 @@ def set_test_browser(remoteURL):
     Test_Case().set_browser(remoteURL)
 class Test_Case:#(unittest.TestCase):
     plotNames = []
+    def gen_test_cases(self):
+        GenDynaWebAppTests()
     def set_browser(self, remoteURL,bSelenium=False, **kwgs):
         if(bSelenium):
             START_TIME["START"] = datetime.datetime.now()
@@ -567,6 +572,7 @@ class Test_Case:#(unittest.TestCase):
             del(self.driver)
     def Test_Case_2(self, bRobot = True, bSelenium=False):
         #log in
+        global ERRORS,SUCCESS
         ERRORS = []
         SUCCESS = []
         PassOrFail = "PASS"
@@ -577,12 +583,13 @@ class Test_Case:#(unittest.TestCase):
             LogError("Test 2.1 Failed")
             PassOrFail = "Fail"
         finally:
-            OutputErrors(ERRORS)
-            OutputSucessful(SUCCESS)
+            OutputErrors()
+            OutputSucessful()
             self.tearDown(PassOrFail, bRobot)
         #2.4 create plot
     def Test_Case_2_3(self, bRobot = True, bSelenium=False):
         PassOrFail = "PASS"
+        global ERRORS,SUCCESS
         ERRORS = []
         SUCCESS = []
         try:
@@ -595,11 +602,12 @@ class Test_Case:#(unittest.TestCase):
         except:
             PassOrFail = "FAIL"
         finally:
-            OutputErrors(ERRORS)
-            OutputSucessful(SUCCESS)
+            OutputErrors()
+            OutputSucessful()
             self.tearDown(PassOrFail, bRobot)
         #LandCover
     def Test_Case_2_4(self, bRobot = True, bSelenium=False):
+        global ERRORS,SUCCESS
         ERRORS = []
         SUCCESS = []
         PassOrFail = "PASS"
@@ -638,10 +646,11 @@ class Test_Case:#(unittest.TestCase):
                 LogError("Test 2.4.9 Failed")
                 PassOrFail = "FAIL"
         finally:
-            OutputErrors(ERRORS)
-            OutputSucessful(SUCCESS)
+            OutputErrors()
+            OutputSucessful()
             self.tearDown(PassOrFail, bRobot)
     def Test_Case_0(self, bRobot = True, bSelenium=False):
+        global ERRORS,SUCCESS
         ERRORS = []
         SUCCESS = []
         PassOrFail = "PASS"
@@ -672,8 +681,8 @@ class Test_Case:#(unittest.TestCase):
                 LogError("Test 0.3 Failed")
                 PassOrFail = "FAIL"
             finally:
-                OutputErrors(ERRORS)
-                OutputSucessful(SUCCESS)
+                OutputErrors()
+                OutputSucessful()
                 self.tearDown(PassOrFail, bRobot)
         else:
             try:
@@ -685,8 +694,8 @@ class Test_Case:#(unittest.TestCase):
                 LogError("Test 0.3 Failed")
                 PassOrFail = "FAIL"
             finally:
-                OutputErrors(ERRORS)
-                OutputSucessful(SUCCESS)
+                OutputErrors()
+                OutputSucessful()
                 self.tearDown(PassOrFail, bRobot)
             
             
@@ -722,9 +731,9 @@ class Testing(unittest.TestCase):
     AppTest = Test_Case()
     def tester(self):
         #self.AppTest.Test_Case_2(False,True)
+        self.AppTest.Test_Case_2_4(False)
         self.AppTest.Test_Case_2_3(False)
         self.AppTest.Test_Case_0(False)
-        self.AppTest.Test_Case_2_4(False)
         #self.AppTest.test_add_plot(bRobot=False)
         #self.AppTest.test_add_plot_airplane_verify_it_appears_in_landcover(bRobot=False)
     def tearDown(self):
@@ -732,5 +741,6 @@ class Testing(unittest.TestCase):
 if __name__ == '__main__':    
     suite = unittest.TestLoader().loadTestsFromTestCase(Testing)
     unittest.TextTestRunner(verbosity=2).run(suite)
+    
     #os.system("echo %CD%")
     #os.system("pybot ../AppiumTest.robot")

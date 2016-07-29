@@ -1,17 +1,100 @@
 import random
-from selenium import webdriver
-import requests
-from selenium.webdriver.remote.command import Command
-from robot.libraries.BuiltIn import BuiltIn
 import os
 import string
-from Selenium2Library import Selenium2Library
-from robot.api import logger
-import selenium
-import simplejson as json
+import sys
+import platform
+
 from selenium.webdriver.support.ui import Select
 ERROR_CODE_RESPONSE = '400'
 SUCCESS_CODE_RESPONSE = '200'
+TestTypes = {
+             "Windows 8.1" :{
+              "os" : "Windows 8",
+              "platform" : "Windows 8",
+              "fileName" : "Windows_8_1_Web_App.robot",
+              "strReplace" : [
+                  {"OldText":"${Platform}       linux","NewText" : "${Platform}       Windows 8"},
+                  {"OldText":"${OS}             linux","NewText" : "${OS}             Windows 8_1"},
+                  {"OldText":"x Linux Chrome","NewText" : "x Windows 8.1 Chrome"} 
+                  ]
+              },
+             "Windows 10" :{
+              "os" : "Windows 10",
+              "platform" : "Windows 10",
+              "filename" : "Windows_10_Web_App.robot",
+              "strReplace": [
+                  {"OldText":"${Platform}       linux","NewText" : "${Platform}       Windows 10"},
+                  {"OldText":"${OS}             linux","NewText" : "${OS}             Windows 10"},
+                  {"OldText":"x Linux Chrome","NewText" : "x Windows 10 Chrome"}
+                  ]              
+              },
+              "Windows 7" :{
+              "os" : "Windows 7",
+              "platform" : "Windows 7",
+              "fileName" : "Windows_7_Web_App.robot",
+              "strReplace" : [
+                  {"OldText":"${Platform}       linux","NewText" : "${Platform}       Windows 7"},
+                  {"OldText":"${OS}             linux","NewText" : "${OS}             Windows 7"},
+                  {"OldText":"x Linux Chrome","NewText" : "x Windows 7 Chrome"} 
+                  ]
+              }
+             }
+def GenDynaWebAppTests():
+    if(platform.system() == "Linux"):
+        ExecCommand = "sudo pybot {0}"
+    else:
+        ExecCommand = "pybot {0}"
+    for Key in TestTypes:
+        
+        os.system(ExecCommand.format(
+                                     GenDynaTestCase("..\\WebAppTesting.robot",TestTypes[Key]["filename"],bCompletePath=False,strReplace =TestTypes[Key]["strReplace"])
+                                     )
+                  )
+def GenDynaTestCase(PlaceHolderTestCase,NameOfTestCase, bCompletePath,**Changes):
+    SYSTEM = platform.system()
+    FilePath = ""
+    if(bCompletePath):
+        FilePath = PlaceHolderTestCase
+    else:
+        FilePath = "{0}{2}{1}".format(GetPath(), PlaceHolderTestCase, "/" if SYSTEM == "Linux" else "\\")
+    TestCase = open(FilePath, 'r')
+    TestCaseText = TestCase.read()
+    TestCase.close()
+    for Change in Changes:
+        TestCaseText = ProcChangeItem(Changes,Change,TestCaseText)
+        #TestCaseText = TypeChange(TestCaseText)
+        #TestCaseText = TestCaseText.replace(Changes[Change]["OldText"], Changes[Change]["NewText"])
+    NewTestPath = "{0}{2}{1}".format(os.path.dirname(os.path.realpath(FilePath)), NameOfTestCase, "/" if SYSTEM == "Linux" else "\\")
+    NewTest = open( NewTestPath, 'w+')
+    NewTest.write(TestCaseText)
+    NewTest.close()
+    return NewTestPath
+def ProcChangeItem(Changes,Key,Text):
+    if(type(Changes[Key]) == list):
+        for item in Changes[Key]:
+            TypeChange = ProcChangeType(item, Key)
+            Text = TypeChange(Text)
+    elif(type(Changes[Key]) == dict):
+            TypeChange = ProcChangeType(Changes[Key], Key)
+            Text = TypeChange(Text)
+    return Text
+def ProcChangeType(Change, Key):
+    if(Key.lower() == "strreplace"):
+        return lambda String: String.replace(Change["OldText"], Change["NewText"])
+def GetPath():
+    try:
+        modpath = __file__
+    except AttributeError:
+        sys.exit('Module does not have __file__ defined.')
+    # It's a script for me, you probably won't want to wrap it in try..except
+
+    # Turn pyc files into py files if we can
+    if modpath.endswith('.pyc') and os.path.exists(modpath[:-1]):
+        modpath = modpath[:-1]
+
+    # Sort out symlinks
+    modpath = os.path.dirname(os.path.realpath(modpath))
+    return modpath
 def GenRandString(type="text"):
     iStringLen = random.randint(1,10)
     type = string.lower(type)
