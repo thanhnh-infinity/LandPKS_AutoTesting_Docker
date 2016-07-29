@@ -479,7 +479,7 @@ def ClickElementIfVis(driver, ByType, Value):
     try:
         wait = WebDriverWait(driver, TIMEOUT)
         #wait.until(EC.presence_of_element_located((ByType, Value)), "")
-        #wait.until(EC.visibility_of_element_located((ByType, Value)), "")
+        wait.until(EC.visibility_of_element_located((ByType, Value)), "")
         wait.until(EC.element_to_be_clickable((ByType, Value)), "")
         driver.find_element(ByType,Value).click()
     except TimeoutException as TE:
@@ -731,14 +731,13 @@ class Testing(unittest.TestCase):
     AppTest = Test_Case()
     def tester(self):
         #self.AppTest.Test_Case_2(False,True)
-        self.AppTest.Test_Case_2_4(False)
+        #self.AppTest.Test_Case_2_4(False)
         self.AppTest.Test_Case_2_3(False)
-        self.AppTest.Test_Case_0(False)
+        #self.AppTest.Test_Case_0(False)
         #self.AppTest.test_add_plot(bRobot=False)
         #self.AppTest.test_add_plot_airplane_verify_it_appears_in_landcover(bRobot=False)
-    def tearDown(self):
-        self.AppTest.tearDown()
 if __name__ == '__main__':    
+    #GenDynaWebAppTests()
     suite = unittest.TestLoader().loadTestsFromTestCase(Testing)
     unittest.TextTestRunner(verbosity=2).run(suite)
     
