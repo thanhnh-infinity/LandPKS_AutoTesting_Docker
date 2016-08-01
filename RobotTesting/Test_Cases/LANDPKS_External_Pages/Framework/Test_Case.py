@@ -171,12 +171,12 @@ def report_sauce_status(name, status, tags=[], remote_url='', bRobot = True, dri
     username, access_key = USERNAME_ACCESS_KEY.findall(remote_url)[0][1:]
 
     # Get selenium session id from the keyword library
-    if(bRobot):
-        appium = BuiltIn().get_library_instance('AppiumLibrary')
-        name = BuiltIn().get_variable_value("${TEST_NAME}")
-        job_id = appium._current_application().session_id
-    else :
-        job_id = driver.session_id
+    #if(bRobot):
+        #appium = BuiltIn().get_library_instance('AppiumLibrary')
+        #name = BuiltIn().get_variable_value("${TEST_NAME}")
+        #job_id = appium._current_application().session_id
+    #else :
+    job_id = driver.session_id
 
     # Prepare payload and headers
     token = (':'.join([username, access_key])).encode('base64').strip()
@@ -664,13 +664,13 @@ class Test_Case:#(unittest.TestCase):
                 ClickElementIfVis(self.driver,By.XPATH,LAND_INFO_ADD_PLOT_BUTTON)
                 ClickElementIfVis(self.driver, By.XPATH, "//a[@class='item item-icon-right plotname']")
                 try:
-                    plotName = FillPlotData(self.driver, True)
+                    plotName = FillPlotData(self.driver,Airplane=False, bFullPlot=True)
                     self.plotNames.append(plotName)
                     ClickElementIfVis(self.driver, By.XPATH, LAND_INFO_BACK_BUTTON)
                     ClickElementIfVis(self.driver, By.XPATH, LAND_INFO_BACK_BUTTON)
                     ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//img[@src='landpks_img/landcover_logo.png']")
                     WaitForLoad(self.driver)
-                    LandCover(self.driver, self.plotNames, True)
+                    LandCover(self.driver, self.plotNames, Airplane=False)
                     LogSuccess( "Test 0.3 Pass" )
                 except WebDriverException:
                     LogError("Web exception")
@@ -712,7 +712,7 @@ class Test_Case:#(unittest.TestCase):
         ClickElementIfVis(self.driver,By.XPATH,LAND_INFO_ADD_PLOT_BUTTON)
         ClickElementIfVis(self.driver, By.XPATH, "//a[@class='item item-icon-right plotname']")
         try:
-            plotName = FillPlotData(self.driver, True)
+            plotName = FillPlotData(self.driver,Airplane=True,bFullPlot=True)
             self.plotNames.append(plotName)
             ClickElementIfVis(self.driver, By.XPATH, LAND_INFO_BACK_BUTTON)
             ClickElementIfVis(self.driver, By.XPATH, LAND_INFO_BACK_BUTTON)
