@@ -118,6 +118,7 @@ def GoBackToPageWithTitle(driver,Title):
         TitleText = GetEleIfVis(driver, By.XPATH,TITLE_LAND_INFO_PAGE_XPATH ).text
 def ClickGoBackLandInfo(driver):
     ClickElementIfVis(driver, By.XPATH, LAND_INFO_BACK_BUTTON)
+    WaitForLoad(driver)
 def CheckClimate(driver):
     try:
         Chart = GetEleIfVis(driver, By.XPATH, LAND_INFO_LOCAL_CLIMATE_GRAPH)
