@@ -32,6 +32,7 @@ Andoid Test Case 2.1.x
 Andoid Test Case 2.4.x
     [Documentation]    Launches App pulled directly from jenkins and tests addition of a plot and verifies the correct messages are displayed and app doesnt freeze or timeout. Test passes if the plot is submitted, all elements functio and plot is viewable in landcover.
     [Tags]    Appium
+    Set Browser    ${Creds}    platformName=${PLATFORM}    appiumVersion=${appiumVersion}    platformVersion=${platformVersion}    deviceName=Android Emulator    app=${APP}
     Test Case 2 4
 
 Android Test Case 0.x

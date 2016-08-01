@@ -3,6 +3,7 @@ Created on Jun 23, 2016
 
 @author: bbarnett
 '''
+import time
 import datetime
 import os
 import random
@@ -24,6 +25,7 @@ from Utils import GetSauceCreds
 from Utils import SelectBoxSelectRand
 import simplejson as json
 from Utils import GenDynaWebAppTests
+from Utils import get_uname_and_pword_lpks_gmail
 from selenium import webdriver as selWebDriver
 
 
@@ -66,6 +68,14 @@ DICT_MESSAGES_NO_DATA_KEY = {
                  False: {"SubmitPlotText" : "Plot is submitted"},
                  True:{"SubmitPlotText" : "background upload"}
                  }
+DICT_ELEMENT_PATH_TO_NAME = {
+                             LAND_INFO_BACK_BUTTON : "Back button",
+                             LAND_INFO_LOCAL_CLIMATE_GRAPH: "Climate Chart",
+                             LAND_INFO_SUBMIT_PLOT_BUTTON : "Land info submit button",
+                             POSTIVE_POPUP_BUTTON : "Ok button on popup",
+                             LAND_INFO_POPUP_BODY_MESSAGE : "Popup message",
+                             LAND_COVER_SUBMIT_BUTTON : "Submit Land Cover Button"
+                             }
 DICT_OUTPUT_MESSAGE_NO_DATA_KEY =   {
                                    True : {"PlotUnsucess" : "Error, no connectivity and plot was not flagged for upload",
                                            "PlotSucess" : "Test 2.4.9.1 passed. {0} Flagged for Background upload"},
@@ -126,8 +136,7 @@ def CheckClimate(driver):
         LogError("Test 2.3 Failed")
         LogError("Test 2.3.1 Failed")
         LogError("Test 2.3.1.2 Failed")
-        LogError("Climate data not present. Location wasn't detected.")
-        raise Exception
+        raise TestFailedException("Climate data not present. Location wasn't detected.")
 def CheckSinglePlotUpload(plotName):
     url = REQUEST_STRING_TO_FIND_PLOT.format(plotName)
     response = requests.put(url)
@@ -185,8 +194,8 @@ def ProcLandCover(driver):
                 ColXpath = "{0}{1}".format(RowXpath,LAND_COVER_FOLIGAE_COL_IMAGE_PATH)
                 RandCoverType = "{0}[{1}]/img".format(ColXpath,iCol)#random.randint(1,ColCount))
                 ClickElementIfVis(driver, By.XPATH, RandCoverType)
-            ClickElementIfVis(driver, By.XPATH, LAND_INFO_BACK_BUTTON)
-        ClickElementIfVis(driver, By.XPATH, LAND_INFO_BACK_BUTTON)
+            ClickGoBackLandInfo(driver)
+        ClickGoBackLandInfo(driver)
 def report_sauce_status(name, status, tags=[], remote_url='', bRobot = True, driver = None):
     # Parse username and access_key from the remote_url
     if(len(ERRORS) > 0 ):
@@ -248,7 +257,7 @@ def FillPlotInputs(driver):
                 LogSuccess("Test 2.4.1.3 Passed")
     except:
         LogError("New plot could not be created in Landinfo")
-    ClickElementIfVis(driver, By.XPATH, LAND_INFO_BACK_BUTTON)
+    ClickGoBackLandInfo(driver)
     PLOT_INFO_PLOTNAME_KEY[PlotName] = {"latitude" : PlotLat,
                                         "longitude" : PlotLong
                                         }
@@ -265,8 +274,8 @@ def HandleSoilLayer(driver):
     #Select which soil type
     SelectBoxSelectRand(driver,By.XPATH,LAND_INFO_SOIL_TYPE)
     #Go back to main page
-    ClickElementIfVis(driver, By.XPATH, LAND_INFO_BACK_BUTTON)
-    ClickElementIfVis(driver, By.XPATH, LAND_INFO_BACK_BUTTON)
+    ClickGoBackLandInfo(driver)
+    ClickGoBackLandInfo(driver)
 def FindErrors(driver, ByType=By.XPATH, errorElePath=LAND_INFO_POPUP_BODY_MESSAGE):
     eles = GetElesIfVis(driver, ByType, errorElePath)
     errors = {}
@@ -280,7 +289,7 @@ def FindErrors(driver, ByType=By.XPATH, errorElePath=LAND_INFO_POPUP_BODY_MESSAG
     if(len(errors) > 0):
         ProcErrors(driver, errors)
     ClickElementIfVis(driver, By.XPATH,POSTIVE_POPUP_BUTTON)
-    ClickElementIfVis(driver, By.XPATH, LAND_INFO_BACK_BUTTON)
+    ClickGoBackLandInfo(driver)
 def ProcErrors(driver, ErrorDict={}):
     bLocError = False
     bSlopeError = False
@@ -300,8 +309,8 @@ def HandleSlope(driver):
     for ele in eles:
         ele.click()
         break
-    ClickElementIfVis(driver, By.XPATH, LAND_INFO_BACK_BUTTON)
-def FillAllDataForPlot(driver):
+    ClickGoBackLandInfo(driver)
+def _FillAllDataForPlot(driver):
     for i in range(2, 7):
         try:
             ClickElementIfVis(driver, By.XPATH, '{0}[{1}]'.format(LAND_INFO_MENU_ITEM_PATH,i))
@@ -312,7 +321,7 @@ def FillAllDataForPlot(driver):
         except :
             LogError("Test {0} Failed".format(DICT_TEST_MESSAGES_KEY_MENU_NUM[i]["TestName"]))
             continue
-        ClickElementIfVis(driver, By.XPATH, LAND_INFO_BACK_BUTTON)                        
+        ClickGoBackLandInfo(driver)                        
 def ReviewPlot(driver, Airplane, PlotName):
     ClickElementIfVis(driver, By.XPATH, '{0}{1}'.format(LAND_INFO_MENU_ITEM_PATH,'[9]'))
     ClickElementIfVis(driver, By.XPATH,LAND_INFO_SUBMIT_PLOT_BUTTON)
@@ -344,7 +353,7 @@ def FillPlotData(driver, Airplane = False, bFullPlot = False):
     PassOrFail = "PASS"
     PlotName = FillPlotInputs(driver)
     if(bFullPlot):
-        FillAllDataForPlot(driver)
+        _FillAllDataForPlot(driver)
         try:
             HandleSoilLayer(driver)
             LogSuccess("Test 2.4.7 Passed")
@@ -366,7 +375,7 @@ def LandCover(driver, plots, Airplane=False):
     if(Airplane):
         try:
             ClickElementIfVis(driver, By.XPATH,POSTIVE_POPUP_BUTTON)
-        except Exception:
+        except ElementNotFoundTimeoutException:
             LogWarn( "Message regarding connectivity did not appear" )
     for plot in plots:
         String = "{0}{1}".format(LANDCOVER_PLOT_LIST,"[contains(.,'{0}')]".format(plot))
@@ -379,8 +388,7 @@ def LandCover(driver, plots, Airplane=False):
             MessageEle = GetEleIfVis(driver, By.XPATH,LAND_INFO_POPUP_BODY_MESSAGE)
             MessageText = MessageEle.text
             if(not "Do you want to submit it" in MessageText):
-                LogError("Land Cover did not accept Data of: all bare ground")
-                return
+                raise TestFailedException("Land Cover did not accept Data of: all bare ground. Displayed Message {0}".format(MessageText))
             ClickElementIfVis(driver, By.XPATH,POSTIVE_POPUP_BUTTON)
             if(Airplane):
                 MessageEle = GetEleIfVis(driver, By.XPATH,LAND_INFO_POPUP_BODY_MESSAGE)
@@ -396,10 +404,10 @@ def LandCover(driver, plots, Airplane=False):
                 LogError(DICT_OUTPUT_MESSAGE_NO_DATA_KEY["LandCover"]["PlotUnsucess"])
             else:
                 LogSuccess(DICT_OUTPUT_MESSAGE_NO_DATA_KEY["LandCover"]["PlotSucess"].format(plot))
-                ClickElementIfVis(driver, By.XPATH, LAND_INFO_BACK_BUTTON)
+                ClickGoBackLandInfo(driver)
         except TimeoutException:
             LogError( "Plot '{0}' was not found in landcover in airplane mode.".format(plot) )
-    ClickElementIfVis(driver, By.XPATH, LAND_INFO_BACK_BUTTON)
+    ClickGoBackLandInfo(driver)
 def WaitForLoad(driver):
     wait = WebDriverWait(driver, 30)
     wait.until(EC.presence_of_element_located((By.XPATH, "//div[@class='loading-container']")),"")
@@ -466,10 +474,14 @@ def TestCaps():
 def TestCapsSel():
     caps= {}
     
-    caps['platform'] = "linux"
-    caps['browserName'] = "chrome"
-    caps['version'] = ""
-    caps["os"] = "linux"
+    #caps['platform'] = "linux"
+    #caps['browserName'] = "chrome"
+    #caps['version'] = ""
+    #caps["os"] = "linux"
+    caps['platform'] = "windows 7"
+    caps['browserName'] = "internet explorer"
+    caps['version'] = "11"
+    caps["os"] = "windows"
     return caps
 def SetDriver(Test,AirplaneMode, bSel = False):
     
@@ -515,33 +527,33 @@ def ClickElementIfVis(driver, ByType, Value):
         wait.until(EC.element_to_be_clickable((ByType, Value)), "")
         driver.find_element(ByType,Value).click()
     except TimeoutException as TE:
-        log.error("Timeout exception/ Element not found while searching for element {0} by {1}".format(Value,ByType))
-        raise TimeoutException
+        raise ElementNotFoundTimeoutException(EleKey=Value)
     except WebDriverException as WDE:
         log.error("WebDriver exception unknown error while finding element {0} by {1}".format(Value,ByType))
         raise Exception
 def SwitchToPopupWindow(driver):
     wait = WebDriverWait(driver, TIMEOUT)
+    time.sleep(1)
     wait.until(lambda driver: len(driver.window_handles) > 1)
     driver.switch_to.window(driver.window_handles[-1])
 def HandleGoogleLogin(driver):
     try:
+        Creds = get_uname_and_pword_lpks_gmail()
         ClickElementIfVis(driver,By.XPATH,"//Button[contains(@id, 'loginGoogle')][@style='display: block;']")
         LogSuccess("Test 2.1.1 Passed")
+        
         SwitchToPopupWindow(driver)
         ele = GetEleIfVis(driver,By.ID,"Email")
-        ele.send_keys("lpks.testing@gmail.com")
+        ele.send_keys(Creds["UName"])
         ClickElementIfVis(driver,By.ID,"next")
         ele = GetEleIfVis(driver,By.ID,"Passwd")
-        ele.send_keys("landpotentialtest")
+        ele.send_keys(Creds["PWord"])
         ClickElementIfVis(driver,By.ID,"signIn")
         ClickElementIfVis(driver,By.ID,"submit_approve_access")
         win = driver.window_handles
         driver.switch_to.window(win[0])
-    except:
-        LogError("Google login unsuccessful")
-        
-        raise Exception
+    except:        
+        raise TestFailedException("Error logging in using google")
 def SetConections(driver, iConnectionMode=6):
     curContext = driver.context
     driver.switch_to.context("NATIVE_APP")
@@ -758,15 +770,14 @@ class Test_Case:#(unittest.TestCase):
         WaitForLoad(self.driver)
         try:
             ClickElementIfVis(self.driver, By.XPATH,POSTIVE_POPUP_BUTTON)
-        except TimeoutException:
+        except ElementNotFoundTimeoutException:
             LogWarn( "Message regarding connectivity did not appear" )
         ClickElementIfVis(self.driver,By.XPATH,LAND_INFO_ADD_PLOT_BUTTON)
         ClickElementIfVis(self.driver, By.XPATH, "//a[@class='item item-icon-right plotname']")
         try:
             plotName = FillPlotData(self.driver,Airplane=True,bFullPlot=True)
             self.plotNames.append(plotName)
-            ClickGoBackLandInfo(self.driver)
-            ClickGoBackLandInfo(self.driver)
+            goToAppSelection(self.driver)
             ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[contains(@ng-show,'device')][not(contains(@class,'hide'))]//img[@src='landpks_img/landcover_logo.png']")
             WaitForLoad(self.driver)
             LandCover(self.driver, self.plotNames, True)
@@ -778,6 +789,17 @@ class Test_Case:#(unittest.TestCase):
     def check_interuptions(self):
         SetUpApp(self)
         #os.system(command)
+class TestFailedException(Exception):
+    def __init__(self,Mesage):
+        LogError(Mesage)
+class ElementNotFoundTimeoutException(Exception):
+    def __init__(self, Message=None, EleKey=None):
+        if(not EleKey == None):
+            if (DICT_ELEMENT_PATH_TO_NAME.has_key(EleKey)):
+                Message = "{0} was unable to be located".format(DICT_ELEMENT_PATH_TO_NAME[EleKey])
+            else:
+                Message = "{0} was unable to be located, Element did not exist is dictionary".format(EleKey)
+        LogError(Message)
 class Testing(unittest.TestCase):
     AppTest = Test_Case()
     def tester(self):
@@ -786,6 +808,7 @@ class Testing(unittest.TestCase):
         #self.AppTest.Test_Case_2_4(False,True)
         #self.AppTest.Test_Case_2_3(False,True)
         self.AppTest.Test_Case_0(False,True)
+        
         #self.AppTest.test_add_plot(bRobot=False)
         #self.AppTest.test_add_plot_airplane_verify_it_appears_in_landcover(bRobot=False)
 if __name__ == '__main__':    
