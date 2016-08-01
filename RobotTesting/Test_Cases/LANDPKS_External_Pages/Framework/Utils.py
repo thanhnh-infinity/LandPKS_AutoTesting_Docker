@@ -7,6 +7,10 @@ import platform
 from selenium.webdriver.support.ui import Select
 ERROR_CODE_RESPONSE = '400'
 SUCCESS_CODE_RESPONSE = '200'
+BROWSER_VERSIONS = {
+                   "Firefox" : ["47.0"],
+                   "Chrome" : ["51.0"]
+                   }
 BROWSERS = ["Chrome","Firefox"]
 TestTypes = {
              "Windows 8.1" :{
@@ -42,14 +46,15 @@ def GenDynaWebAppTests():
     ExecCommand = "pybot {0}"
     for Key in TestTypes:
         for Browser in BROWSERS:
-            NameNewTest = "{0} {1}".format(Key,Browser)
-            TestTypesBrowsered[NameNewTest] = dict(TestTypes[Key])
-            TestTypesBrowsered[NameNewTest]["strReplace"] = list(TestTypes[Key]["strReplace"])
-            TestTypesBrowsered[NameNewTest]["Browser"] = Browser
-            TestTypesBrowsered[NameNewTest]["fileName"] = "{0}_{1}".format(Browser,TestTypes[Key]["fileName"])
-            TestTypesBrowsered[NameNewTest]["strReplace"].append({"OldText":"${BrowserName}    chrome","NewText" : "${BrowserName}    %s"%Browser})
-            TestTypesBrowsered[NameNewTest]["strReplace"].append({"OldText":"x Linux Chrome","NewText" : "x Windows 7 %s"%Browser})
-            
+            for BrowserVer in BROWSER_VERSIONS[Browser]:
+                NameNewTest = "{0} {1} {2}".format(Key,Browser,BrowserVer)
+                TestTypesBrowsered[NameNewTest] = dict(TestTypes[Key])
+                TestTypesBrowsered[NameNewTest]["strReplace"] = list(TestTypes[Key]["strReplace"])
+                TestTypesBrowsered[NameNewTest]["Browser"] = Browser
+                TestTypesBrowsered[NameNewTest]["fileName"] = "{0}_Ver_{1}_{2}".format(Browser,BrowserVer,TestTypes[Key]["fileName"])
+                TestTypesBrowsered[NameNewTest]["strReplace"].append({"OldText":"${BrowserName}    chrome","NewText" : "${BrowserName}    %s"%Browser})
+                TestTypesBrowsered[NameNewTest]["strReplace"].append({"OldText":"${BrowserVersion}    \"\"","NewText" : "${BrowserVersion}    %s"%BrowserVer})
+                TestTypesBrowsered[NameNewTest]["strReplace"].append({"OldText":"x Linux Chrome","NewText" : "x Windows 7 %s"%Browser})
     for Key in TestTypesBrowsered:
         FilePath = GenDynaTestCase("..\\WebAppTesting.robot",TestTypesBrowsered[Key]["fileName"],bCompletePath=False,strReplace =TestTypesBrowsered[Key]["strReplace"])
         os.system(ExecCommand.format(

@@ -61,6 +61,7 @@ LAND_COVER_FOLIGAE_COL_IMAGE_PATH = "/div[@class='col col-20']"
 LAND_COVER_SITE_SUMMARY = "//div[@class='scroll']/h2[contains(.,'Site Summary')]"
 LAND_INFO_LOCAL_CLIMATE_GRAPH = "//div[@nav-view='active']//div[@class='scroll']//div[@class='lpks-graph']/div[@class='chart-container']/canvas[@id='bar']"
 LAND_INFO_LOCAL_CLIMATE_LAT = "//div[@class='scroll']/p[contains(.,'Latitude')]"
+TITLE_LAND_INFO_PAGE_XPATH = LAND_INFO_BACK_BUTTON + "/p"
 DICT_MESSAGES_NO_DATA_KEY = {
                  False: {"SubmitPlotText" : "Plot is submitted"},
                  True:{"SubmitPlotText" : "background upload"}
@@ -97,6 +98,16 @@ START_TIME = {}
 PATH = lambda p: os.path.abspath(
     os.path.join(os.path.dirname(__file__), p)
 )
+def goToAppSelection(driver):
+    GoBackToPageWithTitle(driver, "Application Selection")
+def GoBackToPageWithTitle(driver,Title):
+    TitleText = GetEleIfVis(driver, By.XPATH,TITLE_LAND_INFO_PAGE_XPATH ).text
+    while (not(TitleText in Title) and not("Application Selection" in TitleText) ):
+        ClickGoBackLandInfo(driver)
+        WaitForLoad(driver)
+        TitleText = GetEleIfVis(driver, By.XPATH,TITLE_LAND_INFO_PAGE_XPATH ).text
+def ClickGoBackLandInfo(driver):
+    ClickElementIfVis(driver, By.XPATH, LAND_INFO_BACK_BUTTON)
 def CheckClimate(driver):
     try:
         Chart = GetEleIfVis(driver, By.XPATH, LAND_INFO_LOCAL_CLIMATE_GRAPH)
@@ -129,9 +140,15 @@ def CheckSinglePlotUpload(plotName):
 def OutputErrors():
     global ERRORS
     if(len(ERRORS)> 0 ):
-        log.error("Encountered {0} recoverable errors or inconsistancies they are as follows".format(len(ERRORS)))
+        log.error("Encountered {0} error(s).".format(len(ERRORS)))
         for error in ERRORS:
             log.error(error)
+def OutputWarns():
+    global WARNS
+    if(len(WARNS)> 0 ):
+        log.warn("Encountered {0} recoverable errors or inconsistancies they are as follows".format(len(WARNS)))
+        for warn in WARNS:
+            log.warn(warn)
 def OutputSucessful():
     global SUCCESS
     if(len(SUCCESS) > 0 ):
@@ -144,6 +161,12 @@ def LogError(errorMessage):
     TimeHappened = datetime.datetime.now() - Start
     log.error("{0} at {1} in video.".format(errorMessage, TimeHappened))
     ERRORS.append("{0} at {1} in video.".format(errorMessage, TimeHappened))
+def LogWarn(warnMessage):
+    global WARNS
+    Start = START_TIME["START"]
+    TimeHappened = datetime.datetime.now() - Start
+    log.warn("{0} at {1} in video.".format(warnMessage, TimeHappened))
+    WARNS.append("{0} at {1} in video.".format(warnMessage, TimeHappened))
 def LogSuccess(errorMessage):
     global SUCCESS
     SUCCESS.append(errorMessage)
@@ -169,7 +192,8 @@ def report_sauce_status(name, status, tags=[], remote_url='', bRobot = True, dri
     if(len(ERRORS) > 0 ):
         name.join("| {0} errors encountered" .format(len(ERRORS)))
     username, access_key = USERNAME_ACCESS_KEY.findall(remote_url)[0][1:]
-
+    if(bRobot):
+        name = "{0} | {1}".format(BuiltIn().get_variable_value("${SUITE_NAME}"),BuiltIn().get_variable_value("${TEST_NAME}"))
     # Get selenium session id from the keyword library
     #if(bRobot):
         #appium = BuiltIn().get_library_instance('AppiumLibrary')
@@ -177,7 +201,6 @@ def report_sauce_status(name, status, tags=[], remote_url='', bRobot = True, dri
         #job_id = appium._current_application().session_id
     #else :
     job_id = driver.session_id
-
     # Prepare payload and headers
     token = (':'.join([username, access_key])).encode('base64').strip()
     payload = {'name': name,
@@ -315,11 +338,19 @@ def ReviewPlot(driver, Airplane, PlotName):
         #else:
             #log.info("{0} was submitted".format(PlotName))
     ClickElementIfVis(driver, By.XPATH,POSTIVE_POPUP_BUTTON)
+    WaitForLoad(driver)
 def FillPlotData(driver, Airplane = False, bFullPlot = False):
     #fill plot info
+    PassOrFail = "PASS"
     PlotName = FillPlotInputs(driver)
     if(bFullPlot):
         FillAllDataForPlot(driver)
+        try:
+            HandleSoilLayer(driver)
+            LogSuccess("Test 2.4.7 Passed")
+        except:
+            LogError("Test 2.4.7 Failed")
+            PassOrFail = "FAIL"
     else:
         #click Slope
         HandleSlope(driver)
@@ -327,15 +358,16 @@ def FillPlotData(driver, Airplane = False, bFullPlot = False):
         HandleSoilLayer(driver)
     #Review Plot
     ReviewPlot(driver, Airplane=Airplane, PlotName=PlotName)
-    return PlotName
+    return PlotName,PassOrFail
 def SendTextToEle(weEle, strValue):
     log.info("Sending {0} to WebElement {1}".format(strValue, weEle))
     weEle.send_keys(strValue)
 def LandCover(driver, plots, Airplane=False):
-    try:
-        ClickElementIfVis(driver, By.XPATH,POSTIVE_POPUP_BUTTON)
-    except Exception:
-        LogError( "Message regarding connectivity did not appear" )
+    if(Airplane):
+        try:
+            ClickElementIfVis(driver, By.XPATH,POSTIVE_POPUP_BUTTON)
+        except Exception:
+            LogWarn( "Message regarding connectivity did not appear" )
     for plot in plots:
         String = "{0}{1}".format(LANDCOVER_PLOT_LIST,"[contains(.,'{0}')]".format(plot))
         try:
@@ -558,23 +590,33 @@ class Test_Case:#(unittest.TestCase):
                 appiumLib.open_application(remoteURL, **kwgs)
                 self.driver = appiumLib._current_application()
                 self.driver.implicitly_wait(30)
-    def tearDown(self, PassOrFail = "PASS",bRobot = False):
-        report_sauce_status("AppiumTesting", status=PassOrFail, tags="Appium", remote_url=COMMAND_EXEC, bRobot = False, driver = self.driver)
+    def tearDown(self, PassOrFail = "PASS",bRobot = False,bSelenium=False):
+        report_sauce_status("AppiumTesting", status=PassOrFail, tags="Appium", remote_url=COMMAND_EXEC, bRobot = bRobot, driver = self.driver)
         
         if(bRobot):
-            appiumLib = BuiltIn().get_library_instance('AppiumLibrary')
-            appiumLib._cache.close_all()
-            del(self.driver)
-            if (not PassOrFail == "PASS"):
-                BuiltIn().fail("")
+            if(bSelenium):
+                appiumLib = BuiltIn().get_library_instance('AppiumLibrary')
+                appiumLib._cache.close_all()
+                self.driver.quit()
+                del(self.driver)
+                if (not PassOrFail == "PASS"):
+                    BuiltIn().fail("")
+            else:
+                seleniumLib = BuiltIn().get_library_instance('Selenium2Library')
+                seleniumLib._cache.close_all()
+                self.driver.quit()
+                del(self.driver)
+                if (not PassOrFail == "PASS"):
+                    BuiltIn().fail("")
         else:
             self.driver.quit()
             del(self.driver)
     def Test_Case_2(self, bRobot = True, bSelenium=False):
         #log in
-        global ERRORS,SUCCESS
+        global ERRORS,SUCCESS,WARNS
         ERRORS = []
         SUCCESS = []
+        WARNS = []
         PassOrFail = "PASS"
         try:
             SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium)
@@ -585,12 +627,13 @@ class Test_Case:#(unittest.TestCase):
         finally:
             OutputErrors()
             OutputSucessful()
-            self.tearDown(PassOrFail, bRobot)
+            self.tearDown(PassOrFail, bRobot,bSelenium=bSelenium)
         #2.4 create plot
     def Test_Case_2_3(self, bRobot = True, bSelenium=False):
         PassOrFail = "PASS"
-        global ERRORS,SUCCESS
+        global ERRORS,SUCCESS,WARNS
         ERRORS = []
+        WARNS = []
         SUCCESS = []
         try:
             SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium)
@@ -598,18 +641,19 @@ class Test_Case:#(unittest.TestCase):
             WaitForLoad(self.driver)
             ClickElementIfVis(self.driver,By.XPATH,LAND_INFO_LOCAL_CLIMATE_BUTTON)
             CheckClimate(self.driver)
-            ClickElementIfVis(self.driver, By.XPATH, LAND_INFO_BACK_BUTTON)
+            ClickGoBackLandInfo(self.driver)
         except:
             PassOrFail = "FAIL"
         finally:
             OutputErrors()
             OutputSucessful()
-            self.tearDown(PassOrFail, bRobot)
+            self.tearDown(PassOrFail, bRobot,bSelenium=bSelenium)
         #LandCover
     def Test_Case_2_4(self, bRobot = True, bSelenium=False):
-        global ERRORS,SUCCESS
+        global ERRORS,SUCCESS,WARNS
         ERRORS = []
         SUCCESS = []
+        WARNS = []
         PassOrFail = "PASS"
         try:
             SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium)
@@ -622,8 +666,12 @@ class Test_Case:#(unittest.TestCase):
             ClickElementIfVis(self.driver,By.XPATH,LAND_INFO_ADD_PLOT_BUTTON)
             ClickElementIfVis(self.driver, By.XPATH, "//a[@class='item item-icon-right plotname']")
             LogSuccess("Test 2.4.1 Passed")
-            PlotName = FillPlotInputs(self.driver)
-            FillAllDataForPlot(self.driver)
+            
+            PlotName,PassOrFail = FillPlotData(self.driver, Airplane=False, bFullPlot=True)
+            #PlotName = FillPlotInputs(self.driver)
+            #FillAllDataForPlot(self.driver)
+            
+            
             #click Slope
             #try:
             #    HandleSlope(self.driver)
@@ -632,27 +680,28 @@ class Test_Case:#(unittest.TestCase):
             #    LogError("Test 2.4.4 Failed")
             #click soil layer
             
-            try:
-                HandleSoilLayer(self.driver)
-                LogSuccess("Test 2.4.7 Passed")
-            except:
-                LogError("Test 2.4.7 Failed")
-                PassOrFail = "FAIL"
-            try:
+            #try:
+            #    HandleSoilLayer(self.driver)
+            #    LogSuccess("Test 2.4.7 Passed")
+            #except:
+            #    LogError("Test 2.4.7 Failed")
+            #    PassOrFail = "FAIL"
+            #try:
                 #Review Plot
-                ReviewPlot(self.driver, False, PlotName)
-                LogSuccess("Test 2.4.9 Passed")
-            except:
-                LogError("Test 2.4.9 Failed")
-                PassOrFail = "FAIL"
+            #    ReviewPlot(self.driver, False, PlotName)
+            #    LogSuccess("Test 2.4.9 Passed")
+            #except:
+            #    LogError("Test 2.4.9 Failed")
+            #    PassOrFail = "FAIL"
         finally:
             OutputErrors()
             OutputSucessful()
-            self.tearDown(PassOrFail, bRobot)
+            self.tearDown(PassOrFail, bRobot,bSelenium=bSelenium)
     def Test_Case_0(self, bRobot = True, bSelenium=False):
-        global ERRORS,SUCCESS
+        global ERRORS,SUCCESS,WARNS
         ERRORS = []
         SUCCESS = []
+        WARNS = []
         PassOrFail = "PASS"
         if(bSelenium):
             try:
@@ -664,11 +713,12 @@ class Test_Case:#(unittest.TestCase):
                 ClickElementIfVis(self.driver,By.XPATH,LAND_INFO_ADD_PLOT_BUTTON)
                 ClickElementIfVis(self.driver, By.XPATH, "//a[@class='item item-icon-right plotname']")
                 try:
-                    plotName = FillPlotData(self.driver,Airplane=False, bFullPlot=True)
+                    plotName,PassOrFail = FillPlotData(self.driver,Airplane=False, bFullPlot=True)
                     self.plotNames.append(plotName)
-                    ClickElementIfVis(self.driver, By.XPATH, LAND_INFO_BACK_BUTTON)
-                    ClickElementIfVis(self.driver, By.XPATH, LAND_INFO_BACK_BUTTON)
-                    ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//img[@src='landpks_img/landcover_logo.png']")
+                    goToAppSelection(self.driver)
+                    #ClickElementIfVis(self.driver, By.XPATH, LAND_INFO_BACK_BUTTON)
+                    #ClickElementIfVis(self.driver, By.XPATH, LAND_INFO_BACK_BUTTON)
+                    ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[contains(@ng-show,'device')][not(contains(@class,'hide'))]//img[@src='landpks_img/landcover_logo.png']")
                     WaitForLoad(self.driver)
                     LandCover(self.driver, self.plotNames, Airplane=False)
                     LogSuccess( "Test 0.3 Pass" )
@@ -683,7 +733,7 @@ class Test_Case:#(unittest.TestCase):
             finally:
                 OutputErrors()
                 OutputSucessful()
-                self.tearDown(PassOrFail, bRobot)
+                self.tearDown(PassOrFail, bRobot,bSelenium=bSelenium)
         else:
             try:
                 self.test_add_plot_airplane_verify_it_appears_in_landcover(bRobot)
@@ -696,10 +746,11 @@ class Test_Case:#(unittest.TestCase):
             finally:
                 OutputErrors()
                 OutputSucessful()
-                self.tearDown(PassOrFail, bRobot)
+                self.tearDown(PassOrFail, bRobot,bSelenium=bSelenium)
             
             
     def test_add_plot_airplane_verify_it_appears_in_landcover(self, bRobot = True):
+        global WARNS,SUCCESS,ERRORS
         SetUpApp(self, AirplaneMode=True, bRobot=bRobot, iConnection=1)
         #self.driver.close_app()
         #self.driver.start_activity(app_package=LAND_COVER_ANDROID_PACKAGE, app_activity=LAND_COVER_ANDROID_ACTIVITY_NAME)
@@ -708,15 +759,15 @@ class Test_Case:#(unittest.TestCase):
         try:
             ClickElementIfVis(self.driver, By.XPATH,POSTIVE_POPUP_BUTTON)
         except TimeoutException:
-            LogError( "Message regarding connectivity did not appear" )
+            LogWarn( "Message regarding connectivity did not appear" )
         ClickElementIfVis(self.driver,By.XPATH,LAND_INFO_ADD_PLOT_BUTTON)
         ClickElementIfVis(self.driver, By.XPATH, "//a[@class='item item-icon-right plotname']")
         try:
             plotName = FillPlotData(self.driver,Airplane=True,bFullPlot=True)
             self.plotNames.append(plotName)
-            ClickElementIfVis(self.driver, By.XPATH, LAND_INFO_BACK_BUTTON)
-            ClickElementIfVis(self.driver, By.XPATH, LAND_INFO_BACK_BUTTON)
-            ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//img[@src='landpks_img/landcover_logo.png']")
+            ClickGoBackLandInfo(self.driver)
+            ClickGoBackLandInfo(self.driver)
+            ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[contains(@ng-show,'device')][not(contains(@class,'hide'))]//img[@src='landpks_img/landcover_logo.png']")
             WaitForLoad(self.driver)
             LandCover(self.driver, self.plotNames, True)
             LogSuccess( "Test 0.3 Pass" )
@@ -731,9 +782,10 @@ class Testing(unittest.TestCase):
     AppTest = Test_Case()
     def tester(self):
         #self.AppTest.Test_Case_2(False,True)
-        #self.AppTest.Test_Case_2_4(False)
-        self.AppTest.Test_Case_2_3(False,True)
-        #self.AppTest.Test_Case_0(False)
+        #self.AppTest.Test_Case_2_4(False,False)
+        #self.AppTest.Test_Case_2_4(False,True)
+        #self.AppTest.Test_Case_2_3(False,True)
+        self.AppTest.Test_Case_0(False,True)
         #self.AppTest.test_add_plot(bRobot=False)
         #self.AppTest.test_add_plot_airplane_verify_it_appears_in_landcover(bRobot=False)
 if __name__ == '__main__':    
