@@ -138,7 +138,7 @@ def GetPath():
     modpath = os.path.dirname(os.path.realpath(modpath))
     return modpath
 def GenRandString(type="text"):
-    iStringLen = random.randint(1,15)
+    iStringLen = random.randint(6,15)
     type = string.lower(type)
     ret = ''
     if(type == "text"):

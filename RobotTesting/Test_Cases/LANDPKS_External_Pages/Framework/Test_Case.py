@@ -35,10 +35,13 @@ LAND_INFO_ANDROID_APP = 'http://128.123.177.36:8080/job/LandInfo_Mobile_Andoird_
 LAND_COVER_ANDROID_APP = 'http://128.123.177.36:8080/job/LandCover_Mobile_Andoird_App/ws/platforms/android/build/outputs/apk/android-debug.apk'
 LAND_COVER_ANDROID_PACKAGE = 'org.landpotential.lpks.landcover'
 LAND_INFO_ADD_PLOT_BUTTON = "//div[@nav-bar='active']//span[@class='right-buttons']/a[@class='button button-icon ion-plus-round']"
+LAND_INFO_SETTINGS_BUTTON = "//div[@nav-bar='active']//span[@class='right-buttons']/a[@class='button button-icon ion-gear-b']"
+LAND_INFO_LOGOUT_LINK = "//div[@nav-view='active']//div[@class='scroll']/a[@ng-click='landinfo_logout();']"
 LAND_INFO_WORLD_MAP_BUTTON = "//div[@nav-bar='active']//span[@class='right-buttons']/a[@class='button button-icon ion-ios-world']"
 LAND_INFO_LOCAL_CLIMATE_BUTTON = "//div[@nav-bar='active']//span[@class='right-buttons']/a[@class='button button-icon ion-ios-rainy']"
 #LAND_COVER_ANDROID_PACKAGE = 'org.apache.cordova.splashscreen'
 LAND_COVER_ANDROID_ACTIVITY_NAME = '.MainActivity'
+LAND_INFO_FOOTER = "//ion-view[@cache-view='false']//ion-footer-bar"
 #LAND_COVER_ANDROID_ACTIVITY_NAME = '.SpashScreen'
 LAND_INFO_WEBVIEW_NAME = "WEBVIEW_org.landpotential.lpks.landcover"
 LAND_INFO_BACK_BUTTON = "//div[@nav-bar='active']//a[@class='button button-icon']"
@@ -48,8 +51,11 @@ LAND_INFO_ROCK_FRAGEMENT_CONTENT = "//ion-view[@cache-view='false']//div[@class=
 LAND_INFO_POPUP_ROCK_BODY = "//div[@class='popup-body']//ion-view[@cache-view='false']"
 LAND_INFO_POPUP_ROCK_CONTENT = "//a[@class='item item-icon-right']"
 LAND_INFO_SOIL_TYPE = "//ion-view[@cache-view='false']//div[@class='scroll']//div[@class='othercomponent']/select[@ng-model='texture_value']"
+LAND_INFO_SOIL_TYPE_GUIDE_ME = "//ion-view[@cache-view='false']//div[@class='scroll']//div[@class='othercomponent']/button[@class='button button-balanced button-small']"
+LAND_INFO_SOIL_TYPE_GUIDE_ME_CATES = "//div[@nav-view='active']//div[@class='scroll']/div"
 LAND_INFO_SUBMIT_PLOT_BUTTON = "//div[@nav-view='active']//div[@class='scroll']//button[@id='btnSubmitPlot_1']"
 POSTIVE_POPUP_BUTTON = "//div[@class='popup-buttons']/button[@class='button ng-binding button-positive']"
+NEGATIVE_POPUP_BUTTON = "//div[@class='popup-buttons']/button[@class='button ng-binding button-default']"
 LAND_INFO_POPUP_BODY = "//div[@class='popup-body']"
 LAND_INFO_POPUP_BODY_MESSAGE = "//div[@class='popup-body']/span"
 LANDCOVER_PLOT_LIST = "//ion-view[@cache-view='false']//div[@class='scroll']//div[@class='list']/ion-item"
@@ -114,11 +120,30 @@ def GoBackToPageWithTitle(driver,Title):
     TitleText = GetEleIfVis(driver, By.XPATH,TITLE_LAND_INFO_PAGE_XPATH ).text
     while (not(TitleText in Title) and not("Application Selection" in TitleText) ):
         ClickGoBackLandInfo(driver)
-        WaitForLoad(driver)
         TitleText = GetEleIfVis(driver, By.XPATH,TITLE_LAND_INFO_PAGE_XPATH ).text
 def ClickGoBackLandInfo(driver):
     ClickElementIfVis(driver, By.XPATH, LAND_INFO_BACK_BUTTON)
     WaitForLoad(driver)
+def HandleLogout(driver):
+    ClickElementIfVis(driver, By.XPATH, LAND_INFO_SETTINGS_BUTTON)
+    try:
+        ClickElementIfVis(driver, By.XPATH, LAND_INFO_LOGOUT_LINK)
+        PopUpBody = GetEleIfVis(driver, By.XPATH, LAND_INFO_POPUP_BODY_MESSAGE)
+        Message = PopUpBody.text
+        if("Do you want to sign out account" in Message):
+            ClickElementIfVis( driver, By.XPATH, NEGATIVE_POPUP_BUTTON)
+            ClickElementIfVis(driver, By.XPATH, LAND_INFO_LOGOUT_LINK)
+            ClickElementIfVis(driver, By.XPATH, POSTIVE_POPUP_BUTTON)
+            TitleText = GetEleIfVis(driver, By.XPATH,TITLE_LAND_INFO_PAGE_XPATH ).text
+            if("Accounts" in TitleText):
+                LogSuccess("Test 2.1.4 Pass")
+            else:
+                LogError("Logout was successful but didn't go back to accounts screen. Test 2.1.4 Fail")
+        else:
+            LogError("Logout account button didn't function properly")
+    except Exception:
+        goToAppSelection(driver)
+        raise TestFailedException("Test 2.1.4 Fail")
 def CheckClimate(driver):
     try:
         Chart = GetEleIfVis(driver, By.XPATH, LAND_INFO_LOCAL_CLIMATE_GRAPH)
@@ -263,10 +288,21 @@ def FillPlotInputs(driver):
                                         "longitude" : PlotLong
                                         }
     return PlotName
-def HandleSoilLayer(driver):
-    ClickElementIfVis(driver, By.XPATH, '{0}{1}'.format(LAND_INFO_MENU_ITEM_PATH,'[7]'))
-    #click first soil layer
-    ClickElementIfVis(driver, By.XPATH, '{0}{1}'.format(LAND_INFO_MENU_ITEM_PATH,'[1]'))
+def HandleSoilLayer(driver,plotName,bAllLayers = False):
+    if(bAllLayers):
+        ClickElementIfVis(driver, By.XPATH, '{0}{1}'.format(LAND_INFO_MENU_ITEM_PATH,'[7]'))
+        Layers = GetElesIfVis(driver, By.XPATH, LAND_INFO_MENU_ITEM_PATH)
+        for Layer in range(1,len(Layers) + 1):
+            ClickElementIfVis(driver, By.XPATH, '{0}[{1}]'.format(LAND_INFO_MENU_ITEM_PATH,Layer))
+            _HandleIndividualLayer(driver,plotName)
+    else:
+        ClickElementIfVis(driver, By.XPATH, '{0}{1}'.format(LAND_INFO_MENU_ITEM_PATH,'[7]'))
+        #click first soil layer
+        ClickElementIfVis(driver, By.XPATH, '{0}{1}'.format(LAND_INFO_MENU_ITEM_PATH,'[1]'))
+        _HandleIndividualLayer(driver, plotName)
+    #Go back to main page
+    GoBackToPageWithTitle(driver," {0}".format(plotName))
+def _HandleIndividualLayer(driver,plotName):
     #Click Rock Fragment content
     ClickElementIfVis(driver, By.XPATH, LAND_INFO_ROCK_FRAGEMENT_CONTENT)
     #select Fragment Content
@@ -274,9 +310,31 @@ def HandleSoilLayer(driver):
     eles[random.randint(0,3)].click()
     #Select which soil type
     SelectBoxSelectRand(driver,By.XPATH,LAND_INFO_SOIL_TYPE)
-    #Go back to main page
-    ClickGoBackLandInfo(driver)
-    ClickGoBackLandInfo(driver)
+    try:
+        ClickElementIfVis(driver, By.XPATH, LAND_INFO_SOIL_TYPE_GUIDE_ME)
+        CategoriesGuideME = GetElesIfVis(driver, By.XPATH, LAND_INFO_SOIL_TYPE_GUIDE_ME_CATES)
+        if(len(CategoriesGuideME) > 0):
+            for Category in range(1,len(CategoriesGuideME)):
+                VideoXpath = "{0}[{1}]//div[@class='buttons']/img".format(LAND_INFO_SOIL_TYPE_GUIDE_ME_CATES,Category)
+                RadiosXpath = "{0}[{1}]//input[@type='radio']".format(LAND_INFO_SOIL_TYPE_GUIDE_ME_CATES,Category)
+                Radios = GetElesIfVis(driver, By.XPATH, RadiosXpath)
+                if(len(Radios) == 2):
+                    Radios[-1].click() #click no
+                    Texture = GetEleIfVis(driver, By.XPATH, "{0}//h5[@id='textureValue']".format(LAND_INFO_FOOTER)).text
+                    Radios[0].click()
+                elif(len(Radios) == 3):
+                    RadiosNextCatXpath = "{0}[{1}]//input[@type='radio']".format(LAND_INFO_SOIL_TYPE_GUIDE_ME_CATES,Category + 1)
+                    RadiosNextCat = driver.find_elements(By.XPATH,RadiosNextCatXpath)
+                    for radioThisCat in Radios:
+                        radioThisCat.click()
+                        RadiosNextCat = driver.find_elements(By.XPATH,RadiosNextCatXpath)
+                        for nextCatRad in RadiosNextCat:
+                            nextCatRad.click()
+                            Texture = GetEleIfVis(driver, By.XPATH, "{0}//h5[@id='textureValue']".format(LAND_INFO_FOOTER)).text
+            ClickElementIfVis(driver, By.XPATH, "{0}//button[@class='button button-balanced']".format(LAND_INFO_FOOTER))
+        ClickGoBackLandInfo(driver)
+    except Exception:
+        raise TestFailedException("error while processing soil layer guide me")
 def FindErrors(driver, ByType=By.XPATH, errorElePath=LAND_INFO_POPUP_BODY_MESSAGE):
     eles = GetElesIfVis(driver, ByType, errorElePath)
     errors = {}
@@ -303,15 +361,15 @@ def ProcErrors(driver, ErrorDict={}):
         bSlopeError = True
     if("at least one soil layer" in ErrorDict):
         bLayerError = True
-def HandleSlope(driver):
+def HandleSlope(driver, plotName):
     ClickElementIfVis(driver, By.XPATH, '{0}{1}'.format(LAND_INFO_MENU_ITEM_PATH,'[4]'))
     #Click first slope
     eles = GetElesIfVis(driver, By.XPATH,LAND_INFO_PLOT_INFO_PATH)
     for ele in eles:
         ele.click()
         break
-    ClickGoBackLandInfo(driver)
-def _FillAllDataForPlot(driver):
+    GoBackToPageWithTitle(driver," {0}".format(plotName))
+def _FillAllDataForPlot(driver,plotName):
     for i in range(2, 7):
         try:
             ClickElementIfVis(driver, By.XPATH, '{0}[{1}]'.format(LAND_INFO_MENU_ITEM_PATH,i))
@@ -322,7 +380,7 @@ def _FillAllDataForPlot(driver):
         except :
             LogError("Test {0} Failed".format(DICT_TEST_MESSAGES_KEY_MENU_NUM[i]["TestName"]))
             continue
-        ClickGoBackLandInfo(driver)                        
+        GoBackToPageWithTitle(driver," {0}".format(plotName))                       
 def ReviewPlot(driver, Airplane, PlotName):
     ClickElementIfVis(driver, By.XPATH, '{0}{1}'.format(LAND_INFO_MENU_ITEM_PATH,'[9]'))
     ClickElementIfVis(driver, By.XPATH,LAND_INFO_SUBMIT_PLOT_BUTTON)
@@ -354,19 +412,20 @@ def FillPlotData(driver, Airplane = False, bFullPlot = False):
     PassOrFail = "PASS"
     PlotName = FillPlotInputs(driver)
     if(bFullPlot):
-        _FillAllDataForPlot(driver)
+        _FillAllDataForPlot(driver,PlotName)
         try:
-            HandleSoilLayer(driver)
+            HandleSoilLayer(driver,PlotName)
             LogSuccess("Test 2.4.7 Passed")
         except:
             LogError("Test 2.4.7 Failed")
             PassOrFail = "FAIL"
     else:
         #click Slope
-        HandleSlope(driver)
+        HandleSlope(driver,PlotName)
         #click soil layer
-        HandleSoilLayer(driver)
+        HandleSoilLayer(driver,PlotName)
     #Review Plot
+    GoBackToPageWithTitle(driver," {0}".format(PlotName))
     ReviewPlot(driver, Airplane=Airplane, PlotName=PlotName)
     return PlotName,PassOrFail
 def SendTextToEle(weEle, strValue):
@@ -642,6 +701,9 @@ class Test_Case:#(unittest.TestCase):
         PassOrFail = "PASS"
         try:
             SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium)
+            ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[contains(@ng-show,'device')][not(contains(@class,'hide'))]/img[@src='landpks_img/landinfo_logo.png']")
+            WaitForLoad(self.driver)
+            HandleLogout(self.driver)
             LogSuccess("Test 2.1.1 Passed")
         except:
             LogError("Test 2.1 Failed")
@@ -819,7 +881,7 @@ class Testing(unittest.TestCase):
         #self.AppTest.Test_Case_2_4(False,False)
         #self.AppTest.Test_Case_2_4(False,True)
         #self.AppTest.Test_Case_2_3(False,True)
-        self.AppTest.Test_Case_0(False,False)
+        self.AppTest.Test_Case_2_4(False,False)
         
         #self.AppTest.test_add_plot(bRobot=False)
         #self.AppTest.test_add_plot_airplane_verify_it_appears_in_landcover(bRobot=False)
