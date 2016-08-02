@@ -382,9 +382,16 @@ def LandCover(driver, plots, Airplane=False):
         String = "{0}{1}".format(LANDCOVER_PLOT_LIST,"[contains(.,'{0}')]".format(plot))
         try:
             PlotFound = GetEleIfVis(driver, By.XPATH, String)
+        except TimeoutException:
+            LogError( "Plot '{0}' was not found in landcover in airplane mode.".format(plot) )
+            continue
+        try:
             LogSuccess("Plot '{0}' found in landcover in airplane mode as expected".format(plot))
             PlotFound.click()
             ProcLandCover(driver)
+        except Exception:
+            LogError("Error processing landcover")
+        try:
             ClickElementIfVis(driver, By.XPATH, LAND_COVER_SUBMIT_BUTTON)
             MessageEle = GetEleIfVis(driver, By.XPATH,LAND_INFO_POPUP_BODY_MESSAGE)
             MessageText = MessageEle.text
@@ -395,7 +402,7 @@ def LandCover(driver, plots, Airplane=False):
                 MessageEle = GetEleIfVis(driver, By.XPATH,LAND_INFO_POPUP_BODY_MESSAGE)
                 MessageText = MessageEle.text
                 if("Transect data has been marked for background upload" in MessageText):
-                    LogSuccess("Land cover {0} has been submitted for background upload")
+                    LogSuccess("Land cover {0} has been submitted for background upload".format(plot))
                 ClickElementIfVis(driver, By.XPATH,POSTIVE_POPUP_BUTTON)
             WaitForLoad(driver)
             MessageEle = GetEleIfVis(driver, By.XPATH,LAND_COVER_SITE_SUMMARY)
@@ -406,8 +413,10 @@ def LandCover(driver, plots, Airplane=False):
             else:
                 LogSuccess(DICT_OUTPUT_MESSAGE_NO_DATA_KEY["LandCover"]["PlotSucess"].format(plot))
                 ClickGoBackLandInfo(driver)
-        except TimeoutException:
-            LogError( "Plot '{0}' was not found in landcover in airplane mode.".format(plot) )
+        except TestFailedException :
+            break
+        except Exception:
+            LogError("Unknown error while processing landcover")
     ClickGoBackLandInfo(driver)
 def WaitForLoad(driver):
     wait = WebDriverWait(driver, 30)
@@ -475,14 +484,14 @@ def TestCaps():
 def TestCapsSel():
     caps= {}
     
-    #caps['platform'] = "linux"
-    #caps['browserName'] = "chrome"
-    #caps['version'] = ""
-    #caps["os"] = "linux"
-    caps['platform'] = "windows 7"
-    caps['browserName'] = "internet explorer"
-    caps['version'] = "11"
-    caps["os"] = "windows"
+    caps['platform'] = "linux"
+    caps['browserName'] = "chrome"
+    caps['version'] = ""
+    caps["os"] = "linux"
+    #caps['platform'] = "windows 7"
+    #caps['browserName'] = "internet explorer"
+    #caps['version'] = "11"
+    #caps["os"] = "windows"
     return caps
 def SetDriver(Test,AirplaneMode, bSel = False):
     
@@ -734,9 +743,10 @@ class Test_Case:#(unittest.TestCase):
                     ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[contains(@ng-show,'device')][not(contains(@class,'hide'))]//img[@src='landpks_img/landcover_logo.png']")
                     WaitForLoad(self.driver)
                     LandCover(self.driver, self.plotNames, Airplane=False)
-                    LogSuccess( "Test 0.3 Pass" )
-                except WebDriverException:
-                    LogError("Web exception")
+                except ElementNotFoundTimeoutException:
+                    raise Exception
+                except TestFailedException:
+                    raise Exception
                 LogSuccess("Test 0.1 Passed")
                 LogSuccess("Test 0.2 Passed")
                 LogSuccess("Test 0.3 Passed")
@@ -746,6 +756,7 @@ class Test_Case:#(unittest.TestCase):
             finally:
                 OutputErrors()
                 OutputSucessful()
+                OutputWarns()
                 self.tearDown(PassOrFail, bRobot,bSelenium=bSelenium)
         else:
             try:
@@ -776,12 +787,12 @@ class Test_Case:#(unittest.TestCase):
         ClickElementIfVis(self.driver,By.XPATH,LAND_INFO_ADD_PLOT_BUTTON)
         ClickElementIfVis(self.driver, By.XPATH, "//a[@class='item item-icon-right plotname']")
         try:
-            plotName = FillPlotData(self.driver,Airplane=True,bFullPlot=True)
+            plotName,PassOrFail = FillPlotData(self.driver,Airplane=True, bFullPlot=True)
             self.plotNames.append(plotName)
             goToAppSelection(self.driver)
             ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[contains(@ng-show,'device')][not(contains(@class,'hide'))]//img[@src='landpks_img/landcover_logo.png']")
             WaitForLoad(self.driver)
-            LandCover(self.driver, self.plotNames, True)
+            LandCover(self.driver, self.plotNames, Airplane=True)
             LogSuccess( "Test 0.3 Pass" )
         except TimeoutException:
             LogError("TIMEOUT")
@@ -808,7 +819,7 @@ class Testing(unittest.TestCase):
         #self.AppTest.Test_Case_2_4(False,False)
         #self.AppTest.Test_Case_2_4(False,True)
         #self.AppTest.Test_Case_2_3(False,True)
-        self.AppTest.Test_Case_0(False,True)
+        self.AppTest.Test_Case_0(False,False)
         
         #self.AppTest.test_add_plot(bRobot=False)
         #self.AppTest.test_add_plot_airplane_verify_it_appears_in_landcover(bRobot=False)
