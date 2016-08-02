@@ -1,19 +1,16 @@
-
-import os #, os.path
-import random
-import string
-from cherrypy.lib.static import serve_file
-from subprocess import call
-import cherrypy
-import shutil
-import sys
-import performance_measurement
-import threading
-from os import walk
-import json
-import git
 import base64
+import json
+import os #, os.path
 import platform
+import sys
+from os import walk
+
+import cherrypy
+import git
+from cherrypy.lib.static import serve_file
+
+import performance_measurement
+
 SYSTEM = platform.system()
 class WebServer(object):
 
@@ -118,7 +115,7 @@ class WebService(object):
     def GET(self):
         return cherrypy.session['mystring']
     def POST(self, FileName, TestCase, host, version):
-        if (FileName == 'Test_Cases/API/TestSuites.robot'):
+        if (FileName == 'Test_Cases/API/TestScript.robot'):
             url = "sudo pybot --include {0} --variable host:{2} --variable version:{3} --outputdir /home/essa/workspace/code/myweb/output /home/essa/workspace/code/myweb/robotframework-scripts/{1}".format(TestCase,FileName,host,version)
         else:
             url = "{3} --include {0} --outputdir {2}/output {2}/robotframework-scripts/{1}".format(TestCase,FileName,GetPath(),self.COMMAND)
