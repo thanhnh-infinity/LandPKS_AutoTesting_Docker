@@ -1,9 +1,8 @@
 import os
-
 import requests
 
 
-class mylibrary(object):
+class MyLibrary(object):
     def initiate_a_request(self, url):
         return requests.get(url).status_code
 
@@ -15,10 +14,11 @@ class mylibrary(object):
 
     def read_a_test_case_from_file(self, test_case_name, file):
         url = ''
-        f = open(os.curdir + "/template/" + file, 'r')
+        f = open(os.getcwd() + "/robotframework-scripts/Test_Cases/API/template/" + file, "r")
         for line in f:
             words = line.split(",")
             if (words.pop(0).lower() == test_case_name.lower()):
                 url = url + words.pop(1) + "\n"
         f.close()
         return url
+

@@ -1,0 +1,3 @@
+Get_all_records_of_LandInfo_by_all_recorder_name,GetAPI,&action=get&object=landinfo&type=get_all&recorder_name=all;200
+Get_all_records_of_LandInfo_by_all_recorder_name_delimiter_display,GetAPI,&action=get&object=landinfo&type=get_all&recorder_name=all&delimiter=%3B&display=PREDICTION%20%3B%20GEOSPATIAL_DATA%20%3B%20ANALYTIC_DATA_SOIL%20%3B%20CLIMATE;200
+Get_single_record_of_LandInfo_by_name_recorder_name,GetAPI,&action=get&object=landinfo&type=get_by_pair_name_recorder_name&name=lpks.test%40gmail.com-Essa-Test01&recorder_name=lpks.test%40gmail.com;200

@@ -1,17 +1,23 @@
-import base64
-import json
+
 import os #, os.path
-import platform
-import sys
-from os import walk
-
-import cherrypy
-import git
+import random
+import string
 from cherrypy.lib.static import serve_file
-
+from subprocess import call
+import cherrypy
+import shutil
+import sys
 import performance_measurement
-
+import threading
+from os import walk
+import json
+import git
+import base64
+import platform
+import gen
 SYSTEM = platform.system()
+
+
 class WebServer(object):
 
     @cherrypy.expose
@@ -37,8 +43,11 @@ class WebServer(object):
                             f.append({"Name" : file,
                                       "Path":"{0}\\{1}".format(subpath,file)})
         return json.dumps(f)
+
+
     def report_html(self):
         try:
+            print GetPath()
             return open(GetPath() + '/output/report.html')
         except:
             print("Unexpected error:", sys.exc_info()[0])
@@ -50,6 +59,8 @@ class WebServer(object):
             return open(GetPath() + '/output/log.html')
         except:
             print("Unexpected error:", sys.exc_info()[0])
+
+
     def remote_host(self, key):
         try:
             if (key == base64.b64decode(open(GetPath() + "/Utils/key.hexo").read())):
@@ -99,11 +110,15 @@ class WebServer(object):
     get_files.exposed=True
     git_clone.exposed=True
     remote_host.exposed=True
+
+
 class FileServer(object):
     def index(self, fileName):
         string = GetPath() + fileName
         return serve_file(GetPath() + fileName,  "application/x-download", "attachment")
     index.exposed = True
+
+
 class WebService(object):
     exposed = True
     COMMAND = ""
@@ -112,21 +127,45 @@ class WebService(object):
     else:
         COMMAND= "pybot"
     @cherrypy.tools.accept(media='text/plain')
+
+
     def GET(self):
         return cherrypy.session['mystring']
-    def POST(self, FileName, TestCase, host, version):
-        if (FileName == 'Test_Cases/API/TestScript.robot'):
-            url = "sudo pybot --include {0} --variable host:{2} --variable version:{3} --outputdir /home/essa/workspace/code/myweb/output /home/essa/workspace/code/myweb/robotframework-scripts/{1}".format(TestCase,FileName,host,version)
-        else:
-            url = "{3} --include {0} --outputdir {2}/output {2}/robotframework-scripts/{1}".format(TestCase,FileName,GetPath(),self.COMMAND)
-        if(SYSTEM == "Windows"):
-            url = url.replace("/", "\\")
-        os.system( url)
-        #shutil.copy2('/report.html', '/root/workspace/code/myweb/report.html')
-        #shutil.copy2('/log.html', '/root/workspace/code/myweb/log.html')
-        return "DONE!"
+
+
+    
+    def POST(self, FileName, TestCase, host, version, ctc):
+        try:
+            if (FileName == 'Test_Cases/API/TestScript.robot' or FileName == 'Test_Cases/API/TmpScript.robot'):
+                path = os.getcwd()
+                if (FileName == 'Test_Cases/API/TmpScript.robot'):
+                    s = ''
+                    for line in ctc.splitlines():
+                        s += line + "\n"
+                    gen._write_to_file("/robotframework-scripts/Test_Cases/API/template/TmpCases", s)
+                    gen._generate_test_script("TmpScript.robot","TmpCases")
+                    url = "sudo pybot --variable host:{0} --variable version:{1} --outputdir {2}/output {2}/robotframework-scripts/{3}".format(host, version, path, FileName)
+                else:
+                    url = "sudo pybot --include {0} --variable host:{1} --variable version:{2} --outputdir {3}/output {3}/robotframework-scripts/{4}".format(TestCase,host,version,path,FileName)
+            else:
+                url = "{3} --include {0} --outputdir {2}/output {2}/robotframework-scripts/{1}".format(TestCase,
+                                                                                                   FileName,
+                                                                                                   GetPath(),
+                                                                                                   self.COMMAND)
+            if (SYSTEM == "Windows"):
+                url = url.replace("/", "\\")
+            print url
+            os.system(url)
+            return "DONE!"
+
+        except:
+            print("Unexpected error:", sys.exc_info()[0])
+
+
     def PUT(self, another_string):
         cherrypy.session['mystring'] = another_string
+    
+
     def DELETE(self):
         cherrypy.session.pop('mystring', None)
 
@@ -150,6 +189,7 @@ if __name__ == '__main__':
     conf = {
          '/': {
              'tools.sessions.on': True,
+             'response.timeout' : 60000
          },
          '/luncher': {
              'request.dispatch': cherrypy.dispatch.MethodDispatcher(),
