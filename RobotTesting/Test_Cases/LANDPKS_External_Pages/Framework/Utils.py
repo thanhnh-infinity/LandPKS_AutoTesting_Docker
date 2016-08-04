@@ -41,6 +41,131 @@ TestTypes = {
                   ]
               }
              }
+def GenDynaAndroidTestsAppend():
+    TestTypesBrowsered = {}
+    ExecCommand = "pybot {0}"
+    JenkinsBrowsers = parseJSONJenkinsCapa()
+    if(len(JenkinsBrowsers) > 0):
+        for config in JenkinsBrowsers:
+            if(( "iphone" in config) or ( "android" in config)):
+                NameNewTest = "{0} {1} {2}".format(config["os"],config["Browser"],config["version"])
+                TestTypesBrowsered[NameNewTest] = {}
+                TestTypesBrowsered[NameNewTest]["strReplace"] = []
+                TestTypesBrowsered[NameNewTest]["fileName"] = "{0}_{1}_{2}_Web_App.robot".format(config["platform"],config["Browser"],config["version"])
+                
+                TestTypesBrowsered[NameNewTest]["strReplace"].append({"OldText":"${PLATFORM}       Android","NewText" : "${Platform}       %s"%config["platform"]})
+                TestTypesBrowsered[NameNewTest]["strReplace"].append({"OldText":"${OS}             linux","NewText" : "${OS}             %s"%config["os"]})
+                
+                TestTypesBrowsered[NameNewTest]["strReplace"].append({"OldText":"${BrowserName}    chrome","NewText" : "${BrowserName}    %s"%config["Browser"]})
+                TestTypesBrowsered[NameNewTest]["strReplace"].append({"OldText":"${platformVersion}    5.1","NewText" : "${platformVersion}    %s"%config["version"]})
+                TestTypesBrowsered[NameNewTest]["strReplace"].append({"OldText":"x Android 5.1","NewText" : "x %s %s"%(config["platform"],config["Browser"])})
+        for Key in TestTypesBrowsered:
+            FilePath = GenDynaTestCaseAppend("..\\WebAppTesting.robot","DynaTestGened.robot",bCompletePath=False,strReplace =TestTypesBrowsered[Key]["strReplace"])
+        os.system(ExecCommand.format(
+                                     '"{0}"'.format(FilePath)
+                                     )
+                  )
+        os.remove(FilePath)
+        del(TestTypesBrowsered)
+    #endIF
+    else:
+        for Key in TestTypes:
+            for Browser in BROWSERS:
+                for BrowserVer in BROWSER_VERSIONS[Browser]:
+                    NameNewTest = "{0} {1} {2}".format(Key,Browser,BrowserVer)
+                    TestTypesBrowsered[NameNewTest] = dict(TestTypes[Key])
+                    TestTypesBrowsered[NameNewTest]["strReplace"] = list(TestTypes[Key]["strReplace"])
+                    TestTypesBrowsered[NameNewTest]["Browser"] = Browser
+                    TestTypesBrowsered[NameNewTest]["fileName"] = "{0}_Ver_{1}_{2}".format(Browser,BrowserVer,TestTypes[Key]["fileName"])
+                    TestTypesBrowsered[NameNewTest]["strReplace"].append({"OldText":"${BrowserName}    chrome","NewText" : "${BrowserName}    %s"%Browser})
+                    TestTypesBrowsered[NameNewTest]["strReplace"].append({"OldText":"${BrowserVersion}    \"\"","NewText" : "${BrowserVersion}    %s"%BrowserVer})
+                    TestTypesBrowsered[NameNewTest]["strReplace"].append({"OldText":"x Linux Chrome","NewText" : "x Windows 7 %s"%Browser})
+        for Key in TestTypesBrowsered:
+            FilePath = GenDynaTestCaseAppend("..\\WebAppTesting.robot","DynaTestGened.robot",bCompletePath=False,strReplace =TestTypesBrowsered[Key]["strReplace"])
+        os.system(ExecCommand.format(
+                                     FilePath
+                                     )
+                  )
+        os.remove(FilePath)
+        del(TestTypesBrowsered)
+
+def GenDynaWebAppTestsAppend():
+    TestTypesBrowsered = {}
+    ExecCommand = "pybot {0}"
+    JenkinsBrowsers = parseJSONJenkinsCapa()
+    if(len(JenkinsBrowsers) > 0):
+        for config in JenkinsBrowsers:
+            if((not "iphone" in config) and (not "android" in config)):
+                NameNewTest = "{0} {1} {2}".format(config["os"],config["Browser"],config["version"])
+                TestTypesBrowsered[NameNewTest] = {}
+                TestTypesBrowsered[NameNewTest]["strReplace"] = []
+                TestTypesBrowsered[NameNewTest]["fileName"] = "{0}_{1}_{2}_Web_App.robot".format(config["platform"],config["Browser"],config["version"])
+                
+                TestTypesBrowsered[NameNewTest]["strReplace"].append({"OldText":"${Platform}       linux","NewText" : "${Platform}       %s"%config["platform"]})
+                TestTypesBrowsered[NameNewTest]["strReplace"].append({"OldText":"${OS}             linux","NewText" : "${OS}             %s"%config["os"]})
+                
+                TestTypesBrowsered[NameNewTest]["strReplace"].append({"OldText":"${BrowserName}    chrome","NewText" : "${BrowserName}    %s"%config["Browser"]})
+                TestTypesBrowsered[NameNewTest]["strReplace"].append({"OldText":"${BrowserVersion}    \"\"","NewText" : "${BrowserVersion}    %s"%config["version"]})
+                TestTypesBrowsered[NameNewTest]["strReplace"].append({"OldText":"x Linux Chrome","NewText" : "x %s %s"%(config["platform"],config["Browser"])})
+        for Key in TestTypesBrowsered:
+            FilePath = GenDynaTestCaseAppend("..\\WebAppTesting.robot","DynaTestGened.robot",bCompletePath=False,strReplace =TestTypesBrowsered[Key]["strReplace"])
+        os.system(ExecCommand.format(
+                                     '"{0}"'.format(FilePath)
+                                     )
+                  )
+        os.remove(FilePath)
+        del(TestTypesBrowsered)
+    #endIF
+    else:
+        for Key in TestTypes:
+            for Browser in BROWSERS:
+                for BrowserVer in BROWSER_VERSIONS[Browser]:
+                    NameNewTest = "{0} {1} {2}".format(Key,Browser,BrowserVer)
+                    TestTypesBrowsered[NameNewTest] = dict(TestTypes[Key])
+                    TestTypesBrowsered[NameNewTest]["strReplace"] = list(TestTypes[Key]["strReplace"])
+                    TestTypesBrowsered[NameNewTest]["Browser"] = Browser
+                    TestTypesBrowsered[NameNewTest]["fileName"] = "{0}_Ver_{1}_{2}".format(Browser,BrowserVer,TestTypes[Key]["fileName"])
+                    TestTypesBrowsered[NameNewTest]["strReplace"].append({"OldText":"${BrowserName}    chrome","NewText" : "${BrowserName}    %s"%Browser})
+                    TestTypesBrowsered[NameNewTest]["strReplace"].append({"OldText":"${BrowserVersion}    \"\"","NewText" : "${BrowserVersion}    %s"%BrowserVer})
+                    TestTypesBrowsered[NameNewTest]["strReplace"].append({"OldText":"x Linux Chrome","NewText" : "x Windows 7 %s"%Browser})
+        for Key in TestTypesBrowsered:
+            FilePath = GenDynaTestCaseAppend("..\\WebAppTesting.robot","DynaTestGened.robot",bCompletePath=False,strReplace =TestTypesBrowsered[Key]["strReplace"])
+        os.system(ExecCommand.format(
+                                     FilePath
+                                     )
+                  )
+        os.remove(FilePath)
+        del(TestTypesBrowsered)
+def GenDynaTestCaseAppend(PlaceHolderTestCase,NameOfTestCase, bCompletePath,**Changes):
+    SYSTEM = platform.system()
+    FilePath = ""
+    if SYSTEM == "Windows":
+        PlaceHolderTestCase = PlaceHolderTestCase.replace("/","\\")
+    else:
+        PlaceHolderTestCase = PlaceHolderTestCase.replace("\\","/")
+    if(bCompletePath):
+        FilePath = PlaceHolderTestCase
+    else:
+        FilePath = "{0}{2}{1}".format(GetPath(), PlaceHolderTestCase, "\\" if SYSTEM == "Windows" else "/")
+    TestCase = open(FilePath, 'r')
+    TestCaseText = TestCase.read()
+    TestCaseText = TestCaseText.split("*** Test Cases ***")
+    TestCase.close()
+    for Change in Changes:
+        TestCaseText[-1] = ProcChangeItem(Changes,Change,TestCaseText[-1])
+        #TestCaseText = TypeChange(TestCaseText)
+        #TestCaseText = TestCaseText.replace(Changes[Change]["OldText"], Changes[Change]["NewText"])
+    NewTestPath = "{0}{2}{1}".format(os.path.dirname(os.path.realpath(FilePath)), NameOfTestCase, "\\" if SYSTEM == "Windows" else "/")
+    if(not os.path.isfile(NewTestPath)):
+        NewTest = open( NewTestPath, 'a')
+        NewTest.write(TestCaseText[0])
+        NewTest.write("*** Test Cases ***")
+        NewTest.close()
+    NewTest = open( NewTestPath, 'a')
+    NewTest.write(TestCaseText[-1])
+    NewTest.close()
+    return NewTestPath
+
 def GenDynaWebAppTests():
     TestTypesBrowsered = {}
     ExecCommand = "pybot {0}"

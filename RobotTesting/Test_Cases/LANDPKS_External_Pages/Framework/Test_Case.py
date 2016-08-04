@@ -24,7 +24,7 @@ from Utils import GenRandString
 from Utils import GetSauceCreds
 from Utils import SelectBoxSelectRand
 import simplejson as json
-from Utils import GenDynaWebAppTests
+from Utils import GenDynaWebAppTestsAppend
 from Utils import get_uname_and_pword_lpks_gmail
 from selenium import webdriver as selWebDriver
 
@@ -56,6 +56,7 @@ LAND_INFO_SOIL_TYPE_GUIDE_ME_CATES = "//div[@nav-view='active']//div[@class='scr
 LAND_INFO_SUBMIT_PLOT_BUTTON = "//div[@nav-view='active']//div[@class='scroll']//button[@id='btnSubmitPlot_1']"
 POSTIVE_POPUP_BUTTON = "//div[@class='popup-buttons']/button[@class='button ng-binding button-positive']"
 NEGATIVE_POPUP_BUTTON = "//div[@class='popup-buttons']/button[@class='button ng-binding button-default']"
+GENERIC_POPUP_BUTTON = "//div[@class='popup-buttons']/button"
 LAND_INFO_POPUP_BODY = "//div[@class='popup-body']"
 LAND_INFO_POPUP_BODY_MESSAGE = "//div[@class='popup-body']/span"
 LANDCOVER_PLOT_LIST = "//ion-view[@cache-view='false']//div[@class='scroll']//div[@class='list']/ion-item"
@@ -82,10 +83,16 @@ DICT_ELEMENT_PATH_TO_NAME = {
                              LAND_INFO_POPUP_BODY_MESSAGE : "Popup message",
                              LAND_COVER_SUBMIT_BUTTON : "Submit Land Cover Button"
                              }
+DICT_VIDEO_SRC_TO_TEST = {
+                          "SoilBallHQ.mp4" :" Test 2.4.7.{0}.2.2.1.1 Pass",
+                          "RibbonHQ.mp4" : "Test 2.4.7.{0}.2.2.2.1 Pass",
+                          "RibbonLengthHQ.mp4" : "Test 2.4.7.{0}.2.2.3.1 Pass",
+                          "SmoothHQ.mp4" : "Test 2.4.7.{0}.2.2.4.1 Pass"
+                          }
 DICT_OUTPUT_MESSAGE_NO_DATA_KEY =   {
                                    True : {"PlotUnsucess" : "Error, no connectivity and plot was not flagged for upload",
-                                           "PlotSucess" : "Test 2.4.9.1 passed. {0} Flagged for Background upload"},
-                                   False: {"PlotSucess" : "Test 2.4.9.1 passed. {0} was submitted",
+                                           "PlotSucess" : "Test 2.4.9.1 Pass. {0} Flagged for Background upload"},
+                                   False: {"PlotSucess" : "Test 2.4.9.1 Pass. {0} was submitted",
                                            "PlotUnsucess" : "Error, Plot was not submitted"},
                                    "LandCover": {"PlotSucess" : "Landcover for plot {0} was submitted and site summary properly displayed",
                                                  "PlotUnsucess" : "Error, Plot was not submitted in landcover and site summary did not appear"}           
@@ -155,9 +162,9 @@ def CheckClimate(driver):
         LatNumStr = strLat.split(":")[-1]
         LatNumStr = LatNumStr.strip()
         LatNum = float(LatNumStr)
-        LogSuccess("Test 2.3 Passed")
-        LogSuccess("Test 2.3.1 Passed")
-        LogSuccess("Test 2.3.1.2 Passed")
+        LogSuccess("Test 2.3 Pass")
+        LogSuccess("Test 2.3.1 Pass")
+        LogSuccess("Test 2.3.1.2 Pass")
     except:
         LogError("Test 2.3 Failed")
         LogError("Test 2.3.1 Failed")
@@ -265,9 +272,9 @@ def FillPlotInputs(driver):
                 Data = GenRandString()
                 if(eleInput.get_attribute("id") == "name"):
                     PlotName = Data
-                    LogSuccess("Test 2.4.1.1 Passed")
+                    LogSuccess("Test 2.4.1.1 Pass")
                 else:
-                    LogSuccess("Test 2.4.1.2 Passed")
+                    LogSuccess("Test 2.4.1.2 Pass")
                 SendTextToEle(eleInput,Data)
                 
             elif(EleType == "number"):
@@ -276,11 +283,11 @@ def FillPlotInputs(driver):
                     PlotLat = Data
                 if(eleInput.get_attribute("id") == "longitude"):
                     PlotLong = Data
-                    LogSuccess("Test 2.4.1.3.3 Passed")
+                    LogSuccess("Test 2.4.1.3.3 Pass")
                 SendTextToEle(eleInput,Data)
             elif(EleType == "radio" and eleInput.get_attribute("value") == "small"):
                 eleInput.click()
-                LogSuccess("Test 2.4.1.3 Passed")
+                LogSuccess("Test 2.4.1.3 Pass")
     except:
         LogError("New plot could not be created in Landinfo")
     ClickGoBackLandInfo(driver)
@@ -294,17 +301,18 @@ def HandleSoilLayer(driver,plotName,bAllLayers = False):
         Layers = GetElesIfVis(driver, By.XPATH, LAND_INFO_MENU_ITEM_PATH)
         for Layer in range(1,len(Layers) + 1):
             ClickElementIfVis(driver, By.XPATH, '{0}[{1}]'.format(LAND_INFO_MENU_ITEM_PATH,Layer))
-            _HandleIndividualLayer(driver,plotName)
+            _HandleIndividualLayer(driver,plotName, Layer)
     else:
         ClickElementIfVis(driver, By.XPATH, '{0}{1}'.format(LAND_INFO_MENU_ITEM_PATH,'[7]'))
         #click first soil layer
         ClickElementIfVis(driver, By.XPATH, '{0}{1}'.format(LAND_INFO_MENU_ITEM_PATH,'[1]'))
-        _HandleIndividualLayer(driver, plotName)
+        _HandleIndividualLayer(driver, plotName, 1)
     #Go back to main page
     GoBackToPageWithTitle(driver," {0}".format(plotName))
-def _HandleIndividualLayer(driver,plotName):
+def _HandleIndividualLayer(driver,plotName,iSoilLayer):
     #Click Rock Fragment content
     ClickElementIfVis(driver, By.XPATH, LAND_INFO_ROCK_FRAGEMENT_CONTENT)
+    LogSuccess("Test 2.4.7.{0}.1 Pass".format(iSoilLayer))
     #select Fragment Content
     eles = GetElesIfVis(driver, By.XPATH,'{0}{1}'.format(LAND_INFO_POPUP_ROCK_BODY, LAND_INFO_POPUP_ROCK_CONTENT))
     eles[random.randint(0,3)].click()
@@ -314,8 +322,11 @@ def _HandleIndividualLayer(driver,plotName):
         ClickElementIfVis(driver, By.XPATH, LAND_INFO_SOIL_TYPE_GUIDE_ME)
         CategoriesGuideME = GetElesIfVis(driver, By.XPATH, LAND_INFO_SOIL_TYPE_GUIDE_ME_CATES)
         if(len(CategoriesGuideME) > 0):
-            for Category in range(1,len(CategoriesGuideME)):
+            for Category in range(1,len(CategoriesGuideME) +1):
                 VideoXpath = "{0}[{1}]//div[@class='buttons']/img".format(LAND_INFO_SOIL_TYPE_GUIDE_ME_CATES,Category)
+                CheckVideo(driver,By.XPATH,VideoXpath,iSoilLayer)
+                if(Category >= len(CategoriesGuideME)):
+                    break
                 RadiosXpath = "{0}[{1}]//input[@type='radio']".format(LAND_INFO_SOIL_TYPE_GUIDE_ME_CATES,Category)
                 Radios = GetElesIfVis(driver, By.XPATH, RadiosXpath)
                 if(len(Radios) == 2):
@@ -331,10 +342,25 @@ def _HandleIndividualLayer(driver,plotName):
                         for nextCatRad in RadiosNextCat:
                             nextCatRad.click()
                             Texture = GetEleIfVis(driver, By.XPATH, "{0}//h5[@id='textureValue']".format(LAND_INFO_FOOTER)).text
+                LogSuccess("Test 2.4.7.{0}.2.2.{1} Pass".format(iSoilLayer,Category))
             ClickElementIfVis(driver, By.XPATH, "{0}//button[@class='button button-balanced']".format(LAND_INFO_FOOTER))
         ClickGoBackLandInfo(driver)
     except Exception:
         raise TestFailedException("error while processing soil layer guide me")
+def CheckVideo(driver,ByType, OpenVideoPath, iSoilLayer):
+    ClickElementIfVis(driver, ByType, OpenVideoPath)
+    try:
+        VideoPath = "{0}/video".format(LAND_INFO_POPUP_BODY)
+        Video = GetEleIfVis(driver, By.XPATH, VideoPath)
+        videoSrcPath = "{0}/source".format(VideoPath)
+        videoSrc = driver.find_element(By.XPATH,videoSrcPath).get_attribute("src")
+        LogSuccess(DICT_VIDEO_SRC_TO_TEST[videoSrc.split("/")[-1]].format(iSoilLayer))
+        ClickElementIfVis(driver, By.XPATH, GENERIC_POPUP_BUTTON)
+    except:
+        try:
+            ClickElementIfVis(driver, By.XPATH, GENERIC_POPUP_BUTTON)
+        finally:
+            LogError("Video not found for category and soil layer {0}".format(iSoilLayer))
 def FindErrors(driver, ByType=By.XPATH, errorElePath=LAND_INFO_POPUP_BODY_MESSAGE):
     eles = GetElesIfVis(driver, ByType, errorElePath)
     errors = {}
@@ -376,7 +402,7 @@ def _FillAllDataForPlot(driver,plotName):
             eles = GetElesIfVis(driver, By.XPATH,LAND_INFO_PLOT_INFO_PATH)
             for ele in eles:
                 ele.click()
-            LogSuccess("Test {0} Passed".format(DICT_TEST_MESSAGES_KEY_MENU_NUM[i]["TestName"]))
+            LogSuccess("Test {0} Pass".format(DICT_TEST_MESSAGES_KEY_MENU_NUM[i]["TestName"]))
         except :
             LogError("Test {0} Failed".format(DICT_TEST_MESSAGES_KEY_MENU_NUM[i]["TestName"]))
             continue
@@ -406,6 +432,7 @@ def ReviewPlot(driver, Airplane, PlotName):
         #else:
             #log.info("{0} was submitted".format(PlotName))
     ClickElementIfVis(driver, By.XPATH,POSTIVE_POPUP_BUTTON)
+    LogSuccess("Test 2.4.9 Pass")
     WaitForLoad(driver)
 def FillPlotData(driver, Airplane = False, bFullPlot = False):
     #fill plot info
@@ -414,16 +441,24 @@ def FillPlotData(driver, Airplane = False, bFullPlot = False):
     if(bFullPlot):
         _FillAllDataForPlot(driver,PlotName)
         try:
-            HandleSoilLayer(driver,PlotName)
-            LogSuccess("Test 2.4.7 Passed")
+            HandleSoilLayer(driver,PlotName,bFullPlot)
+            LogSuccess("Test 2.4.7 Pass")
         except:
             LogError("Test 2.4.7 Failed")
             PassOrFail = "FAIL"
     else:
-        #click Slope
-        HandleSlope(driver,PlotName)
-        #click soil layer
-        HandleSoilLayer(driver,PlotName)
+        try:
+            #click Slope
+            HandleSlope(driver,PlotName)
+            LogSuccess("Test 2.4.4 Pass")
+            #click soil layer
+            HandleSoilLayer(driver,PlotName,bFullPlot)
+            LogSuccess("Test 2.4.7 Pass")
+        except:
+            LogError("Test 2.4.7 Failed")
+            LogError("Test 2.4.4 Failed")
+            PassOrFail = "FAIL"
+        
     #Review Plot
     GoBackToPageWithTitle(driver," {0}".format(PlotName))
     ReviewPlot(driver, Airplane=Airplane, PlotName=PlotName)
@@ -609,7 +644,7 @@ def HandleGoogleLogin(driver):
     try:
         Creds = get_uname_and_pword_lpks_gmail()
         ClickElementIfVis(driver,By.XPATH,"//Button[contains(@id, 'loginGoogle')][@style='display: block;']")
-        LogSuccess("Test 2.1.1 Passed")
+        LogSuccess("Test 2.1.1 Pass")
         
         SwitchToPopupWindow(driver)
         ele = GetEleIfVis(driver,By.ID,"Email")
@@ -635,7 +670,7 @@ def set_test_browser(remoteURL):
 class Test_Case:#(unittest.TestCase):
     plotNames = []
     def gen_test_cases(self):
-        GenDynaWebAppTests()
+        GenDynaWebAppTestsAppend()
     def set_browser(self, remoteURL,bSelenium=False, **kwgs):
         if(bSelenium):
             START_TIME["START"] = datetime.datetime.now()
@@ -704,7 +739,7 @@ class Test_Case:#(unittest.TestCase):
             ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[contains(@ng-show,'device')][not(contains(@class,'hide'))]/img[@src='landpks_img/landinfo_logo.png']")
             WaitForLoad(self.driver)
             HandleLogout(self.driver)
-            LogSuccess("Test 2.1.1 Passed")
+            LogSuccess("Test 2.1.1 Pass")
         except:
             LogError("Test 2.1 Failed")
             PassOrFail = "Fail"
@@ -733,7 +768,7 @@ class Test_Case:#(unittest.TestCase):
             OutputSucessful()
             self.tearDown(PassOrFail, bRobot,bSelenium=bSelenium)
         #LandCover
-    def Test_Case_2_4(self, bRobot = True, bSelenium=False):
+    def Test_Case_2_4(self, bRobot = True, bSelenium=False, bFullPlot = True):
         global ERRORS,SUCCESS,WARNS
         ERRORS = []
         SUCCESS = []
@@ -749,9 +784,9 @@ class Test_Case:#(unittest.TestCase):
             WaitForLoad(self.driver)
             ClickElementIfVis(self.driver,By.XPATH,LAND_INFO_ADD_PLOT_BUTTON)
             ClickElementIfVis(self.driver, By.XPATH, "//a[@class='item item-icon-right plotname']")
-            LogSuccess("Test 2.4.1 Passed")
+            LogSuccess("Test 2.4.1 Pass")
             
-            PlotName,PassOrFail = FillPlotData(self.driver, Airplane=False, bFullPlot=True)
+            PlotName,PassOrFail = FillPlotData(self.driver, Airplane=False, bFullPlot=bFullPlot)
             #PlotName = FillPlotInputs(self.driver)
             #FillAllDataForPlot(self.driver)
             
@@ -759,21 +794,21 @@ class Test_Case:#(unittest.TestCase):
             #click Slope
             #try:
             #    HandleSlope(self.driver)
-            #    LogSuccess("Test 2.4.4 Passed")
+            #    LogSuccess("Test 2.4.4 Pass")
             #except:
             #    LogError("Test 2.4.4 Failed")
             #click soil layer
             
             #try:
             #    HandleSoilLayer(self.driver)
-            #    LogSuccess("Test 2.4.7 Passed")
+            #    LogSuccess("Test 2.4.7 Pass")
             #except:
             #    LogError("Test 2.4.7 Failed")
             #    PassOrFail = "FAIL"
             #try:
                 #Review Plot
             #    ReviewPlot(self.driver, False, PlotName)
-            #    LogSuccess("Test 2.4.9 Passed")
+            #    LogSuccess("Test 2.4.9 Pass")
             #except:
             #    LogError("Test 2.4.9 Failed")
             #    PassOrFail = "FAIL"
@@ -797,7 +832,7 @@ class Test_Case:#(unittest.TestCase):
                 ClickElementIfVis(self.driver,By.XPATH,LAND_INFO_ADD_PLOT_BUTTON)
                 ClickElementIfVis(self.driver, By.XPATH, "//a[@class='item item-icon-right plotname']")
                 try:
-                    plotName,PassOrFail = FillPlotData(self.driver,Airplane=False, bFullPlot=True)
+                    plotName,PassOrFail = FillPlotData(self.driver,Airplane=False, bFullPlot=False)
                     self.plotNames.append(plotName)
                     goToAppSelection(self.driver)
                     #ClickElementIfVis(self.driver, By.XPATH, LAND_INFO_BACK_BUTTON)
@@ -808,10 +843,11 @@ class Test_Case:#(unittest.TestCase):
                 except ElementNotFoundTimeoutException:
                     raise Exception
                 except TestFailedException:
+                    PassOrFail = "FAIL"
                     raise Exception
-                LogSuccess("Test 0.1 Passed")
-                LogSuccess("Test 0.2 Passed")
-                LogSuccess("Test 0.3 Passed")
+                LogSuccess("Test 0.1 Pass")
+                LogSuccess("Test 0.2 Pass")
+                LogSuccess("Test 0.3 Pass")
             except:
                 LogError("Test 0.3 Failed")
                 PassOrFail = "FAIL"
@@ -823,9 +859,9 @@ class Test_Case:#(unittest.TestCase):
         else:
             try:
                 self.test_add_plot_airplane_verify_it_appears_in_landcover(bRobot)
-                LogSuccess("Test 0.1 Passed")
-                LogSuccess("Test 0.2 Passed")
-                LogSuccess("Test 0.3 Passed")
+                LogSuccess("Test 0.1 Pass")
+                LogSuccess("Test 0.2 Pass")
+                LogSuccess("Test 0.3 Pass")
             except:
                 LogError("Test 0.3 Failed")
                 PassOrFail = "FAIL"
@@ -849,7 +885,7 @@ class Test_Case:#(unittest.TestCase):
         ClickElementIfVis(self.driver,By.XPATH,LAND_INFO_ADD_PLOT_BUTTON)
         ClickElementIfVis(self.driver, By.XPATH, "//a[@class='item item-icon-right plotname']")
         try:
-            plotName,PassOrFail = FillPlotData(self.driver,Airplane=True, bFullPlot=True)
+            plotName,PassOrFail = FillPlotData(self.driver,Airplane=True, bFullPlot=False)
             self.plotNames.append(plotName)
             goToAppSelection(self.driver)
             ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[contains(@ng-show,'device')][not(contains(@class,'hide'))]//img[@src='landpks_img/landcover_logo.png']")
@@ -858,8 +894,10 @@ class Test_Case:#(unittest.TestCase):
             LogSuccess( "Test 0.3 Pass" )
         except TimeoutException:
             LogError("TIMEOUT")
+            raise Exception
         except WebDriverException:
             LogError("Web exception")
+            raise Exception
     def check_interuptions(self):
         SetUpApp(self)
         #os.system(command)
@@ -881,12 +919,12 @@ class Testing(unittest.TestCase):
         #self.AppTest.Test_Case_2_4(False,False)
         #self.AppTest.Test_Case_2_4(False,True)
         #self.AppTest.Test_Case_2_3(False,True)
-        self.AppTest.Test_Case_2_4(False,False)
-        
+        #self.AppTest.Test_Case_2_4( bRobot = False,bSelenium = True, bFullPlot = True)
+        self.AppTest.Test_Case_0( bRobot = False,bSelenium = True)
         #self.AppTest.test_add_plot(bRobot=False)
         #self.AppTest.test_add_plot_airplane_verify_it_appears_in_landcover(bRobot=False)
 if __name__ == '__main__':    
-    #GenDynaWebAppTests()
+    #GenDynaWebAppTestsAppend()
     suite = unittest.TestLoader().loadTestsFromTestCase(Testing)
     unittest.TextTestRunner(verbosity=2).run(suite)
     
