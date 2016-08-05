@@ -121,7 +121,7 @@ START_TIME = {}
 PATH = lambda p: os.path.abspath(
     os.path.join(os.path.dirname(__file__), p)
 )
-def CheckDataLandInfoInAppSameAsPortal(driver,PortalData,PlotXpath = LANDCOVER_PLOT_LIST):
+def CheckDataLandInfoInAppSameAsPortal(driver,PortalData,PlotXpath = LANDCOVER_PLOT_LIST, DieOnFirstNotFound = True):
     Email = get_uname_and_pword_lpks_gmail()["UName"]
     if(len(PortalData) > 0):
         for Data in PortalData:
@@ -140,7 +140,10 @@ def CheckDataLandInfoInAppSameAsPortal(driver,PortalData,PlotXpath = LANDCOVER_P
                 GetElesIfVis(driver, By.XPATH, StringPath)
             except:
                 LogError("Plot {0} existed on portal with id:{1} but was not found in app.".format(Data["name"],Data["id"]))
-                continue
+                if(DieOnFirstNotFound):
+                    raise TestFailedException("Portal and App do not match")
+                else:
+                    continue
         LogSuccess("Data returned from portal matched app data")
     else:
         LogError("Portal returned no data for recorder {0}".format(Email))

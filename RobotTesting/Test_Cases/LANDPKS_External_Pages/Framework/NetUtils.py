@@ -6,4 +6,6 @@ Created on Aug 5, 2016
 import requests
 def GetPortalInfo(RequestString):
     response = requests.put(RequestString)
+    ResponseText = response.text
+    response.close()
     return response.text
