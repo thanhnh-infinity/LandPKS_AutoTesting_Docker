@@ -5,6 +5,8 @@ import sys
 import platform
 import simplejson as json
 from selenium.webdriver.support.ui import Select
+from NetUtils import GetPortalInfo
+REQUEST_API_LAND_INFO_BY_RECORDER = "http://testapi.landpotential.org:8080/query?version=0.1&action=get&object=landinfo&type=get_by_recorder_name&recorder_name={0}"
 ERROR_CODE_RESPONSE = '400'
 SUCCESS_CODE_RESPONSE = '200'
 BROWSER_VERSIONS = {
@@ -322,3 +324,8 @@ def parseJSONJenkinsCapa():
                      }
             browserRet.append(inputForE)
         return browserRet
+    
+def GetLandInfoDataForRecorder(RecorderEmail):
+    Request = REQUEST_API_LAND_INFO_BY_RECORDER.format(RecorderEmail)
+    ResponseData = json.loads(GetPortalInfo(Request))
+    return ResponseData

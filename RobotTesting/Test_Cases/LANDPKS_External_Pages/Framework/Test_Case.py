@@ -27,7 +27,7 @@ import simplejson as json
 from Utils import GenDynaWebAppTestsAppend
 from Utils import get_uname_and_pword_lpks_gmail
 from selenium import webdriver as selWebDriver
-
+from Utils import GetLandInfoDataForRecorder
 
 REQUEST_STRING_TO_FIND_PLOT = "http://api.landpotential.org/query?version=0.1&action=get&object=landinfo&type=get_by_pair_name_recorder_name&name={0}&recorder_name=lpks.testing%40gmail.com"
 SAUCE_ACCESS_KEY = 'Barnebre:216526d7-706f-4eff-bf40-9d774203e268'
@@ -121,6 +121,29 @@ START_TIME = {}
 PATH = lambda p: os.path.abspath(
     os.path.join(os.path.dirname(__file__), p)
 )
+def CheckDataLandInfoInAppSameAsPortal(driver,PortalData,PlotXpath = LANDCOVER_PLOT_LIST):
+    Email = get_uname_and_pword_lpks_gmail()["UName"]
+    if(len(PortalData) > 0):
+        for Data in PortalData:
+            PlotNameAr = Data["name"].split("-")
+            if(len(PlotNameAr)== 2):
+                PlotName = PlotNameAr[-1]
+                PlotEmail = PlotNameAr[0]
+                if(not(Email.lower() == PlotEmail.lower())):
+                    LogError(LogError("Plot id: {0} name wasn't correct from portal... Email on name was not same as logged in app user. Plot email {1} Logged in email {2}".format(Data["id"],PlotEmail,Email)))
+                    continue
+            else:
+                LogError("Plot id: {0} name wasn't correct from portal contained more than email and name of plot.".format(Data["id"]))
+                continue
+            StringPath = "{0}{1}".format(PlotXpath,"[contains(.,'{0}')]".format(PlotName))
+            try:
+                GetElesIfVis(driver, By.XPATH, StringPath)
+            except:
+                LogError("Plot {0} existed on portal with id:{1} but was not found in app.".format(Data["name"],Data["id"]))
+                continue
+        LogSuccess("Data returned from portal matched app data")
+    else:
+        LogError("Portal returned no data for recorder {0}".format(Email))
 def goToAppSelection(driver):
     GoBackToPageWithTitle(driver, "Application Selection")
 def GoBackToPageWithTitle(driver,Title):
@@ -669,6 +692,8 @@ def set_test_browser(remoteURL):
     Test_Case().set_browser(remoteURL)
 class Test_Case:#(unittest.TestCase):
     plotNames = []
+    PortalData = []
+    
     def gen_test_cases(self):
         GenDynaWebAppTestsAppend()
     def set_browser(self, remoteURL,bSelenium=False, **kwgs):
@@ -768,6 +793,15 @@ class Test_Case:#(unittest.TestCase):
             OutputSucessful()
             self.tearDown(PassOrFail, bRobot,bSelenium=bSelenium)
         #LandCover
+    def Get_Portal_Data(self):
+        self.PortalData = GetLandInfoDataForRecorder(get_uname_and_pword_lpks_gmail()["UName"])
+    def Verify_Portal_And_App_Data_Match(self,bRobot = True, bSelenium=False):
+        self.Get_Portal_Data()
+        SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium)
+        goToAppSelection(self.driver)
+        ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[contains(@ng-show,'device')][not(contains(@class,'hide'))]/img[@src='landpks_img/landinfo_logo.png']")
+        WaitForLoad(self.driver)
+        CheckDataLandInfoInAppSameAsPortal(self.driver, PortalData=self.PortalData)
     def Test_Case_2_4(self, bRobot = True, bSelenium=False, bFullPlot = True):
         global ERRORS,SUCCESS,WARNS
         ERRORS = []
@@ -919,8 +953,8 @@ class Testing(unittest.TestCase):
         #self.AppTest.Test_Case_2_4(False,False)
         #self.AppTest.Test_Case_2_4(False,True)
         #self.AppTest.Test_Case_2_3(False,True)
-        #self.AppTest.Test_Case_2_4( bRobot = False,bSelenium = True, bFullPlot = True)
-        self.AppTest.Test_Case_0( bRobot = False,bSelenium = True)
+        self.AppTest.Verify_Portal_And_App_Data_Match( bRobot = False,bSelenium = True)
+        #self.AppTest.Test_Case_0( bRobot = False,bSelenium = True)
         #self.AppTest.test_add_plot(bRobot=False)
         #self.AppTest.test_add_plot_airplane_verify_it_appears_in_landcover(bRobot=False)
 if __name__ == '__main__':    
