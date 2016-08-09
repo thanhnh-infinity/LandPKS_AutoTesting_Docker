@@ -28,6 +28,7 @@ from Utils import GenDynaWebAppTestsAppend
 from Utils import get_uname_and_pword_lpks_gmail
 from selenium import webdriver as selWebDriver
 from Utils import GetLandInfoDataForRecorder
+from Utils import GetSelEleFromEle
 
 REQUEST_STRING_TO_FIND_PLOT = "http://api.landpotential.org/query?version=0.1&action=get&object=landinfo&type=get_by_pair_name_recorder_name&name={0}&recorder_name=lpks.testing%40gmail.com"
 SAUCE_ACCESS_KEY = 'Barnebre:216526d7-706f-4eff-bf40-9d774203e268'
@@ -70,6 +71,7 @@ LAND_COVER_FOLIGAE_COL_IMAGE_PATH = "/div[@class='col col-20']"
 LAND_COVER_SITE_SUMMARY = "//div[@class='scroll']/h2[contains(.,'Site Summary')]"
 LAND_INFO_LOCAL_CLIMATE_GRAPH = "//div[@nav-view='active']//div[@class='scroll']//div[@class='lpks-graph']/div[@class='chart-container']/canvas[@id='bar']"
 LAND_INFO_LOCAL_CLIMATE_LAT = "//div[@class='scroll']/p[contains(.,'Latitude')]"
+LAND_FORMS_LAND_INFO_ICON = "//a[@ng-click='landinfoSelect()']/img"
 TITLE_LAND_INFO_PAGE_XPATH = LAND_INFO_BACK_BUTTON + "/p"
 DICT_MESSAGES_NO_DATA_KEY = {
                  False: {"SubmitPlotText" : "Plot is submitted"},
@@ -121,7 +123,23 @@ START_TIME = {}
 PATH = lambda p: os.path.abspath(
     os.path.join(os.path.dirname(__file__), p)
 )
+def HandleFormNewLandInfo(driver):
+    Inputs = driver.find_elements_by_tag_name("input")
+    Inputs.extend(driver.find_elements_by_tag_name("select"))
+    for input in Inputs:
+        HandleInputForm(input)
+def HandleInputForm(InputEle):
+    eleID = InputEle.get_attribute("id")
+    if eleID == "test_plot":
+        GetSelEleFromEle(InputEle).select_by_value("true")
+    elif eleID == "latitude":
+        InputEle.send_keys(GenRandString("number"))
+    elif eleID == "longitude":
+        InputEle.send_keys(GenRandString("number"))
+    else :
+        InputEle.send_keys(GenRandString())
 def CheckDataLandInfoInAppSameAsPortal(driver,PortalData,PlotXpath = LANDCOVER_PLOT_LIST, DieOnFirstNotFound = True):
+    iPlotsMatching = 0
     Email = get_uname_and_pword_lpks_gmail()["UName"]
     if(len(PortalData) > 0):
         for Data in PortalData:
@@ -138,13 +156,14 @@ def CheckDataLandInfoInAppSameAsPortal(driver,PortalData,PlotXpath = LANDCOVER_P
             StringPath = "{0}{1}".format(PlotXpath,"[contains(.,'{0}')]".format(PlotName))
             try:
                 GetElesIfVis(driver, By.XPATH, StringPath)
+                iPlotsMatching += 1
             except:
                 LogError("Plot {0} existed on portal with id:{1} but was not found in app.".format(Data["name"],Data["id"]))
                 if(DieOnFirstNotFound):
                     raise TestFailedException("Portal and App do not match")
                 else:
                     continue
-        LogSuccess("Data returned from portal matched app data")
+        LogSuccess("Data returned from portal matched app data. {0} plots matched.".format(iPlotsMatching))
     else:
         LogError("Portal returned no data for recorder {0}".format(Email))
 def goToAppSelection(driver):
@@ -542,7 +561,11 @@ def WaitForLoad(driver):
     wait = WebDriverWait(driver, 30)
     wait.until(EC.presence_of_element_located((By.XPATH, "//div[@class='loading-container']")),"")
     wait.until(EC.invisibility_of_element_located((By.XPATH, "//div[@class='loading-container']")),"")
-def SetUpApp(Test, AirplaneMode=False, bRobot = True, iConnection=None, bSelenium = False):
+def WaitForLoadForm(driver):
+    wait = WebDriverWait(driver, 30)
+    wait.until(EC.presence_of_element_located((By.XPATH, "//div[@class='progress-bar']")),"")
+    wait.until(EC.invisibility_of_element_located((By.XPATH, "//div[@class='progress-bar']")),"")
+def SetUpApp(Test, AirplaneMode=False, bRobot = True, iConnection=None, bSelenium = False, **Params):
     if(bSelenium):
         if (bRobot):
             SeleniumLib = BuiltIn().get_library_instance('Selenium2Library')
@@ -557,10 +580,14 @@ def SetUpApp(Test, AirplaneMode=False, bRobot = True, iConnection=None, bSeleniu
                 SetDriver(Test, AirplaneMode,bSel=bSelenium)
         try:
             #Test.driver.set_speed(.5)
-            Test.driver.get("http://testlpks.landpotential.org:8105/#/landpks/landpks_entry_page")
+            Test.driver.get("http://testlpks.landpotential.org:8105/#/landpks/landpks_entry_page" if not Params.has_key("starturl") else Params["starturl"])
             Test.driver.switch_to.default_content
-            ClickElementIfVis(Test.driver, By.XPATH, "//div[@nav-view='active']//div[@class='scroll']//img[@src='landpks_img/landinfo_logo.png']")
-            HandleGoogleLogin(Test.driver)
+            ClickElementIfVis(Test.driver, By.XPATH, "//div[@nav-view='active']//div[@class='scroll']//img[@src='landpks_img/landinfo_logo.png']" if not Params.has_key("loginbutton") else Params["loginbutton"])
+            if not Params.has_key("loginbutton"):
+                ClickElementIfVis(Test.driver,By.XPATH,"//Button[contains(@id, 'loginGoogle')][@style='display: block;']")
+                HandleGoogleLogin(Test.driver)
+            else:
+                HandleGoogleLogin(Test.driver, False)
         except TimeoutException as Te:
             log.info("Login not required")
         win = Test.driver.window_handles
@@ -580,6 +607,7 @@ def SetUpApp(Test, AirplaneMode=False, bRobot = True, iConnection=None, bSeleniu
         try:
             ClickElementIfVis(Test.driver,By.CLASS_NAME,"android.widget.Image")
             Test.driver.switch_to.context(LAND_INFO_WEBVIEW_NAME)
+            ClickElementIfVis(Test.driver,By.XPATH,"//Button[contains(@id, 'loginGoogle')][@style='display: block;']")
             HandleGoogleLogin(Test.driver)
         except TimeoutException as Te:
             log.info("Login not required")
@@ -663,13 +691,12 @@ def ClickElementIfVis(driver, ByType, Value):
         raise Exception
 def SwitchToPopupWindow(driver):
     wait = WebDriverWait(driver, TIMEOUT)
-    time.sleep(1)
+    time.sleep(3)
     wait.until(lambda driver: len(driver.window_handles) > 1)
     driver.switch_to.window(driver.window_handles[-1])
-def HandleGoogleLogin(driver):
+def HandleGoogleLogin(driver, bRequireApprove=True):
     try:
         Creds = get_uname_and_pword_lpks_gmail()
-        ClickElementIfVis(driver,By.XPATH,"//Button[contains(@id, 'loginGoogle')][@style='display: block;']")
         LogSuccess("Test 2.1.1 Pass")
         
         SwitchToPopupWindow(driver)
@@ -679,7 +706,8 @@ def HandleGoogleLogin(driver):
         ele = GetEleIfVis(driver,By.ID,"Passwd")
         ele.send_keys(Creds["PWord"])
         ClickElementIfVis(driver,By.ID,"signIn")
-        ClickElementIfVis(driver,By.ID,"submit_approve_access")
+        if (bRequireApprove):
+            ClickElementIfVis(driver,By.ID,"submit_approve_access")
         win = driver.window_handles
         driver.switch_to.window(win[0])
     except:        
@@ -744,14 +772,16 @@ class Test_Case:#(unittest.TestCase):
                 self.driver.quit()
                 del(self.driver)
                 if (not PassOrFail == "PASS"):
-                    BuiltIn().fail("")
+                    #BuiltIn().fail("Test Failed")
+                    raise TestFailedException("Test Case Failed")
             else:
                 seleniumLib = BuiltIn().get_library_instance('Selenium2Library')
                 seleniumLib._cache.close_all()
                 self.driver.quit()
                 del(self.driver)
                 if (not PassOrFail == "PASS"):
-                    BuiltIn().fail("")
+                    #BuiltIn().fail("Test Failed")
+                    raise TestFailedException("Test Case Failed")
         else:
             self.driver.quit()
             del(self.driver)
@@ -799,12 +829,28 @@ class Test_Case:#(unittest.TestCase):
     def Get_Portal_Data(self):
         self.PortalData = GetLandInfoDataForRecorder(get_uname_and_pword_lpks_gmail()["UName"])
     def Verify_Portal_And_App_Data_Match(self,bRobot = True, bSelenium=False):
-        self.Get_Portal_Data()
+        global ERRORS,SUCCESS,WARNS
+        ERRORS = []
+        SUCCESS = []
+        WARNS = []
+        PassOrFail = "PASS"
+        try:
+            self.Get_Portal_Data()
+        except:
+            LogError("Error pulling portal data")
+            PassOrFail = "FAIL"
         SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium)
         goToAppSelection(self.driver)
         ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[contains(@ng-show,'device')][not(contains(@class,'hide'))]/img[@src='landpks_img/landinfo_logo.png']")
         WaitForLoad(self.driver)
-        CheckDataLandInfoInAppSameAsPortal(self.driver, PortalData=self.PortalData)
+        try:
+            CheckDataLandInfoInAppSameAsPortal(self.driver, PortalData=self.PortalData)
+        except:
+            PassOrFail = "FAIL"
+        finally:
+            OutputErrors()
+            OutputSucessful()
+            self.tearDown(PassOrFail, bRobot,bSelenium=bSelenium)
     def Test_Case_2_4(self, bRobot = True, bSelenium=False, bFullPlot = True):
         global ERRORS,SUCCESS,WARNS
         ERRORS = []
@@ -935,6 +981,17 @@ class Test_Case:#(unittest.TestCase):
         except WebDriverException:
             LogError("Web exception")
             raise Exception
+    def Test_Case_0_Form(self,bRobot):
+        global ERRORS,SUCCESS,WARNS
+        ERRORS = []
+        SUCCESS = []
+        WARNS = []
+        PassOrFail = "PASS"
+        SetUpApp(self,bRobot=bRobot,bSelenium=True,starturl = "http://portallandpotential.businesscatalyst.com/LandPKS_FORMS/#/login",loginbutton="//a[@id='googlebutton']")
+        ClickElementIfVis(self.driver, By.XPATH, LAND_FORMS_LAND_INFO_ICON)
+        WaitForLoadForm(self.driver)
+        ClickElementIfVis(self.driver, By.XPATH, "//a[@href='#/landinfoadd']")
+        HandleFormNewLandInfo(self.driver)
     def check_interuptions(self):
         SetUpApp(self)
         #os.system(command)
@@ -954,9 +1011,10 @@ class Testing(unittest.TestCase):
     def tester(self):
         #self.AppTest.Test_Case_2(False,True)
         #self.AppTest.Test_Case_2_4(False,False)
-        #self.AppTest.Test_Case_2_4(False,True)
+        #self.AppTest.Test_Case_2_4(False,False)
         #self.AppTest.Test_Case_2_3(False,True)
-        self.AppTest.Verify_Portal_And_App_Data_Match( bRobot = False,bSelenium = True)
+        self.AppTest.Test_Case_0_Form(False)
+        #self.AppTest.Verify_Portal_And_App_Data_Match( bRobot = False,bSelenium = False)
         #self.AppTest.Test_Case_0( bRobot = False,bSelenium = True)
         #self.AppTest.test_add_plot(bRobot=False)
         #self.AppTest.test_add_plot_airplane_verify_it_appears_in_landcover(bRobot=False)
