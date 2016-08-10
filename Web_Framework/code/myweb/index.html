@@ -1,137 +1,184 @@
 <!DOCTYPE html>
 <html>
-   <head>
-     <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
-     <script type="text/javascript">
-       $(document).ready(function() {
-        
-        var animate;
-        var value;
-        
-        function fireit() {
-           var progressbar = $('#progressbar'),
-               max = progressbar.attr('max'),
-               time = (1000/max)*5,    
-               value = progressbar.val(),
-               sec = value;
- 
-           var loading = function() {
-              value += 1;
-              //sec += 1;
-              addValue = progressbar.val(value);
-         
-              $('.progress-value').html(value + '%');
- 
-              if (value == max) {
-                     value = 0;
-                     addValue = progressbar.val(value);   
-                     $('.progress-value').html(value + '%');
-              }
-           };
- 
-           animate = setInterval(function() {
-              loading();
-           }, time);
-        };
-        
-        $("#generate-string").click(function(e) {
-           $('#progressbar').val(0);
-           fireit();
-           async: false;
-           $('button').prop('disabled', true);
-           $('input').prop('disabled', true);
-           var astrurlParams = $( "#api" ).val().split(",");
-           var strFileName = astrurlParams[0];
-           var strTestCase = astrurlParams[1];
-           var host_v_Params = $( "#version" ).val().split(",");
-           var host = host_v_Params[0];
-           var version = host_v_Params[1];
-           $.post("/luncher", {"FileName": strFileName,"TestCase" : strTestCase,"host": host,"version": version})  .done(function(string) {
-               if(string != '') {
-                  $('button').prop('disabled', false);
-                  $('input').prop('disabled', false);
-                  clearInterval(animate);
-                  $('#progressbar').val(100);
-                  $('.progress-value').html(100 + '%');
-               }
+<head>
+    <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            var animate;
+            var value;
+
+            function fireit() {
+                var progressbar = $('#progressbar'),
+                        max = progressbar.attr('max'),
+                        time = (1000 / max) * 5,
+                        value = progressbar.val(),
+                        sec = value;
+
+                var loading = function () {
+                    value += 1;
+                    //sec += 1;
+                    addValue = progressbar.val(value);
+
+                    $('.progress-value').html(value + '%');
+
+                    if (value == max) {
+                        value = 0;
+                        addValue = progressbar.val(value);
+                        $('.progress-value').html(value + '%');
+                    }
+                };
+
+                animate = setInterval(function () {
+                    loading();
+                }, time);
+            };
+            $("#btnchart").click(function (e) {
+                alert("submitting a form");
+                $('#progressbar').val(0);
+                fireit();
+                document.chartform.submit();
+            })
+            $("#generate-string").click(function (e) {
+                var astrurlParams = $("#api").val().split(",");
+                var strFileName = astrurlParams[0];
+                var strTestCase = astrurlParams[1];
+                var host_v_Params = $("#version").val().split(",");
+                var host = host_v_Params[0];
+                var version = host_v_Params[1];
+                var ctc = "";
+                if ($('#developer').is(':checked')) {
+                    ctc = $('#dctext').val();
+                    strFileName = "Test_Cases/API/TmpScript.robot"
+                }
+                if ($('#developer').is(':checked') && ctc.length == 0) {
+                    alert("please insert your testsuite to continue running a test")
+                } else {
+                    $('#progressbar').val(0);
+                    fireit();
+                    async: false;
+                    $('button').prop('disabled', true);
+                    $('input').prop('disabled', true);
+                    $.post("/luncher", {
+                        "FileName": strFileName,
+                        "TestCase": strTestCase,
+                        "host": host,
+                        "version": version,
+                        "ctc": ctc
+                    }).done(function (string) {
+                        if (string != '') {
+                            $('button').prop('disabled', false);
+                            $('input').prop('disabled', false);
+                            clearInterval(animate);
+                            $('#progressbar').val(100);
+                            $('.progress-value').html(100 + '%');
+                        }
+                    });
+                }
+                e.preventDefault();
             });
-           e.preventDefault();
-         });
-       });
-     </script>
-   </head>
-   <body align="left">
-      <table>
-         <tr>
-            <td>
-               <div>
-                  <progress id="progressbar" value="0" max="100"></progress>
-                  <span class="progress-value">0sec</span>
-               </div>
-            </td>
-         </tr>
-         <tr>
-            <td>Please select a test to run:</td>
-            <td>
-               <select id="api">
-                  <option value="Test_Cases/API/TestSuites.robot,DeleteAPI">Delete API</option>
-                  <option value="Test_Cases/API/TestSuites.robot,GetAPI">Get API</option>
-                  <option value="Test_Cases/API/TestSuites.robot,LandCoverAPI">LandCover API</option>
-                  <option value="Test_Cases/API/TestSuites.robot,LandInfoAPI">LandInfo API</option>
-                  <option value="Test_Cases/API/TestSuites.robot,LocalClimateAPI">Local Climate API</option>
-                  <option value="Test_Cases/API/TestSuites.robot,LoginAPI">Login API</option>
-                  <option value="Test_Cases/API/TestSuites.robot,PutAPI">Put API</option>
-                  <option value="Test_Cases/API/TestSuites.robot,SystemAPI">System API</option>
-                  <option value="Test_Cases/API/TestSuites.robot,UpdateAPI">Update API</option>
-                  <option value="Test_Cases/LANDPKS_External_Pages/Psy.robot,LandCover">LandCover Mobile Web</option>
-                  <option value="Test_Cases/LANDPKS_External_Pages/Psy.robot,LandInfo">Land Info Mobile Web App</option>
-                  <option value="Test_Cases/LANDPKS_External_Pages/Psy.robot,PhotosUpload">Photo Testing</option>
-                  <option value="Test_Cases/LANDPKS_External_Pages/Portal.robot,Main Portal">Portal Test</option>
-                  <option value="Test_Cases/LANDPKS_External_Pages/Portal.robot,API Explorer">API Exlporer</option>
-                  <option value="Test_Cases/LANDPKS_External_Pages/AppiumTest.robot,Appium">Appium Testing</option>
-               </select>
-            </td>
-            <td>
-               <select id="version">
-                  <option value="http://api.landpotential.org/query?,0.1">Production V 0.1</option>
-                  <option value="http://testapi.landpotential.org:8080/query?,0.1">Testing V 0.1</option>
-                  <option value="http://128.123.177.103:8008/query?,0.2">New V 0.2</option>
-               </select>
-            </td>
-            <td><button id="generate-string">Run a test!</button></td></tr>
-         <tr>
-            <td>
-               <form action="/report_html">
-                  <input id="btnReport" type="submit" value="View report file">
-               </form>
-            </td>
-         </tr>
-         <tr>
-            <td>
-               <form action="/log_html">
-                  <input id="btnLog" type="submit" value="View log file">
-               </form>
-            </td>
-         </tr>
-         <tr>
-            <td>
-               <form action="/chart">
-                  <input id="btnchart" type="submit" value="chart">
-               </form>
-            </td>
-         </tr>
-      </table>
-      <p>
-         <br></br>
-         <br></br>
-         <br></br>
-         <strong> To run a test,</strong> please select a desired test from select box and then hit "Run a test!" button.
-         <br></br> <Strong>Reports</strong> belong to last test you run.
-      </p>
-	  <br>
-	  
-	  <div id="Jenkins">
-	 <iframe frameborder="0" height="1000" name="Jenkins" scrolling="yes" src="http://128.123.177.103:8080/" width="970" id="Jenkins"></iframe><p></p>
-	  </div>
-   </body>
+        });
+    </script>
+</head>
+<body align="left">
+<table>
+    <tr>
+        <td>
+            <div>
+                <progress id="progressbar" value="0" max="100"></progress>
+                <span class="progress-value">0sec</span>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>Please select a test to run:</td>
+        <td>
+            <select id="api">
+                <option value="Test_Cases/API/TestScript.robot,PutAPI">Put API</option>
+                <option value="Test_Cases/API/TestScript.robot,GetAPI">Get API</option>
+                <option value="Test_Cases/API/TestSuites.robot,UpdateAPI">Update API</option>
+                <option value="Test_Cases/API/TestScript.robot,DeleteAPI">Delete API</option>
+                <option value="Test_Cases/API/TestScript.robot,TestMe">Test Me API</option>
+                <!--<option value="Test_Cases/API/TestScript.robot,LandInfoAPI">LandInfo API</option>
+                <option value="Test_Cases/API/TestScript.robot,LocalClimateAPI">Local Climate API</option>
+                <option value="Test_Cases/API/TestScript.robot,LoginAPI">Login API</option>
+                <option value="Test_Cases/API/TestScript.robot,PutAPI">Put API</option>
+                <option value="Test_Cases/API/TestScript.robot,SystemAPI">System API</option> -->
+                <option value="Test_Cases/LANDPKS_External_Pages/Psy.robot,LandCover">LandCover Mobile Web</option>
+                <option value="Test_Cases/LANDPKS_External_Pages/Psy.robot,LandInfo">Land Info Mobile Web App</option>
+                <option value="Test_Cases/LANDPKS_External_Pages/Psy.robot,PhotosUpload">Photo Testing</option>
+                <option value="Test_Cases/LANDPKS_External_Pages/Portal.robot,Main Portal">Portal Test</option>
+                <option value="Test_Cases/LANDPKS_External_Pages/Portal.robot,API Explorer">API Exlporer</option>
+                <option value="Test_Cases/LANDPKS_External_Pages/AppiumTest.robot,Appium">Appium Testing</option>
+            </select>
+        </td>
+        <td>
+            <select id="version">
+                <option value="http://api.landpotential.org/query?,0.1">Production V 0.1</option>
+                <option value="http://testapi.landpotential.org:8080/query?,0.1">Testing V 0.1</option>
+                <option value="http://128.123.177.103:8008/query?,0.2">New V 0.2</option>
+            </select>
+        </td>
+        <td>
+            <button id="generate-string">Run a test!</button>
+        </td>
+    </tr>
+</table>
+<table>
+    <tr>
+        <td>
+            <form action="/report_html">
+                <input id="btnReport" type="submit" value="View report file">
+            </form>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <form action="/log_html">
+                <input id="btnLog" type="submit" value="View log file">
+            </form>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <form id="formchart" name="chartform" method="get" action="/chart">
+                <input id="btnchart" type="button" value="View chart of">
+                <select name="objecttype">
+                    <option value="landinfo">Performance measurement of LandInfo</option>
+                    <option value="landcover">Performance measurement of LandCover</option>
+                </select>
+            </form>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            [format]: A unique name for the test case,Case(s) Tag name,HTTP query beginning with Action=;Expected status
+            code
+            <textarea id="dctext" cols="135" rows="7"></textarea>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <form>
+                <input type="radio" id="developer" name="testsuite" value="developer" checked> Run only test suite
+                entered by a developer<br>
+                <input type="radio" id="tester" name="testsuite" value="tester"> Run only test suite stored by a tester
+            </form>
+        </td>
+    </tr>
+</table>
+<!--<p>
+   <br></br>
+   <strong> To run a test,</strong> please select a desired test from select box and then hit "Run a test!" button.
+   <br></br> <Strong>Reports</strong> belong to last test you run.
+</p>-->
+<br>
+
+<div id="Jenkins">
+    <iframe frameborder="0" height="1000" name="Jenkins" scrolling="yes" src="http://128.123.177.103:8080/" width="970"
+            id="Jenkins"></iframe>
+    <p></p>
+</div>
+</body>
 </html>
+

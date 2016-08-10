@@ -1,68 +1,1464 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generated="20160722 13:51:19.433" generator="Robot 3.0 (Python 2.7.11 on win32)">
-<suite source="C:\Users\bbarnett\Documents\GitHub\LANDPKS_TESTING\Web_Framework\code\myweb\robotframework-scripts\Test_Cases\LANDPKS_External_Pages\AppiumTest.robot" id="s1" name="AppiumTest">
-<test id="s1-t1" name="Adnroid Landinfo">
-<kw name="Set Browser" library="appiumTesting">
+<robot generated="20160810 14:35:53.949" generator="Robot 3.0 (Python 2.7.12 on linux2)">
+<suite source="/home/essa/LANDPKS_TESTING/Web_Framework/code/myweb/robotframework-scripts/Test_Cases/API/TestScript.robot" id="s1" name="TestScript">
+<test id="s1-t1" name="Put_LandInfo_by_all_required_fields">
+<kw name="Set Variable" library="BuiltIn">
+<doc>Returns the given values which can then be assigned to a variables.</doc>
 <arguments>
-<arg>${REMOTE_URL}</arg>
-<arg>platformName=${PLATFORM}</arg>
-<arg>appiumVersion=${appiumVersion}</arg>
-<arg>platformVersion=${platformVersion}</arg>
-<arg>deviceName=Android Emulator</arg>
-<arg>app=${APP}</arg>
-<arg>appWaitActivity=org.landpotential.lpks.landcover.MainActivity</arg>
-<arg>appWaitpackage=org.landpotential.lpks.landcover</arg>
+<arg>Put_LandInfo_by_all_required_fields</arg>
 </arguments>
-<status status="PASS" endtime="20160722 13:52:32.086" starttime="20160722 13:51:19.702"></status>
+<assign>
+<var>${test_case_name}</var>
+</assign>
+<msg timestamp="20160810 14:35:54.494" level="INFO">${test_case_name} = Put_LandInfo_by_all_required_fields</msg>
+<status status="PASS" endtime="20160810 14:35:54.494" starttime="20160810 14:35:54.494"></status>
 </kw>
-<kw name="Test Add Plot" library="appiumTesting">
-<msg timestamp="20160722 13:52:46.227" level="INFO">1</msg>
-<msg timestamp="20160722 13:52:47.708" level="INFO">2</msg>
-<msg timestamp="20160722 13:52:48.488" level="INFO">3</msg>
-<msg timestamp="20160722 13:52:50.206" level="INFO">Test 2.1.1 Pass</msg>
-<msg timestamp="20160722 13:53:06.596" level="INFO">Test 2.1 Pass</msg>
-<msg timestamp="20160722 13:53:11.836" level="INFO">Sending QCt to WebElement &lt;appium.webdriver.webelement.WebElement (session="97cb9702af754fa480831e75faca4cb1", element="0.7405249730218202-6")&gt;</msg>
-<msg timestamp="20160722 13:53:14.514" level="INFO">Sending ja to WebElement &lt;appium.webdriver.webelement.WebElement (session="97cb9702af754fa480831e75faca4cb1", element="0.7405249730218202-9")&gt;</msg>
-<msg timestamp="20160722 13:53:15.310" level="INFO">Sending -20.2913884981 to WebElement &lt;appium.webdriver.webelement.WebElement (session="97cb9702af754fa480831e75faca4cb1", element="0.7405249730218202-10")&gt;</msg>
-<msg timestamp="20160722 13:53:17.359" level="INFO">Sending -22 to WebElement &lt;appium.webdriver.webelement.WebElement (session="97cb9702af754fa480831e75faca4cb1", element="0.7405249730218202-11")&gt;</msg>
-<msg timestamp="20160722 13:53:47.289" level="INFO">QCt was submitted</msg>
-<msg timestamp="20160722 13:53:49.071" level="INFO">Test 2.4 Pass</msg>
-<status status="PASS" endtime="20160722 13:53:53.573" starttime="20160722 13:52:32.087"></status>
+<kw name="Set Variable" library="BuiltIn">
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<arguments>
+<arg>;</arg>
+</arguments>
+<assign>
+<var>${separator}</var>
+</assign>
+<msg timestamp="20160810 14:35:54.495" level="INFO">${separator} = ;</msg>
+<status status="PASS" endtime="20160810 14:35:54.495" starttime="20160810 14:35:54.495"></status>
 </kw>
-<doc>Checks portal and makes sure export works properly and all links direct properly. Will error and log detailed message of what failed and on which page</doc>
-<tags>
-<tag>Appium</tag>
-</tags>
-<status status="PASS" endtime="20160722 13:53:53.574" critical="yes" starttime="20160722 13:51:19.701"></status>
-</test>
-<test id="s1-t2" name="Airplane">
-<kw name="Test Add Plot Airplane Verify It Appears In Landcover" library="appiumTesting">
-<msg timestamp="20160722 13:54:03.082" level="FAIL">WebDriverException: Message: chrome not reachable
-  (Session info: webview=39.0.0.0)
-  (Driver info: chromedriver=2.20.353326 (387014af133a8257dc698960b225254e857711b4),platform=Linux 4.4.0-22-generic x86)
+<kw name="Read A Test Case From File" library="MyLibrary">
+<arguments>
+<arg>${test_case_name}</arg>
+<arg>${file}</arg>
+</arguments>
+<assign>
+<var>${line}</var>
+</assign>
+<msg timestamp="20160810 14:35:54.496" level="INFO">${line} = &amp;action=put&amp;object=landinfo&amp;name=lpks.test%40gmail.com-Essa-Test01&amp;recorder_name=lpks.test%40gmail.com&amp;test_plot=true&amp;latitude=20&amp;longitude=40&amp;flooding=true&amp;slope=3-5%25&amp;slope_shape=convex&amp;surface_sal...</msg>
+<status status="PASS" endtime="20160810 14:35:54.496" starttime="20160810 14:35:54.495"></status>
+</kw>
+<kw name="Fetch From Left" library="String">
+<doc>Returns contents of the ``string`` before the first occurrence of ``marker``.</doc>
+<arguments>
+<arg>${line}</arg>
+<arg>${separator}</arg>
+</arguments>
+<assign>
+<var>${query}</var>
+</assign>
+<msg timestamp="20160810 14:35:54.497" level="INFO">${query} = &amp;action=put&amp;object=landinfo&amp;name=lpks.test%40gmail.com-Essa-Test01&amp;recorder_name=lpks.test%40gmail.com&amp;test_plot=true&amp;latitude=20&amp;longitude=40&amp;flooding=true&amp;slope=3-5%25&amp;slope_shape=convex&amp;surface_sal...</msg>
+<status status="PASS" endtime="20160810 14:35:54.497" starttime="20160810 14:35:54.497"></status>
+</kw>
+<kw name="Fetch From Right" library="String">
+<doc>Returns contents of the ``string`` after the last occurrence of ``marker``.</doc>
+<arguments>
+<arg>${line}</arg>
+<arg>${separator}</arg>
+</arguments>
+<assign>
+<var>${status_code}</var>
+</assign>
+<msg timestamp="20160810 14:35:54.498" level="INFO">${status_code} = 201
+
 </msg>
-<status status="FAIL" endtime="20160722 13:54:03.083" starttime="20160722 13:53:53.576"></status>
+<status status="PASS" endtime="20160810 14:35:54.498" starttime="20160810 14:35:54.497"></status>
+</kw>
+<kw name="Run a query">
+<arguments>
+<arg>${query}</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<kw name="Catenate" library="BuiltIn">
+<doc>Catenates the given items together and returns the resulted string.</doc>
+<arguments>
+<arg>SEPARATOR=</arg>
+<arg>${host}</arg>
+<arg>version=</arg>
+<arg>${version}</arg>
+<arg>${query}</arg>
+</arguments>
+<assign>
+<var>${url}</var>
+</assign>
+<msg timestamp="20160810 14:35:54.500" level="INFO">${url} = http://api.landpotential.org/query?version=0.1&amp;action=put&amp;object=landinfo&amp;name=lpks.test%40gmail.com-Essa-Test01&amp;recorder_name=lpks.test%40gmail.com&amp;test_plot=true&amp;latitude=20&amp;longitude=40&amp;flooding=tr...</msg>
+<status status="PASS" endtime="20160810 14:35:54.500" starttime="20160810 14:35:54.499"></status>
+</kw>
+<kw name="Initiate A Request" library="MyLibrary">
+<arguments>
+<arg>${url}</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<msg timestamp="20160810 14:35:54.507" level="INFO">Starting new HTTP connection (1): api.landpotential.org</msg>
+<msg timestamp="20160810 14:35:54.639" level="INFO">${result} = 400</msg>
+<status status="PASS" endtime="20160810 14:35:54.639" starttime="20160810 14:35:54.500"></status>
+</kw>
+<msg timestamp="20160810 14:35:54.640" level="INFO">${result} = 400</msg>
+<status status="PASS" endtime="20160810 14:35:54.640" starttime="20160810 14:35:54.498"></status>
+</kw>
+<kw name="Should Be Equal As Integers" library="BuiltIn">
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<arguments>
+<arg>${result}</arg>
+<arg>${status_code}</arg>
+</arguments>
+<msg timestamp="20160810 14:35:54.641" level="INFO">Argument types are:
+&lt;type 'int'&gt;
+&lt;type 'unicode'&gt;</msg>
+<msg timestamp="20160810 14:35:54.642" level="FAIL">400 != 201</msg>
+<status status="FAIL" endtime="20160810 14:35:54.642" starttime="20160810 14:35:54.640"></status>
 </kw>
 <tags>
-<tag>Appium</tag>
+<tag>PutAPI</tag>
 </tags>
-<status status="FAIL" endtime="20160722 13:54:03.083" critical="yes" starttime="20160722 13:53:53.575">WebDriverException: Message: chrome not reachable
-  (Session info: webview=39.0.0.0)
-  (Driver info: chromedriver=2.20.353326 (387014af133a8257dc698960b225254e857711b4),platform=Linux 4.4.0-22-generic x86)
-</status>
+<status status="FAIL" endtime="20160810 14:35:54.642" critical="yes" starttime="20160810 14:35:54.492">400 != 201</status>
 </test>
-<status status="FAIL" endtime="20160722 13:54:03.085" starttime="20160722 13:51:19.435"></status>
+<test id="s1-t2" name="Put_existed_LandInfo">
+<kw name="Set Variable" library="BuiltIn">
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<arguments>
+<arg>Put_existed_LandInfo</arg>
+</arguments>
+<assign>
+<var>${test_case_name}</var>
+</assign>
+<msg timestamp="20160810 14:35:54.645" level="INFO">${test_case_name} = Put_existed_LandInfo</msg>
+<status status="PASS" endtime="20160810 14:35:54.645" starttime="20160810 14:35:54.645"></status>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<arguments>
+<arg>;</arg>
+</arguments>
+<assign>
+<var>${separator}</var>
+</assign>
+<msg timestamp="20160810 14:35:54.646" level="INFO">${separator} = ;</msg>
+<status status="PASS" endtime="20160810 14:35:54.646" starttime="20160810 14:35:54.646"></status>
+</kw>
+<kw name="Read A Test Case From File" library="MyLibrary">
+<arguments>
+<arg>${test_case_name}</arg>
+<arg>${file}</arg>
+</arguments>
+<assign>
+<var>${line}</var>
+</assign>
+<msg timestamp="20160810 14:35:54.648" level="INFO">${line} = &amp;action=put&amp;object=landinfo&amp;name=lpks.test%40gmail.com-Essa-Test01&amp;recorder_name=lpks.test%40gmail.com&amp;test_plot=true&amp;latitude=20&amp;longitude=40&amp;flooding=true&amp;slope=3-5%25&amp;slope_shape=convex&amp;surface_sal...</msg>
+<status status="PASS" endtime="20160810 14:35:54.648" starttime="20160810 14:35:54.647"></status>
+</kw>
+<kw name="Fetch From Left" library="String">
+<doc>Returns contents of the ``string`` before the first occurrence of ``marker``.</doc>
+<arguments>
+<arg>${line}</arg>
+<arg>${separator}</arg>
+</arguments>
+<assign>
+<var>${query}</var>
+</assign>
+<msg timestamp="20160810 14:35:54.649" level="INFO">${query} = &amp;action=put&amp;object=landinfo&amp;name=lpks.test%40gmail.com-Essa-Test01&amp;recorder_name=lpks.test%40gmail.com&amp;test_plot=true&amp;latitude=20&amp;longitude=40&amp;flooding=true&amp;slope=3-5%25&amp;slope_shape=convex&amp;surface_sal...</msg>
+<status status="PASS" endtime="20160810 14:35:54.649" starttime="20160810 14:35:54.649"></status>
+</kw>
+<kw name="Fetch From Right" library="String">
+<doc>Returns contents of the ``string`` after the last occurrence of ``marker``.</doc>
+<arguments>
+<arg>${line}</arg>
+<arg>${separator}</arg>
+</arguments>
+<assign>
+<var>${status_code}</var>
+</assign>
+<msg timestamp="20160810 14:35:54.651" level="INFO">${status_code} = 400
+
+</msg>
+<status status="PASS" endtime="20160810 14:35:54.651" starttime="20160810 14:35:54.650"></status>
+</kw>
+<kw name="Run a query">
+<arguments>
+<arg>${query}</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<kw name="Catenate" library="BuiltIn">
+<doc>Catenates the given items together and returns the resulted string.</doc>
+<arguments>
+<arg>SEPARATOR=</arg>
+<arg>${host}</arg>
+<arg>version=</arg>
+<arg>${version}</arg>
+<arg>${query}</arg>
+</arguments>
+<assign>
+<var>${url}</var>
+</assign>
+<msg timestamp="20160810 14:35:54.652" level="INFO">${url} = http://api.landpotential.org/query?version=0.1&amp;action=put&amp;object=landinfo&amp;name=lpks.test%40gmail.com-Essa-Test01&amp;recorder_name=lpks.test%40gmail.com&amp;test_plot=true&amp;latitude=20&amp;longitude=40&amp;flooding=tr...</msg>
+<status status="PASS" endtime="20160810 14:35:54.653" starttime="20160810 14:35:54.652"></status>
+</kw>
+<kw name="Initiate A Request" library="MyLibrary">
+<arguments>
+<arg>${url}</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<msg timestamp="20160810 14:35:54.655" level="INFO">Starting new HTTP connection (1): api.landpotential.org</msg>
+<msg timestamp="20160810 14:35:54.777" level="INFO">${result} = 400</msg>
+<status status="PASS" endtime="20160810 14:35:54.777" starttime="20160810 14:35:54.653"></status>
+</kw>
+<msg timestamp="20160810 14:35:54.777" level="INFO">${result} = 400</msg>
+<status status="PASS" endtime="20160810 14:35:54.777" starttime="20160810 14:35:54.651"></status>
+</kw>
+<kw name="Should Be Equal As Integers" library="BuiltIn">
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<arguments>
+<arg>${result}</arg>
+<arg>${status_code}</arg>
+</arguments>
+<msg timestamp="20160810 14:35:54.778" level="INFO">Argument types are:
+&lt;type 'int'&gt;
+&lt;type 'unicode'&gt;</msg>
+<status status="PASS" endtime="20160810 14:35:54.779" starttime="20160810 14:35:54.778"></status>
+</kw>
+<tags>
+<tag>PutAPI</tag>
+</tags>
+<status status="PASS" endtime="20160810 14:35:54.779" critical="yes" starttime="20160810 14:35:54.643"></status>
+</test>
+<test id="s1-t3" name="Put_LandInfo_by_unregistered_recorder_name">
+<kw name="Set Variable" library="BuiltIn">
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<arguments>
+<arg>Put_LandInfo_by_unregistered_recorder_name</arg>
+</arguments>
+<assign>
+<var>${test_case_name}</var>
+</assign>
+<msg timestamp="20160810 14:35:54.782" level="INFO">${test_case_name} = Put_LandInfo_by_unregistered_recorder_name</msg>
+<status status="PASS" endtime="20160810 14:35:54.782" starttime="20160810 14:35:54.781"></status>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<arguments>
+<arg>;</arg>
+</arguments>
+<assign>
+<var>${separator}</var>
+</assign>
+<msg timestamp="20160810 14:35:54.783" level="INFO">${separator} = ;</msg>
+<status status="PASS" endtime="20160810 14:35:54.783" starttime="20160810 14:35:54.782"></status>
+</kw>
+<kw name="Read A Test Case From File" library="MyLibrary">
+<arguments>
+<arg>${test_case_name}</arg>
+<arg>${file}</arg>
+</arguments>
+<assign>
+<var>${line}</var>
+</assign>
+<msg timestamp="20160810 14:35:54.784" level="INFO">${line} = &amp;action=put&amp;object=landinfo&amp;name=essa.test%40gmail.com-Essa-Test02&amp;recorder_name=essa.test%40gmail.com&amp;test_plot=true&amp;latitude=20&amp;longitude=30&amp;slope=11-15%25&amp;slope_shape=convex&amp;surface_salt=true&amp;surfa...</msg>
+<status status="PASS" endtime="20160810 14:35:54.784" starttime="20160810 14:35:54.783"></status>
+</kw>
+<kw name="Fetch From Left" library="String">
+<doc>Returns contents of the ``string`` before the first occurrence of ``marker``.</doc>
+<arguments>
+<arg>${line}</arg>
+<arg>${separator}</arg>
+</arguments>
+<assign>
+<var>${query}</var>
+</assign>
+<msg timestamp="20160810 14:35:54.785" level="INFO">${query} = &amp;action=put&amp;object=landinfo&amp;name=essa.test%40gmail.com-Essa-Test02&amp;recorder_name=essa.test%40gmail.com&amp;test_plot=true&amp;latitude=20&amp;longitude=30&amp;slope=11-15%25&amp;slope_shape=convex&amp;surface_salt=true&amp;surfa...</msg>
+<status status="PASS" endtime="20160810 14:35:54.786" starttime="20160810 14:35:54.785"></status>
+</kw>
+<kw name="Fetch From Right" library="String">
+<doc>Returns contents of the ``string`` after the last occurrence of ``marker``.</doc>
+<arguments>
+<arg>${line}</arg>
+<arg>${separator}</arg>
+</arguments>
+<assign>
+<var>${status_code}</var>
+</assign>
+<msg timestamp="20160810 14:35:54.787" level="INFO">${status_code} = 400
+
+</msg>
+<status status="PASS" endtime="20160810 14:35:54.787" starttime="20160810 14:35:54.786"></status>
+</kw>
+<kw name="Run a query">
+<arguments>
+<arg>${query}</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<kw name="Catenate" library="BuiltIn">
+<doc>Catenates the given items together and returns the resulted string.</doc>
+<arguments>
+<arg>SEPARATOR=</arg>
+<arg>${host}</arg>
+<arg>version=</arg>
+<arg>${version}</arg>
+<arg>${query}</arg>
+</arguments>
+<assign>
+<var>${url}</var>
+</assign>
+<msg timestamp="20160810 14:35:54.789" level="INFO">${url} = http://api.landpotential.org/query?version=0.1&amp;action=put&amp;object=landinfo&amp;name=essa.test%40gmail.com-Essa-Test02&amp;recorder_name=essa.test%40gmail.com&amp;test_plot=true&amp;latitude=20&amp;longitude=30&amp;slope=11-15...</msg>
+<status status="PASS" endtime="20160810 14:35:54.789" starttime="20160810 14:35:54.788"></status>
+</kw>
+<kw name="Initiate A Request" library="MyLibrary">
+<arguments>
+<arg>${url}</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<msg timestamp="20160810 14:35:54.792" level="INFO">Starting new HTTP connection (1): api.landpotential.org</msg>
+<msg timestamp="20160810 14:35:54.964" level="INFO">${result} = 400</msg>
+<status status="PASS" endtime="20160810 14:35:54.964" starttime="20160810 14:35:54.789"></status>
+</kw>
+<msg timestamp="20160810 14:35:54.965" level="INFO">${result} = 400</msg>
+<status status="PASS" endtime="20160810 14:35:54.965" starttime="20160810 14:35:54.787"></status>
+</kw>
+<kw name="Should Be Equal As Integers" library="BuiltIn">
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<arguments>
+<arg>${result}</arg>
+<arg>${status_code}</arg>
+</arguments>
+<msg timestamp="20160810 14:35:54.965" level="INFO">Argument types are:
+&lt;type 'int'&gt;
+&lt;type 'unicode'&gt;</msg>
+<status status="PASS" endtime="20160810 14:35:54.966" starttime="20160810 14:35:54.965"></status>
+</kw>
+<tags>
+<tag>PutAPI</tag>
+</tags>
+<status status="PASS" endtime="20160810 14:35:54.966" critical="yes" starttime="20160810 14:35:54.780"></status>
+</test>
+<test id="s1-t4" name="Put_LandInfo_by_mismatching_name_recorder_name">
+<kw name="Set Variable" library="BuiltIn">
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<arguments>
+<arg>Put_LandInfo_by_mismatching_name_recorder_name</arg>
+</arguments>
+<assign>
+<var>${test_case_name}</var>
+</assign>
+<msg timestamp="20160810 14:35:54.969" level="INFO">${test_case_name} = Put_LandInfo_by_mismatching_name_recorder_name</msg>
+<status status="PASS" endtime="20160810 14:35:54.969" starttime="20160810 14:35:54.968"></status>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<arguments>
+<arg>;</arg>
+</arguments>
+<assign>
+<var>${separator}</var>
+</assign>
+<msg timestamp="20160810 14:35:54.970" level="INFO">${separator} = ;</msg>
+<status status="PASS" endtime="20160810 14:35:54.970" starttime="20160810 14:35:54.970"></status>
+</kw>
+<kw name="Read A Test Case From File" library="MyLibrary">
+<arguments>
+<arg>${test_case_name}</arg>
+<arg>${file}</arg>
+</arguments>
+<assign>
+<var>${line}</var>
+</assign>
+<msg timestamp="20160810 14:35:54.971" level="INFO">${line} = &amp;action=put&amp;object=landinfo&amp;name=lpks.test%40gmail.com-Essa-Test03&amp;recorder_name=essa.test%40gmail.com&amp;test_plot=true&amp;latitude=20&amp;longitude=30&amp;slope=11-15%25&amp;slope_shape=convex&amp;surface_salt=true&amp;surfa...</msg>
+<status status="PASS" endtime="20160810 14:35:54.971" starttime="20160810 14:35:54.970"></status>
+</kw>
+<kw name="Fetch From Left" library="String">
+<doc>Returns contents of the ``string`` before the first occurrence of ``marker``.</doc>
+<arguments>
+<arg>${line}</arg>
+<arg>${separator}</arg>
+</arguments>
+<assign>
+<var>${query}</var>
+</assign>
+<msg timestamp="20160810 14:35:54.972" level="INFO">${query} = &amp;action=put&amp;object=landinfo&amp;name=lpks.test%40gmail.com-Essa-Test03&amp;recorder_name=essa.test%40gmail.com&amp;test_plot=true&amp;latitude=20&amp;longitude=30&amp;slope=11-15%25&amp;slope_shape=convex&amp;surface_salt=true&amp;surfa...</msg>
+<status status="PASS" endtime="20160810 14:35:54.972" starttime="20160810 14:35:54.971"></status>
+</kw>
+<kw name="Fetch From Right" library="String">
+<doc>Returns contents of the ``string`` after the last occurrence of ``marker``.</doc>
+<arguments>
+<arg>${line}</arg>
+<arg>${separator}</arg>
+</arguments>
+<assign>
+<var>${status_code}</var>
+</assign>
+<msg timestamp="20160810 14:35:54.973" level="INFO">${status_code} = 400
+
+</msg>
+<status status="PASS" endtime="20160810 14:35:54.973" starttime="20160810 14:35:54.972"></status>
+</kw>
+<kw name="Run a query">
+<arguments>
+<arg>${query}</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<kw name="Catenate" library="BuiltIn">
+<doc>Catenates the given items together and returns the resulted string.</doc>
+<arguments>
+<arg>SEPARATOR=</arg>
+<arg>${host}</arg>
+<arg>version=</arg>
+<arg>${version}</arg>
+<arg>${query}</arg>
+</arguments>
+<assign>
+<var>${url}</var>
+</assign>
+<msg timestamp="20160810 14:35:54.975" level="INFO">${url} = http://api.landpotential.org/query?version=0.1&amp;action=put&amp;object=landinfo&amp;name=lpks.test%40gmail.com-Essa-Test03&amp;recorder_name=essa.test%40gmail.com&amp;test_plot=true&amp;latitude=20&amp;longitude=30&amp;slope=11-15...</msg>
+<status status="PASS" endtime="20160810 14:35:54.975" starttime="20160810 14:35:54.974"></status>
+</kw>
+<kw name="Initiate A Request" library="MyLibrary">
+<arguments>
+<arg>${url}</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<msg timestamp="20160810 14:35:54.977" level="INFO">Starting new HTTP connection (1): api.landpotential.org</msg>
+<msg timestamp="20160810 14:35:56.893" level="INFO">${result} = 400</msg>
+<status status="PASS" endtime="20160810 14:35:56.893" starttime="20160810 14:35:54.975"></status>
+</kw>
+<msg timestamp="20160810 14:35:56.894" level="INFO">${result} = 400</msg>
+<status status="PASS" endtime="20160810 14:35:56.894" starttime="20160810 14:35:54.973"></status>
+</kw>
+<kw name="Should Be Equal As Integers" library="BuiltIn">
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<arguments>
+<arg>${result}</arg>
+<arg>${status_code}</arg>
+</arguments>
+<msg timestamp="20160810 14:35:56.895" level="INFO">Argument types are:
+&lt;type 'int'&gt;
+&lt;type 'unicode'&gt;</msg>
+<status status="PASS" endtime="20160810 14:35:56.895" starttime="20160810 14:35:56.894"></status>
+</kw>
+<tags>
+<tag>PutAPI</tag>
+</tags>
+<status status="PASS" endtime="20160810 14:35:56.895" critical="yes" starttime="20160810 14:35:54.966"></status>
+</test>
+<test id="s1-t5" name="Put_LandInfo_by_missing_name">
+<kw name="Set Variable" library="BuiltIn">
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<arguments>
+<arg>Put_LandInfo_by_missing_name</arg>
+</arguments>
+<assign>
+<var>${test_case_name}</var>
+</assign>
+<msg timestamp="20160810 14:35:56.897" level="INFO">${test_case_name} = Put_LandInfo_by_missing_name</msg>
+<status status="PASS" endtime="20160810 14:35:56.897" starttime="20160810 14:35:56.897"></status>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<arguments>
+<arg>;</arg>
+</arguments>
+<assign>
+<var>${separator}</var>
+</assign>
+<msg timestamp="20160810 14:35:56.898" level="INFO">${separator} = ;</msg>
+<status status="PASS" endtime="20160810 14:35:56.898" starttime="20160810 14:35:56.898"></status>
+</kw>
+<kw name="Read A Test Case From File" library="MyLibrary">
+<arguments>
+<arg>${test_case_name}</arg>
+<arg>${file}</arg>
+</arguments>
+<assign>
+<var>${line}</var>
+</assign>
+<msg timestamp="20160810 14:35:56.899" level="INFO">${line} = &amp;action=put&amp;object=landinfo&amp;recorder_name=lpks.test%40gmail.com&amp;test_plot=true&amp;latitude=20&amp;longitude=40&amp;flooding=true&amp;slope=3-5%25&amp;slope_shape=convex&amp;surface_salt=true&amp;surface_cracking=true;400
+
+</msg>
+<status status="PASS" endtime="20160810 14:35:56.899" starttime="20160810 14:35:56.898"></status>
+</kw>
+<kw name="Fetch From Left" library="String">
+<doc>Returns contents of the ``string`` before the first occurrence of ``marker``.</doc>
+<arguments>
+<arg>${line}</arg>
+<arg>${separator}</arg>
+</arguments>
+<assign>
+<var>${query}</var>
+</assign>
+<msg timestamp="20160810 14:35:56.904" level="INFO">${query} = &amp;action=put&amp;object=landinfo&amp;recorder_name=lpks.test%40gmail.com&amp;test_plot=true&amp;latitude=20&amp;longitude=40&amp;flooding=true&amp;slope=3-5%25&amp;slope_shape=convex&amp;surface_salt=true&amp;surface_cracking=true</msg>
+<status status="PASS" endtime="20160810 14:35:56.904" starttime="20160810 14:35:56.904"></status>
+</kw>
+<kw name="Fetch From Right" library="String">
+<doc>Returns contents of the ``string`` after the last occurrence of ``marker``.</doc>
+<arguments>
+<arg>${line}</arg>
+<arg>${separator}</arg>
+</arguments>
+<assign>
+<var>${status_code}</var>
+</assign>
+<msg timestamp="20160810 14:35:56.907" level="INFO">${status_code} = 400
+
+</msg>
+<status status="PASS" endtime="20160810 14:35:56.907" starttime="20160810 14:35:56.905"></status>
+</kw>
+<kw name="Run a query">
+<arguments>
+<arg>${query}</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<kw name="Catenate" library="BuiltIn">
+<doc>Catenates the given items together and returns the resulted string.</doc>
+<arguments>
+<arg>SEPARATOR=</arg>
+<arg>${host}</arg>
+<arg>version=</arg>
+<arg>${version}</arg>
+<arg>${query}</arg>
+</arguments>
+<assign>
+<var>${url}</var>
+</assign>
+<msg timestamp="20160810 14:35:56.921" level="INFO">${url} = http://api.landpotential.org/query?version=0.1&amp;action=put&amp;object=landinfo&amp;recorder_name=lpks.test%40gmail.com&amp;test_plot=true&amp;latitude=20&amp;longitude=40&amp;flooding=true&amp;slope=3-5%25&amp;slope_shape=convex&amp;surf...</msg>
+<status status="PASS" endtime="20160810 14:35:56.921" starttime="20160810 14:35:56.911"></status>
+</kw>
+<kw name="Initiate A Request" library="MyLibrary">
+<arguments>
+<arg>${url}</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<msg timestamp="20160810 14:35:56.928" level="INFO">Starting new HTTP connection (1): api.landpotential.org</msg>
+<msg timestamp="20160810 14:35:57.030" level="INFO">${result} = 400</msg>
+<status status="PASS" endtime="20160810 14:35:57.030" starttime="20160810 14:35:56.921"></status>
+</kw>
+<msg timestamp="20160810 14:35:57.031" level="INFO">${result} = 400</msg>
+<status status="PASS" endtime="20160810 14:35:57.031" starttime="20160810 14:35:56.907"></status>
+</kw>
+<kw name="Should Be Equal As Integers" library="BuiltIn">
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<arguments>
+<arg>${result}</arg>
+<arg>${status_code}</arg>
+</arguments>
+<msg timestamp="20160810 14:35:57.032" level="INFO">Argument types are:
+&lt;type 'int'&gt;
+&lt;type 'unicode'&gt;</msg>
+<status status="PASS" endtime="20160810 14:35:57.032" starttime="20160810 14:35:57.031"></status>
+</kw>
+<tags>
+<tag>PutAPI</tag>
+</tags>
+<status status="PASS" endtime="20160810 14:35:57.032" critical="yes" starttime="20160810 14:35:56.896"></status>
+</test>
+<test id="s1-t6" name="Put_LandInfo_by_all_fields">
+<kw name="Set Variable" library="BuiltIn">
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<arguments>
+<arg>Put_LandInfo_by_all_fields</arg>
+</arguments>
+<assign>
+<var>${test_case_name}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.035" level="INFO">${test_case_name} = Put_LandInfo_by_all_fields</msg>
+<status status="PASS" endtime="20160810 14:35:57.035" starttime="20160810 14:35:57.035"></status>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<arguments>
+<arg>;</arg>
+</arguments>
+<assign>
+<var>${separator}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.036" level="INFO">${separator} = ;</msg>
+<status status="PASS" endtime="20160810 14:35:57.036" starttime="20160810 14:35:57.035"></status>
+</kw>
+<kw name="Read A Test Case From File" library="MyLibrary">
+<arguments>
+<arg>${test_case_name}</arg>
+<arg>${file}</arg>
+</arguments>
+<assign>
+<var>${line}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.037" level="INFO">${line} = &amp;action=put&amp;object=landinfo&amp;name=lpks.test%40gmail.com-Essa-Test04&amp;recorder_name=lpks.test%40gmail.com&amp;test_plot=true&amp;organization=Jornada-NMSU&amp;latitude=20&amp;longitude=30&amp;city=Las%20Cruces%2C%20NM&amp;modif...</msg>
+<status status="PASS" endtime="20160810 14:35:57.037" starttime="20160810 14:35:57.036"></status>
+</kw>
+<kw name="Fetch From Left" library="String">
+<doc>Returns contents of the ``string`` before the first occurrence of ``marker``.</doc>
+<arguments>
+<arg>${line}</arg>
+<arg>${separator}</arg>
+</arguments>
+<assign>
+<var>${query}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.038" level="INFO">${query} = &amp;action=put&amp;object=landinfo&amp;name=lpks.test%40gmail.com-Essa-Test04&amp;recorder_name=lpks.test%40gmail.com&amp;test_plot=true&amp;organization=Jornada-NMSU&amp;latitude=20&amp;longitude=30&amp;city=Las%20Cruces%2C%20NM&amp;modif...</msg>
+<status status="PASS" endtime="20160810 14:35:57.038" starttime="20160810 14:35:57.038"></status>
+</kw>
+<kw name="Fetch From Right" library="String">
+<doc>Returns contents of the ``string`` after the last occurrence of ``marker``.</doc>
+<arguments>
+<arg>${line}</arg>
+<arg>${separator}</arg>
+</arguments>
+<assign>
+<var>${status_code}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.039" level="INFO">${status_code} = 201
+
+</msg>
+<status status="PASS" endtime="20160810 14:35:57.040" starttime="20160810 14:35:57.039"></status>
+</kw>
+<kw name="Run a query">
+<arguments>
+<arg>${query}</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<kw name="Catenate" library="BuiltIn">
+<doc>Catenates the given items together and returns the resulted string.</doc>
+<arguments>
+<arg>SEPARATOR=</arg>
+<arg>${host}</arg>
+<arg>version=</arg>
+<arg>${version}</arg>
+<arg>${query}</arg>
+</arguments>
+<assign>
+<var>${url}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.041" level="INFO">${url} = http://api.landpotential.org/query?version=0.1&amp;action=put&amp;object=landinfo&amp;name=lpks.test%40gmail.com-Essa-Test04&amp;recorder_name=lpks.test%40gmail.com&amp;test_plot=true&amp;organization=Jornada-NMSU&amp;latitude=2...</msg>
+<status status="PASS" endtime="20160810 14:35:57.041" starttime="20160810 14:35:57.040"></status>
+</kw>
+<kw name="Initiate A Request" library="MyLibrary">
+<arguments>
+<arg>${url}</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.043" level="INFO">Starting new HTTP connection (1): api.landpotential.org</msg>
+<msg timestamp="20160810 14:35:57.166" level="INFO">${result} = 400</msg>
+<status status="PASS" endtime="20160810 14:35:57.166" starttime="20160810 14:35:57.041"></status>
+</kw>
+<msg timestamp="20160810 14:35:57.166" level="INFO">${result} = 400</msg>
+<status status="PASS" endtime="20160810 14:35:57.166" starttime="20160810 14:35:57.040"></status>
+</kw>
+<kw name="Should Be Equal As Integers" library="BuiltIn">
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<arguments>
+<arg>${result}</arg>
+<arg>${status_code}</arg>
+</arguments>
+<msg timestamp="20160810 14:35:57.167" level="INFO">Argument types are:
+&lt;type 'int'&gt;
+&lt;type 'unicode'&gt;</msg>
+<msg timestamp="20160810 14:35:57.167" level="FAIL">400 != 201</msg>
+<status status="FAIL" endtime="20160810 14:35:57.168" starttime="20160810 14:35:57.167"></status>
+</kw>
+<tags>
+<tag>PutAPI</tag>
+</tags>
+<status status="FAIL" endtime="20160810 14:35:57.168" critical="yes" starttime="20160810 14:35:57.034">400 != 201</status>
+</test>
+<test id="s1-t7" name="Put_another_new_LandInfo_plot">
+<kw name="Set Variable" library="BuiltIn">
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<arguments>
+<arg>Put_another_new_LandInfo_plot</arg>
+</arguments>
+<assign>
+<var>${test_case_name}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.170" level="INFO">${test_case_name} = Put_another_new_LandInfo_plot</msg>
+<status status="PASS" endtime="20160810 14:35:57.170" starttime="20160810 14:35:57.170"></status>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<arguments>
+<arg>;</arg>
+</arguments>
+<assign>
+<var>${separator}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.171" level="INFO">${separator} = ;</msg>
+<status status="PASS" endtime="20160810 14:35:57.171" starttime="20160810 14:35:57.170"></status>
+</kw>
+<kw name="Read A Test Case From File" library="MyLibrary">
+<arguments>
+<arg>${test_case_name}</arg>
+<arg>${file}</arg>
+</arguments>
+<assign>
+<var>${line}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.174" level="INFO">${line} = &amp;action=put&amp;object=landinfo&amp;name=lpks.test%40gmail.com-Essa-Test03&amp;recorder_name=lpks.test%40gmail.com&amp;test_plot=true&amp;latitude=20&amp;longitude=40&amp;flooding=true&amp;slope=3-5%25&amp;slope_shape=convex&amp;surface_sal...</msg>
+<status status="PASS" endtime="20160810 14:35:57.174" starttime="20160810 14:35:57.171"></status>
+</kw>
+<kw name="Fetch From Left" library="String">
+<doc>Returns contents of the ``string`` before the first occurrence of ``marker``.</doc>
+<arguments>
+<arg>${line}</arg>
+<arg>${separator}</arg>
+</arguments>
+<assign>
+<var>${query}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.196" level="INFO">${query} = &amp;action=put&amp;object=landinfo&amp;name=lpks.test%40gmail.com-Essa-Test03&amp;recorder_name=lpks.test%40gmail.com&amp;test_plot=true&amp;latitude=20&amp;longitude=40&amp;flooding=true&amp;slope=3-5%25&amp;slope_shape=convex&amp;surface_sal...</msg>
+<status status="PASS" endtime="20160810 14:35:57.197" starttime="20160810 14:35:57.175"></status>
+</kw>
+<kw name="Fetch From Right" library="String">
+<doc>Returns contents of the ``string`` after the last occurrence of ``marker``.</doc>
+<arguments>
+<arg>${line}</arg>
+<arg>${separator}</arg>
+</arguments>
+<assign>
+<var>${status_code}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.197" level="INFO">${status_code} = 201
+
+</msg>
+<status status="PASS" endtime="20160810 14:35:57.197" starttime="20160810 14:35:57.197"></status>
+</kw>
+<kw name="Run a query">
+<arguments>
+<arg>${query}</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<kw name="Catenate" library="BuiltIn">
+<doc>Catenates the given items together and returns the resulted string.</doc>
+<arguments>
+<arg>SEPARATOR=</arg>
+<arg>${host}</arg>
+<arg>version=</arg>
+<arg>${version}</arg>
+<arg>${query}</arg>
+</arguments>
+<assign>
+<var>${url}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.206" level="INFO">${url} = http://api.landpotential.org/query?version=0.1&amp;action=put&amp;object=landinfo&amp;name=lpks.test%40gmail.com-Essa-Test03&amp;recorder_name=lpks.test%40gmail.com&amp;test_plot=true&amp;latitude=20&amp;longitude=40&amp;flooding=tr...</msg>
+<status status="PASS" endtime="20160810 14:35:57.206" starttime="20160810 14:35:57.204"></status>
+</kw>
+<kw name="Initiate A Request" library="MyLibrary">
+<arguments>
+<arg>${url}</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.210" level="INFO">Starting new HTTP connection (1): api.landpotential.org</msg>
+<msg timestamp="20160810 14:35:57.335" level="INFO">${result} = 400</msg>
+<status status="PASS" endtime="20160810 14:35:57.335" starttime="20160810 14:35:57.207"></status>
+</kw>
+<msg timestamp="20160810 14:35:57.335" level="INFO">${result} = 400</msg>
+<status status="PASS" endtime="20160810 14:35:57.335" starttime="20160810 14:35:57.198"></status>
+</kw>
+<kw name="Should Be Equal As Integers" library="BuiltIn">
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<arguments>
+<arg>${result}</arg>
+<arg>${status_code}</arg>
+</arguments>
+<msg timestamp="20160810 14:35:57.336" level="INFO">Argument types are:
+&lt;type 'int'&gt;
+&lt;type 'unicode'&gt;</msg>
+<msg timestamp="20160810 14:35:57.336" level="FAIL">400 != 201</msg>
+<status status="FAIL" endtime="20160810 14:35:57.336" starttime="20160810 14:35:57.335"></status>
+</kw>
+<tags>
+<tag>PutAPI</tag>
+</tags>
+<status status="FAIL" endtime="20160810 14:35:57.337" critical="yes" starttime="20160810 14:35:57.169">400 != 201</status>
+</test>
+<test id="s1-t8" name="Put_LandCover_by_all_required_fields">
+<kw name="Set Variable" library="BuiltIn">
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<arguments>
+<arg>Put_LandCover_by_all_required_fields</arg>
+</arguments>
+<assign>
+<var>${test_case_name}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.339" level="INFO">${test_case_name} = Put_LandCover_by_all_required_fields</msg>
+<status status="PASS" endtime="20160810 14:35:57.339" starttime="20160810 14:35:57.338"></status>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<arguments>
+<arg>;</arg>
+</arguments>
+<assign>
+<var>${separator}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.342" level="INFO">${separator} = ;</msg>
+<status status="PASS" endtime="20160810 14:35:57.342" starttime="20160810 14:35:57.339"></status>
+</kw>
+<kw name="Read A Test Case From File" library="MyLibrary">
+<arguments>
+<arg>${test_case_name}</arg>
+<arg>${file}</arg>
+</arguments>
+<assign>
+<var>${line}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.347" level="INFO">${line} = &amp;action=put&amp;object=landcover&amp;name=lpks.test%40gmail.com-Essa-Test01&amp;recorder_name=lpks.test%40gmail.com&amp;transect=WEST&amp;segment=5m&amp;canopy_gap=true&amp;basal_gap=true;200
+
+</msg>
+<status status="PASS" endtime="20160810 14:35:57.348" starttime="20160810 14:35:57.343"></status>
+</kw>
+<kw name="Fetch From Left" library="String">
+<doc>Returns contents of the ``string`` before the first occurrence of ``marker``.</doc>
+<arguments>
+<arg>${line}</arg>
+<arg>${separator}</arg>
+</arguments>
+<assign>
+<var>${query}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.348" level="INFO">${query} = &amp;action=put&amp;object=landcover&amp;name=lpks.test%40gmail.com-Essa-Test01&amp;recorder_name=lpks.test%40gmail.com&amp;transect=WEST&amp;segment=5m&amp;canopy_gap=true&amp;basal_gap=true</msg>
+<status status="PASS" endtime="20160810 14:35:57.348" starttime="20160810 14:35:57.348"></status>
+</kw>
+<kw name="Fetch From Right" library="String">
+<doc>Returns contents of the ``string`` after the last occurrence of ``marker``.</doc>
+<arguments>
+<arg>${line}</arg>
+<arg>${separator}</arg>
+</arguments>
+<assign>
+<var>${status_code}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.355" level="INFO">${status_code} = 200
+
+</msg>
+<status status="PASS" endtime="20160810 14:35:57.355" starttime="20160810 14:35:57.352"></status>
+</kw>
+<kw name="Run a query">
+<arguments>
+<arg>${query}</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<kw name="Catenate" library="BuiltIn">
+<doc>Catenates the given items together and returns the resulted string.</doc>
+<arguments>
+<arg>SEPARATOR=</arg>
+<arg>${host}</arg>
+<arg>version=</arg>
+<arg>${version}</arg>
+<arg>${query}</arg>
+</arguments>
+<assign>
+<var>${url}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.359" level="INFO">${url} = http://api.landpotential.org/query?version=0.1&amp;action=put&amp;object=landcover&amp;name=lpks.test%40gmail.com-Essa-Test01&amp;recorder_name=lpks.test%40gmail.com&amp;transect=WEST&amp;segment=5m&amp;canopy_gap=true&amp;basal_gap...</msg>
+<status status="PASS" endtime="20160810 14:35:57.359" starttime="20160810 14:35:57.358"></status>
+</kw>
+<kw name="Initiate A Request" library="MyLibrary">
+<arguments>
+<arg>${url}</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.372" level="INFO">Starting new HTTP connection (1): api.landpotential.org</msg>
+<msg timestamp="20160810 14:35:57.602" level="INFO">${result} = 200</msg>
+<status status="PASS" endtime="20160810 14:35:57.602" starttime="20160810 14:35:57.359"></status>
+</kw>
+<msg timestamp="20160810 14:35:57.602" level="INFO">${result} = 200</msg>
+<status status="PASS" endtime="20160810 14:35:57.602" starttime="20160810 14:35:57.355"></status>
+</kw>
+<kw name="Should Be Equal As Integers" library="BuiltIn">
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<arguments>
+<arg>${result}</arg>
+<arg>${status_code}</arg>
+</arguments>
+<msg timestamp="20160810 14:35:57.603" level="INFO">Argument types are:
+&lt;type 'int'&gt;
+&lt;type 'unicode'&gt;</msg>
+<status status="PASS" endtime="20160810 14:35:57.603" starttime="20160810 14:35:57.603"></status>
+</kw>
+<tags>
+<tag>PutAPI</tag>
+</tags>
+<status status="PASS" endtime="20160810 14:35:57.603" critical="yes" starttime="20160810 14:35:57.337"></status>
+</test>
+<test id="s1-t9" name="Put_LandCover_by_unregistered_recorder_name">
+<kw name="Set Variable" library="BuiltIn">
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<arguments>
+<arg>Put_LandCover_by_unregistered_recorder_name</arg>
+</arguments>
+<assign>
+<var>${test_case_name}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.606" level="INFO">${test_case_name} = Put_LandCover_by_unregistered_recorder_name</msg>
+<status status="PASS" endtime="20160810 14:35:57.606" starttime="20160810 14:35:57.605"></status>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<arguments>
+<arg>;</arg>
+</arguments>
+<assign>
+<var>${separator}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.606" level="INFO">${separator} = ;</msg>
+<status status="PASS" endtime="20160810 14:35:57.606" starttime="20160810 14:35:57.606"></status>
+</kw>
+<kw name="Read A Test Case From File" library="MyLibrary">
+<arguments>
+<arg>${test_case_name}</arg>
+<arg>${file}</arg>
+</arguments>
+<assign>
+<var>${line}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.609" level="INFO">${line} = &amp;action=put&amp;object=landcover&amp;name=essa.test%40gmail.com-Essa-Test01&amp;recorder_name=essa.test%40gmail.com&amp;transect=WEST&amp;segment=5m&amp;canopy_gap=true&amp;basal_gap=true;400
+
+</msg>
+<status status="PASS" endtime="20160810 14:35:57.609" starttime="20160810 14:35:57.608"></status>
+</kw>
+<kw name="Fetch From Left" library="String">
+<doc>Returns contents of the ``string`` before the first occurrence of ``marker``.</doc>
+<arguments>
+<arg>${line}</arg>
+<arg>${separator}</arg>
+</arguments>
+<assign>
+<var>${query}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.610" level="INFO">${query} = &amp;action=put&amp;object=landcover&amp;name=essa.test%40gmail.com-Essa-Test01&amp;recorder_name=essa.test%40gmail.com&amp;transect=WEST&amp;segment=5m&amp;canopy_gap=true&amp;basal_gap=true</msg>
+<status status="PASS" endtime="20160810 14:35:57.610" starttime="20160810 14:35:57.609"></status>
+</kw>
+<kw name="Fetch From Right" library="String">
+<doc>Returns contents of the ``string`` after the last occurrence of ``marker``.</doc>
+<arguments>
+<arg>${line}</arg>
+<arg>${separator}</arg>
+</arguments>
+<assign>
+<var>${status_code}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.610" level="INFO">${status_code} = 400
+
+</msg>
+<status status="PASS" endtime="20160810 14:35:57.610" starttime="20160810 14:35:57.610"></status>
+</kw>
+<kw name="Run a query">
+<arguments>
+<arg>${query}</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<kw name="Catenate" library="BuiltIn">
+<doc>Catenates the given items together and returns the resulted string.</doc>
+<arguments>
+<arg>SEPARATOR=</arg>
+<arg>${host}</arg>
+<arg>version=</arg>
+<arg>${version}</arg>
+<arg>${query}</arg>
+</arguments>
+<assign>
+<var>${url}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.616" level="INFO">${url} = http://api.landpotential.org/query?version=0.1&amp;action=put&amp;object=landcover&amp;name=essa.test%40gmail.com-Essa-Test01&amp;recorder_name=essa.test%40gmail.com&amp;transect=WEST&amp;segment=5m&amp;canopy_gap=true&amp;basal_gap...</msg>
+<status status="PASS" endtime="20160810 14:35:57.616" starttime="20160810 14:35:57.611"></status>
+</kw>
+<kw name="Initiate A Request" library="MyLibrary">
+<arguments>
+<arg>${url}</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.624" level="INFO">Starting new HTTP connection (1): api.landpotential.org</msg>
+<msg timestamp="20160810 14:35:57.742" level="INFO">${result} = 400</msg>
+<status status="PASS" endtime="20160810 14:35:57.742" starttime="20160810 14:35:57.616"></status>
+</kw>
+<msg timestamp="20160810 14:35:57.742" level="INFO">${result} = 400</msg>
+<status status="PASS" endtime="20160810 14:35:57.742" starttime="20160810 14:35:57.611"></status>
+</kw>
+<kw name="Should Be Equal As Integers" library="BuiltIn">
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<arguments>
+<arg>${result}</arg>
+<arg>${status_code}</arg>
+</arguments>
+<msg timestamp="20160810 14:35:57.743" level="INFO">Argument types are:
+&lt;type 'int'&gt;
+&lt;type 'unicode'&gt;</msg>
+<status status="PASS" endtime="20160810 14:35:57.743" starttime="20160810 14:35:57.743"></status>
+</kw>
+<tags>
+<tag>PutAPI</tag>
+</tags>
+<status status="PASS" endtime="20160810 14:35:57.744" critical="yes" starttime="20160810 14:35:57.604"></status>
+</test>
+<test id="s1-t10" name="Put_LandCover_by_mismatching_name_recorder_name">
+<kw name="Set Variable" library="BuiltIn">
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<arguments>
+<arg>Put_LandCover_by_mismatching_name_recorder_name</arg>
+</arguments>
+<assign>
+<var>${test_case_name}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.746" level="INFO">${test_case_name} = Put_LandCover_by_mismatching_name_recorder_name</msg>
+<status status="PASS" endtime="20160810 14:35:57.746" starttime="20160810 14:35:57.745"></status>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<arguments>
+<arg>;</arg>
+</arguments>
+<assign>
+<var>${separator}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.746" level="INFO">${separator} = ;</msg>
+<status status="PASS" endtime="20160810 14:35:57.746" starttime="20160810 14:35:57.746"></status>
+</kw>
+<kw name="Read A Test Case From File" library="MyLibrary">
+<arguments>
+<arg>${test_case_name}</arg>
+<arg>${file}</arg>
+</arguments>
+<assign>
+<var>${line}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.751" level="INFO">${line} = &amp;action=put&amp;object=landcover&amp;name=essa.test%40gmail.com-Essa-Test01&amp;recorder_name=lpks.test%40gmail.com&amp;transect=WEST&amp;segment=5m&amp;canopy_gap=true&amp;basal_gap=true;400
+
+</msg>
+<status status="PASS" endtime="20160810 14:35:57.751" starttime="20160810 14:35:57.747"></status>
+</kw>
+<kw name="Fetch From Left" library="String">
+<doc>Returns contents of the ``string`` before the first occurrence of ``marker``.</doc>
+<arguments>
+<arg>${line}</arg>
+<arg>${separator}</arg>
+</arguments>
+<assign>
+<var>${query}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.752" level="INFO">${query} = &amp;action=put&amp;object=landcover&amp;name=essa.test%40gmail.com-Essa-Test01&amp;recorder_name=lpks.test%40gmail.com&amp;transect=WEST&amp;segment=5m&amp;canopy_gap=true&amp;basal_gap=true</msg>
+<status status="PASS" endtime="20160810 14:35:57.752" starttime="20160810 14:35:57.751"></status>
+</kw>
+<kw name="Fetch From Right" library="String">
+<doc>Returns contents of the ``string`` after the last occurrence of ``marker``.</doc>
+<arguments>
+<arg>${line}</arg>
+<arg>${separator}</arg>
+</arguments>
+<assign>
+<var>${status_code}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.753" level="INFO">${status_code} = 400
+
+</msg>
+<status status="PASS" endtime="20160810 14:35:57.753" starttime="20160810 14:35:57.752"></status>
+</kw>
+<kw name="Run a query">
+<arguments>
+<arg>${query}</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<kw name="Catenate" library="BuiltIn">
+<doc>Catenates the given items together and returns the resulted string.</doc>
+<arguments>
+<arg>SEPARATOR=</arg>
+<arg>${host}</arg>
+<arg>version=</arg>
+<arg>${version}</arg>
+<arg>${query}</arg>
+</arguments>
+<assign>
+<var>${url}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.754" level="INFO">${url} = http://api.landpotential.org/query?version=0.1&amp;action=put&amp;object=landcover&amp;name=essa.test%40gmail.com-Essa-Test01&amp;recorder_name=lpks.test%40gmail.com&amp;transect=WEST&amp;segment=5m&amp;canopy_gap=true&amp;basal_gap...</msg>
+<status status="PASS" endtime="20160810 14:35:57.754" starttime="20160810 14:35:57.754"></status>
+</kw>
+<kw name="Initiate A Request" library="MyLibrary">
+<arguments>
+<arg>${url}</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.757" level="INFO">Starting new HTTP connection (1): api.landpotential.org</msg>
+<msg timestamp="20160810 14:35:57.874" level="INFO">${result} = 400</msg>
+<status status="PASS" endtime="20160810 14:35:57.874" starttime="20160810 14:35:57.755"></status>
+</kw>
+<msg timestamp="20160810 14:35:57.875" level="INFO">${result} = 400</msg>
+<status status="PASS" endtime="20160810 14:35:57.875" starttime="20160810 14:35:57.753"></status>
+</kw>
+<kw name="Should Be Equal As Integers" library="BuiltIn">
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<arguments>
+<arg>${result}</arg>
+<arg>${status_code}</arg>
+</arguments>
+<msg timestamp="20160810 14:35:57.876" level="INFO">Argument types are:
+&lt;type 'int'&gt;
+&lt;type 'unicode'&gt;</msg>
+<status status="PASS" endtime="20160810 14:35:57.876" starttime="20160810 14:35:57.875"></status>
+</kw>
+<tags>
+<tag>PutAPI</tag>
+</tags>
+<status status="PASS" endtime="20160810 14:35:57.876" critical="yes" starttime="20160810 14:35:57.744"></status>
+</test>
+<test id="s1-t11" name="Put_LandCover_by_missing_name">
+<kw name="Set Variable" library="BuiltIn">
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<arguments>
+<arg>Put_LandCover_by_missing_name</arg>
+</arguments>
+<assign>
+<var>${test_case_name}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.879" level="INFO">${test_case_name} = Put_LandCover_by_missing_name</msg>
+<status status="PASS" endtime="20160810 14:35:57.879" starttime="20160810 14:35:57.879"></status>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<arguments>
+<arg>;</arg>
+</arguments>
+<assign>
+<var>${separator}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.880" level="INFO">${separator} = ;</msg>
+<status status="PASS" endtime="20160810 14:35:57.880" starttime="20160810 14:35:57.880"></status>
+</kw>
+<kw name="Read A Test Case From File" library="MyLibrary">
+<arguments>
+<arg>${test_case_name}</arg>
+<arg>${file}</arg>
+</arguments>
+<assign>
+<var>${line}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.881" level="INFO">${line} = &amp;action=put&amp;object=landcover&amp;recorder_name=lpks.test%40gmail.com&amp;transect=WEST&amp;segment=5m&amp;canopy_gap=true&amp;basal_gap=true;400
+
+</msg>
+<status status="PASS" endtime="20160810 14:35:57.881" starttime="20160810 14:35:57.880"></status>
+</kw>
+<kw name="Fetch From Left" library="String">
+<doc>Returns contents of the ``string`` before the first occurrence of ``marker``.</doc>
+<arguments>
+<arg>${line}</arg>
+<arg>${separator}</arg>
+</arguments>
+<assign>
+<var>${query}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.881" level="INFO">${query} = &amp;action=put&amp;object=landcover&amp;recorder_name=lpks.test%40gmail.com&amp;transect=WEST&amp;segment=5m&amp;canopy_gap=true&amp;basal_gap=true</msg>
+<status status="PASS" endtime="20160810 14:35:57.882" starttime="20160810 14:35:57.881"></status>
+</kw>
+<kw name="Fetch From Right" library="String">
+<doc>Returns contents of the ``string`` after the last occurrence of ``marker``.</doc>
+<arguments>
+<arg>${line}</arg>
+<arg>${separator}</arg>
+</arguments>
+<assign>
+<var>${status_code}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.882" level="INFO">${status_code} = 400
+
+</msg>
+<status status="PASS" endtime="20160810 14:35:57.882" starttime="20160810 14:35:57.882"></status>
+</kw>
+<kw name="Run a query">
+<arguments>
+<arg>${query}</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<kw name="Catenate" library="BuiltIn">
+<doc>Catenates the given items together and returns the resulted string.</doc>
+<arguments>
+<arg>SEPARATOR=</arg>
+<arg>${host}</arg>
+<arg>version=</arg>
+<arg>${version}</arg>
+<arg>${query}</arg>
+</arguments>
+<assign>
+<var>${url}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.883" level="INFO">${url} = http://api.landpotential.org/query?version=0.1&amp;action=put&amp;object=landcover&amp;recorder_name=lpks.test%40gmail.com&amp;transect=WEST&amp;segment=5m&amp;canopy_gap=true&amp;basal_gap=true</msg>
+<status status="PASS" endtime="20160810 14:35:57.884" starttime="20160810 14:35:57.883"></status>
+</kw>
+<kw name="Initiate A Request" library="MyLibrary">
+<arguments>
+<arg>${url}</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.885" level="INFO">Starting new HTTP connection (1): api.landpotential.org</msg>
+<msg timestamp="20160810 14:35:57.992" level="INFO">${result} = 404</msg>
+<status status="PASS" endtime="20160810 14:35:57.992" starttime="20160810 14:35:57.884"></status>
+</kw>
+<msg timestamp="20160810 14:35:57.992" level="INFO">${result} = 404</msg>
+<status status="PASS" endtime="20160810 14:35:57.993" starttime="20160810 14:35:57.882"></status>
+</kw>
+<kw name="Should Be Equal As Integers" library="BuiltIn">
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<arguments>
+<arg>${result}</arg>
+<arg>${status_code}</arg>
+</arguments>
+<msg timestamp="20160810 14:35:57.993" level="INFO">Argument types are:
+&lt;type 'int'&gt;
+&lt;type 'unicode'&gt;</msg>
+<msg timestamp="20160810 14:35:57.994" level="FAIL">404 != 400</msg>
+<status status="FAIL" endtime="20160810 14:35:57.994" starttime="20160810 14:35:57.993"></status>
+</kw>
+<tags>
+<tag>PutAPI</tag>
+</tags>
+<status status="FAIL" endtime="20160810 14:35:57.994" critical="yes" starttime="20160810 14:35:57.877">404 != 400</status>
+</test>
+<test id="s1-t12" name="Put_LandCover_by_all_fields">
+<kw name="Set Variable" library="BuiltIn">
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<arguments>
+<arg>Put_LandCover_by_all_fields</arg>
+</arguments>
+<assign>
+<var>${test_case_name}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.996" level="INFO">${test_case_name} = Put_LandCover_by_all_fields</msg>
+<status status="PASS" endtime="20160810 14:35:57.996" starttime="20160810 14:35:57.995"></status>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<arguments>
+<arg>;</arg>
+</arguments>
+<assign>
+<var>${separator}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.996" level="INFO">${separator} = ;</msg>
+<status status="PASS" endtime="20160810 14:35:57.997" starttime="20160810 14:35:57.996"></status>
+</kw>
+<kw name="Read A Test Case From File" library="MyLibrary">
+<arguments>
+<arg>${test_case_name}</arg>
+<arg>${file}</arg>
+</arguments>
+<assign>
+<var>${line}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.998" level="INFO">${line} = &amp;action=put&amp;object=landcover&amp;name=lpks.test%40gmail.com-Essa-Test01&amp;recorder_name=lpks.test%40gmail.com&amp;landinfo_plot_id={0}&amp;transect=WEST&amp;segment=5m&amp;canopy_height=%3C10cm&amp;canopy_gap=true&amp;basal_gap=tr...</msg>
+<status status="PASS" endtime="20160810 14:35:57.998" starttime="20160810 14:35:57.997"></status>
+</kw>
+<kw name="Fetch From Left" library="String">
+<doc>Returns contents of the ``string`` before the first occurrence of ``marker``.</doc>
+<arguments>
+<arg>${line}</arg>
+<arg>${separator}</arg>
+</arguments>
+<assign>
+<var>${query}</var>
+</assign>
+<msg timestamp="20160810 14:35:57.999" level="INFO">${query} = &amp;action=put&amp;object=landcover&amp;name=lpks.test%40gmail.com-Essa-Test01&amp;recorder_name=lpks.test%40gmail.com&amp;landinfo_plot_id={0}&amp;transect=WEST&amp;segment=5m&amp;canopy_height=%3C10cm&amp;canopy_gap=true&amp;basal_gap=tr...</msg>
+<status status="PASS" endtime="20160810 14:35:57.999" starttime="20160810 14:35:57.998"></status>
+</kw>
+<kw name="Fetch From Right" library="String">
+<doc>Returns contents of the ``string`` after the last occurrence of ``marker``.</doc>
+<arguments>
+<arg>${line}</arg>
+<arg>${separator}</arg>
+</arguments>
+<assign>
+<var>${status_code}</var>
+</assign>
+<msg timestamp="20160810 14:35:58.001" level="INFO">${status_code} = 200
+
+</msg>
+<status status="PASS" endtime="20160810 14:35:58.001" starttime="20160810 14:35:58.000"></status>
+</kw>
+<kw name="Ioint An ID To A Query" library="MyLibrary">
+<arguments>
+<arg>${query}</arg>
+<arg>${ID}</arg>
+</arguments>
+<assign>
+<var>${query}</var>
+</assign>
+<msg timestamp="20160810 14:35:58.003" level="FAIL">Variable '${ID}' not found.</msg>
+<status status="FAIL" endtime="20160810 14:35:58.003" starttime="20160810 14:35:58.002"></status>
+</kw>
+<tags>
+<tag>PutAPI</tag>
+</tags>
+<status status="FAIL" endtime="20160810 14:35:58.004" critical="yes" starttime="20160810 14:35:57.994">Variable '${ID}' not found.</status>
+</test>
+<test id="s1-t13" name="Put_LandCover_by_all_fields_and_nonexistent_Plot_ID">
+<kw name="Set Variable" library="BuiltIn">
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<arguments>
+<arg>Put_LandCover_by_all_fields_and_nonexistent_Plot_ID</arg>
+</arguments>
+<assign>
+<var>${test_case_name}</var>
+</assign>
+<msg timestamp="20160810 14:35:58.009" level="INFO">${test_case_name} = Put_LandCover_by_all_fields_and_nonexistent_Plot_ID</msg>
+<status status="PASS" endtime="20160810 14:35:58.009" starttime="20160810 14:35:58.009"></status>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<arguments>
+<arg>;</arg>
+</arguments>
+<assign>
+<var>${separator}</var>
+</assign>
+<msg timestamp="20160810 14:35:58.010" level="INFO">${separator} = ;</msg>
+<status status="PASS" endtime="20160810 14:35:58.010" starttime="20160810 14:35:58.010"></status>
+</kw>
+<kw name="Read A Test Case From File" library="MyLibrary">
+<arguments>
+<arg>${test_case_name}</arg>
+<arg>${file}</arg>
+</arguments>
+<assign>
+<var>${line}</var>
+</assign>
+<msg timestamp="20160810 14:35:58.011" level="INFO">${line} = &amp;action=put&amp;object=landcover&amp;name=lpks.test%40gmail.com-Essa-Test01&amp;recorder_name=lpks.test%40gmail.com&amp;landinfo_plot_id={0}&amp;transect=WEST&amp;segment=5m&amp;canopy_height=%3C10cm&amp;canopy_gap=true&amp;basal_gap=tr...</msg>
+<status status="PASS" endtime="20160810 14:35:58.011" starttime="20160810 14:35:58.010"></status>
+</kw>
+<kw name="Fetch From Left" library="String">
+<doc>Returns contents of the ``string`` before the first occurrence of ``marker``.</doc>
+<arguments>
+<arg>${line}</arg>
+<arg>${separator}</arg>
+</arguments>
+<assign>
+<var>${query}</var>
+</assign>
+<msg timestamp="20160810 14:35:58.012" level="INFO">${query} = &amp;action=put&amp;object=landcover&amp;name=lpks.test%40gmail.com-Essa-Test01&amp;recorder_name=lpks.test%40gmail.com&amp;landinfo_plot_id={0}&amp;transect=WEST&amp;segment=5m&amp;canopy_height=%3C10cm&amp;canopy_gap=true&amp;basal_gap=tr...</msg>
+<status status="PASS" endtime="20160810 14:35:58.012" starttime="20160810 14:35:58.012"></status>
+</kw>
+<kw name="Fetch From Right" library="String">
+<doc>Returns contents of the ``string`` after the last occurrence of ``marker``.</doc>
+<arguments>
+<arg>${line}</arg>
+<arg>${separator}</arg>
+</arguments>
+<assign>
+<var>${status_code}</var>
+</assign>
+<msg timestamp="20160810 14:35:58.013" level="INFO">${status_code} = 200
+
+</msg>
+<status status="PASS" endtime="20160810 14:35:58.013" starttime="20160810 14:35:58.012"></status>
+</kw>
+<kw name="Ioint An ID To A Query" library="MyLibrary">
+<arguments>
+<arg>${query}</arg>
+<arg>123454320</arg>
+</arguments>
+<assign>
+<var>${query}</var>
+</assign>
+<msg timestamp="20160810 14:35:58.013" level="INFO">${query} = &amp;action=put&amp;object=landcover&amp;name=lpks.test%40gmail.com-Essa-Test01&amp;recorder_name=lpks.test%40gmail.com&amp;landinfo_plot_id=123454320&amp;transect=WEST&amp;segment=5m&amp;canopy_height=%3C10cm&amp;canopy_gap=true&amp;basal_...</msg>
+<status status="PASS" endtime="20160810 14:35:58.014" starttime="20160810 14:35:58.013"></status>
+</kw>
+<kw name="Run a query">
+<arguments>
+<arg>${query}</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<kw name="Catenate" library="BuiltIn">
+<doc>Catenates the given items together and returns the resulted string.</doc>
+<arguments>
+<arg>SEPARATOR=</arg>
+<arg>${host}</arg>
+<arg>version=</arg>
+<arg>${version}</arg>
+<arg>${query}</arg>
+</arguments>
+<assign>
+<var>${url}</var>
+</assign>
+<msg timestamp="20160810 14:35:58.015" level="INFO">${url} = http://api.landpotential.org/query?version=0.1&amp;action=put&amp;object=landcover&amp;name=lpks.test%40gmail.com-Essa-Test01&amp;recorder_name=lpks.test%40gmail.com&amp;landinfo_plot_id=123454320&amp;transect=WEST&amp;segment=5...</msg>
+<status status="PASS" endtime="20160810 14:35:58.015" starttime="20160810 14:35:58.014"></status>
+</kw>
+<kw name="Initiate A Request" library="MyLibrary">
+<arguments>
+<arg>${url}</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<msg timestamp="20160810 14:35:58.017" level="INFO">Starting new HTTP connection (1): api.landpotential.org</msg>
+<msg timestamp="20160810 14:35:58.143" level="INFO">${result} = 400</msg>
+<status status="PASS" endtime="20160810 14:35:58.143" starttime="20160810 14:35:58.015"></status>
+</kw>
+<msg timestamp="20160810 14:35:58.144" level="INFO">${result} = 400</msg>
+<status status="PASS" endtime="20160810 14:35:58.144" starttime="20160810 14:35:58.014"></status>
+</kw>
+<kw name="Should Be Equal As Integers" library="BuiltIn">
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<arguments>
+<arg>${result}</arg>
+<arg>${status_code}</arg>
+</arguments>
+<msg timestamp="20160810 14:35:58.145" level="INFO">Argument types are:
+&lt;type 'int'&gt;
+&lt;type 'unicode'&gt;</msg>
+<msg timestamp="20160810 14:35:58.145" level="FAIL">400 != 200</msg>
+<status status="FAIL" endtime="20160810 14:35:58.145" starttime="20160810 14:35:58.144"></status>
+</kw>
+<tags>
+<tag>PutAPI</tag>
+</tags>
+<status status="FAIL" endtime="20160810 14:35:58.145" critical="yes" starttime="20160810 14:35:58.004">400 != 200</status>
+</test>
+<status status="FAIL" endtime="20160810 14:35:58.147" starttime="20160810 14:35:53.951"></status>
 </suite>
 <statistics>
 <total>
-<stat fail="1" pass="1">Critical Tests</stat>
-<stat fail="1" pass="1">All Tests</stat>
+<stat fail="6" pass="7">Critical Tests</stat>
+<stat fail="6" pass="7">All Tests</stat>
 </total>
 <tag>
-<stat fail="1" pass="1">Appium</stat>
+<stat fail="6" pass="7">PutAPI</stat>
 </tag>
 <suite>
-<stat fail="1" id="s1" name="AppiumTest" pass="1">AppiumTest</stat>
+<stat fail="6" id="s1" name="TestScript" pass="7">TestScript</stat>
 </suite>
 </statistics>
 <errors>
