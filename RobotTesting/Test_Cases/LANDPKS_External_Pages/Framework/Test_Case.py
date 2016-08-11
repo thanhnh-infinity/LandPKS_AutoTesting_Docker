@@ -124,10 +124,10 @@ PATH = lambda p: os.path.abspath(
     os.path.join(os.path.dirname(__file__), p)
 )
 def HandleFormNewLandInfo(driver):
-    Inputs = driver.find_elements_by_tag_name("input")
-    Inputs.extend(driver.find_elements_by_tag_name("select"))
-    for input in Inputs:
-        HandleInputForm(input)
+    InputsCounts = len(driver.find_elements_by_tag_name("input"))
+    SelectsCount = len(driver.find_elements_by_tag_name("select"))
+    for curInput in range(1,InputsCounts + 1):
+        HandleInputForm(driver.find_element(By.XPATH,"//input[{0}]".format(curInput)))
 def HandleInputForm(InputEle):
     eleID = InputEle.get_attribute("id")
     if eleID == "test_plot":

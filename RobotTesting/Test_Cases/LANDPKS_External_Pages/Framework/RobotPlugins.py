@@ -3,11 +3,9 @@ from selenium import webdriver
 import requests
 from selenium.webdriver.remote.command import Command
 from robot.libraries.BuiltIn import BuiltIn
-import os
 import string
 from Selenium2Library import Selenium2Library
 from robot.api import logger
-import selenium
 import simplejson as json
 ERROR_CODE_RESPONSE = '400'
 SUCCESS_CODE_RESPONSE = '200'
@@ -60,14 +58,14 @@ class RobotPlugins:
             strInput = ret.format(self.FillInputDataApiExplorer('Rand'))
         logger.info('Sending "{0}" to element {1}'.format(strInput, Element))
         Element.send_keys(strInput)
-    def FillInputDataApiExplorer(self, type):
+    def FillInputDataApiExplorer(self, strType):
         return {
                 'date':'{0}'.format(self.GetDate()) ,
                 'email': '{0}@{1}.{2}'.format(self.GenRandString(),self.GenRandString(),random.choice(["org","com","net"])),
                 'number': '{0}'.format(random.randint(0,10)),
                 'loc' : '{0}'.format(random.uniform(0,120)),
                 'Rand' : '{0}'.format(self.GenRandString())
-                }[type]
+                }[strType]
     def GenRandString(self):
         iStringLen = random.randint(1,10)
         randString = ''.join(random.SystemRandom().choice(string.ascii_letters) for _ in range(iStringLen))

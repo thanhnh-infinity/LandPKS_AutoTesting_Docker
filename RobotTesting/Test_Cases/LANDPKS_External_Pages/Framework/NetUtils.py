@@ -8,4 +8,4 @@ def GetPortalInfo(RequestString):
     response = requests.put(RequestString)
     ResponseText = response.text
     response.close()
-    return response.text
+    return ResponseText
