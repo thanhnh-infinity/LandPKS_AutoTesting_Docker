@@ -295,13 +295,18 @@ def SelectBoxSelectOption(driver,ByType,ElePath,option):
     selEle.select_by_value(option)
 def SelectBoxSelectRand(driver,ByType,ElePath):
     selEle = GetSelEle(driver, ByType, ElePath)
+    _SetSelectRand(selEle)
+def _SetSelectRand(selEle):
     if( selEle.is_multiple ):
         selEle.deselect_all()
     options = len(selEle.options)
     selEle.select_by_index(random.randint(1,options-1))
+def SelectBoxSelectRandFromEle(Element):
+    selEle = GetSelEleFromEle(Element)
+    _SetSelectRand(selEle)
 def GetSelEle(driver, ByType, ElePath):
     return Select(driver.find_element(ByType,ElePath))
-def GetSelEleFromEle(driver, Ele):
+def GetSelEleFromEle(Ele):
     return Select(Ele)
 def GetSauceCreds():
     creds = 'http://{0}:{1}@ondemand.saucelabs.com:80/wd/hub'.format(os.environ.get("SAUCE_USERNAME"),

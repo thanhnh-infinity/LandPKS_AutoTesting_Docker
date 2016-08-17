@@ -20,15 +20,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
-from Utils import GenRandString
-from Utils import GetSauceCreds
-from Utils import SelectBoxSelectRand
+from Utils import GenRandString, SelectBoxSelectRandFromEle, SelectBoxSelectRand, GenDynaWebAppTestsAppend,get_uname_and_pword_lpks_gmail,GetLandInfoDataForRecorder,GetSelEleFromEle
 import simplejson as json
-from Utils import GenDynaWebAppTestsAppend
-from Utils import get_uname_and_pword_lpks_gmail
 from selenium import webdriver as selWebDriver
-from Utils import GetLandInfoDataForRecorder
-from Utils import GetSelEleFromEle
 
 REQUEST_STRING_TO_FIND_PLOT = "http://api.landpotential.org/query?version=0.1&action=get&object=landinfo&type=get_by_pair_name_recorder_name&name={0}&recorder_name=lpks.testing%40gmail.com"
 SAUCE_ACCESS_KEY = 'Barnebre:216526d7-706f-4eff-bf40-9d774203e268'
@@ -126,9 +120,37 @@ PATH = lambda p: os.path.abspath(
 def HandleFormNewLandInfo(driver):
     InputsCounts = len(driver.find_elements_by_tag_name("input"))
     SelectsCount = len(driver.find_elements_by_tag_name("select"))
-    for curInput in range(1,InputsCounts + 1):
-        HandleInputForm(driver.find_element(By.XPATH,"//input[{0}]".format(curInput)))
-def HandleInputForm(InputEle):
+    #for curInput in range(1,InputsCounts + 1):
+        #HandleInputForm(driver,"//form[@id='landinfoform']//input[{0}] | //form[@id='landinfoform']//input[{0}]".format(curInput))
+    HandleInputsForm(driver,"(//form[@id='landinfoform']//input | //form[@id='landinfoform']//select)[not(contains(@type,'checkbox'))]")
+def HandleInputsForm(driver,XpathForEles):
+    InputEles = driver.find_elements(By.XPATH,XpathForEles)
+    for curInput in range(0,len(InputEles)):
+        InputEle = InputEles[curInput]
+        if not(InputEle.is_displayed()):
+            continue
+        eleID = InputEle.get_attribute("id")
+        CurTagName = InputEle.tag_name
+        if CurTagName == "select":
+            if eleID == "test_plot":
+                GetSelEleFromEle(InputEle).select_by_value("true")
+            else:
+                SelectBoxSelectRandFromEle(InputEle)
+        elif CurTagName == "input":
+            TypeEle = InputEle.get_attribute("type")
+            if eleID == "recorder_name":
+                continue
+            elif eleID == "latitude":
+                InputEle.send_keys(GenRandString("loc"))
+            elif eleID == "longitude":
+                InputEle.send_keys(GenRandString("loc"))
+            
+            elif TypeEle == "text" :
+                InputEle.send_keys(GenRandString())
+            elif TypeEle == "file" or TypeEle == "hidden":
+                continue
+def HandleInputForm(driver,CurXpathInput):
+    InputEle = driver.find_element(By.XPATH,CurXpathInput)
     eleID = InputEle.get_attribute("id")
     if eleID == "test_plot":
         GetSelEleFromEle(InputEle).select_by_value("true")
@@ -233,7 +255,7 @@ def OutputErrors():
 def OutputWarns():
     global WARNS
     if(len(WARNS)> 0 ):
-        log.warn("Encountered {0} recoverable errors or inconsistancies they are as follows".format(len(WARNS)))
+        log.warn("Encountered {0} inconsistancies, they are as follows".format(len(WARNS)))
         for warn in WARNS:
             log.warn(warn)
 def OutputSucessful():
