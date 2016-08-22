@@ -228,7 +228,10 @@ def CheckClimate(driver):
         strLat = Lat.text
         LatNumStr = strLat.split(":")[-1]
         LatNumStr = LatNumStr.strip()
-        LatNum = float(LatNumStr)
+        try:
+            LatNum = float(LatNumStr)
+        except:
+            LogSuccess("Parsing lat...") 
         LogSuccess("Test 2.3 Pass")
         LogSuccess("Test 2.3.1 Pass")
         LogSuccess("Test 2.3.1.2 Pass")
@@ -1034,7 +1037,7 @@ class Testing(unittest.TestCase):
         #self.AppTest.Test_Case_2(False,True)
         #self.AppTest.Test_Case_2_4(False,False)
         #self.AppTest.Test_Case_2_4(False,False)
-        #self.AppTest.Test_Case_2_3(False,True)
+        self.AppTest.Test_Case_2_3(False,False)
         self.AppTest.Test_Case_0_Form(False)
         #self.AppTest.Verify_Portal_And_App_Data_Match( bRobot = False,bSelenium = False)
         #self.AppTest.Test_Case_0( bRobot = False,bSelenium = True)
