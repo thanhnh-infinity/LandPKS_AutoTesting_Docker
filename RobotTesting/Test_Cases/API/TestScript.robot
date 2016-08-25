@@ -201,7 +201,7 @@ Get_single/list_records_of_LandInfo_by_LandInfo_Plot_ID
 	${line}=	read a test case from file	${test_case_name}	${file}
 	${query}=	Fetch From Left	${line}	${separator}
 	${status_code}=	Fetch From Right	${line}	${separator}
-	${query}=   ioint an ID to a query  ${query}    ${ID}
+	${query}=   join_an_ID_to_a_query  ${query}    ${ID}
 	${result}=	Run a query	${query}
 	Should Be Equal As Integers	${result}	${status_code}
 
@@ -212,7 +212,7 @@ Get_single/list_records_of_LandInfo_by_LandInfo_Plot_ID_delimiter_display
 	${line}=	read a test case from file	${test_case_name}	${file}
 	${query}=	Fetch From Left	${line}	${separator}
 	${status_code}=	Fetch From Right	${line}	${separator}
-	${query}=   ioint an ID to a query  ${query}    ${ID}
+	${query}=   join_an_ID_to_a_query  ${query}    ${ID}
 	${result}=	Run a query	${query}
 	Should Be Equal As Integers	${result}	${status_code}
 
@@ -223,7 +223,7 @@ Get_single/list_records_of_LandInfo_by_LandInfo_nonexistent_Plot_ID
 	${line}=	read a test case from file	${test_case_name}	${file}
 	${query}=	Fetch From Left	${line}	${separator}
 	${status_code}=	Fetch From Right	${line}	${separator}
-	${query}=   ioint an ID to a query  ${query}    123454321
+	${query}=   join_an_ID_to_a_query  ${query}    123454321
 	${result}=	Run a query	${query}
 	Should Be Equal As Integers	${result}	${status_code}
 
@@ -384,7 +384,7 @@ Put_LandCover_by_all_fields_and_nonexistent_Plot_ID
 	${line}=	read a test case from file	${test_case_name}	${file}
 	${query}=	Fetch From Left	${line}	${separator}
 	${status_code}=	Fetch From Right	${line}	${separator}
-	${query}=   ioint an ID to a query  ${query}    123454320
+	${query}=   join_an_ID_to_a_query  ${query}    123454320
 	${result}=	Run a query	${query}
 	Should Be Equal As Integers	${result}	${status_code}
 
@@ -545,7 +545,7 @@ Delete_LandCover_by_ID
 	${line}=	read a test case from file	${test_case_name}	${file}
 	${query}=	Fetch From Left	${line}	${separator}
 	${status_code}=	Fetch From Right	${line}	${separator}
-	${query}=   ioint an ID to a query  ${query}    ${ID}
+	${query}=   join_an_ID_to_a_query  ${query}    ${ID}
 	${result}=	Run a query	${query}
 	Should Be Equal As Integers	${result}	${status_code}
 
@@ -566,7 +566,7 @@ Delete_LandInfo_by_ID
 	${line}=	read a test case from file	${test_case_name}	${file}
 	${query}=	Fetch From Left	${line}	${separator}
 	${status_code}=	Fetch From Right	${line}	${separator}
-	${query}=   ioint an ID to a query  ${query}    ${ID}
+	${query}=   join_an_ID_to_a_query  ${query}    ${ID}
 	${result}=	Run a query	${query}
 	Should Be Equal As Integers	${result}	${status_code}
 
