@@ -6,7 +6,9 @@ import platform
 import simplejson as json
 from selenium.webdriver.support.ui import Select
 from NetUtils import GetPortalInfo
-REQUEST_API_LAND_INFO_BY_RECORDER = "http://testapi.landpotential.org:8080/query?version=0.1&action=get&object=landinfo&type=get_by_recorder_name&recorder_name={0}"
+import csv
+#REQUEST_API_LAND_INFO_BY_RECORDER = "http://testapi.landpotential.org:8080/query?version=0.1&action=get&object=landinfo&type=get_by_recorder_name&recorder_name={0}"
+REQUEST_API_LAND_INFO_BY_RECORDER = "http://testapi.landpotential.org:8080/query?&action=get&object=landinfo&type=get_by_recorder_name&recorder_name={0}"
 ERROR_CODE_RESPONSE = '400'
 SUCCESS_CODE_RESPONSE = '200'
 BROWSER_VERSIONS = {
@@ -334,5 +336,26 @@ def parseJSONJenkinsCapa():
     
 def GetLandInfoDataForRecorder(RecorderEmail):
     Request = REQUEST_API_LAND_INFO_BY_RECORDER.format(RecorderEmail)
-    ResponseData = json.loads(GetPortalInfo(Request))
+    ResponseData = json.loads(GetPortalInfo(Request))["data"]
     return ResponseData
+def ParseCSVFile(filePath):
+    retData = {}
+    with open(GetFilePathForSys(filePath), 'rb') as csvfile:
+        csvRead = csv.DictReader(csvfile)
+        for CSVrow in csvRead:
+            curRow = {}
+            for column, value in CSVrow.iteritems():
+                curRow.setdefault(column, value)
+                #curRow.setdefault(column, []).append(value)
+            name = curRow['\xef\xbb\xbfname']
+            retData[name] = curRow
+            #for item in curRow:
+            #    retData[name][item] = curRow[item]
+        csvfile.close()
+    return retData;
+def GetFilePathForSys(filePath):
+    if platform.system() == "Windows":
+        filePath = filePath.replace("/","\\")
+    else:
+        filePath = filePath.replace("\\","/")
+    return filePath

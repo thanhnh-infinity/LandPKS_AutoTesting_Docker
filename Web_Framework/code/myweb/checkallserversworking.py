@@ -195,7 +195,7 @@ def buildMessage(JData, ServerStats, bDown=True):
     return Message
 def sendMain(JData,ServerStats, bDown=True):
     addrFrom = 'lpks.test@gmail.com'
-    addrTo = ['barnebre@gmail.com','essa@nmsu.edu']
+    addrTo = ['barnebre@gmail.com']
     Message = buildMessage(JData,ServerStats, bDown)
     addrFrom = 'lpks.test@gmail.com'
     password = 'landpotentialtest'

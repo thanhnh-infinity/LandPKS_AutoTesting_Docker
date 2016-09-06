@@ -6,6 +6,7 @@ Library           String
 Library           ../../Framework/Testing.py
 Library           Framework/WebHelpers.py
 Library           Framework/RobotPlugins.py
+Library           Framework/Test_Case.py
 
 *** Variables ***
 ${PortalMapHome}    http://portallandpotential.businesscatalyst.com/Export/ExportandMap.html
@@ -27,7 +28,7 @@ ${LandCoverAppURL}    https://play.google.com/store/apps/details?id=com.noisyflo
 ${LandInfoAppXpath}    //span[@id='u13764']
 ${LandCoverAppXpath}    //span[@id='u10901']
 ${LinksPortalXpath}    //nav[@class='MenuBar clearfix grpelem']/div/a
-${WaitTimeout}    60
+${WaitTimeout}    90
 ${APIExplorerURL}    portal.landpotential.org/api_explorer
 ${APIExplorRequestTypeXPRsc}    //ul[@id='resources']/li
 ${APIExplorRequestTypeXPRscBut}    /div[@class='heading']/h2/a
@@ -122,6 +123,7 @@ Portal Manipulation
     ${TimePerPlot}=    Evaluate    ${TimeToFinishMapLoad}/${NumPlotsPulled}
     Input text    ${ExportEmailID}    all
     Click Element    ${ExportButtonID}
+    Verify Portal And CSV Data Match    bSelenium=True
     ${IMG}=    Run Keyword And Return Status    Element Should be Visible    ${ExportLoadingIMGXpath}
     ${StartExp}=    Get Time    epoch
     Run Keyword if    ${IMG}    Wait For Load    ${ExportLoadingIMGXpath}

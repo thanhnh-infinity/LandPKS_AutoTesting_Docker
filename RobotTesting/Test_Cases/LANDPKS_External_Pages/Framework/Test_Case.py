@@ -20,7 +20,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
-from Utils import GenRandString, SelectBoxSelectRandFromEle, SelectBoxSelectRand, GenDynaWebAppTestsAppend,get_uname_and_pword_lpks_gmail,GetLandInfoDataForRecorder,GetSelEleFromEle
+from Utils import GenRandString, SelectBoxSelectRandFromEle, SelectBoxSelectRand, GenDynaWebAppTestsAppend,get_uname_and_pword_lpks_gmail,GetLandInfoDataForRecorder,GetSelEleFromEle,ParseCSVFile
 import simplejson as json
 from selenium import webdriver as selWebDriver
 
@@ -117,6 +117,12 @@ START_TIME = {}
 PATH = lambda p: os.path.abspath(
     os.path.join(os.path.dirname(__file__), p)
 )
+def HandleExportFromPortalCSV(driver, portalData,Uname=""):
+    #GetEleIfVis(driver, By.ID, "userName").send_keys(Uname)
+    #ClickElementIfVis(driver, By.ID, "export-button")
+    #WaitForEleLoad(driver, "//div[@class='progress-bar progress-bar-striped active']")
+    CSVData = ParseCSVFile("Export_LandInfo_Data.csv")
+    CheckCSVSameAsPortal(driver = driver, PortalData=portalData,CSVData=CSVData)
 def HandleFormNewLandInfo(driver):
     InputsCounts = len(driver.find_elements_by_tag_name("input"))
     SelectsCount = len(driver.find_elements_by_tag_name("select"))
@@ -188,6 +194,33 @@ def CheckDataLandInfoInAppSameAsPortal(driver,PortalData,PlotXpath = LANDCOVER_P
         LogSuccess("Data returned from portal matched app data. {0} plots matched.".format(iPlotsMatching))
     else:
         LogError("Portal returned no data for recorder {0}".format(Email))
+def CheckCSVSameAsPortal(driver,PortalData,CSVData, DieOnFirstNotFound = True):
+    iPlotsMatching = 0
+    Email = get_uname_and_pword_lpks_gmail()["UName"]
+    if(len(PortalData) > 0):
+        for Data in PortalData:
+            PlotNameAr = Data["name"].split("-")
+            if(len(PlotNameAr)== 2):
+                PlotName = PlotNameAr[-1]
+                PlotEmail = PlotNameAr[0]
+                if(not(Email.lower() == PlotEmail.lower())):
+                    LogError(LogError("Plot id: {0} name wasn't correct from portal... Email on name was not same as logged in app user. Plot email {1} Logged in email {2}".format(Data["id"],PlotEmail,Email)))
+                    continue
+            else:
+                LogError("Plot id: {0} name wasn't correct from portal contained more than email and name of plot.".format(Data["id"]))
+                continue
+            try:
+                CurCSV = CSVData[PlotName]
+            except:
+                LogError("Plot {0} existed on portal with id:{1} but was not found in CSV.".format(Data["name"],Data["id"]))
+                if(DieOnFirstNotFound):
+                    raise TestFailedException("Portal and CSV do not match")
+                else:
+                    continue
+        LogSuccess("Data returned from portal matched CSV data. {0} plots matched.".format(iPlotsMatching))
+    else:
+        LogError("Portal returned no data for recorder {0}".format(Email))
+
 def goToAppSelection(driver):
     GoBackToPageWithTitle(driver, "Application Selection")
 def GoBackToPageWithTitle(driver,Title):
@@ -255,6 +288,7 @@ def OutputErrors():
         log.error("Encountered {0} error(s).".format(len(ERRORS)))
         for error in ERRORS:
             log.error(error)
+    ERRORS = []
 def OutputWarns():
     global WARNS
     if(len(WARNS)> 0 ):
@@ -586,6 +620,10 @@ def WaitForLoad(driver):
     wait = WebDriverWait(driver, 30)
     wait.until(EC.presence_of_element_located((By.XPATH, "//div[@class='loading-container']")),"")
     wait.until(EC.invisibility_of_element_located((By.XPATH, "//div[@class='loading-container']")),"")
+def WaitForEleLoad(driver,Ele, ByType=By.XPATH):
+    wait = WebDriverWait(driver, 30)
+    wait.until(EC.presence_of_element_located((ByType, Ele)),"")
+    wait.until(EC.invisibility_of_element_located((ByType, Ele)),"")
 def WaitForLoadForm(driver):
     wait = WebDriverWait(driver, 30)
     wait.until(EC.presence_of_element_located((By.XPATH, "//div[@class='progress-bar']")),"")
@@ -869,13 +907,62 @@ class Test_Case:#(unittest.TestCase):
         ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[contains(@ng-show,'device')][not(contains(@class,'hide'))]/img[@src='landpks_img/landinfo_logo.png']")
         WaitForLoad(self.driver)
         try:
-            CheckDataLandInfoInAppSameAsPortal(self.driver, PortalData=self.PortalData)
+            CheckDataLandInfoInAppSameAsPortal(self.driver, PortalData=self.PortalData, DieOnFirstNotFound=False)
         except:
             PassOrFail = "FAIL"
         finally:
             OutputErrors()
             OutputSucessful()
             self.tearDown(PassOrFail, bRobot,bSelenium=bSelenium)
+    def Verify_Portal_And_CSV_Data_Match(self,bRobot = True, bSelenium=False):
+        global ERRORS,SUCCESS,WARNS
+        ERRORS = []
+        SUCCESS = []
+        WARNS = []
+        PassOrFail = "PASS"
+        START_TIME["START"] = datetime.datetime.now()
+        try:
+            self.Get_Portal_Data()
+        except:
+            LogError("Error pulling portal data")
+        #
+        if(bSelenium):
+            if (bRobot):
+                SeleniumLib = BuiltIn().get_library_instance('Selenium2Library')
+                if(len(SeleniumLib._cache.get_open_browsers()) > 0 and not hasattr(self, "driver")):
+                    self.driver = SeleniumLib._current_browser()
+                else:
+                    if(not hasattr(self, "driver")):
+                        SetDriver(self, False,bSel=bSelenium)
+                        SeleniumLib._cache.register(self.driver, None)
+            else:
+                if(not hasattr(self, "driver")):
+                    SetDriver(self, False,bSel=bSelenium)
+        else:
+            if (bRobot):
+                appiumLib = BuiltIn().get_library_instance('AppiumLibrary')
+                if(len(appiumLib._cache.get_open_browsers()) > 0 and not hasattr(self, "driver")):
+                    self.driver = appiumLib._current_application()
+                else:
+                    if(not hasattr(self, "driver")):
+                        SetDriver(self, False)
+                        appiumLib._cache.register(self.driver, None)
+            else:
+                if(not hasattr(self, "driver")):
+                    SetDriver(self, False)
+        
+        
+        
+        #SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium)
+        
+        try:
+            HandleExportFromPortalCSV(self.driver, self.PortalData, get_uname_and_pword_lpks_gmail()["UName"])
+        except:
+            OutputErrors()
+            raise TestFailedException("CSV Error")
+        finally:
+            OutputSucessful()
+            OutputErrors()
     def Test_Case_2_4(self, bRobot = True, bSelenium=False, bFullPlot = True):
         global ERRORS,SUCCESS,WARNS
         ERRORS = []
@@ -1037,6 +1124,8 @@ class Testing(unittest.TestCase):
         #self.AppTest.Test_Case_2(False,True)
         #self.AppTest.Test_Case_2_4(False,False)
         #self.AppTest.Test_Case_2_4(False,False)
+        #self.AppTest.Verify_Portal_And_App_Data_Match(False, True)
+        self.AppTest.Verify_Portal_And_CSV_Data_Match(False,True)
         self.AppTest.Test_Case_2_3(False,False)
         self.AppTest.Test_Case_0_Form(False)
         #self.AppTest.Verify_Portal_And_App_Data_Match( bRobot = False,bSelenium = False)
@@ -1045,6 +1134,7 @@ class Testing(unittest.TestCase):
         #self.AppTest.test_add_plot_airplane_verify_it_appears_in_landcover(bRobot=False)
 if __name__ == '__main__':    
     #GenDynaWebAppTestsAppend()
+    
     suite = unittest.TestLoader().loadTestsFromTestCase(Testing)
     unittest.TextTestRunner(verbosity=2).run(suite)
     
