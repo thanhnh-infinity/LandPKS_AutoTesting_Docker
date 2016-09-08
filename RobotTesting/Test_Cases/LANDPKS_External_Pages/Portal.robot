@@ -130,6 +130,7 @@ Portal Manipulation
     ${FinishExp}=    Get Time    epoch
     ${TimeToFinishExport}=    evaluate    ${FinishExp}-${StartExp}
     Log Faster Map Export    ${TimeToFinishMapLoad}    ${TimeToFinishExport}
+    Log    Test 0.3 Success
     Go To    ${PortalDataSheets}
     Click Element    ${PortalLIDataSheetXpath}
     Check Popup Occured
