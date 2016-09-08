@@ -123,7 +123,6 @@ Portal Manipulation
     ${TimePerPlot}=    Evaluate    ${TimeToFinishMapLoad}/${NumPlotsPulled}
     Input text    ${ExportEmailID}    all
     Click Element    ${ExportButtonID}
-    Verify Portal And CSV Data Match    bSelenium=True
     ${IMG}=    Run Keyword And Return Status    Element Should be Visible    ${ExportLoadingIMGXpath}
     ${StartExp}=    Get Time    epoch
     Run Keyword if    ${IMG}    Wait For Load    ${ExportLoadingIMGXpath}
