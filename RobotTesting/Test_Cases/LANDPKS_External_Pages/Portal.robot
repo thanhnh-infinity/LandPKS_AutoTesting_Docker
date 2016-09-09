@@ -7,6 +7,7 @@ Library           ../../Framework/Testing.py
 Library           Framework/WebHelpers.py
 Library           Framework/RobotPlugins.py
 Library           Framework/Test_Case.py
+Library           Framework/WebHelpers.py
 
 *** Variables ***
 ${PortalMapHome}    http://portallandpotential.businesscatalyst.com/Export/ExportandMap.html
@@ -14,7 +15,7 @@ ${LoadingBarXpath}    xpath=//div[@class='progress-bar progress-bar-success prog
 ${Browser}        firefox
 ${PlotsPulledXpath}    xpath=//strong[@id='total-plots-displayed']
 ${ExportLoadingBarXpath}    xpath=//div[@class='progress-bar progress-bar-striped active']
-${ExportLoadingIMGXpath}    img id=loading_msg
+${ExportLoadingIMGXpath}    id=loading_msg
 ${ExportEmailID}    id=userName
 ${ExportButtonID}    id=export-button
 ${PortalDataSheets}    http://landpotential.businesscatalyst.com/landpks.html#manuals
@@ -27,15 +28,17 @@ ${LandInfoAppURL}    https://play.google.com/store/apps/details?id=com.noisyflow
 ${LandCoverAppURL}    https://play.google.com/store/apps/details?id=com.noisyflowers.rangelandhealthmonitor.android
 ${LandInfoAppXpath}    //span[@id='u13764']
 ${LandCoverAppXpath}    //span[@id='u10901']
-${LinksPortalXpath}    //nav[@class='MenuBar clearfix grpelem']/div/a
+${LinksPortalXpath}    //nav[@class='MenuBar clearfix grpelem']/div
 ${WaitTimeout}    90
-${APIExplorerURL}    portal.landpotential.org/api_explorer
+${APIProductionExplorerURL}    portal.landpotential.org/api_explorer
 ${APIExplorRequestTypeXPRsc}    //ul[@id='resources']/li
 ${APIExplorRequestTypeXPRscBut}    /div[@class='heading']/h2/a
 ${APIExplorOpenTypeXpStart}    //ul[@id='resources']/li
 ${APIExplorOpenTypeXpStop}    /ul/li
 ${APIExplorerOpenTypeStopBut}    /ul[@class='operations']/li/div[@class='heading']/h3/span[@class='http_method']/a
 ${ApiExplorerResponseThrobber}    //span[@class='response_throbber']
+${APITestExplorerURL}    portal.landpotential.org/api_explorer
+${XauthControlName}    X-Auth-Token
 
 *** Test Cases ***
 Portal Testing
@@ -108,7 +111,7 @@ Get Jenkins Driver
 
 API Manipulation
     Set Test Variable    ${Function}    Processing Api Explorer
-    Go To    ${APIExplorerURL}
+    Go To    ${APIProductionExplorerURL}
     Open Api Explorer Request type
 
 Portal Manipulation
@@ -143,12 +146,7 @@ Portal Manipulation
     click and test links    ${LinksPortalXpath}
 
 Check Popup Occured
-    ${Windows}=    List Windows
-    ${WinCount}=    Get Length    ${Windows}
-    Should Be True    ${WinCount}>1
-    log    ${Windows[1]}
-    Wait Until Keyword Succeeds    3x    400ms    Select Window    popup
-    Close Window
+    Close Pop Up Window
     select window
 
 Wait for load
@@ -164,17 +162,19 @@ Wait for load
 click and test links
     [Arguments]    ${LinksXPath}
     [Documentation]    Uses main page of webpage to navigate to and manipulate individual components
+    ${PageTestUrl} =    Execute Javascript    return window.location.href;
     ${count}=    Get Matching Xpath Count    ${LinksXPath}
     @{Links}=    Get WebElements    xpath=${LinksXPath}
     : FOR    ${i}    IN RANGE    1    ${count} + 1
-    \    ${link}=    Get WebElement    xpath=(${LinksXPath})[${i}]
+    \    ${link}=    Get WebElement    xpath=(${LinksXPath})[${i}]/a
     \    ${Atrib}=    get element atrrib    ${link}    href
     \    Set Test Variable    ${Function}    Verifying page at ${Atrib}
     \    log    Processing Page | ${Atrib}
     \    click element    ${link}
     \    select Window    url=${Atrib}
     \    ${url} =    Execute Javascript    return window.location.href;
-    \    Run keyword if    '${url}'=='${Atrib}'    Go back
+    \    Run keyword unless    '${url}'=='${Atrib}'    log    Link for ${url} is broken
+    \    Go To    ${PageTestUrl}
 
 Open Api Explorer Request type
     [Documentation]    PlaceHolder
@@ -209,8 +209,10 @@ Input Data Into API Request
     @{InputEles}=    Get WebElements    xpath=${XpathCurInputs}
     : FOR    ${element}    IN    @{InputEles}
     \    ${Type}=    Get Element Atrrib    ${element}    type
+    \    ${Name}=    Get Element Atrrib    ${element}    name
     \    Run Keyword If    '${Type}'=='text'    Input Random String With Random Length Into Input Element    ${element}
     \    Run Keyword If    '${Type}'=='button'    Submit Form And Read Request Results    ${element}    ${ResourceXpath}
+    \    Run Keyword If    '${Name}' == '${XauthControlName}'    Input XAuth    ${element}
 
 Input Random String With Random Length Into Input Element
     [Arguments]    ${element}
@@ -222,3 +224,7 @@ Submit Form And Read Request Results
     Wait for Load    xpath=${XPathOfRequest}${ApiExplorerResponseThrobber}
     ${NoTimeout}=    run keyword and return status    Element Should Not Be Visible    xpath=${XPathOfRequest}${ApiExplorerResponseThrobber}
     Run Keyword if    ${NoTimeout}    read api response    ${XPathOfRequest}    ${bCorrect}
+
+Input XAuth
+    [Arguments]    ${Ele}
+    fill xauth element    ${Ele}
