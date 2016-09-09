@@ -3,7 +3,6 @@ Created on Jun 23, 2016
 
 @author: bbarnett
 '''
-import time
 import datetime
 import os
 import random
@@ -14,12 +13,11 @@ from appium.webdriver.webelement import WebElement
 import requests
 from robot.api import logger as log
 from robot.libraries.BuiltIn import BuiltIn
-from selenium.common.exceptions import TimeoutException, \
-    ElementNotSelectableException, WebDriverException
+from selenium.common.exceptions import TimeoutException, WebDriverException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
-
+from WebHelpers import SwitchToPopupWindow
 from Utils import GenRandString, SelectBoxSelectRandFromEle, SelectBoxSelectRand, GenDynaWebAppTestsAppend,get_uname_and_pword_lpks_gmail,GetLandInfoDataForRecorder,GetSelEleFromEle,ParseCSVFile
 import simplejson as json
 from selenium import webdriver as selWebDriver
@@ -752,11 +750,6 @@ def ClickElementIfVis(driver, ByType, Value):
     except WebDriverException as WDE:
         log.error("WebDriver exception unknown error while finding element {0} by {1}".format(Value,ByType))
         raise Exception
-def SwitchToPopupWindow(driver):
-    wait = WebDriverWait(driver, TIMEOUT)
-    time.sleep(3)
-    wait.until(lambda driver: len(driver.window_handles) > 1)
-    driver.switch_to.window(driver.window_handles[-1])
 def HandleGoogleLogin(driver, bRequireApprove=True):
     try:
         Creds = get_uname_and_pword_lpks_gmail()
