@@ -5,7 +5,7 @@ from socket import gethostbyname
 import smtplib
 import json
 import sys
-from Utils import get_uname_and_pword_lpks_gmail,Get_Environ_Var
+from Framework.Utils import get_uname_and_pword_lpks_gmail,Get_Environ_Var
 from time import sleep
 DEV_SERVER = 'dev.landpotential.org'
 BUSINESS_CATALYST = 'landpotential.businesscatalyst.com'
