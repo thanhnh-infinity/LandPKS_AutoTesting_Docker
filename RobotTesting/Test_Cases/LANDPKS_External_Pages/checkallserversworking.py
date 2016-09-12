@@ -197,9 +197,9 @@ def buildMessage(JData, ServerStats, bDown=True):
 def sendMain(JData,ServerStats, bDown=True):
     Creds = get_uname_and_pword_lpks_gmail()
     addrFrom = Creds['UName']
-    Message = buildMessage(JData,ServerStats, bDown)
-    addrTo = Get_Environ_Var('MailTo')
     password = Creds['PWord']
+    Message = buildMessage(JData,ServerStats, bDown)
+    addrTo = Get_Environ_Var('MailTo')['Value']
     server = smtplib.SMTP('smtp.gmail.com:587')
     server.login(addrFrom,password)
     server.sendmail(addrFrom, addrTo, Message)
