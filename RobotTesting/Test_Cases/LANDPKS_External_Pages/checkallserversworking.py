@@ -194,13 +194,25 @@ def buildMessage(JData, ServerStats, bDown=True):
             Message += 'Server {0} located at {1} came back up after being down\n'.format(Data[JSON_SERVER_NAME_IDX], Data[JSON_SERVER_IP_IDX])
             ServerStats[Data[JSON_SERVER_NAME_IDX]][MAIL_SENT_IDX] = False
     return Message
-def sendMain(JData,ServerStats, bDown=True):
+def sendMain1(JData,ServerStats, bDown=True):
     Creds = get_uname_and_pword_lpks_gmail()
-    addrFrom = Creds['UName']
+    addrFrom = 'lpks.test@gmail.com'
     password = Creds['PWord']
     Message = buildMessage(JData,ServerStats, bDown)
     addrTo = Get_Environ_Var('MailTo')['Value']
     server = smtplib.SMTP('smtp.gmail.com:587')
+    server.ehlo()
+    server.login(addrFrom,password)
+    server.sendmail(addrFrom, addrTo, Message)
+    server.quit()
+def sendMain(JData,ServerStats, bDown=True):
+    Creds = get_uname_and_pword_lpks_gmail()
+    addrTo = Get_Environ_Var('MailTo')['Value']
+    Message = buildMessage(JData,ServerStats, bDown)
+    addrFrom = Creds['UName']
+    password = Creds['PWord']
+    server = smtplib.SMTP('smtp.gmail.com:587')
+    server.starttls()
     server.login(addrFrom,password)
     server.sendmail(addrFrom, addrTo, Message)
     server.quit()
