@@ -5,6 +5,7 @@ from socket import gethostbyname
 import smtplib
 import json
 import sys
+from Utils import get_uname_and_pword_lpks_gmail,Get_Environ_Var
 from time import sleep
 DEV_SERVER = 'dev.landpotential.org'
 BUSINESS_CATALYST = 'landpotential.businesscatalyst.com'
@@ -118,7 +119,7 @@ def LoadServerStatus():
     ret = json.loads(FileServerStatus.read())
     FileServerStatus.close()
     return ret
-def f():
+def HeartBeat():
     ServerStats = []
     try:
         ServerStats = LoadServerStatus()
@@ -131,11 +132,11 @@ def f():
             requests.get((ServerStats[Server][REQUEST_STRING]).format(Server))
             #server is found and sets the struct as such
             ServerStats[Server][SERVER_STAT_IDX] = True
-        except requests.exceptions.Timeout :
-            ip = gethostbyname(ServerStats[Server])
+        except Exception :
+            ip = gethostbyname(Server)#ServerStats[Server])
             #Server was not found, sets the struct as such and loads info into a json struct to send to gmail smtp
             JsonData.append({
-                             JSON_SERVER_NAME_IDX : ServerStats[Server],
+                             JSON_SERVER_NAME_IDX : Server,
                              JSON_SERVER_IP_IDX : ip
                              })
             ServerStats[Server][SERVER_STAT_IDX] = False
@@ -194,32 +195,16 @@ def buildMessage(JData, ServerStats, bDown=True):
             ServerStats[Data[JSON_SERVER_NAME_IDX]][MAIL_SENT_IDX] = False
     return Message
 def sendMain(JData,ServerStats, bDown=True):
-    addrFrom = 'lpks.test@gmail.com'
-    addrTo = ['barnebre@gmail.com']
+    Creds = get_uname_and_pword_lpks_gmail()
+    addrFrom = Creds['UName']
     Message = buildMessage(JData,ServerStats, bDown)
-    addrFrom = 'lpks.test@gmail.com'
-    password = 'landpotentialtest'
+    addrTo = Get_Environ_Var('MailTo')
+    password = Creds['PWord']
     server = smtplib.SMTP('smtp.gmail.com:587')
-    server.starttls()
     server.login(addrFrom,password)
     server.sendmail(addrFrom, addrTo, Message)
     server.quit()
 if __name__ == '__main__':
-    #essa this had to be changed... it only fired once. Timer kills thread after executing. Now it runs until stopped. The timer would just launch it once after x time
-    #The while loop will now relaunch
-    # start calling f now and every 60 sec thereafter
-    timer = 1800
-    if(len(sys.argv)>=2):
-        try:
-            timer = int(float(sys.argv[1]))
-        except ValueError:
-            timer = 1800
-    Threader = threading.Timer(timer, f)
-    while(True):
-        if(not Threader.isAlive()):
-            Threader = threading.Timer(timer, f)
-            Threader.start()
-        sleep(timer+5)
-    inpt = ''
+    HeartBeat()
     
         

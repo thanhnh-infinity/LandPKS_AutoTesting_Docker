@@ -321,6 +321,12 @@ def get_uname_and_pword_lpks_gmail():
         "PWord" : os.environ.get("LPKS_TEST_PWORD")
         }
     return loginCred
+def Get_Environ_Var(Key):
+    KeyPair = {
+        "Key" : Key,
+        "Value" : os.environ.get(Key)
+        }
+    return KeyPair
 def parseJSONJenkinsCapa():
         
         browsers = json.loads(os.getenv("SAUCE_ONDEMAND_BROWSERS"))
