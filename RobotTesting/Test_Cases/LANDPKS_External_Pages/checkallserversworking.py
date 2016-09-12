@@ -212,6 +212,9 @@ def sendMain(JData,ServerStats, bDown=True):
     addrFrom = Creds['UName']
     password = Creds['PWord']
     server = smtplib.SMTP('smtp.gmail.com:587')
+    print addrFrom
+    print addrTo
+    print password
     server.starttls()
     server.login(addrFrom,password)
     server.sendmail(addrFrom, addrTo, Message)
