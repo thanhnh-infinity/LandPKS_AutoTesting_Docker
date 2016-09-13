@@ -211,16 +211,12 @@ def sendMain(JData,ServerStats, bDown=True):
     Message = buildMessage(JData,ServerStats, bDown)
     addrFrom = Creds['UName']
     password = Creds['PWord']
-    server = smtplib.SMTP()
-    server.connect('smtp.gmail.com',587)
-    server.ehlo()
+    server = smtplib.SMTP('smtp.gmail.com:587')
     server.starttls()
-    server.ehlo()
     server.login(addrFrom,password)
     server.sendmail(addrFrom, addrTo, Message)
     server.quit()
 if __name__ == '__main__':
-    sendMain("","" , False)
     HeartBeat()
     
         
