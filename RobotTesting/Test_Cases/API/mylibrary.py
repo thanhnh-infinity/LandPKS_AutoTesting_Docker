@@ -12,7 +12,7 @@ class mylibrary(object):
         #s = session = requests.Session()
         #s.headers.update({"X-Auth-Token" : self.get_google_token()})
         #s.url = urlPass
-        r = requests.get(urlPass,headers={"X-Auth-Token" : self.secrets})
+        r = requests.get(urlPass,headers={"X-Auth-Token" : self.get_google_token()})
         return r.status_code
 
     def Search_for_an_ID(self, url):
