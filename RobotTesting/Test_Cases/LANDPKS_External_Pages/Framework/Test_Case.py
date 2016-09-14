@@ -78,7 +78,7 @@ DICT_ELEMENT_PATH_TO_NAME = {
                              LAND_COVER_SUBMIT_BUTTON : "Submit Land Cover Button"
                              }
 DICT_VIDEO_SRC_TO_TEST = {
-                          "SoilBallHQ.mp4" :" Test 2.4.7.{0}.2.2.1.1 Pass",
+                          "SoilBallHQ.mp4" :"Test 2.4.7.{0}.2.2.1.1 Pass",
                           "RibbonHQ.mp4" : "Test 2.4.7.{0}.2.2.2.1 Pass",
                           "RibbonLengthHQ.mp4" : "Test 2.4.7.{0}.2.2.3.1 Pass",
                           "SmoothHQ.mp4" : "Test 2.4.7.{0}.2.2.4.1 Pass"

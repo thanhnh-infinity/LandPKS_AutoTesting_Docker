@@ -1,0 +1,1147 @@
+{
+    "name": "dwkimiti@gmail.com-BOT1",
+    "recorder_name": "dwkimiti@gmail.com",
+    "date": "2015-09-02 15:46:53",
+    "transect": [
+        {
+            "id": 6833,
+            "direction": "WEST",
+            "dominant_woody_species": "A. etbaica",
+            "dominant_nonwoody_species": "C. plect.",
+            "species_of_interest_1": "",
+            "species_of_interest_2": "",
+            "date": "2015-06-23",
+            "archived": 0,
+            "segment": {
+                "range": "25m",
+                "time": "2015-09-02 15:46:53",
+                "date": "2015-06-23",
+                "canopy_height": "<10cm",
+                "canopy_gap": "False",
+                "basal_gap": "False",
+                "species_1_density": 0,
+                "species_2_density": 0,
+                "species_of_interest_1_count": 0,
+                "species_of_interest_2_count": 0,
+                "species_list": "",
+                "stick_segment": {
+                    "0": {
+                        "index": 0,
+                        "cover": "Sub-shrubs and perennial forbs"
+                    },
+                    "1": {
+                        "index": 1,
+                        "cover": "Bare"
+                    },
+                    "2": {
+                        "index": 2,
+                        "cover": "Herb Litter"
+                    },
+                    "3": {
+                        "index": 3,
+                        "cover": "Bare"
+                    },
+                    "4": {
+                        "index": 4,
+                        "cover": "Bare"
+                    }
+                },
+                "summary": {
+                    "bare_total": 3,
+                    "trees_total": 0,
+                    "shrubs_total": 1,
+                    "sub_shrubs_total": 1,
+                    "plant_base_total": 0,
+                    "perennial_grasses_total": 0,
+                    "annuals_total": 0,
+                    "herb_litter_total": 1,
+                    "wood_litter_total": 0,
+                    "rock_total": 0
+                }
+            }
+        },
+        {
+            "id": 6832,
+            "direction": "WEST",
+            "dominant_woody_species": "A. etbaica",
+            "dominant_nonwoody_species": "C. plect.",
+            "species_of_interest_1": "",
+            "species_of_interest_2": "",
+            "date": "2015-06-23",
+            "archived": 0,
+            "segment": {
+                "range": "20m",
+                "time": "2015-09-02 15:46:53",
+                "date": "2015-06-23",
+                "canopy_height": "2-3m",
+                "canopy_gap": "False",
+                "basal_gap": "False",
+                "species_1_density": 0,
+                "species_2_density": 0,
+                "species_of_interest_1_count": 0,
+                "species_of_interest_2_count": 0,
+                "species_list": "",
+                "stick_segment": {
+                    "0": {
+                        "index": 0,
+                        "cover": "Trees, Perennial grasses"
+                    },
+                    "1": {
+                        "index": 1,
+                        "cover": "Trees, Sub-shrubs and perennial forbs, Perennial grasses"
+                    },
+                    "2": {
+                        "index": 2,
+                        "cover": "Trees, Sub-shrubs and perennial forbs"
+                    },
+                    "3": {
+                        "index": 3,
+                        "cover": "Trees, Shrubs, Sub-shrubs and perennial forbs"
+                    },
+                    "4": {
+                        "index": 4,
+                        "cover": "Trees, Shrubs, Sub-shrubs and perennial forbs, Perennial grasses"
+                    }
+                },
+                "summary": {
+                    "bare_total": 0,
+                    "trees_total": 5,
+                    "shrubs_total": 6,
+                    "sub_shrubs_total": 4,
+                    "plant_base_total": 0,
+                    "perennial_grasses_total": 3,
+                    "annuals_total": 0,
+                    "herb_litter_total": 0,
+                    "wood_litter_total": 0,
+                    "rock_total": 0
+                }
+            }
+        },
+        {
+            "id": 6831,
+            "direction": "WEST",
+            "dominant_woody_species": "A. etbaica",
+            "dominant_nonwoody_species": "C. plect.",
+            "species_of_interest_1": "",
+            "species_of_interest_2": "",
+            "date": "2015-06-23",
+            "archived": 0,
+            "segment": {
+                "range": "15m",
+                "time": "2015-09-02 15:46:53",
+                "date": "2015-06-23",
+                "canopy_height": "10-50cm",
+                "canopy_gap": "False",
+                "basal_gap": "False",
+                "species_1_density": 0,
+                "species_2_density": 0,
+                "species_of_interest_1_count": 0,
+                "species_of_interest_2_count": 0,
+                "species_list": "",
+                "stick_segment": {
+                    "0": {
+                        "index": 0,
+                        "cover": "Perennial grasses"
+                    },
+                    "1": {
+                        "index": 1,
+                        "cover": "Trees, Perennial grasses"
+                    },
+                    "2": {
+                        "index": 2,
+                        "cover": "Trees, Perennial grasses"
+                    },
+                    "3": {
+                        "index": 3,
+                        "cover": "Perennial grasses"
+                    },
+                    "4": {
+                        "index": 4,
+                        "cover": "Sub-shrubs and perennial forbs, Perennial grasses"
+                    }
+                },
+                "summary": {
+                    "bare_total": 0,
+                    "trees_total": 2,
+                    "shrubs_total": 1,
+                    "sub_shrubs_total": 1,
+                    "plant_base_total": 0,
+                    "perennial_grasses_total": 5,
+                    "annuals_total": 0,
+                    "herb_litter_total": 0,
+                    "wood_litter_total": 0,
+                    "rock_total": 0
+                }
+            }
+        },
+        {
+            "id": 6830,
+            "direction": "WEST",
+            "dominant_woody_species": "A. etbaica",
+            "dominant_nonwoody_species": "C. plect.",
+            "species_of_interest_1": "",
+            "species_of_interest_2": "",
+            "date": "2015-06-23",
+            "archived": 0,
+            "segment": {
+                "range": "10m",
+                "time": "2015-09-02 15:46:53",
+                "date": "2015-06-23",
+                "canopy_height": "10-50cm",
+                "canopy_gap": "False",
+                "basal_gap": "False",
+                "species_1_density": 0,
+                "species_2_density": 0,
+                "species_of_interest_1_count": 0,
+                "species_of_interest_2_count": 0,
+                "species_list": "",
+                "stick_segment": {
+                    "0": {
+                        "index": 0,
+                        "cover": "Perennial grasses, Herb Litter"
+                    },
+                    "1": {
+                        "index": 1,
+                        "cover": "Perennial grasses"
+                    },
+                    "2": {
+                        "index": 2,
+                        "cover": "Perennial grasses"
+                    },
+                    "3": {
+                        "index": 3,
+                        "cover": "Perennial grasses, Herb Litter"
+                    },
+                    "4": {
+                        "index": 4,
+                        "cover": "Perennial grasses"
+                    }
+                },
+                "summary": {
+                    "bare_total": 0,
+                    "trees_total": 0,
+                    "shrubs_total": 0,
+                    "sub_shrubs_total": 0,
+                    "plant_base_total": 0,
+                    "perennial_grasses_total": 5,
+                    "annuals_total": 0,
+                    "herb_litter_total": 2,
+                    "wood_litter_total": 0,
+                    "rock_total": 0
+                }
+            }
+        },
+        {
+            "id": 6829,
+            "direction": "WEST",
+            "dominant_woody_species": "A. etbaica",
+            "dominant_nonwoody_species": "C. plect.",
+            "species_of_interest_1": "",
+            "species_of_interest_2": "",
+            "date": "2015-06-23",
+            "archived": 0,
+            "segment": {
+                "range": "5m",
+                "time": "2015-09-02 15:46:53",
+                "date": "2015-06-23",
+                "canopy_height": "10-50cm",
+                "canopy_gap": "False",
+                "basal_gap": "False",
+                "species_1_density": 0,
+                "species_2_density": 0,
+                "species_of_interest_1_count": 0,
+                "species_of_interest_2_count": 0,
+                "species_list": "",
+                "stick_segment": {
+                    "0": {
+                        "index": 0,
+                        "cover": "Perennial grasses"
+                    },
+                    "1": {
+                        "index": 1,
+                        "cover": "Perennial grasses"
+                    },
+                    "2": {
+                        "index": 2,
+                        "cover": "Sub-shrubs and perennial forbs, Perennial grasses"
+                    },
+                    "3": {
+                        "index": 3,
+                        "cover": "Perennial grasses"
+                    },
+                    "4": {
+                        "index": 4,
+                        "cover": "Perennial grasses"
+                    }
+                },
+                "summary": {
+                    "bare_total": 0,
+                    "trees_total": 0,
+                    "shrubs_total": 1,
+                    "sub_shrubs_total": 1,
+                    "plant_base_total": 0,
+                    "perennial_grasses_total": 5,
+                    "annuals_total": 0,
+                    "herb_litter_total": 0,
+                    "wood_litter_total": 0,
+                    "rock_total": 0
+                }
+            }
+        },
+        {
+            "id": 6828,
+            "direction": "SOUTH",
+            "dominant_woody_species": "A. etbaica",
+            "dominant_nonwoody_species": "C. plect.",
+            "species_of_interest_1": "",
+            "species_of_interest_2": "",
+            "date": "2015-06-23",
+            "archived": 0,
+            "segment": {
+                "range": "25m",
+                "time": "2015-09-02 15:46:53",
+                "date": "2015-06-23",
+                "canopy_height": "10-50cm",
+                "canopy_gap": "False",
+                "basal_gap": "False",
+                "species_1_density": 0,
+                "species_2_density": 0,
+                "species_of_interest_1_count": 0,
+                "species_of_interest_2_count": 0,
+                "species_list": "",
+                "stick_segment": {
+                    "0": {
+                        "index": 0,
+                        "cover": "Perennial grasses"
+                    },
+                    "1": {
+                        "index": 1,
+                        "cover": "Perennial grasses"
+                    },
+                    "2": {
+                        "index": 2,
+                        "cover": "Herb Litter"
+                    },
+                    "3": {
+                        "index": 3,
+                        "cover": "Bare"
+                    },
+                    "4": {
+                        "index": 4,
+                        "cover": "Herb Litter"
+                    }
+                },
+                "summary": {
+                    "bare_total": 1,
+                    "trees_total": 0,
+                    "shrubs_total": 0,
+                    "sub_shrubs_total": 0,
+                    "plant_base_total": 0,
+                    "perennial_grasses_total": 2,
+                    "annuals_total": 0,
+                    "herb_litter_total": 2,
+                    "wood_litter_total": 0,
+                    "rock_total": 0
+                }
+            }
+        },
+        {
+            "id": 6827,
+            "direction": "SOUTH",
+            "dominant_woody_species": "A. etbaica",
+            "dominant_nonwoody_species": "C. plect.",
+            "species_of_interest_1": "",
+            "species_of_interest_2": "",
+            "date": "2015-06-23",
+            "archived": 0,
+            "segment": {
+                "range": "20m",
+                "time": "2015-09-02 15:46:53",
+                "date": "2015-06-23",
+                "canopy_height": "10-50cm",
+                "canopy_gap": "False",
+                "basal_gap": "False",
+                "species_1_density": 0,
+                "species_2_density": 0,
+                "species_of_interest_1_count": 0,
+                "species_of_interest_2_count": 0,
+                "species_list": "",
+                "stick_segment": {
+                    "0": {
+                        "index": 0,
+                        "cover": "Bare"
+                    },
+                    "1": {
+                        "index": 1,
+                        "cover": "Shrubs"
+                    },
+                    "2": {
+                        "index": 2,
+                        "cover": "Shrubs"
+                    },
+                    "3": {
+                        "index": 3,
+                        "cover": "Shrubs"
+                    },
+                    "4": {
+                        "index": 4,
+                        "cover": "Bare"
+                    }
+                },
+                "summary": {
+                    "bare_total": 2,
+                    "trees_total": 0,
+                    "shrubs_total": 3,
+                    "sub_shrubs_total": 0,
+                    "plant_base_total": 0,
+                    "perennial_grasses_total": 0,
+                    "annuals_total": 0,
+                    "herb_litter_total": 0,
+                    "wood_litter_total": 0,
+                    "rock_total": 0
+                }
+            }
+        },
+        {
+            "id": 6826,
+            "direction": "SOUTH",
+            "dominant_woody_species": "A. etbaica",
+            "dominant_nonwoody_species": "C. plect.",
+            "species_of_interest_1": "",
+            "species_of_interest_2": "",
+            "date": "2015-06-23",
+            "archived": 0,
+            "segment": {
+                "range": "15m",
+                "time": "2015-09-02 15:46:53",
+                "date": "2015-06-23",
+                "canopy_height": "10-50cm",
+                "canopy_gap": "True",
+                "basal_gap": "False",
+                "species_1_density": 0,
+                "species_2_density": 0,
+                "species_of_interest_1_count": 0,
+                "species_of_interest_2_count": 0,
+                "species_list": "",
+                "stick_segment": {
+                    "0": {
+                        "index": 0,
+                        "cover": "Bare"
+                    },
+                    "1": {
+                        "index": 1,
+                        "cover": "Bare"
+                    },
+                    "2": {
+                        "index": 2,
+                        "cover": "Bare"
+                    },
+                    "3": {
+                        "index": 3,
+                        "cover": "Bare"
+                    },
+                    "4": {
+                        "index": 4,
+                        "cover": "Annual plants"
+                    }
+                },
+                "summary": {
+                    "bare_total": 4,
+                    "trees_total": 0,
+                    "shrubs_total": 0,
+                    "sub_shrubs_total": 0,
+                    "plant_base_total": 0,
+                    "perennial_grasses_total": 0,
+                    "annuals_total": 1,
+                    "herb_litter_total": 0,
+                    "wood_litter_total": 0,
+                    "rock_total": 0
+                }
+            }
+        },
+        {
+            "id": 6825,
+            "direction": "SOUTH",
+            "dominant_woody_species": "A. etbaica",
+            "dominant_nonwoody_species": "C. plect.",
+            "species_of_interest_1": "",
+            "species_of_interest_2": "",
+            "date": "2015-06-23",
+            "archived": 0,
+            "segment": {
+                "range": "10m",
+                "time": "2015-09-02 15:46:53",
+                "date": "2015-06-23",
+                "canopy_height": "10-50cm",
+                "canopy_gap": "False",
+                "basal_gap": "False",
+                "species_1_density": 0,
+                "species_2_density": 0,
+                "species_of_interest_1_count": 0,
+                "species_of_interest_2_count": 0,
+                "species_list": "",
+                "stick_segment": {
+                    "0": {
+                        "index": 0,
+                        "cover": "Shrubs"
+                    },
+                    "1": {
+                        "index": 1,
+                        "cover": "Perennial grasses"
+                    },
+                    "2": {
+                        "index": 2,
+                        "cover": "Bare"
+                    },
+                    "3": {
+                        "index": 3,
+                        "cover": "Perennial grasses"
+                    },
+                    "4": {
+                        "index": 4,
+                        "cover": "Bare"
+                    }
+                },
+                "summary": {
+                    "bare_total": 2,
+                    "trees_total": 0,
+                    "shrubs_total": 1,
+                    "sub_shrubs_total": 0,
+                    "plant_base_total": 0,
+                    "perennial_grasses_total": 2,
+                    "annuals_total": 0,
+                    "herb_litter_total": 0,
+                    "wood_litter_total": 0,
+                    "rock_total": 0
+                }
+            }
+        },
+        {
+            "id": 6824,
+            "direction": "SOUTH",
+            "dominant_woody_species": "A. etbaica",
+            "dominant_nonwoody_species": "C. plect.",
+            "species_of_interest_1": "",
+            "species_of_interest_2": "",
+            "date": "2015-06-23",
+            "archived": 0,
+            "segment": {
+                "range": "5m",
+                "time": "2015-09-02 15:46:53",
+                "date": "2015-06-23",
+                "canopy_height": "10-50cm",
+                "canopy_gap": "False",
+                "basal_gap": "False",
+                "species_1_density": 0,
+                "species_2_density": 0,
+                "species_of_interest_1_count": 0,
+                "species_of_interest_2_count": 0,
+                "species_list": "",
+                "stick_segment": {
+                    "0": {
+                        "index": 0,
+                        "cover": "Annual plants"
+                    },
+                    "1": {
+                        "index": 1,
+                        "cover": "Annual plants"
+                    },
+                    "2": {
+                        "index": 2,
+                        "cover": "Bare"
+                    },
+                    "3": {
+                        "index": 3,
+                        "cover": "Perennial grasses"
+                    },
+                    "4": {
+                        "index": 4,
+                        "cover": "Bare"
+                    }
+                },
+                "summary": {
+                    "bare_total": 2,
+                    "trees_total": 0,
+                    "shrubs_total": 0,
+                    "sub_shrubs_total": 0,
+                    "plant_base_total": 0,
+                    "perennial_grasses_total": 1,
+                    "annuals_total": 2,
+                    "herb_litter_total": 0,
+                    "wood_litter_total": 0,
+                    "rock_total": 0
+                }
+            }
+        },
+        {
+            "id": 6823,
+            "direction": "NORTH",
+            "dominant_woody_species": "A. etbaica",
+            "dominant_nonwoody_species": "C. plect.",
+            "species_of_interest_1": "",
+            "species_of_interest_2": "",
+            "date": "2015-06-23",
+            "archived": 0,
+            "segment": {
+                "range": "25m",
+                "time": "2015-09-02 15:46:53",
+                "date": "2015-06-23",
+                "canopy_height": "1-2m",
+                "canopy_gap": "False",
+                "basal_gap": "False",
+                "species_1_density": 0,
+                "species_2_density": 0,
+                "species_of_interest_1_count": 0,
+                "species_of_interest_2_count": 0,
+                "species_list": "",
+                "stick_segment": {
+                    "0": {
+                        "index": 0,
+                        "cover": "Trees, Perennial grasses"
+                    },
+                    "1": {
+                        "index": 1,
+                        "cover": "Trees, Herb Litter, Wood Litter"
+                    },
+                    "2": {
+                        "index": 2,
+                        "cover": "Trees, Perennial grasses, Herb Litter"
+                    },
+                    "3": {
+                        "index": 3,
+                        "cover": "Perennial grasses, Herb Litter"
+                    },
+                    "4": {
+                        "index": 4,
+                        "cover": "Perennial grasses, Herb Litter"
+                    }
+                },
+                "summary": {
+                    "bare_total": 0,
+                    "trees_total": 3,
+                    "shrubs_total": 0,
+                    "sub_shrubs_total": 0,
+                    "plant_base_total": 0,
+                    "perennial_grasses_total": 4,
+                    "annuals_total": 0,
+                    "herb_litter_total": 4,
+                    "wood_litter_total": 1,
+                    "rock_total": 0
+                }
+            }
+        },
+        {
+            "id": 6822,
+            "direction": "NORTH",
+            "dominant_woody_species": "A. etbaica",
+            "dominant_nonwoody_species": "C. plect.",
+            "species_of_interest_1": "",
+            "species_of_interest_2": "",
+            "date": "2015-06-23",
+            "archived": 0,
+            "segment": {
+                "range": "20m",
+                "time": "2015-09-02 15:46:53",
+                "date": "2015-06-23",
+                "canopy_height": "50cm-1m",
+                "canopy_gap": "False",
+                "basal_gap": "False",
+                "species_1_density": 0,
+                "species_2_density": 0,
+                "species_of_interest_1_count": 0,
+                "species_of_interest_2_count": 0,
+                "species_list": "",
+                "stick_segment": {
+                    "0": {
+                        "index": 0,
+                        "cover": "Perennial grasses"
+                    },
+                    "1": {
+                        "index": 1,
+                        "cover": "Perennial grasses"
+                    },
+                    "2": {
+                        "index": 2,
+                        "cover": "Sub-shrubs and perennial forbs"
+                    },
+                    "3": {
+                        "index": 3,
+                        "cover": "Perennial grasses"
+                    },
+                    "4": {
+                        "index": 4,
+                        "cover": "Shrubs, Perennial grasses"
+                    }
+                },
+                "summary": {
+                    "bare_total": 0,
+                    "trees_total": 0,
+                    "shrubs_total": 2,
+                    "sub_shrubs_total": 1,
+                    "plant_base_total": 0,
+                    "perennial_grasses_total": 4,
+                    "annuals_total": 0,
+                    "herb_litter_total": 0,
+                    "wood_litter_total": 0,
+                    "rock_total": 0
+                }
+            }
+        },
+        {
+            "id": 6821,
+            "direction": "NORTH",
+            "dominant_woody_species": "A. etbaica",
+            "dominant_nonwoody_species": "C. plect.",
+            "species_of_interest_1": "",
+            "species_of_interest_2": "",
+            "date": "2015-06-23",
+            "archived": 0,
+            "segment": {
+                "range": "15m",
+                "time": "2015-09-02 15:46:53",
+                "date": "2015-06-23",
+                "canopy_height": "10-50cm",
+                "canopy_gap": "False",
+                "basal_gap": "False",
+                "species_1_density": 0,
+                "species_2_density": 0,
+                "species_of_interest_1_count": 0,
+                "species_of_interest_2_count": 0,
+                "species_list": "",
+                "stick_segment": {
+                    "0": {
+                        "index": 0,
+                        "cover": "Bare"
+                    },
+                    "1": {
+                        "index": 1,
+                        "cover": "Perennial grasses"
+                    },
+                    "2": {
+                        "index": 2,
+                        "cover": "Perennial grasses"
+                    },
+                    "3": {
+                        "index": 3,
+                        "cover": "Herb Litter"
+                    },
+                    "4": {
+                        "index": 4,
+                        "cover": "Shrubs"
+                    }
+                },
+                "summary": {
+                    "bare_total": 1,
+                    "trees_total": 0,
+                    "shrubs_total": 1,
+                    "sub_shrubs_total": 0,
+                    "plant_base_total": 0,
+                    "perennial_grasses_total": 2,
+                    "annuals_total": 0,
+                    "herb_litter_total": 1,
+                    "wood_litter_total": 0,
+                    "rock_total": 0
+                }
+            }
+        },
+        {
+            "id": 6820,
+            "direction": "NORTH",
+            "dominant_woody_species": "A. etbaica",
+            "dominant_nonwoody_species": "C. plect.",
+            "species_of_interest_1": "",
+            "species_of_interest_2": "",
+            "date": "2015-06-23",
+            "archived": 0,
+            "segment": {
+                "range": "10m",
+                "time": "2015-09-02 15:46:53",
+                "date": "2015-06-23",
+                "canopy_height": "10-50cm",
+                "canopy_gap": "False",
+                "basal_gap": "False",
+                "species_1_density": 0,
+                "species_2_density": 0,
+                "species_of_interest_1_count": 0,
+                "species_of_interest_2_count": 0,
+                "species_list": "",
+                "stick_segment": {
+                    "0": {
+                        "index": 0,
+                        "cover": "Shrubs, Sub-shrubs and perennial forbs"
+                    },
+                    "1": {
+                        "index": 1,
+                        "cover": "Herb Litter"
+                    },
+                    "2": {
+                        "index": 2,
+                        "cover": "Sub-shrubs and perennial forbs"
+                    },
+                    "3": {
+                        "index": 3,
+                        "cover": "Shrubs"
+                    },
+                    "4": {
+                        "index": 4,
+                        "cover": "Shrubs, Perennial grasses"
+                    }
+                },
+                "summary": {
+                    "bare_total": 0,
+                    "trees_total": 0,
+                    "shrubs_total": 5,
+                    "sub_shrubs_total": 2,
+                    "plant_base_total": 0,
+                    "perennial_grasses_total": 1,
+                    "annuals_total": 0,
+                    "herb_litter_total": 1,
+                    "wood_litter_total": 0,
+                    "rock_total": 0
+                }
+            }
+        },
+        {
+            "id": 6819,
+            "direction": "NORTH",
+            "dominant_woody_species": "A. etbaica",
+            "dominant_nonwoody_species": "C. plect.",
+            "species_of_interest_1": "",
+            "species_of_interest_2": "",
+            "date": "2015-06-23",
+            "archived": 0,
+            "segment": {
+                "range": "5m",
+                "time": "2015-09-02 15:46:53",
+                "date": "2015-06-23",
+                "canopy_height": "<10cm",
+                "canopy_gap": "False",
+                "basal_gap": "True",
+                "species_1_density": 0,
+                "species_2_density": 0,
+                "species_of_interest_1_count": 0,
+                "species_of_interest_2_count": 0,
+                "species_list": "",
+                "stick_segment": {
+                    "0": {
+                        "index": 0,
+                        "cover": "Perennial grasses"
+                    },
+                    "1": {
+                        "index": 1,
+                        "cover": "Bare"
+                    },
+                    "2": {
+                        "index": 2,
+                        "cover": "Bare"
+                    },
+                    "3": {
+                        "index": 3,
+                        "cover": "Sub-shrubs and perennial forbs"
+                    },
+                    "4": {
+                        "index": 4,
+                        "cover": "Bare"
+                    }
+                },
+                "summary": {
+                    "bare_total": 3,
+                    "trees_total": 0,
+                    "shrubs_total": 1,
+                    "sub_shrubs_total": 1,
+                    "plant_base_total": 0,
+                    "perennial_grasses_total": 1,
+                    "annuals_total": 0,
+                    "herb_litter_total": 0,
+                    "wood_litter_total": 0,
+                    "rock_total": 0
+                }
+            }
+        },
+        {
+            "id": 6818,
+            "direction": "EAST",
+            "dominant_woody_species": "A. etbaica",
+            "dominant_nonwoody_species": "C. plect.",
+            "species_of_interest_1": "",
+            "species_of_interest_2": "",
+            "date": "2015-06-23",
+            "archived": 0,
+            "segment": {
+                "range": "25m",
+                "time": "2015-09-02 15:46:53",
+                "date": "2015-06-23",
+                "canopy_height": "<10cm",
+                "canopy_gap": "True",
+                "basal_gap": "False",
+                "species_1_density": 0,
+                "species_2_density": 0,
+                "species_of_interest_1_count": 0,
+                "species_of_interest_2_count": 0,
+                "species_list": "",
+                "stick_segment": {
+                    "0": {
+                        "index": 0,
+                        "cover": "Herb Litter"
+                    },
+                    "1": {
+                        "index": 1,
+                        "cover": "Annual plants"
+                    },
+                    "2": {
+                        "index": 2,
+                        "cover": "Bare"
+                    },
+                    "3": {
+                        "index": 3,
+                        "cover": "Bare"
+                    },
+                    "4": {
+                        "index": 4,
+                        "cover": "Bare"
+                    }
+                },
+                "summary": {
+                    "bare_total": 3,
+                    "trees_total": 0,
+                    "shrubs_total": 0,
+                    "sub_shrubs_total": 0,
+                    "plant_base_total": 0,
+                    "perennial_grasses_total": 0,
+                    "annuals_total": 1,
+                    "herb_litter_total": 1,
+                    "wood_litter_total": 0,
+                    "rock_total": 0
+                }
+            }
+        },
+        {
+            "id": 6817,
+            "direction": "EAST",
+            "dominant_woody_species": "A. etbaica",
+            "dominant_nonwoody_species": "C. plect.",
+            "species_of_interest_1": "",
+            "species_of_interest_2": "",
+            "date": "2015-06-23",
+            "archived": 0,
+            "segment": {
+                "range": "20m",
+                "time": "2015-09-02 15:46:52",
+                "date": "2015-06-23",
+                "canopy_height": "<10cm",
+                "canopy_gap": "True",
+                "basal_gap": "False",
+                "species_1_density": 0,
+                "species_2_density": 0,
+                "species_of_interest_1_count": 0,
+                "species_of_interest_2_count": 0,
+                "species_list": "",
+                "stick_segment": {
+                    "0": {
+                        "index": 0,
+                        "cover": "Sub-shrubs and perennial forbs"
+                    },
+                    "1": {
+                        "index": 1,
+                        "cover": "Annual plants"
+                    },
+                    "2": {
+                        "index": 2,
+                        "cover": "Annual plants"
+                    },
+                    "3": {
+                        "index": 3,
+                        "cover": "Herb Litter"
+                    },
+                    "4": {
+                        "index": 4,
+                        "cover": "Bare"
+                    }
+                },
+                "summary": {
+                    "bare_total": 1,
+                    "trees_total": 0,
+                    "shrubs_total": 1,
+                    "sub_shrubs_total": 1,
+                    "plant_base_total": 0,
+                    "perennial_grasses_total": 0,
+                    "annuals_total": 2,
+                    "herb_litter_total": 1,
+                    "wood_litter_total": 0,
+                    "rock_total": 0
+                }
+            }
+        },
+        {
+            "id": 6816,
+            "direction": "EAST",
+            "dominant_woody_species": "A. etbaica",
+            "dominant_nonwoody_species": "C. plect.",
+            "species_of_interest_1": "",
+            "species_of_interest_2": "",
+            "date": "2015-06-23",
+            "archived": 0,
+            "segment": {
+                "range": "15m",
+                "time": "2015-09-02 15:46:52",
+                "date": "2015-06-23",
+                "canopy_height": "10-50cm",
+                "canopy_gap": "False",
+                "basal_gap": "False",
+                "species_1_density": 0,
+                "species_2_density": 0,
+                "species_of_interest_1_count": 0,
+                "species_of_interest_2_count": 0,
+                "species_list": "",
+                "stick_segment": {
+                    "0": {
+                        "index": 0,
+                        "cover": "Perennial grasses"
+                    },
+                    "1": {
+                        "index": 1,
+                        "cover": "Bare"
+                    },
+                    "2": {
+                        "index": 2,
+                        "cover": "Herb Litter"
+                    },
+                    "3": {
+                        "index": 3,
+                        "cover": "Herb Litter"
+                    },
+                    "4": {
+                        "index": 4,
+                        "cover": "Bare"
+                    }
+                },
+                "summary": {
+                    "bare_total": 2,
+                    "trees_total": 0,
+                    "shrubs_total": 0,
+                    "sub_shrubs_total": 0,
+                    "plant_base_total": 0,
+                    "perennial_grasses_total": 1,
+                    "annuals_total": 0,
+                    "herb_litter_total": 2,
+                    "wood_litter_total": 0,
+                    "rock_total": 0
+                }
+            }
+        },
+        {
+            "id": 6815,
+            "direction": "EAST",
+            "dominant_woody_species": "A. etbaica",
+            "dominant_nonwoody_species": "C. plect.",
+            "species_of_interest_1": "",
+            "species_of_interest_2": "",
+            "date": "2015-06-23",
+            "archived": 0,
+            "segment": {
+                "range": "10m",
+                "time": "2015-09-02 15:46:52",
+                "date": "2015-06-23",
+                "canopy_height": "10-50cm",
+                "canopy_gap": "True",
+                "basal_gap": "False",
+                "species_1_density": 0,
+                "species_2_density": 0,
+                "species_of_interest_1_count": 0,
+                "species_of_interest_2_count": 0,
+                "species_list": "",
+                "stick_segment": {
+                    "0": {
+                        "index": 0,
+                        "cover": "Bare"
+                    },
+                    "1": {
+                        "index": 1,
+                        "cover": "Bare"
+                    },
+                    "2": {
+                        "index": 2,
+                        "cover": "Bare"
+                    },
+                    "3": {
+                        "index": 3,
+                        "cover": "Bare"
+                    },
+                    "4": {
+                        "index": 4,
+                        "cover": "Bare"
+                    }
+                },
+                "summary": {
+                    "bare_total": 5,
+                    "trees_total": 0,
+                    "shrubs_total": 0,
+                    "sub_shrubs_total": 0,
+                    "plant_base_total": 0,
+                    "perennial_grasses_total": 0,
+                    "annuals_total": 0,
+                    "herb_litter_total": 0,
+                    "wood_litter_total": 0,
+                    "rock_total": 0
+                }
+            }
+        },
+        {
+            "id": 6814,
+            "direction": "EAST",
+            "dominant_woody_species": "A. etbaica",
+            "dominant_nonwoody_species": "C. plect.",
+            "species_of_interest_1": "",
+            "species_of_interest_2": "",
+            "date": "2015-06-23",
+            "archived": 0,
+            "segment": {
+                "range": "5m",
+                "time": "2015-09-02 15:46:52",
+                "date": "2015-06-23",
+                "canopy_height": "<10cm",
+                "canopy_gap": "True",
+                "basal_gap": "False",
+                "species_1_density": 0,
+                "species_2_density": 0,
+                "species_of_interest_1_count": 0,
+                "species_of_interest_2_count": 0,
+                "species_list": "",
+                "stick_segment": {
+                    "0": {
+                        "index": 0,
+                        "cover": "Perennial grasses"
+                    },
+                    "1": {
+                        "index": 1,
+                        "cover": "Bare"
+                    },
+                    "2": {
+                        "index": 2,
+                        "cover": "Perennial grasses"
+                    },
+                    "3": {
+                        "index": 3,
+                        "cover": "Bare"
+                    },
+                    "4": {
+                        "index": 4,
+                        "cover": "Bare"
+                    }
+                },
+                "summary": {
+                    "bare_total": 3,
+                    "trees_total": 0,
+                    "shrubs_total": 0,
+                    "sub_shrubs_total": 0,
+                    "plant_base_total": 0,
+                    "perennial_grasses_total": 2,
+                    "annuals_total": 0,
+                    "herb_litter_total": 0,
+                    "wood_litter_total": 0,
+                    "rock_total": 0
+                }
+            }
+        }
+    ]
+}

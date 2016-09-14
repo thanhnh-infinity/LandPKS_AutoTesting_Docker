@@ -1,0 +1,139 @@
+[
+  {
+    "id": 2104,
+    "name": "dwkimiti@gmail.com-BOT1",
+    "recorder_name": "dwkimiti@gmail.com",
+    "test_plot": "FALSE",
+    "organization": "nmsu",
+    "latitude": 0.31992534175515175,
+    "longitude": 36.88680153340101,
+    "city": "",
+    "notes": "None",
+    "land_cover": "savanna, 10-20% tree cover",
+    "grazed": "true",
+    "grazing": null,
+    "flooding": "false",
+    "slope": "2%",
+    "slope_shape": "LINEAR,LINEAR",
+    "bedrock_depth": "",
+    "stopped_digging_depth": "",
+    "rock_fragment": {
+      "soil_horizon_1": "0-15%",
+      "soil_horizon_2": "0-15%",
+      "soil_horizon_3": "35-60%",
+      "soil_horizon_4": "35-60%",
+      "soil_horizon_5": "",
+      "soil_horizon_6": "",
+      "soil_horizon_7": ""
+    },
+    "color": {
+      "soil_horizon_1": "103/65/23",
+      "soil_horizon_2": "83/50/21",
+      "soil_horizon_3": "87/55/23",
+      "soil_horizon_4": "72/45/18",
+      "soil_horizon_5": "null",
+      "soil_horizon_6": "null",
+      "soil_horizon_7": "null"
+    },
+    "texture": {
+      "soil_horizon_1": "SANDY CLAY LOAM",
+      "soil_horizon_2": "SILT LOAM",
+      "soil_horizon_3": "SANDY LOAM",
+      "soil_horizon_4": "SANDY LOAM",
+      "soil_horizon_5": "",
+      "soil_horizon_6": "",
+      "soil_horizon_7": ""
+    },
+    "surface_cracking": "false",
+    "surface_salt": "false",
+    "soil_pit_photo_url": null,
+    "soil_samples_photo_url": null,
+    "landscape_north_photo_url": null,
+    "landscape_east_photo_url": null,
+    "landscape_south_photo_url": null,
+    "landscape_west_photo_url": null,
+    "insert_normal_time": "2015-02-19 12:14:54",
+    "ip_address": "107.178.200.223",
+    "archived": 0,
+    "prediction": {
+      "apex_output_y_crop": 1.62,
+      "apex_output_yldg_crop": 2.4,
+      "apex_output_biom_crop": 9.93,
+      "apex_output_y_grass": 0.03,
+      "apex_output_yldg_grass": 1.7,
+      "apex_output_biom_grass": 1.93,
+      "crop_productivity": 0.347826086957,
+      "crop_erosion": 0.0374653098982,
+      "grass_productivity": 0.772727272727,
+      "glass_erosion": 0.00431654676259
+    },
+    "geospatial_data": {
+      "gdal_elevation": 1770,
+      "gdal_gdd": 4341,
+      "gdal_aridity_index": 0.3733,
+      "gdal_fao_lgp": "210-239"
+    },
+    "analytic_data_soil": {
+      "awc_soil_profile_awc": 3.98764
+    },
+    "climate": {
+      "precipitation": {
+        "january": 28.593023,
+        "february": 36.476746,
+        "march": 60.197674,
+        "april": 128.58139,
+        "may": 72.858139,
+        "june": 59.172092,
+        "july": 64.046509,
+        "august": 77.325584,
+        "september": 49.048836,
+        "october": 84.483719,
+        "november": 86.148834,
+        "december": 46.065117,
+        "annual": 792.997663
+      },
+      "average_temperature": {
+        "january": 16.078789,
+        "february": 17.615152,
+        "march": 18.060606,
+        "april": 18.49091,
+        "may": 18.033333,
+        "june": 17.118181,
+        "july": 16.733334,
+        "august": 16.809092,
+        "september": 17.39394,
+        "october": 18.030302,
+        "november": 17.251514,
+        "december": 16.79697
+      },
+      "max_temperature": {
+        "january": 24.766666,
+        "february": 26.618181,
+        "march": 26.757576,
+        "april": 25.593939,
+        "may": 24.954546,
+        "june": 24.299999,
+        "july": 23.412121,
+        "august": 23.681818,
+        "september": 25.566668,
+        "october": 25.69697,
+        "november": 24.29394,
+        "december": 24.721212
+      },
+      "min_temperature": {
+        "january": 7.427273,
+        "february": 8.660606,
+        "march": 9.421212,
+        "april": 11.433333,
+        "may": 11.178788,
+        "june": 9.99091,
+        "july": 10.118182,
+        "august": 9.993939,
+        "september": 9.269697,
+        "october": 10.427273,
+        "november": 10.263637,
+        "december": 8.924242
+      }
+    }
+  }
+]

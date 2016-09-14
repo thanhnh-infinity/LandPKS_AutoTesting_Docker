@@ -217,6 +217,7 @@ def sendMain(JData,ServerStats, bDown=True):
     server.sendmail(addrFrom, addrTo, Message)
     server.quit()
 if __name__ == '__main__':
+    sendMain("", "", True)
     HeartBeat()
     
         
