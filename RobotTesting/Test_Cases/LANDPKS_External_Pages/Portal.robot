@@ -11,6 +11,9 @@ Library           Framework/WebHelpers.py
 
 *** Variables ***
 ${PortalMapHome}    http://portallandpotential.businesscatalyst.com/Export/ExportandMap.html
+${PortalDataSheets}    http://landpotential.businesscatalyst.com/landpks.html#manuals
+${APIProductionExplorerURL}    portal.landpotential.org/api_explorer
+${APITestExplorerURL}    http://128.123.177.103/api_explorer/
 ${LoadingBarXpath}    xpath=//div[@class='progress-bar progress-bar-success progress-bar-striped active']
 ${Browser}        firefox
 ${PlotsPulledXpath}    xpath=//strong[@id='total-plots-displayed']
@@ -18,7 +21,6 @@ ${ExportLoadingBarXpath}    xpath=//div[@class='progress-bar progress-bar-stripe
 ${ExportLoadingIMGXpath}    id=loading_msg
 ${ExportEmailID}    id=userName
 ${ExportButtonID}    id=export-button
-${PortalDataSheets}    http://landpotential.businesscatalyst.com/landpks.html#manuals
 ${PortalLIDataSheetXpath}    xpath=//a[@id='u41866-4']
 ${PortalLCDataSheetXpath}    xpath=//a[@id='u59333-4']
 ${PortalLIDataSheetImgXp}    xpath=//img[@id='u59344_img']
@@ -30,14 +32,12 @@ ${LandInfoAppXpath}    //span[@id='u13764']
 ${LandCoverAppXpath}    //span[@id='u10901']
 ${LinksPortalXpath}    //nav[@class='MenuBar clearfix grpelem']/div
 ${WaitTimeout}    90
-${APIProductionExplorerURL}    portal.landpotential.org/api_explorer
 ${APIExplorRequestTypeXPRsc}    //ul[@id='resources']/li
 ${APIExplorRequestTypeXPRscBut}    /div[@class='heading']/h2/a
 ${APIExplorOpenTypeXpStart}    //ul[@id='resources']/li
 ${APIExplorOpenTypeXpStop}    /ul/li
 ${APIExplorerOpenTypeStopBut}    /ul[@class='operations']/li/div[@class='heading']/h3/span[@class='http_method']/a
 ${ApiExplorerResponseThrobber}    //span[@class='response_throbber']
-${APITestExplorerURL}    portal.landpotential.org/api_explorer
 ${XauthControlName}    X-Auth-Token
 
 *** Test Cases ***
@@ -50,12 +50,23 @@ Portal Testing
     run keyword if    ${JenkinsSetupSize} >1    Mobile Multi Setup Jenks
     ...    ELSE    Mobile Setup Jenks    Portal
 
+Api Explorer Test Production
+    [Documentation]    Runs all querys on api explorer. Logs queries and type as it proceeds. Verifies the query only contains one query parameter. Verifies that the api returns the same code that the API does directly.
+    [Tags]    API Explorer Production
+    Set Test Variable    ${TestVer}    False
+    API Caller
+
 Api Explorer Test
     [Documentation]    Runs all querys on api explorer. Logs queries and type as it proceeds. Verifies the query only contains one query parameter. Verifies that the api returns the same code that the API does directly.
-    [Tags]    API Explorer
+    [Tags]    API Explorer Test
+    Set Test Variable    ${TestVer}    True
+    API Caller
+
+*** Keywords ***
+API Caller
     Set Test Variable    ${Function}    Browser Init
     Set Test Variable    ${Process}    Api
-    Set Test Variable    ${bCorrect}    True
+    Set Test Variable    ${bCorrect}    False
     ${JenkinsSetupSize}=    Get Browser Setup Count
     run keyword if    ${JenkinsSetupSize} >1    Mobile Multi Setup Jenks
     ...    ELSE    Mobile Setup Jenks    Api
@@ -63,7 +74,6 @@ Api Explorer Test
     run keyword if    ${JenkinsSetupSize} >1    Mobile Multi Setup Jenks
     ...    ELSE    Mobile Setup Jenks    Api
 
-*** Keywords ***
 Close test browser
     Run keyword if    '${REMOTE_URL}' != ''    Report Sauce status    ${SUITE_NAME} | ${TEST_NAME}    ${TEST_STATUS}    ${TEST_TAGS}    ${REMOTE_URL}
     Close all browsers
@@ -111,7 +121,8 @@ Get Jenkins Driver
 
 API Manipulation
     Set Test Variable    ${Function}    Processing Api Explorer
-    Go To    ${APIProductionExplorerURL}
+    Run Keyword if    '${TestVer}'=='True'    Go To    ${APITestExplorerURL}
+    ...    ELSE    Go To    ${APIProductionExplorerURL}
     Open Api Explorer Request type
 
 Portal Manipulation
