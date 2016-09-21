@@ -841,7 +841,7 @@ class Test_Case:#(unittest.TestCase):
         else:
             self.driver.quit()
             del(self.driver)
-    def Test_Case_2(self, bRobot = True, bSelenium=False):
+    def Test_Case_2(self, bRobot = True, bSelenium=False,bProduction=False):
         #log in
         global ERRORS,SUCCESS,WARNS
         ERRORS = []
@@ -849,7 +849,11 @@ class Test_Case:#(unittest.TestCase):
         WARNS = []
         PassOrFail = "PASS"
         try:
-            SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium)
+            if(bProduction):
+                SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium,starturl = "http://apps.landpotential.org")
+            else:
+                SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium)
+            #SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium)
             ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[contains(@ng-show,'device')][not(contains(@class,'hide'))]/img[@src='landpks_img/landinfo_logo.png']")
             WaitForLoad(self.driver)
             HandleLogout(self.driver)
@@ -862,14 +866,18 @@ class Test_Case:#(unittest.TestCase):
             OutputSucessful()
             self.tearDown(PassOrFail, bRobot,bSelenium=bSelenium)
         #2.4 create plot
-    def Test_Case_2_3(self, bRobot = True, bSelenium=False):
+    def Test_Case_2_3(self, bRobot = True, bSelenium=False,bProduction=False):
         PassOrFail = "PASS"
         global ERRORS,SUCCESS,WARNS
         ERRORS = []
         WARNS = []
         SUCCESS = []
         try:
-            SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium)
+            if(bProduction):
+                SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium,starturl = "http://apps.landpotential.org")
+            else:
+                SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium)
+            #SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium)
             ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[contains(@ng-show,'device')][not(contains(@class,'hide'))]/img[@src='landpks_img/landinfo_logo.png']")
             WaitForLoad(self.driver)
             ClickElementIfVis(self.driver,By.XPATH,LAND_INFO_LOCAL_CLIMATE_BUTTON)
@@ -956,14 +964,18 @@ class Test_Case:#(unittest.TestCase):
         finally:
             OutputSucessful()
             OutputErrors()
-    def Test_Case_2_4(self, bRobot = True, bSelenium=False, bFullPlot = True):
+    def Test_Case_2_4(self, bRobot = True, bSelenium=False, bFullPlot = True,bProduction=False):
         global ERRORS,SUCCESS,WARNS
         ERRORS = []
         SUCCESS = []
         WARNS = []
         PassOrFail = "PASS"
         try:
-            SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium)
+            if(bProduction):
+                SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium,starturl = "http://apps.landpotential.org")
+            else:
+                SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium)
+            #SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium)
             ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[contains(@ng-show,'device')][not(contains(@class,'hide'))]/img[@src='landpks_img/landinfo_logo.png']")
             if(bRobot):
                 appiumLib = BuiltIn().get_library_instance('AppiumLibrary')
@@ -1004,7 +1016,7 @@ class Test_Case:#(unittest.TestCase):
             OutputErrors()
             OutputSucessful()
             self.tearDown(PassOrFail, bRobot,bSelenium=bSelenium)
-    def Test_Case_0(self, bRobot = True, bSelenium=False):
+    def Test_Case_0(self, bRobot = True, bSelenium=False,bProduction=False):
         global ERRORS,SUCCESS,WARNS
         ERRORS = []
         SUCCESS = []
@@ -1012,7 +1024,11 @@ class Test_Case:#(unittest.TestCase):
         PassOrFail = "PASS"
         if(bSelenium):
             try:
-                SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium)
+                if(bProduction):
+                    SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium,starturl = "http://apps.landpotential.org")
+                else:
+                    SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium)
+                #SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium)
                 #self.driver.close_app()
                 #self.driver.start_activity(app_package=LAND_COVER_ANDROID_PACKAGE, app_activity=LAND_COVER_ANDROID_ACTIVITY_NAME)
                 ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[contains(@ng-show,'device')][not(contains(@class,'hide'))]/img[@src='landpks_img/landinfo_logo.png']")
@@ -1118,8 +1134,8 @@ class Testing(unittest.TestCase):
         #self.AppTest.Test_Case_2_4(False,False)
         #self.AppTest.Test_Case_2_4(False,False)
         #self.AppTest.Verify_Portal_And_App_Data_Match(False, True)
-        self.AppTest.Verify_Portal_And_CSV_Data_Match(False,True)
-        self.AppTest.Test_Case_2_3(False,False)
+        #self.AppTest.Verify_Portal_And_CSV_Data_Match(False,True)
+        self.AppTest.Test_Case_2_3(False,True,True)
         self.AppTest.Test_Case_0_Form(False)
         #self.AppTest.Verify_Portal_And_App_Data_Match( bRobot = False,bSelenium = False)
         #self.AppTest.Test_Case_0( bRobot = False,bSelenium = True)

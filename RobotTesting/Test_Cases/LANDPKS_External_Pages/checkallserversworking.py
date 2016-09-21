@@ -5,6 +5,8 @@ from socket import gethostbyname
 import smtplib
 import json
 import sys
+from email.mime.text import MIMEText
+from subprocess import Popen, PIPE
 from Framework.Utils import get_uname_and_pword_lpks_gmail,Get_Environ_Var
 from time import sleep
 DEV_SERVER = 'dev.landpotential.org'
@@ -211,11 +213,18 @@ def sendMain(JData,ServerStats, bDown=True):
     Message = buildMessage(JData,ServerStats, bDown)
     addrFrom = Creds['UName']
     password = Creds['PWord']
-    server = smtplib.SMTP('smtp.gmail.com:587')
-    server.starttls()
-    server.login(addrFrom,password)
-    server.sendmail(addrFrom, addrTo, Message)
-    server.quit()
+    msg = MIMEText(Message)
+    msg["From"] = 'Admin@ServerHeartbeat.org'
+    msg["To"] = 'barnebre@gmail.com,upanthi@nmsu.edu'
+    msg["Subject"] = "Notice"
+    p = Popen(["/usr/sbin/sendmail", "-t", "-oi"], stdin=PIPE)
+    p.communicate(msg.as_string())
+    #os.system('echo "{1}" | mail -t "{0}"'.format(addrTo,Message))
+    #server = smtplib.SMTP('smtp.gmail.com:587')
+    #server.starttls()
+    #server.login(addrFrom,password)
+    #server.sendmail(addrFrom, addrTo, Message)
+    #server.quit()
 if __name__ == '__main__':
     HeartBeat()
     
