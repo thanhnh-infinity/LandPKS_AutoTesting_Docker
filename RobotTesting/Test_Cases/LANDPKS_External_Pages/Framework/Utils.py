@@ -9,6 +9,7 @@ from NetUtils import GetPortalInfo
 import csv
 #REQUEST_API_LAND_INFO_BY_RECORDER = "http://testapi.landpotential.org:8080/query?version=0.1&action=get&object=landinfo&type=get_by_recorder_name&recorder_name={0}"
 REQUEST_API_LAND_INFO_BY_RECORDER = "http://testapi.landpotential.org:8080/query?&action=get&object=landinfo&type=get_by_recorder_name&recorder_name={0}"
+REQUEST_API_LAND_INFO_BY_RECORDER_PRODUCTION = "http://api.landpotential.org/query?&action=get&object=landinfo&type=get_by_recorder_name&recorder_name={0}"
 ERROR_CODE_RESPONSE = '400'
 SUCCESS_CODE_RESPONSE = '200'
 BROWSER_VERSIONS = {
@@ -340,8 +341,11 @@ def parseJSONJenkinsCapa():
             browserRet.append(inputForE)
         return browserRet
     
-def GetLandInfoDataForRecorder(RecorderEmail):
-    Request = REQUEST_API_LAND_INFO_BY_RECORDER.format(RecorderEmail)
+def GetLandInfoDataForRecorder(RecorderEmail,bProduction = False):
+    if (bProduction):
+        Request = REQUEST_API_LAND_INFO_BY_RECORDER_PRODUCTION.format(RecorderEmail)
+    else:
+        Request = REQUEST_API_LAND_INFO_BY_RECORDER.format(RecorderEmail)
     ResponseData = json.loads(GetPortalInfo(Request))["data"]
     return ResponseData
 def ParseCSVFile(filePath):

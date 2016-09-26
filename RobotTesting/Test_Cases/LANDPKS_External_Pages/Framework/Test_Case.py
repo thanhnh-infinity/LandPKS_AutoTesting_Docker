@@ -115,6 +115,9 @@ START_TIME = {}
 PATH = lambda p: os.path.abspath(
     os.path.join(os.path.dirname(__file__), p)
 )
+def DownloadProductionAndroidApp(driver):
+    driver.close_app()
+    driver.start_activity("com.android.vending", "com.android.vending.AssetBrowserActivity")
 def HandleExportFromPortalCSV(driver, portalData,Uname=""):
     #GetEleIfVis(driver, By.ID, "userName").send_keys(Uname)
     #ClickElementIfVis(driver, By.ID, "export-button")
@@ -683,12 +686,20 @@ def SetUpApp(Test, AirplaneMode=False, bRobot = True, iConnection=None, bSeleniu
 def TestCaps():
     caps = {}
     caps['browserName'] = ""
-    caps['appiumVersion'] = "1.4.16"
-    caps['deviceName'] = "Android Emulator"
-    caps['deviceType'] = "phone"
-    caps['deviceOrientation'] = "portrait"
-    caps['platformVersion'] = "5.1"
+    caps['appiumVersion'] = "1.5.2"
+    #caps['appiumVersion'] = "1.4.16"
+    caps['deviceName'] = "Android GoogleAPI Emulator"
+    #caps['deviceName'] = "Galaxy S6 Device"
+    #caps['deviceType'] = "phone"
+    #caps['deviceOrientation'] = "portrait"
+    caps['platformVersion'] = "5.0"
     caps['platformName'] = "Android"
+    #caps['browserName'] = ""
+    #caps['appiumVersion'] = "1.5.3"
+    #caps['deviceName'] = "Galaxy S6 Device"
+    #caps['deviceOrientation'] = "portrait"
+    #caps['platformVersion'] = "6.0"
+    #caps['platformName'] = "Android"
     return caps
 def TestCapsSel():
     caps= {}
@@ -851,8 +862,10 @@ class Test_Case:#(unittest.TestCase):
         try:
             if(bProduction):
                 SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium,starturl = "http://apps.landpotential.org")
+                #DownloadProductionAndroidApp(self.driver)
             else:
                 SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium)
+                DownloadProductionAndroidApp(self.driver)
             #SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium)
             ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[contains(@ng-show,'device')][not(contains(@class,'hide'))]/img[@src='landpks_img/landinfo_logo.png']")
             WaitForLoad(self.driver)
@@ -890,16 +903,16 @@ class Test_Case:#(unittest.TestCase):
             OutputSucessful()
             self.tearDown(PassOrFail, bRobot,bSelenium=bSelenium)
         #LandCover
-    def Get_Portal_Data(self):
-        self.PortalData = GetLandInfoDataForRecorder(get_uname_and_pword_lpks_gmail()["UName"])
-    def Verify_Portal_And_App_Data_Match(self,bRobot = True, bSelenium=False):
+    def Get_Portal_Data(self,bProduction=False):
+        self.PortalData = GetLandInfoDataForRecorder(get_uname_and_pword_lpks_gmail()["UName"],bProduction=bProduction)
+    def Verify_Portal_And_App_Data_Match(self,bRobot = True, bSelenium=False, bProduction=False):
         global ERRORS,SUCCESS,WARNS
         ERRORS = []
         SUCCESS = []
         WARNS = []
         PassOrFail = "PASS"
         try:
-            self.Get_Portal_Data()
+            self.Get_Portal_Data(bProduction=bProduction)
         except:
             LogError("Error pulling portal data")
             PassOrFail = "FAIL"
@@ -1130,7 +1143,7 @@ class ElementNotFoundTimeoutException(Exception):
 class Testing(unittest.TestCase):
     AppTest = Test_Case()
     def tester(self):
-        #self.AppTest.Test_Case_2(False,True)
+        self.AppTest.Test_Case_2(False,False)
         #self.AppTest.Test_Case_2_4(False,False)
         #self.AppTest.Test_Case_2_4(False,False)
         #self.AppTest.Verify_Portal_And_App_Data_Match(False, True)
