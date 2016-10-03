@@ -1,0 +1,28 @@
+FROM debian:jessie
+
+# Install basics 
+RUN apt-get update &&  \
+    apt-get install -y git wget curl && \
+    apt-get clean
+RUN apt-get update &&  \
+    apt-get install -y nodejs nodejs-legacy build-essential && \
+    ln -s /usr/bin/nodejs /usr/local/bin/node && \ 
+    apt-get clean
+RUN apt-get install -y npm
+Run npm install npm -g
+RUN apt-get install -y build-essential
+RUN npm install -g cordova ionic
+# Install npm packages
+#RUN npm install -g grunt-cli
+#RUN npm install -g gulp
+#RUN npm install -g bower
+
+# Expose port: web (8100), livereload (35729)
+EXPOSE 8100 35729
+
+# install python reqs
+#RUN apt-get update && apt-get install -y -q python-software-properties software-properties-common && apt-get clean
+# Command to server
+RUN git clone https://github.com/LandPotential/LandCover_Mobile_Application.git /usr/src/App/
+WORKDIR /usr/src/App/
+CMD ["ionic", "serve", "--all", "--port", "8100", "--livereload-port","35729"]
