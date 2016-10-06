@@ -7,8 +7,9 @@ Library           ../../Framework/SauceLabs.py
 *** Variable ***
 ${PLATFORM}       Android
 ${platformVersion}    5.1
+${LeechURL}       http://apkleecher.com/?id=org.landpotential.lpks.landcover
 ${APP}            http://128.123.177.36:8080/job/LandCover_Mobile_Andoird_App/ws/platforms/android/build/outputs/apk/android-debug.apk
-${APPProduction}    http://www.apkleecher.com/apps/2016/09/26/LandPKS%202.0.2_[www.Apkleecher.com].apk
+${APPProduction}    http://www.apkleecher.com/apps/2016/10/06/LandPKS%202.0.2_[www.Apkleecher.com].apk
 ${DEVICE_NAME}    AndroidEmulator
 ${appiumVersion}    1.5.2
 ${DeviceType}     Phone
