@@ -114,11 +114,11 @@ def GenDynaWebAppTestsAppend():
                 TestTypesBrowsered[NameNewTest]["strReplace"].append({"OldText":"x Linux Chrome","NewText" : "x %s %s"%(config["platform"],config["Browser"])})
         for Key in TestTypesBrowsered:
             FilePath = GenDynaTestCaseAppend("..\\WebAppTesting.robot","DynaTestGened.robot",bCompletePath=False,strReplace =TestTypesBrowsered[Key]["strReplace"])
-        os.system(ExecCommand.format(
-                                     '"{0}"'.format(FilePath)
-                                     )
-                  )
-        os.remove(FilePath)
+        #os.system(ExecCommand.format(
+        #                             '"{0}"'.format(FilePath)
+        #                             )
+        #          )
+        #os.remove(FilePath)
         del(TestTypesBrowsered)
     #endIF
     else:
