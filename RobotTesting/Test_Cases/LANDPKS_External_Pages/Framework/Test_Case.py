@@ -1031,7 +1031,6 @@ class Test_Case:#(unittest.TestCase):
             OutputSucessful()
             self.tearDown(PassOrFail, bRobot,bSelenium=bSelenium)
     def Test_Case_0(self, bRobot = True, bSelenium=False,bProduction=False):
-        del(self.plotNames)
         self.plotNames = []
         global ERRORS,SUCCESS,WARNS
         ERRORS = []
@@ -1093,6 +1092,7 @@ class Test_Case:#(unittest.TestCase):
             
     def test_add_plot_airplane_verify_it_appears_in_landcover(self, bRobot = True):
         global WARNS,SUCCESS,ERRORS
+        self.plotNames = []
         SetUpApp(self, AirplaneMode=True, bRobot=bRobot, iConnection=1)
         #self.driver.close_app()
         #self.driver.start_activity(app_package=LAND_COVER_ANDROID_PACKAGE, app_activity=LAND_COVER_ANDROID_ACTIVITY_NAME)
