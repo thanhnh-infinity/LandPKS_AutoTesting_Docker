@@ -790,6 +790,7 @@ def set_test_browser(remoteURL):
     Test_Case().set_browser(remoteURL)
 class Test_Case:#(unittest.TestCase):
     plotNames = []
+    
     PortalData = []
     
     def gen_test_cases(self):
