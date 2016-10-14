@@ -1031,6 +1031,7 @@ class Test_Case:#(unittest.TestCase):
             self.tearDown(PassOrFail, bRobot,bSelenium=bSelenium)
     def Test_Case_0(self, bRobot = True, bSelenium=False,bProduction=False):
         del(self.plotNames)
+        self.plotNames = []
         global ERRORS,SUCCESS,WARNS
         ERRORS = []
         SUCCESS = []
