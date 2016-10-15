@@ -1132,7 +1132,7 @@ class Test_Case:#(unittest.TestCase):
     ###################################    
     ### ThanhNH : Update Test Cases ###
     ###################################
-    def Test_Case_10_1_1(self, bRobot = True, bSelenium=False,bProduction=False):
+    def Test_Case_10_1(self, bRobot = True, bSelenium=False,bProduction=False):
         self.plotNames = []
         global ERRORS,SUCCESS,WARNS
         ERRORS = []

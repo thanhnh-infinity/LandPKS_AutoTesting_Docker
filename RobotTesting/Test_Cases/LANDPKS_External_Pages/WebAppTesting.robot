@@ -13,6 +13,13 @@ ${BrowserName}    chrome
 ${BrowserVersion}    ""
 
 *** Test Cases ***
+Web App Test Case 10.1.x Linux Chrome
+    [Documentation]    Launches Web App directly and tests Test Case 10.1.x. Content : Display Map at current location. PASS when (As a user I want to view the map so that I can it centered at my current location and I know I've succeeded when the map recenters when I move)
+    [Tags]    WebApp
+    ${Creds}=    Get Sauce Creds Jenkins
+    Set Browser    ${Creds}    bSelenium=True    platform=${Platform}    os=${OS}    browserName=${BrowserName}    browser-version=${BrowserVersion}
+    Test Case 10 1    bSelenium=True
+
 Web App Test Case 2.3.x Linux Chrome
     [Documentation]    Launches Web App directly and Runs tests in category 2.3 of manual test plan. Library and test structure is in library Test_case.py. Return what tests failed and were successful. Test Fails if Critical test is a failure.
     [Tags]    WebApp
@@ -83,12 +90,4 @@ Web App Test Case 3.1.x Linux Chrome
     Set Browser    ${Creds}    bSelenium=True    platform=${Platform}    os=${OS}    browserName=${BrowserName}    browser-version=${BrowserVersion}
     Verify Portal And App Data Match    bSelenium=True
 
-#####################################
-### ThanhNH : 20161014 - Testing ####
-#####################################
-Web App Test Case 10.1.x Linux Chrome
-    [Documentation]    Launches Web App directly and tests Test Case 10.1.x. Content : Display Map at current location. PASS when (As a user I want to view the map so that I can it centered at my current location and I know I've succeeded when the map recenters when I move)
-    [Tags]    WebApp
-    ${Creds}=    Get Sauce Creds Jenkins
-    Set Browser    ${Creds}    bSelenium=True    platform=${Platform}    os=${OS}    browserName=${BrowserName}    browser-version=${BrowserVersion}
-    Test Case 10 1 1    bSelenium=True
+
