@@ -1199,8 +1199,8 @@ class ElementNotFoundTimeoutException(Exception):
 class Testing(unittest.TestCase):
     AppTest = Test_Case()
     def tester(self):
-        self.AppTest.Test_Case_2(False,False)
-        #self.AppTest.Test_Case_2_4(False,False)
+        #self.AppTest.Test_Case_2(False,False)
+        self.AppTest.Test_Case_2_4(False,True)
         #self.AppTest.Test_Case_2_4(False,False)
         #self.AppTest.Verify_Portal_And_App_Data_Match(False, True)
         #self.AppTest.Verify_Portal_And_CSV_Data_Match(False,True)
