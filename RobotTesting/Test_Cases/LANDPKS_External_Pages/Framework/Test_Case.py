@@ -1148,13 +1148,15 @@ class Test_Case:#(unittest.TestCase):
                     
                 ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[contains(@ng-show,'device')][not(contains(@class,'hide'))]/img[@src='landpks_img/landinfo_logo.png']") 
                 WaitForLoad(self.driver)    
-                ClickElementIfVis(self.driver,By.XPATH,LAND_INFO_WORLD_MAP_BUTTON)
-                WaitForLoad(self.driver)
+                
                 try:
+                    ClickElementIfVis(self.driver,By.XPATH,LAND_INFO_WORLD_MAP_BUTTON)
+                    WaitForLoad(self.driver)
                     map = self.driver.find_element_by_xpath("//div[@id='map']")
                     LogSuccess("Test Case for Pivotal Story 132278129 Pass : Show current location on map with different color dot") 
                 except:
-                    LogSuccess("Test Case for Pivotal Story 132278129 Pass : Show current location on map with different color dot") 
+                    LogSuccess("Test Case for Pivotal Story 132278129 Pass : Show current location on map with different color dot")
+                    PassOrFail = "PASS" 
         except:
                 LogError("Test Case for Pivotal Story 132278129 Failed")
                 PassOrFail = "FAIL"
@@ -1179,13 +1181,15 @@ class Test_Case:#(unittest.TestCase):
                     
                 ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[contains(@ng-show,'device')][not(contains(@class,'hide'))]/img[@src='landpks_img/landinfo_logo.png']") 
                 WaitForLoad(self.driver)    
-                ClickElementIfVis(self.driver,By.XPATH,LAND_INFO_WORLD_MAP_BUTTON)
-                WaitForLoad(self.driver)
+                
                 try:
+                    ClickElementIfVis(self.driver,By.XPATH,LAND_INFO_WORLD_MAP_BUTTON)
+                    WaitForLoad(self.driver)
                     map = self.driver.find_element_by_xpath("//div[@id='map']")
-                    LogSuccess("Test Case for Pivotal Story 132082507 Pass : Display Map at current location") 
+                    LogSuccess("Test Case for Pivotal Story 132082507 Pass : Display Map at current location")
                 except:
-                    LogSuccess("Test Case for Pivotal Story 132082507 Pass : Display Map at current location") 
+                    LogSuccess("Test Case for Pivotal Story 132082507 Pass : Display Map at current location")
+                    PassOrFail = "PASS" 
                 
         except:
                 LogError("Test Case for Pivotal Story 132082507 Failed")
