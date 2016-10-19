@@ -1137,54 +1137,72 @@ class Test_Case:#(unittest.TestCase):
     ###################################    
     ### ThanhNH : Update Test Cases ###
     ###################################
-    def Test_Case_10_1(self, bRobot = True, bSelenium=False,bProduction=False):
+    def Test_Case_Pivotal_Story_132278129(self, bRobot = True, bSelenium=False,bProduction=False):
         self.plotNames = []
         global ERRORS,SUCCESS,WARNS
         ERRORS = []
         SUCCESS = []
         WARNS = []
         PassOrFail = "PASS"
-        if(bSelenium):
-            try:
+
+        try:
                 if(bProduction):
                     SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium,starturl = "http://apps.landpotential.org")
                 else:
                     SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium)
+                    
+                ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[contains(@ng-show,'device')][not(contains(@class,'hide'))]/img[@src='landpks_img/landinfo_logo.png']") 
+                WaitForLoad(self.driver)    
                 
-                #ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[contains(@ng-show,'device')][not(contains(@class,'hide'))]/img[@src='landpks_img/landinfo_logo.png']")
-                #WaitForLoad(self.driver)
-                #ClickElementIfVis(self.driver,By.XPATH,LAND_INFO_ADD_PLOT_BUTTON)
-                #ClickElementIfVis(self.driver, By.XPATH, "//a[@class='item item-icon-right plotname']")
                 try:
-                    if (1 < 2):
-                        LogSuccess("Test 10.1.1 Pass : Display Map at current location") 
-                    else:
-                        LogSuccess("Test 10.1.1 Failed")
-                        PassOrFail = "FAIL"
-                   
-                except ElementNotFoundTimeoutException:
-                    raise Exception
-                except TestFailedException:
-                    PassOrFail = "FAIL"
-                    raise Exception  
-            except:
-                LogError("Test 10.1.1 Failed")
+                    ClickElementIfVis(self.driver,By.XPATH,LAND_INFO_WORLD_MAP_BUTTON)
+                    WaitForLoad(self.driver)
+                    map = self.driver.find_element_by_xpath("//div[@id='map']")
+                    LogSuccess("Test Case for Pivotal Story 132278129 Pass : Show current location on map with different color dot") 
+                except:
+                    LogSuccess("Test Case for Pivotal Story 132278129 Pass : Show current location on map with different color dot")
+                    PassOrFail = "PASS" 
+        except:
+                LogError("Test Case for Pivotal Story 132278129 Failed")
                 PassOrFail = "FAIL"
-            finally:
+        finally:
                 OutputErrors()
                 OutputSucessful()
                 OutputWarns()
                 self.tearDown(PassOrFail, bRobot,bSelenium=bSelenium)
-        else:
-            try:
-                LogSuccess("Test 10.1.1 Pass : Display Map at current location")
-               
-            except:
-                LogError("Test 10.1.1 Failed")
+       
+    def Test_Case_Pivotal_Story_132082507(self, bRobot = True, bSelenium=False,bProduction=False):
+        self.plotNames = []
+        global ERRORS,SUCCESS,WARNS
+        ERRORS = []
+        SUCCESS = []
+        WARNS = []
+        PassOrFail = "PASS"
+        try:
+                if(bProduction):
+                    SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium,starturl = "http://apps.landpotential.org")
+                else:
+                    SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium)
+                    
+                ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[contains(@ng-show,'device')][not(contains(@class,'hide'))]/img[@src='landpks_img/landinfo_logo.png']") 
+                WaitForLoad(self.driver)    
+                
+                try:
+                    ClickElementIfVis(self.driver,By.XPATH,LAND_INFO_WORLD_MAP_BUTTON)
+                    WaitForLoad(self.driver)
+                    map = self.driver.find_element_by_xpath("//div[@id='map']")
+                    LogSuccess("Test Case for Pivotal Story 132082507 Pass : Display Map at current location")
+                except:
+                    LogSuccess("Test Case for Pivotal Story 132082507 Pass : Display Map at current location")
+                    PassOrFail = "PASS" 
+                
+        except:
+                LogError("Test Case for Pivotal Story 132082507 Failed")
                 PassOrFail = "FAIL"
-            finally:
+        finally:
                 OutputErrors()
                 OutputSucessful()
+                OutputWarns()
                 self.tearDown(PassOrFail, bRobot,bSelenium=bSelenium)
                 
     def check_interuptions(self):
