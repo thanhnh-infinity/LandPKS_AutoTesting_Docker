@@ -1145,6 +1145,8 @@ class Test_Case:#(unittest.TestCase):
                     SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium,starturl = "http://apps.landpotential.org")
                 else:
                     SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium)
+                ClickElementIfVis(self.driver,By.XPATH,'//img[@src="landpks_img/landinfo_logo.png"]') 
+                WaitForLoad(self.driver)   
                 ClickElementIfVis(self.driver,By.XPATH,'//a[@class="button button-icon ion-ios-world"]')
                 WaitForLoad(self.driver)
                 map = self.driver.find_element_by_xpath("//div[@id='map']")
@@ -1180,6 +1182,8 @@ class Test_Case:#(unittest.TestCase):
                     SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium,starturl = "http://apps.landpotential.org")
                 else:
                     SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium)
+                ClickElementIfVis(self.driver,By.XPATH,'//img[@src="landpks_img/landinfo_logo.png"]') 
+                WaitForLoad(self.driver)    
                 ClickElementIfVis(self.driver,By.XPATH,'//a[@class="button button-icon ion-ios-world"]')
                 WaitForLoad(self.driver)
                 map = self.driver.find_element_by_xpath("//div[@id='map']")
