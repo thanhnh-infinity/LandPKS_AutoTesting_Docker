@@ -303,7 +303,15 @@ def _SetSelectRand(selEle):
     if( selEle.is_multiple ):
         selEle.deselect_all()
     options = len(selEle.options)
-    selEle.select_by_index(random.randint(1,options-1))
+    selIndex = random.randint(1,options-1)
+    selEle.select_by_index(selIndex)
+def CheckDeselect(selEle,SelIndex):
+    selEle.deselect_by_index(SelIndex)
+    SelectOption = selEle.all_selected_options()
+    if len(SelectOption) > 0:
+            raise Exception("Select was not deselected Properly")
+    else:
+        selEle.select_by_index(SelIndex)
 def SelectBoxSelectRandFromEle(Element):
     selEle = GetSelEleFromEle(Element)
     _SetSelectRand(selEle)

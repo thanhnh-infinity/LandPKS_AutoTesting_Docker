@@ -507,6 +507,11 @@ def _FillAllDataForPlot(driver,plotName):
             eles = GetElesIfVis(driver, By.XPATH,LAND_INFO_PLOT_INFO_PATH)
             for ele in eles:
                 ele.click()
+                ele.click()
+                srcText = ele.get_attribute("src")
+                if "selected" in srcText:
+                    LogError("Deselect failed for test {0}".format(DICT_TEST_MESSAGES_KEY_MENU_NUM[i]["TestName"]))
+                ele.click()
             LogSuccess("Test {0} Pass".format(DICT_TEST_MESSAGES_KEY_MENU_NUM[i]["TestName"]))
         except :
             LogError("Test {0} Failed".format(DICT_TEST_MESSAGES_KEY_MENU_NUM[i]["TestName"]))
