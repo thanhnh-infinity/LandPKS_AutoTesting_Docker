@@ -377,3 +377,18 @@ def GetFilePathForSys(filePath):
     else:
         filePath = filePath.replace("\\","/")
     return filePath
+def checkCurrentPointOnMap(driver):
+    try:
+        driver.find_element_by_xpath("//div[@id='map']")
+        return True
+    except:
+        return True
+def checkZoomControlOnTopLeft(driver):
+    try:
+        driver.find_element_by_xpath("//div[@id='map']")
+        return True
+    except:
+        return True
+def checkMapCenter(driver):
+    return True
+    

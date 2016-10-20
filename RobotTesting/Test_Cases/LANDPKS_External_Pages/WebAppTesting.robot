@@ -13,19 +13,12 @@ ${BrowserName}    chrome
 ${BrowserVersion}    ""
 
 *** Test Cases ***
-Web App Test Case pivotal_story_132082507.x Linux Chrome
-    [Documentation]    Pivotal Story 132082507. Content : Display Map at current location. PASS when (As a user I want to view the map so that I can it centered at my current location and I know I've succeeded when the map recenters when I move)
+All LandInfo's Map Features 2.7.x Linux Chrome
+    [Documentation]    All LandInfo Map Features: 2.7.1 : Display plots on Map; 2.7.2: Detailed Information of plot on map; 2.7.3: Display map at current location; 2.7.4: Show current location on map; 2.7.5: Put zoom control in the upper left corner
     [Tags]    WebApp
     ${Creds}=    Get Sauce Creds Jenkins
     Set Browser    ${Creds}    bSelenium=True    platform=${Platform}    os=${OS}    browserName=${BrowserName}    browser-version=${BrowserVersion}
-    Test Case Pivotal Story 132082507    bSelenium=True
-
-Web App Test Case pivotal_story_132278129.x Linux Chrome
-    [Documentation]    Pivotal Story 132278129. Content : Show current location on map. PASS when (As a user I wish to see my current location as a blue dot on the map and I know this is correct when I change location and the blue dot changes location with me. The dot should be the same size as the plot dots and the color should be blue instead of red)
-    [Tags]    WebApp
-    ${Creds}=    Get Sauce Creds Jenkins
-    Set Browser    ${Creds}    bSelenium=True    platform=${Platform}    os=${OS}    browserName=${BrowserName}    browser-version=${BrowserVersion}
-    Test Case Pivotal Story 132278129    bSelenium=True
+    Test Case 2 7    bSelenium=True
     
 Web App Test Case 2.3.x Linux Chrome
     [Documentation]    Launches Web App directly and Runs tests in category 2.3 of manual test plan. Library and test structure is in library Test_case.py. Return what tests failed and were successful. Test Fails if Critical test is a failure.

@@ -50,19 +50,12 @@ Android Test Case 0.x Android 5.1
     Set Browser    ${Creds}    platformName=${PLATFORM}    appiumVersion=${appiumVersion}    platformVersion=${platformVersion}    deviceName=Android Emulator    app=${APP}
     Test Case 0
 
-Web App Test Case pivotal_story_132082507.x Android 5.1
-    [Documentation]    Pivotal Story 132082507. Content : Display Map at current location. PASS when (As a user I want to view the map so that I can it centered at my current location and I know I've succeeded when the map recenters when I move)
+All LandInfo's Map Features 2.7.x Android 5.1
+    [Documentation]    All LandInfo Map Features: 2.7.1 : Display plots on Map; 2.7.2: Detailed Information of plot on map; 2.7.3: Display map at current location; 2.7.4: Show current location on map; 2.7.5: Put zoom control in the upper left corner
     [Tags]    Appium
     ${Creds}=    Get Sauce Creds Jenkins
     Set Browser    ${Creds}    platformName=${PLATFORM}    appiumVersion=${appiumVersion}    platformVersion=${platformVersion}    deviceName=Android Emulator    app=${APP}
-    Test Case Pivotal Story 132082507
-
-Web App Test Case pivotal_story_132278129.x Android 5.1
-    [Documentation]    Pivotal Story 132278129. Content : Show current location on map. PASS when (As a user I wish to see my current location as a blue dot on the map and I know this is correct when I change location and the blue dot changes location with me. The dot should be the same size as the plot dots and the color should be blue instead of red)
-    [Tags]    Appium
-    ${Creds}=    Get Sauce Creds Jenkins
-    Set Browser    ${Creds}    platformName=${PLATFORM}    appiumVersion=${appiumVersion}    platformVersion=${platformVersion}    deviceName=Android Emulator    app=${APP}
-    Test Case Pivotal Story 132278129
+    Test Case 2 7
 
 Android Test Case 3.1.x Android 5.1
     [Documentation]    Launches App pulled directly from jenkins and tests addition of a plot and Runs tests in category 0 of manual test plan on app tests this includes airplane testing. Library and test structure is in library Test case.py. Return what tests failed and were successful. Test Fails if Critical test is a failure.

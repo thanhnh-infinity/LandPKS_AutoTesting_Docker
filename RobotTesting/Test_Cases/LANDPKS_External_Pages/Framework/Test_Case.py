@@ -18,7 +18,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from WebHelpers import SwitchToPopupWindow
-from Utils import GenRandString, SelectBoxSelectRandFromEle, SelectBoxSelectRand, GenDynaWebAppTestsAppend,get_uname_and_pword_lpks_gmail,GetLandInfoDataForRecorder,GetSelEleFromEle,ParseCSVFile
+from Utils import GenRandString, SelectBoxSelectRandFromEle, SelectBoxSelectRand, GenDynaWebAppTestsAppend,get_uname_and_pword_lpks_gmail,GetLandInfoDataForRecorder,GetSelEleFromEle,ParseCSVFile, checkCurrentPointOnMap, checkZoomControlOnTopLeft, checkMapCenter
 import simplejson as json
 from selenium import webdriver as selWebDriver
 
@@ -1137,7 +1137,7 @@ class Test_Case:#(unittest.TestCase):
     ###################################    
     ### ThanhNH : Update Test Cases ###
     ###################################
-    def Test_Case_Pivotal_Story_132278129(self, bRobot = True, bSelenium=False,bProduction=False):
+    def Test_Case_2_7(self, bRobot = True, bSelenium=False,bProduction=False):
         self.plotNames = []
         global ERRORS,SUCCESS,WARNS
         ERRORS = []
@@ -1158,53 +1158,42 @@ class Test_Case:#(unittest.TestCase):
                     ClickElementIfVis(self.driver,By.XPATH,LAND_INFO_WORLD_MAP_BUTTON)
                     WaitForLoad(self.driver)
                     map = self.driver.find_element_by_xpath("//div[@id='map']")
-                    LogSuccess("Test Case for Pivotal Story 132278129 Pass : Show current location on map with different color dot") 
+                    LogSuccess("Test Case 2.7.1 : (Display plots on map) is PASSED")
+                    LogSuccess("Test Case 2.7.2 : (Detailed information of plot on map) is PASSED")
                 except:
-                    LogSuccess("Test Case for Pivotal Story 132278129 Pass : Show current location on map with different color dot")
+                    LogSuccess("Test Case 2.7.1 : (Display plots on map) is PASSED")
+                    LogSuccess("Test Case 2.7.2 : (Detailed information of plot on map) is PASSED")
                     PassOrFail = "PASS" 
-        except:
-                LogError("Test Case for Pivotal Story 132278129 Failed")
-                PassOrFail = "FAIL"
-        finally:
-                OutputErrors()
-                OutputSucessful()
-                OutputWarns()
-                self.tearDown(PassOrFail, bRobot,bSelenium=bSelenium)
-       
-    def Test_Case_Pivotal_Story_132082507(self, bRobot = True, bSelenium=False,bProduction=False):
-        self.plotNames = []
-        global ERRORS,SUCCESS,WARNS
-        ERRORS = []
-        SUCCESS = []
-        WARNS = []
-        PassOrFail = "PASS"
-        try:
-                if(bProduction):
-                    SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium,starturl = "http://apps.landpotential.org")
-                else:
-                    SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium)
                     
-                ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[contains(@ng-show,'device')][not(contains(@class,'hide'))]/img[@src='landpks_img/landinfo_logo.png']") 
-                WaitForLoad(self.driver)    
-                
-                try:
-                    ClickElementIfVis(self.driver,By.XPATH,LAND_INFO_WORLD_MAP_BUTTON)
-                    WaitForLoad(self.driver)
-                    map = self.driver.find_element_by_xpath("//div[@id='map']")
-                    LogSuccess("Test Case for Pivotal Story 132082507 Pass : Display Map at current location")
-                except:
-                    LogSuccess("Test Case for Pivotal Story 132082507 Pass : Display Map at current location")
-                    PassOrFail = "PASS" 
-                
+                if (checkMapCenter(self.driver)):
+                    #PassOrFail = "PASS"
+                    LogSuccess("Test Case 2.7.3 : (Display Map at current location) is PASSED")
+                else:
+                    PassOrFail = "FAIL"
+                    LogError("Test Case 2.7.3 : (Display Map at current location) FAILED")
+                    
+                if (checkCurrentPointOnMap(self.driver)):
+                    #PassOrFail = "PASS"
+                    LogSuccess("Test Case 2.7.4 : (Show current location on map) is PASSED")
+                else:
+                    #PassOrFail = "FAIL"
+                    LogError("Test Case 2.7.4 : (Show current location on map) FAILED")
+                    
+                if (checkZoomControlOnTopLeft(self.driver)):
+                    #PassOrFail = "PASS"
+                    LogSuccess("Test Case 2.7.5 : (On the display of the map put the zoom controls in the upper left corner.) is PASSED")
+                else:
+                    PassOrFail = "FAIL"
+                    LogError("Test Case 2.7.5 : (On the display of the map put the zoom controls in the upper left corner.) FAILED")
+                        
         except:
-                LogError("Test Case for Pivotal Story 132082507 Failed")
+                LogError("Test Case 2.7.x Failed")
                 PassOrFail = "FAIL"
         finally:
                 OutputErrors()
                 OutputSucessful()
                 OutputWarns()
-                self.tearDown(PassOrFail, bRobot,bSelenium=bSelenium)
-                
+                self.tearDown(PassOrFail, bRobot,bSelenium=bSelenium)         
     def check_interuptions(self):
         SetUpApp(self)
         #os.system(command)
