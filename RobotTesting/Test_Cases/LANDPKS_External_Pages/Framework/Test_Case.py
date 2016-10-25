@@ -420,7 +420,14 @@ def _HandleIndividualLayer(driver,plotName,iSoilLayer):
     LogSuccess("Test 2.4.7.{0}.1 Pass".format(iSoilLayer))
     #select Fragment Content
     eles = GetElesIfVis(driver, By.XPATH,'{0}{1}'.format(LAND_INFO_POPUP_ROCK_BODY, LAND_INFO_POPUP_ROCK_CONTENT))
-    eles[random.randint(0,3)].click()
+    eles[random.randint(1,3)].click()
+    ClickElementIfVis(driver, By.XPATH, LAND_INFO_ROCK_FRAGEMENT_CONTENT)
+    eles = GetElesIfVis(driver, By.XPATH,'{0}{1}'.format(LAND_INFO_POPUP_ROCK_BODY, LAND_INFO_POPUP_ROCK_CONTENT))
+    eles[0].click()
+    ClickElementIfVis(driver, By.XPATH, LAND_INFO_ROCK_FRAGEMENT_CONTENT)
+    eles = GetElesIfVis(driver, By.XPATH,'{0}{1}'.format(LAND_INFO_POPUP_ROCK_BODY, LAND_INFO_POPUP_ROCK_CONTENT))
+    eles[random.randint(1,3)].click()
+    
     #Select which soil type
     SelectBoxSelectRand(driver,By.XPATH,LAND_INFO_SOIL_TYPE)
     try:
