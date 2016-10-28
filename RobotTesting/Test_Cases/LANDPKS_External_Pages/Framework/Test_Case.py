@@ -24,8 +24,8 @@ from selenium import webdriver as selWebDriver
 
 REQUEST_STRING_TO_FIND_PLOT = "http://api.landpotential.org/query?version=0.1&action=get&object=landinfo&type=get_by_pair_name_recorder_name&name={0}&recorder_name=lpks.testing%40gmail.com"
 SAUCE_ACCESS_KEY = 'Barnebre:216526d7-706f-4eff-bf40-9d774203e268'
-LAND_INFO_ANDROID_APP = 'http://128.123.177.36:8080/job/LandInfo_Mobile_Andoird_App/ws/platforms/android/build/outputs/apk/android-debug.apk'
-LAND_COVER_ANDROID_APP = 'http://128.123.177.36:8080/job/LandCover_Mobile_Andoird_App/ws/platforms/android/build/outputs/apk/android-debug.apk'
+LAND_INFO_ANDROID_APP = 'http://128.123.177.36:8080/job/LandInfo_Mobile_Andoird_App/ws/platforms/android/bin/MainActivity-debug.apk'
+LAND_COVER_ANDROID_APP = 'http://128.123.177.36:8080/job/LandCover_Mobile_Andoird_App/ws/platforms/android/bin/MainActivity-debug.apk'
 LAND_COVER_ANDROID_PACKAGE = 'org.landpotential.lpks.landcover'
 LAND_INFO_ADD_PLOT_BUTTON = "//div[@nav-bar='active']//span[@class='right-buttons']/a[@class='button button-icon ion-plus-round']"
 LAND_INFO_SETTINGS_BUTTON = "//div[@nav-bar='active']//span[@class='right-buttons']/a[@class='button button-icon ion-gear-b']"
