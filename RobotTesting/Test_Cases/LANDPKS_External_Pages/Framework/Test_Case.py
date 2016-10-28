@@ -780,7 +780,7 @@ def HandleGoogleLogin(driver, bRequireApprove=True):
         LogSuccess("Test 2.1.1 Pass")
         
         SwitchToPopupWindow(driver)
-        time.sleep(1)
+        time.sleep(2)
         ele = GetEleIfVis(driver,By.ID,"Email")
         ele.send_keys(Creds["UName"])
         ClickElementIfVis(driver,By.ID,"next")
