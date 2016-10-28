@@ -65,6 +65,7 @@ LAND_COVER_SITE_SUMMARY = "//div[@class='scroll']/h2[contains(.,'Site Summary')]
 LAND_INFO_LOCAL_CLIMATE_GRAPH = "//div[@nav-view='active']//div[@class='scroll']//div[@class='lpks-graph']/div[@class='chart-container']/canvas[@id='bar']"
 LAND_INFO_LOCAL_CLIMATE_LAT = "//div[@class='scroll']/p[contains(.,'Latitude')]"
 LAND_FORMS_LAND_INFO_ICON = "//a[@ng-click='landinfoSelect()']/img"
+LAND_FORMS_LAND_COVER_ICON = "//a[@ng-click='landcoverSelect()']/img"
 TITLE_LAND_INFO_PAGE_XPATH = LAND_INFO_BACK_BUTTON + "/p"
 DICT_MESSAGES_NO_DATA_KEY = {
                  False: {"SubmitPlotText" : "Plot is submitted"},
@@ -782,6 +783,7 @@ def HandleGoogleLogin(driver, bRequireApprove=True):
         SwitchToPopupWindow(driver)
         time.sleep(2)
         ele = GetEleIfVis(driver,By.ID,"Email")
+        time.sleep(1)
         ele.send_keys(Creds["UName"])
         ClickElementIfVis(driver,By.ID,"next")
         ele = GetEleIfVis(driver,By.ID,"Passwd")
@@ -1143,6 +1145,17 @@ class Test_Case:#(unittest.TestCase):
         WaitForLoadForm(self.driver)
         ClickElementIfVis(self.driver, By.XPATH, "//a[@href='#/landinfoadd']")
         HandleFormNewLandInfo(self.driver)
+    def Test_Case_0_LandCover(self, bRobot):
+        global ERRORS,SUCCESS,WARNS
+        ERRORS = []
+        SUCCESS = []
+        WARNS = []
+        PassOrFail = "PASS"
+        SetUpApp(self,bRobot=bRobot,bSelenium=True,starturl = "http://portallandpotential.businesscatalyst.com/LandPKS_FORMS/#/login",loginbutton="//a[@id='googlebutton']")
+        ClickElementIfVis(self.driver, By.XPATH, LAND_FORMS_LAND_COVER_ICON)
+        WaitForLoadForm(self.driver)
+        ClickElementIfVis(self.driver, By.XPATH, "//a[@href='#/landinfoadd']")
+        HandleFormNewLandInfo(self.driver)
     ###################################    
     ### ThanhNH : Update Test Cases ###
     ###################################
@@ -1221,6 +1234,7 @@ class Testing(unittest.TestCase):
     AppTest = Test_Case()
     def tester(self):
         #self.AppTest.Test_Case_2(False,False)
+        self.AppTest.Test_Case_0_LandCover(False)
         self.AppTest.Test_Case_2_4(False,True)
         #self.AppTest.Test_Case_2_4(False,False)
         #self.AppTest.Verify_Portal_And_App_Data_Match(False, True)
