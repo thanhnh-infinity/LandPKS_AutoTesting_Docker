@@ -421,7 +421,7 @@ def HandleSoilLayer(driver,plotName,bAllLayers = False):
                 LayerTitle = GetEleIfVis(driver, By.XPATH, '{0}[{1}]'.format(LAND_INFO_MENU_ITEM_PATH,Layer)).text.rstrip()
             if(Layer ==1 or Layer == 2):
                 ClickElementIfVis(driver, By.XPATH, '{0}[{1}]'.format(LAND_INFO_MENU_ITEM_PATH,Layer))
-            time.sleep(.2)
+            time.sleep(.65)
             if(LayerTitle.lower()[:-2] not in GetEleIfVis(driver,By.XPATH,"/html/body/ion-nav-view/ion-tabs/ion-nav-view/div/ion-view/ion-scroll/div[1]/p").text.rstrip().lower() and Layer != 1):
                 LogError("Unable to continue to {0}".format(LayerTitle))
                 raise TestFailedException("Soil Layer Issues")
