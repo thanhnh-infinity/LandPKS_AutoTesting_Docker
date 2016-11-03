@@ -19,10 +19,11 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from WebHelpers import SwitchToPopupWindow
-from Utils import GenRandString, SelectBoxSelectRandFromEle, SelectBoxSelectRand, GenDynaWebAppTestsAppend,get_uname_and_pword_lpks_gmail,GetLandInfoDataForRecorder,GetSelEleFromEle,ParseCSVFile, checkCurrentPointOnMap, checkZoomControlOnTopLeft, checkMapCenter
+from Utils import GenRandString, SelectBoxSelectRandFromEle, SelectBoxSelectRand, GenDynaWebAppTestsAppend,get_uname_and_pword_lpks_gmail,GetLandInfoDataForRecorder,GetSelEleFromEle,ParseCSVFile, checkCurrentPointOnMap, checkZoomControlOnTopLeft, checkMapCenter, SelectBoxSelectOption
 import simplejson as json
 from selenium import webdriver as selWebDriver
 
+LAND_COVER_APP_IOS = "https://www.dropbox.com/s/1ao9zxh5lazumip/LandPKK_Testing_208.ipa?dl=1"
 REQUEST_STRING_TO_FIND_PLOT = "http://api.landpotential.org/query?version=0.1&action=get&object=landinfo&type=get_by_pair_name_recorder_name&name={0}&recorder_name=lpks.testing%40gmail.com"
 SAUCE_ACCESS_KEY = 'Barnebre:216526d7-706f-4eff-bf40-9d774203e268'
 LAND_INFO_ANDROID_APP = 'http://128.123.177.36:8080/job/LandInfo_Mobile_Andoird_App/ws/platforms/android/bin/MainActivity-debug.apk'
@@ -45,6 +46,7 @@ LAND_INFO_ROCK_FRAGEMENT_CONTENT = "//ion-view[@cache-view='false']//div[@class=
 LAND_INFO_POPUP_ROCK_BODY = "//div[@class='popup-body']//ion-view[@cache-view='false']"
 LAND_INFO_POPUP_ROCK_CONTENT = "//a[@class='item item-icon-right']"
 LAND_INFO_SOIL_TYPE = "//ion-view[@cache-view='false']//div[@class='scroll']//div[@class='othercomponent']/select[@ng-model='texture_value']"
+LAND_INFO_NO_SOIL = "//ion-view[@cache-view='false']//div[@class='scroll']//div[@class='othercomponent']//select[@id='bedrock_depth']"
 LAND_INFO_SOIL_TYPE_GUIDE_ME = "//ion-view[@cache-view='false']//div[@class='scroll']//div[@class='othercomponent']/button[@class='button button-balanced button-small']"
 LAND_INFO_SOIL_TYPE_GUIDE_ME_CATES = "//div[@nav-view='active']//div[@class='scroll']/div"
 LAND_INFO_SUBMIT_PLOT_BUTTON = "//div[@nav-view='active']//div[@class='scroll']//button[@id='btnSubmitPlot_1']"
@@ -126,6 +128,14 @@ def HandleExportFromPortalCSV(driver, portalData,Uname=""):
     #WaitForEleLoad(driver, "//div[@class='progress-bar progress-bar-striped active']")
     CSVData = ParseCSVFile("Export_LandInfo_Data.csv")
     CheckCSVSameAsPortal(driver = driver, PortalData=portalData,CSVData=CSVData)
+def HandleFormNewLandCover(driver):
+    ClickElementIfVis(driver, By.XPATH, "//div[@class='ng-scope']//div[contains(@id,'5m-stick-segment')]/span")
+    stickSegs = GetElesIfVis(driver,By.XPATH, "//div[@class='ng-scope']//div[contains(@id,'5m-stick-segment')]/span")
+    for stickSeg in stickSegs:
+        stickSeg.click()
+        driver.click_element(By.XPATH,"//div[@class='checkboxLayer show']/div[@class='checkBoxContainer']/div[{0}".format(random.randint(0,8)))
+        stickSeg.click()
+    return
 def HandleFormNewLandInfo(driver):
     InputsCounts = len(driver.find_elements_by_tag_name("input"))
     SelectsCount = len(driver.find_elements_by_tag_name("select"))
@@ -407,8 +417,14 @@ def HandleSoilLayer(driver,plotName,bAllLayers = False):
         ClickElementIfVis(driver, By.XPATH, '{0}{1}'.format(LAND_INFO_MENU_ITEM_PATH,'[7]'))
         Layers = GetElesIfVis(driver, By.XPATH, LAND_INFO_MENU_ITEM_PATH)
         for Layer in range(1,len(Layers) + 1):
-            ClickElementIfVis(driver, By.XPATH, '{0}[{1}]'.format(LAND_INFO_MENU_ITEM_PATH,Layer))
-            _HandleIndividualLayer(driver,plotName, Layer)
+            if(Layer == 1):
+                LayerTitle = GetEleIfVis(driver, By.XPATH, '{0}[{1}]'.format(LAND_INFO_MENU_ITEM_PATH,Layer)).text.rstrip()
+            if(Layer ==1 or Layer == 2):
+                ClickElementIfVis(driver, By.XPATH, '{0}[{1}]'.format(LAND_INFO_MENU_ITEM_PATH,Layer))
+            if(LayerTitle.lower()[:-2] not in GetEleIfVis(driver,By.XPATH,"/html/body/ion-nav-view/ion-tabs/ion-nav-view/div/ion-view/ion-scroll/div[1]/p").text.rstrip().lower() and Layer != 1):
+                LogError("Unable to continue to {0}".format(LayerTitle))
+                raise TestFailedException("Soil Layer Issues")
+            LayerTitle = _HandleIndividualLayer(driver,plotName, Layer)
     else:
         ClickElementIfVis(driver, By.XPATH, '{0}{1}'.format(LAND_INFO_MENU_ITEM_PATH,'[7]'))
         #click first soil layer
@@ -432,6 +448,7 @@ def _HandleIndividualLayer(driver,plotName,iSoilLayer):
     
     #Select which soil type
     SelectBoxSelectRand(driver,By.XPATH,LAND_INFO_SOIL_TYPE)
+    SelectBoxSelectRand(driver,By.XPATH,LAND_INFO_NO_SOIL)
     try:
         ClickElementIfVis(driver, By.XPATH, LAND_INFO_SOIL_TYPE_GUIDE_ME)
         CategoriesGuideME = GetElesIfVis(driver, By.XPATH, LAND_INFO_SOIL_TYPE_GUIDE_ME_CATES)
@@ -458,7 +475,17 @@ def _HandleIndividualLayer(driver,plotName,iSoilLayer):
                             Texture = GetEleIfVis(driver, By.XPATH, "{0}//h5[@id='textureValue']".format(LAND_INFO_FOOTER)).text
                 LogSuccess("Test 2.4.7.{0}.2.2.{1} Pass".format(iSoilLayer,Category))
             ClickElementIfVis(driver, By.XPATH, "{0}//button[@class='button button-balanced']".format(LAND_INFO_FOOTER))
-        ClickGoBackLandInfo(driver)
+            SelectBoxSelectOption(driver,By.XPATH,LAND_INFO_NO_SOIL,"")
+        if(iSoilLayer == 1 or iSoilLayer == 7):
+            Value = GetEleIfVis(driver, By.XPATH, "//b[@id='bRight']").text.rstrip()
+            if iSoilLayer == 1 :
+                Value = GetEleIfVis(driver, By.XPATH, "//b[@id='bCenter']").text.rstrip()
+            ClickGoBackLandInfo(driver)
+            return Value
+        else :
+            Value = GetEleIfVis(driver, By.XPATH, "//b[@id='bRight']").text.rstrip()
+            ClickElementIfVis(driver, By.XPATH, "//a[@id='aTagRight']")
+            return Value
     except Exception:
         raise TestFailedException("error while processing soil layer guide me")
 def CheckVideo(driver,ByType, OpenVideoPath, iSoilLayer):
@@ -1154,8 +1181,12 @@ class Test_Case:#(unittest.TestCase):
         SetUpApp(self,bRobot=bRobot,bSelenium=True,starturl = "http://portallandpotential.businesscatalyst.com/LandPKS_FORMS/#/login",loginbutton="//a[@id='googlebutton']")
         ClickElementIfVis(self.driver, By.XPATH, LAND_FORMS_LAND_COVER_ICON)
         WaitForLoadForm(self.driver)
-        ClickElementIfVis(self.driver, By.XPATH, "//a[@href='#/landinfoadd']")
-        HandleFormNewLandInfo(self.driver)
+        ClickElementIfVis(self.driver, By.XPATH, "/html/body/ng-view/section/div[2]/div[1]/div[2]/div/div[1]/div/a")
+        ClickElementIfVis(self.driver, By.XPATH, "/html/body/ng-view/section/div[2]/div[1]/div[2]/div/div[1]/div/div/ul/li/ul/li/div")
+        SelectBoxSelectRand(self.driver, By.XPATH, "/html/body/ng-view/section/div[2]/div[1]/div[3]/div[2]/div/div[1]/div/select")
+        SelectBoxSelectRand(self.driver, By.XPATH, "/html/body/ng-view/section/div[2]/div[1]/form/div[3]/div/select")
+        for i in range(5):
+            HandleFormNewLandCover(self.driver)
     ###################################    
     ### ThanhNH : Update Test Cases ###
     ###################################
@@ -1234,7 +1265,7 @@ class Testing(unittest.TestCase):
     AppTest = Test_Case()
     def tester(self):
         #self.AppTest.Test_Case_2(False,False)
-        self.AppTest.Test_Case_0_LandCover(False)
+        #self.AppTest.Test_Case_0_LandCover(False)
         self.AppTest.Test_Case_2_4(False,True)
         #self.AppTest.Test_Case_2_4(False,False)
         #self.AppTest.Verify_Portal_And_App_Data_Match(False, True)

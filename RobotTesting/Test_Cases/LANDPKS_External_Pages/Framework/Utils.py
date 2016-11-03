@@ -294,7 +294,6 @@ def GetDate():
     return '{0}-{1}-{2}'.format(yr,mt,dy)
 def SelectBoxSelectOption(driver,ByType,ElePath,option):
     selEle = GetSelEle(driver, ByType, ElePath)
-    selEle.deselect_all()
     selEle.select_by_value(option)
 def SelectBoxSelectRand(driver,ByType,ElePath):
     selEle = GetSelEle(driver, ByType, ElePath)
@@ -303,7 +302,7 @@ def _SetSelectRand(selEle):
     if( selEle.is_multiple ):
         selEle.deselect_all()
     options = len(selEle.options)
-    selIndex = random.randint(1,options-1)
+    selIndex = random.randint(0,options-1)
     selEle.select_by_index(selIndex)
 def CheckDeselect(selEle,SelIndex):
     selEle.deselect_by_index(SelIndex)
