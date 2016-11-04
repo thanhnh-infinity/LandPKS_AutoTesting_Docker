@@ -1152,6 +1152,10 @@ class Test_Case:#(unittest.TestCase):
             plotName,PassOrFail = FillPlotData(self.driver,Airplane=True, bFullPlot=False)
             self.plotNames.append(plotName)
             goToAppSelection(self.driver)
+            try:
+                ClickElementIfVis(self.driver, By.XPATH,POSTIVE_POPUP_BUTTON)
+            except ElementNotFoundTimeoutException:
+                LogSuccess( "Message regarding connectivity did appear" )
             ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[contains(@ng-show,'device')][not(contains(@class,'hide'))]//img[@src='landpks_img/landcover_logo.png']")
             WaitForLoad(self.driver)
             LandCover(self.driver, self.plotNames, Airplane=True)
