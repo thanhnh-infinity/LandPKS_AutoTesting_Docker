@@ -235,7 +235,13 @@ def CheckCSVSameAsPortal(driver,PortalData,CSVData, DieOnFirstNotFound = True):
         LogError("Portal returned no data for recorder {0}".format(Email))
 
 def goToAppSelection(driver):
-    GoBackToPageWithTitle(driver, "Application Selection")
+    try:
+        GoBackToPageWithTitle(driver, "Application Selection")
+    except:
+        try:
+            ClickElementIfVis(driver, By.XPATH,POSTIVE_POPUP_BUTTON)
+        except ElementNotFoundTimeoutException:
+            LogSuccess( "Message regarding connectivity did appear" )
 def GoBackToPageWithTitle(driver,Title):
     TitleText = GetEleIfVis(driver, By.XPATH,TITLE_LAND_INFO_PAGE_XPATH ).text
     while (not(TitleText in Title) and not("Application Selection" in TitleText) ):
