@@ -235,9 +235,7 @@ def CheckCSVSameAsPortal(driver,PortalData,CSVData, DieOnFirstNotFound = True):
         LogError("Portal returned no data for recorder {0}".format(Email))
 
 def goToAppSelection(driver):
-    try:
         GoBackToPageWithTitle(driver, "Application Selection")
-    except:
         try:
             ClickElementIfVis(driver, By.XPATH,POSTIVE_POPUP_BUTTON)
         except ElementNotFoundTimeoutException:
@@ -245,8 +243,14 @@ def goToAppSelection(driver):
 def GoBackToPageWithTitle(driver,Title):
     TitleText = GetEleIfVis(driver, By.XPATH,TITLE_LAND_INFO_PAGE_XPATH ).text
     while (not(TitleText in Title) and not("Application Selection" in TitleText) ):
-        ClickGoBackLandInfo(driver)
-        TitleText = GetEleIfVis(driver, By.XPATH,TITLE_LAND_INFO_PAGE_XPATH ).text
+        try:
+            ClickGoBackLandInfo(driver)
+            TitleText = GetEleIfVis(driver, By.XPATH,TITLE_LAND_INFO_PAGE_XPATH ).text
+        except:
+            try:
+                ClickElementIfVis(driver, By.XPATH,POSTIVE_POPUP_BUTTON)
+            except ElementNotFoundTimeoutException:
+                LogSuccess( "Message regarding connectivity did appear" )
 def ClickGoBackLandInfo(driver):
     ClickElementIfVis(driver, By.XPATH, LAND_INFO_BACK_BUTTON)
     WaitForLoad(driver)
@@ -1280,7 +1284,7 @@ class Testing(unittest.TestCase):
     def tester(self):
         #self.AppTest.Test_Case_2(False,False)
         #self.AppTest.Test_Case_0_LandCover(False)
-        self.AppTest.Test_Case_2_4(False,True)
+        self.AppTest.Test_Case_0(False,False)
         #self.AppTest.Test_Case_2_4(False,False)
         #self.AppTest.Verify_Portal_And_App_Data_Match(False, True)
         #self.AppTest.Verify_Portal_And_CSV_Data_Match(False,True)
