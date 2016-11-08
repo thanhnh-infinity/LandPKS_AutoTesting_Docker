@@ -4,7 +4,6 @@ import requests
 import datetime
 import time
 
-
 def _inject_settings():
     s = ''
     f = open(os.getcwd() + '/robotframework-scripts/Test_Cases/API/template/Settings.txt', 'r')
@@ -60,7 +59,7 @@ def _inject_keywords():
 
 
 def _write_to_file(file, s):
-    open(os.getcwd() + file, 'w').close()
+    open( os.getcwd() + file, 'w').close()
     f = open(os.getcwd() + file, 'w')
     f.write(s)
     f.close()
@@ -78,15 +77,14 @@ def _generate_test_script(scriptfile, testfile):
 def diff_in_months(d1, d2):
     d1 = datetime.datetime.strptime(d1, "%Y-%m-%d")
     d2 = datetime.datetime.strptime(d2, "%Y-%m-%d")
-    return (d2.year - d1.year) * 12 + d2.month - d1.month
+    return (d2.year - d1.year)*12 + d2.month - d1.month
 
 
 def def_in_date(beginDate, endDate):
-    beginDate = datetime.datetime.strptime(beginDate, '%Y-%m-%d')
-    endDate = datetime.datetime.strptime(endDate, '%Y-%m-%d')
-    delta = endDate - beginDate
+    beginDate =  datetime.datetime.strptime(beginDate, '%Y-%m-%d')
+    endDate=  datetime.datetime.strptime(endDate, '%Y-%m-%d')
+    delta = endDate -beginDate
     return delta.days + 1
-
 
 def addmonth(dt0, window):
     dt1 = dt0.split("-")
@@ -121,13 +119,12 @@ def _fire_a_request(url):
     code = r.status_code
     return "{0},{1},{2},{3},{4},".format(size_in_byte, plots, sec, byte_per_sec, code)
 
-
 def f(keywords):
     url, reqno, beforeDate, afterDate = keywords.split('|')
     r = open("host", "r")
     result = ''
     for line in r.readlines():
-        result += _fire_a_request(url.format(line.replace("\n", ''), beforeDate, afterDate))
+        result += _fire_a_request(url.format(line.replace("\n",''),beforeDate, afterDate))
     r.close()
     result = "{0},{1},{2};".format(reqno, def_in_date(afterDate, beforeDate), result)
     return result.replace(",;", '')
@@ -143,7 +140,7 @@ def _performance_measurement(objectType):
     reqno = 0
     for i in range(0, end, window_size_in_months):
         reqno += 1
-        if (objectType.lower() == 'landinfo'):
+        if (objectType.lower()=='landinfo'):
             url.append(
                 "{0}&action=get&object={6}&type=get_by_beforedate_afterdate&before_date={1}&after_date={2}|{3}|{4}|{5}".format(
                     '{0}', '{1}', '{2}', reqno, beforeDate, afterDate, objectType))
@@ -169,4 +166,12 @@ def _performance_measurement(objectType):
         sizeInByte += "[{0}, {1}, {2}]".format(reqno, p_size_in_byte, t_size_in_byte)
 
     return "{0};{1};{2}".format(throughput.replace('][', '],['),
-                                numOfPlot.replace('][', '],['), sizeInByte.replace('][', '],['))
+            numOfPlot.replace('][', '],['), sizeInByte.replace('][', '],['))
+
+
+if __name__ == "__main__":
+    _generate_test_script("TmpScript.robot", "TmpCases")
+    print _performance_measurement("landcover")
+    print "=================== end landcover ==============="
+    print _performance_measurement("landinfo")
+
