@@ -279,9 +279,9 @@ def buildTable(Jenkins,jobName):
     return HtmlString
 def getLastBuild(Jenkins,jobName):
     if "LandPKS_Web_App_Testing" in jobName and not "Production" in jobName:
-        StringBuild = GetBuildInfo("http://128.123.177.36:8080/job/LandCover_Mobile_Andoird_App/ws/www/templates/app_information.html")
-        StartInt = StringBuild.find('<span class="input-label">App Version</span><b><span class="input-label">') + len('<span class="input-label">App Version</span><b><span class="input-label">')
-        EndInt = StringBuild.find('<',StartInt)
+        StringBuild = GetBuildInfo("http://128.123.177.36:8080/job/LandCover_Mobile_Andoird_App/ws/www/js/configuration.js")
+        StartInt = StringBuild.find("var LANDPKS_MOBILE_APP_VERSION = '") + len("var LANDPKS_MOBILE_APP_VERSION = '")
+        EndInt = StringBuild.find("'",StartInt)
         BuildInfo = StringBuild[StartInt : EndInt]
     elif "LandPKS_Web_App_Testing" in jobName and "Production" in jobName:
         BuildInfo = "2.0.10"
@@ -290,9 +290,9 @@ def getLastBuild(Jenkins,jobName):
         #StartInt = StringBuild.find('android:versionName="') + len('android:versionName="')
         #EndInt = StringBuild.find('"',StartInt)
         #BuildInfo = StringBuild[StartInt : EndInt]
-        StringBuild = GetBuildInfo("http://128.123.177.36:8080/job/LandCover_Mobile_Andoird_App/ws/www/landpks_templates/landpks_app_information.html")
-        StartInt = StringBuild.find('<span class="input-label">App Version</span><b><span class="input-label">') + len('<span class="input-label">App Version</span><b><span class="input-label">')
-        EndInt = StringBuild.find('<',StartInt)
+        StringBuild = GetBuildInfo("http://128.123.177.36:8080/job/LandCover_Mobile_Andoird_App/ws/www/js/configuration.js")
+        StartInt = StringBuild.find("var LANDPKS_MOBILE_APP_VERSION = '") + len("var LANDPKS_MOBILE_APP_VERSION = '")
+        EndInt = StringBuild.find("'",StartInt)
         BuildInfo = StringBuild[StartInt : EndInt]
     elif "LandPKS_Android_Mobile_Testing" in jobName and "Production" in jobName :
         BuildInfo = "2.0.10"
