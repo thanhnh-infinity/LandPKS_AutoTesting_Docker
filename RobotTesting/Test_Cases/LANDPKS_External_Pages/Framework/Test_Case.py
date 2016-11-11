@@ -276,6 +276,7 @@ def HandleLogout(driver):
         goToAppSelection(driver)
         raise TestFailedException("Test 2.1.4 Fail")
 def CheckClimate(driver):
+    #WaitForLoad(driver)
     try:
         Chart = GetEleIfVis(driver, By.XPATH, LAND_INFO_LOCAL_CLIMATE_GRAPH)
     except:
@@ -954,8 +955,10 @@ class Test_Case:#(unittest.TestCase):
             ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[contains(@ng-show,'device')][not(contains(@class,'hide'))]/img[@src='landpks_img/landinfo_logo.png']")
             WaitForLoad(self.driver)
             ClickElementIfVis(self.driver,By.XPATH,LAND_INFO_LOCAL_CLIMATE_BUTTON)
+            #if(bSelenium == False):
+            #    self.driver.set_location(1, 1, 5250)
             CheckClimate(self.driver)
-            ClickGoBackLandInfo(self.driver)
+            #ClickGoBackLandInfo(self.driver)
         except:
             PassOrFail = "FAIL"
         finally:
@@ -1290,10 +1293,10 @@ class Testing(unittest.TestCase):
         #self.AppTest.Test_Case_2(False,False)
         #self.AppTest.Test_Case_0_LandCover(False)
         #self.AppTest.Test_Case_0(False,False)
-        self.AppTest.Test_Case_2_4(False,True)
+        #self.AppTest.Test_Case_2_4(False,True)
         #self.AppTest.Verify_Portal_And_App_Data_Match(False, True)
         #self.AppTest.Verify_Portal_And_CSV_Data_Match(False,True)
-        self.AppTest.Test_Case_2_3(False,True,True)
+        self.AppTest.Test_Case_2_3(False,False,False)
         self.AppTest.Test_Case_0_Form(False)
         #self.AppTest.Verify_Portal_And_App_Data_Match( bRobot = False,bSelenium = False)
         #self.AppTest.Test_Case_0( bRobot = False,bSelenium = True)
