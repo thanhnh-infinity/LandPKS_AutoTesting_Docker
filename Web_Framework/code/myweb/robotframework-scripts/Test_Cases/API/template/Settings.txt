@@ -1,7 +1,0 @@
-*** Settings ***
-Library           Collections
-Library           RequestsLibrary
-Library           Selenium2Library
-Library           BuiltIn
-Library           String
-Library           MyLibrary.py

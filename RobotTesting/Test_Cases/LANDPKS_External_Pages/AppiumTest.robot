@@ -9,7 +9,7 @@ ${PLATFORM}       Android
 ${platformVersion}    5.1
 ${LeechURL}       http://apkleecher.com/?id=org.landpotential.lpks.landcover
 ${APP}            http://128.123.177.36:8080/job/LandCover_Mobile_Andoird_App/ws/platforms/android/bin/MainActivity-debug.apk
-${APPProduction}    http://www.apkleecher.com/apps/2016/10/26/LandPKS%202.0.2_[www.Apkleecher.com].apk
+${APPProduction}    http://apkleecher.com/apps/2016/11/04/LandPKS%202.0.10_%5bwww.Apkleecher.com%5d.apk
 ${DEVICE_NAME}    AndroidEmulator
 ${appiumVersion}    1.5.2
 ${DeviceType}     Phone
