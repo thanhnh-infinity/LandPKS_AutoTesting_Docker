@@ -47,7 +47,7 @@ LAND_INFO_ROCK_FRAGEMENT_CONTENT = "//ion-view[@cache-view='false']//div[@class=
 LAND_INFO_POPUP_ROCK_BODY = "//div[@class='popup-body']//ion-view[@cache-view='false']"
 LAND_INFO_POPUP_ROCK_CONTENT = "//a[@class='item item-icon-right']"
 LAND_INFO_SOIL_TYPE = "//ion-view[@cache-view='false']//div[@class='scroll']//div[@class='othercomponent']/select[@ng-model='texture_value']"
-LAND_INFO_NO_SOIL = "//ion-view[@cache-view='false']//div[@class='scroll']//div[@class='othercomponent']//select[@id='bedrock_depth']"
+LAND_INFO_NO_SOIL = "//ion-view[@cache-view='false']//div[@class='scroll']//div[@class='othercomponent']//select[@id='bedrock_depth_us']"
 LAND_INFO_SOIL_TYPE_GUIDE_ME = "//ion-view[@cache-view='false']//div[@class='scroll']//div[@class='othercomponent']/button[@class='button button-balanced button-small']"
 LAND_INFO_SOIL_TYPE_GUIDE_ME_CATES = "//div[@nav-view='active']//div[@class='scroll']/div"
 LAND_INFO_SUBMIT_PLOT_BUTTON = "//div[@nav-view='active']//div[@class='scroll']//button[@id='btnSubmitPlot_1']"
