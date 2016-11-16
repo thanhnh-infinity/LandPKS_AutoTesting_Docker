@@ -939,7 +939,7 @@ class Test_Case:#(unittest.TestCase):
                 SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium,starturl = "http://apps.landpotential.org",bIOS=bIOS)
                 #DownloadProductionAndroidApp(self.driver)
             else:
-                SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium,,bIOS=bIOS)
+                SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium,bIOS=bIOS)
                 #DownloadProductionAndroidApp(self.driver)
             #SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium)
             ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[contains(@ng-show,'device')][not(contains(@class,'hide'))]/img[@src='landpks_img/landinfo_logo.png']")
