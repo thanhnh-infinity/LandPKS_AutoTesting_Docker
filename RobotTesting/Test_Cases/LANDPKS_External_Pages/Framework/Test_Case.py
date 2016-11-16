@@ -936,7 +936,7 @@ class Test_Case:#(unittest.TestCase):
         PassOrFail = "PASS"
         try:
             if(bProduction):
-                SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium,starturl = "http://apps.landpotential.org",bIOS=bIOS)
+                SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium,bIOS=bIOS, starturl = "http://apps.landpotential.org")
                 #DownloadProductionAndroidApp(self.driver)
             else:
                 SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium,bIOS=bIOS)
@@ -962,7 +962,7 @@ class Test_Case:#(unittest.TestCase):
         SUCCESS = []
         try:
             if(bProduction):
-                SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium,starturl = "http://apps.landpotential.org")
+                SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium,bIOS=bIOS,starturl = "http://apps.landpotential.org")
             else:
                 SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium)
             #SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium)
@@ -1235,7 +1235,7 @@ class Test_Case:#(unittest.TestCase):
             OutputSucessful()
             self.tearDown(PassOrFail, bRobot,bSelenium=True)
     def UJWAL(self):
-        
+        Showing()
     ###################################    
     ### ThanhNH : Update Test Cases ###
     ###################################

@@ -1,6 +1,8 @@
 from Test_Case import OutputErrors,OutputSucessful,SetUpApp
 from selenium.webdriver.common.by import By
-
+ERRORS = []
+SUCCESS = []
+WARNS=[]
 def Showing(self, bRobot=True):
         global ERRORS,SUCCESS,WARNS
         ERRORS = []
