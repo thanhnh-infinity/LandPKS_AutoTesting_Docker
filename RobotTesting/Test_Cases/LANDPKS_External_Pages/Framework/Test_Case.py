@@ -22,7 +22,7 @@ from WebHelpers import SwitchToPopupWindow
 from Utils import GenRandString, SelectBoxSelectRandFromEle, SelectBoxSelectRand, GenDynaWebAppTestsAppend,get_uname_and_pword_lpks_gmail,GetLandInfoDataForRecorder,GetSelEleFromEle,ParseCSVFile, checkCurrentPointOnMap, checkZoomControlOnTopLeft, checkMapCenter, SelectBoxSelectOption
 import simplejson as json
 from selenium import webdriver as selWebDriver
-
+from Portal_Test import Showing
 LAND_COVER_APP_IOS = "https://www.dropbox.com/s/1ao9zxh5lazumip/LandPKK_Testing_208.ipa?dl=1"
 REQUEST_STRING_TO_FIND_PLOT = "http://api.landpotential.org/query?version=0.1&action=get&object=landinfo&type=get_by_pair_name_recorder_name&name={0}&recorder_name=lpks.testing%40gmail.com"
 SAUCE_ACCESS_KEY = 'Barnebre:216526d7-706f-4eff-bf40-9d774203e268'
@@ -692,7 +692,7 @@ def WaitForLoadForm(driver):
     wait = WebDriverWait(driver, 30)
     wait.until(EC.presence_of_element_located((By.XPATH, "//div[@class='progress-bar']")),"")
     wait.until(EC.invisibility_of_element_located((By.XPATH, "//div[@class='progress-bar']")),"")
-def SetUpApp(Test, AirplaneMode=False, bRobot = True, iConnection=None, bSelenium = False, **Params):
+def SetUpApp(Test, AirplaneMode=False, bRobot = True, iConnection=None, bSelenium = False,bIOS = False, **Params):
     if(bSelenium):
         if (bRobot):
             SeleniumLib = BuiltIn().get_library_instance('Selenium2Library')
@@ -730,7 +730,7 @@ def SetUpApp(Test, AirplaneMode=False, bRobot = True, iConnection=None, bSeleniu
                     appiumLib._cache.register(Test.driver, None)
         else:
             if(not hasattr(Test, "driver")):
-                SetDriver(Test, AirplaneMode)
+                SetDriver(Test, AirplaneMode, bIOS=bIOS)
         try:
             ClickElementIfVis(Test.driver,By.CLASS_NAME,"android.widget.Image")
             Test.driver.switch_to.context(LAND_INFO_WEBVIEW_NAME)
@@ -746,23 +746,32 @@ def SetUpApp(Test, AirplaneMode=False, bRobot = True, iConnection=None, bSeleniu
         Test.driver.switch_to.window(win[-1])
     
 
-def TestCaps():
+def TestCaps(bIOS = False):
     caps = {}
-    caps['browserName'] = ""
-    caps['appiumVersion'] = "1.5.2"
-    #caps['appiumVersion'] = "1.4.16"
-    caps['deviceName'] = "Android GoogleAPI Emulator"
-    #caps['deviceName'] = "Galaxy S6 Device"
-    #caps['deviceType'] = "phone"
-    #caps['deviceOrientation'] = "portrait"
-    caps['platformVersion'] = "5.0"
-    caps['platformName'] = "Android"
-    #caps['browserName'] = ""
-    #caps['appiumVersion'] = "1.5.3"
-    #caps['deviceName'] = "Galaxy S6 Device"
-    #caps['deviceOrientation'] = "portrait"
-    #caps['platformVersion'] = "6.0"
-    #caps['platformName'] = "Android"
+    if bIOS == False:
+        
+        caps['browserName'] = ""
+        caps['appiumVersion'] = "1.5.2"
+        #caps['appiumVersion'] = "1.4.16"
+        caps['deviceName'] = "Android GoogleAPI Emulator"
+        #caps['deviceName'] = "Galaxy S6 Device"
+        #caps['deviceType'] = "phone"
+        #caps['deviceOrientation'] = "portrait"
+        caps['platformVersion'] = "5.0"
+        caps['platformName'] = "Android"
+        #caps['browserName'] = ""
+        #caps['appiumVersion'] = "1.5.3"
+        #caps['deviceName'] = "Galaxy S6 Device"
+        #caps['deviceOrientation'] = "portrait"
+        #caps['platformVersion'] = "6.0"
+        #caps['platformName'] = "Android"
+    else:
+        caps['browserName'] = ""
+        caps['appiumVersion'] = "1.5.2"
+        caps['deviceName'] = "iPhone 6s Device"
+        caps['deviceOrientation'] = "portrait"
+        caps['platformVersion'] = "9.3"
+        caps['platformName'] = "iOS"
     return caps
 def TestCapsSel():
     caps= {}
@@ -776,7 +785,7 @@ def TestCapsSel():
     #caps['version'] = "11"
     #caps["os"] = "windows"
     return caps
-def SetDriver(Test,AirplaneMode, bSel = False):
+def SetDriver(Test,AirplaneMode, bSel = False,bIOS = False):
     
     START_TIME["START"] = datetime.datetime.now()
     if(bSel):
@@ -786,8 +795,8 @@ def SetDriver(Test,AirplaneMode, bSel = False):
         Test.driver.set_page_load_timeout(30)
         Test.driver.set_script_timeout(30)
     else:
-        desired_caps = TestCaps()
-        desired_caps['app'] = LAND_INFO_ANDROID_APP
+        desired_caps = TestCaps(bIOS)
+        desired_caps['app'] = LAND_INFO_ANDROID_APP if bIOS == False else LAND_COVER_APP_IOS
         Test.driver = webdriver.Remote(command_executor=COMMAND_EXEC, 
                                       desired_capabilities=desired_caps)
     #if not AirplaneMode:
@@ -918,7 +927,7 @@ class Test_Case:#(unittest.TestCase):
         else:
             self.driver.quit()
             del(self.driver)
-    def Test_Case_2(self, bRobot = True, bSelenium=False,bProduction=False):
+    def Test_Case_2(self, bRobot = True, bSelenium=False,bProduction=False,bIOS=False):
         #log in
         global ERRORS,SUCCESS,WARNS
         ERRORS = []
@@ -927,10 +936,10 @@ class Test_Case:#(unittest.TestCase):
         PassOrFail = "PASS"
         try:
             if(bProduction):
-                SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium,starturl = "http://apps.landpotential.org")
+                SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium,starturl = "http://apps.landpotential.org",bIOS=bIOS)
                 #DownloadProductionAndroidApp(self.driver)
             else:
-                SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium)
+                SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium,,bIOS=bIOS)
                 #DownloadProductionAndroidApp(self.driver)
             #SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium)
             ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[contains(@ng-show,'device')][not(contains(@class,'hide'))]/img[@src='landpks_img/landinfo_logo.png']")
@@ -945,7 +954,7 @@ class Test_Case:#(unittest.TestCase):
             OutputSucessful()
             self.tearDown(PassOrFail, bRobot,bSelenium=bSelenium)
         #2.4 create plot
-    def Test_Case_2_3(self, bRobot = True, bSelenium=False,bProduction=False):
+    def Test_Case_2_3(self, bRobot = True, bSelenium=False,bProduction=False,bIOS=False):
         PassOrFail = "PASS"
         global ERRORS,SUCCESS,WARNS
         ERRORS = []
@@ -1045,7 +1054,7 @@ class Test_Case:#(unittest.TestCase):
         finally:
             OutputSucessful()
             OutputErrors()
-    def Test_Case_2_4(self, bRobot = True, bSelenium=False, bFullPlot = True,bProduction=False):
+    def Test_Case_2_4(self, bRobot = True, bSelenium=False, bFullPlot = True,bProduction=False,bIOS = False):
         global ERRORS,SUCCESS,WARNS
         ERRORS = []
         SUCCESS = []
@@ -1097,7 +1106,7 @@ class Test_Case:#(unittest.TestCase):
             OutputErrors()
             OutputSucessful()
             self.tearDown(PassOrFail, bRobot,bSelenium=bSelenium)
-    def Test_Case_0(self, bRobot = True, bSelenium=False,bProduction=False):
+    def Test_Case_0(self, bRobot = True, bSelenium=False,bProduction=False,bIOS=False):
         self.plotNames = []
         global ERRORS,SUCCESS,WARNS
         ERRORS = []
@@ -1192,7 +1201,7 @@ class Test_Case:#(unittest.TestCase):
         except WebDriverException:
             LogError("Web exception")
             raise Exception
-    def Test_Case_0_Form(self,bRobot=True):
+    def Test_Case_0_Form(self,bRobot=True,bIOS=False):
         global ERRORS,SUCCESS,WARNS
         ERRORS = []
         SUCCESS = []
@@ -1225,6 +1234,8 @@ class Test_Case:#(unittest.TestCase):
             OutputErrors()
             OutputSucessful()
             self.tearDown(PassOrFail, bRobot,bSelenium=True)
+    def UJWAL(self):
+        
     ###################################    
     ### ThanhNH : Update Test Cases ###
     ###################################
@@ -1302,6 +1313,7 @@ class ElementNotFoundTimeoutException(Exception):
 class Testing(unittest.TestCase):
     AppTest = Test_Case()
     def tester(self):
+        self.AppTest.Test_Case_2_3(False,False,False,True)
         #self.AppTest.Test_Case_2(False,False)
         self.AppTest.Test_Case_0_LandCover(False)
         #self.AppTest.Test_Case_0(False,False)
