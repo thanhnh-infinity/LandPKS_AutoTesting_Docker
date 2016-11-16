@@ -1,4 +1,4 @@
-from Test_Case import OutputErrors,OutputSucessful,SetUpApp
+from Test_Case import SetUpApp
 from selenium.webdriver.common.by import By
 ERRORS = []
 SUCCESS = []
@@ -16,7 +16,4 @@ def Showing(self, bRobot=True):
             #########
         except:
             PassOrFail = "PASS"
-        finally:
-            OutputErrors()
-            OutputSucessful()
-            self.tearDown(PassOrFail, bRobot,bSelenium=True)
+        return PassOrFail,ERRORS,SUCCESS,WARNS
