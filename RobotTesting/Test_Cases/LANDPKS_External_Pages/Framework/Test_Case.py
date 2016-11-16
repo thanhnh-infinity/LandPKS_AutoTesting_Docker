@@ -130,12 +130,17 @@ def HandleExportFromPortalCSV(driver, portalData,Uname=""):
     CSVData = ParseCSVFile("Export_LandInfo_Data.csv")
     CheckCSVSameAsPortal(driver = driver, PortalData=portalData,CSVData=CSVData)
 def HandleFormNewLandCover(driver):
-    ClickElementIfVis(driver, By.XPATH, "//div[@class='ng-scope']//div[contains(@id,'5m-stick-segment')]/span")
+    #ClickElementIfVis(driver, By.XPATH, "//div[@class='ng-scope']//div[contains(@id,'5m-stick-segment')]/span")
     stickSegs = GetElesIfVis(driver,By.XPATH, "//div[@class='ng-scope']//div[contains(@id,'5m-stick-segment')]/span")
-    for stickSeg in stickSegs:
-        stickSeg.click()
-        driver.click_element(By.XPATH,"//div[@class='checkboxLayer show']/div[@class='checkBoxContainer']/div[{0}".format(random.randint(0,8)))
-        stickSeg.click()
+    for i in range(1, len(stickSegs)):
+        GetEleIfVis(driver,By.XPATH, "//div[@class='ng-scope']//div[contains(@id,'5m-stick-segment')]/span[{0}]".format(i)).click()
+        ClickElementIfVis(driver, By.XPATH,"//div[@class='ng-scope']//div[contains(@id,'5m-stick-segment')][{0}]//span//div[@class='checkboxLayer show']/div[@class='checkBoxContainer']/div[{1}]//input".format(i,random.randint(0,8)))
+        GetEleIfVis(driver,By.XPATH, "//div[@class='ng-scope']//div[contains(@id,'5m-stick-segment')]/span[{0}]".format(i)).click()
+    for i in range(11,13):
+        SelectBoxSelectRand(driver, By.XPATH, "/html/body/ng-view/section/div[2]/div[1]/form/div[4]/div[{0}]/div/select".format(i))
+    for i in range(14,18):
+        SendTextToEle(GetEleIfVis(driver, By.XPATH, "/html/body/ng-view/section/div[2]/div[1]/form/div[4]/div[{0}]/div/input".format(i))), GenRandString("number")
+    ClickElementIfVis(driver, By.XPATH, "/html/body/ng-view/section/div[2]/div[1]/form/div[4]/div[11]/div/select")
     return
 def HandleFormNewLandInfo(driver):
     InputsCounts = len(driver.find_elements_by_tag_name("input"))
@@ -389,7 +394,7 @@ def report_sauce_status(name, status, tags=[], remote_url='', bRobot = True, dri
     if video_url:
         log.info('<a href="{0}">video.flv</a>'.format(video_url), html=True)
 def FillPlotInputs(driver):
-    log.info("Adding new Plot using landinfo tab")
+    log.info("Adding new Plot using   tab")
     try:
         PlotName = ""
         PlotLat = ""
@@ -1187,7 +1192,7 @@ class Test_Case:#(unittest.TestCase):
         except WebDriverException:
             LogError("Web exception")
             raise Exception
-    def Test_Case_0_Form(self,bRobot):
+    def Test_Case_0_Form(self,bRobot=True):
         global ERRORS,SUCCESS,WARNS
         ERRORS = []
         SUCCESS = []
@@ -1198,21 +1203,28 @@ class Test_Case:#(unittest.TestCase):
         WaitForLoadForm(self.driver)
         ClickElementIfVis(self.driver, By.XPATH, "//a[@href='#/landinfoadd']")
         HandleFormNewLandInfo(self.driver)
-    def Test_Case_0_LandCover(self, bRobot):
+    def Test_Case_0_LandCover(self, bRobot=True):
         global ERRORS,SUCCESS,WARNS
         ERRORS = []
         SUCCESS = []
         WARNS = []
         PassOrFail = "PASS"
-        SetUpApp(self,bRobot=bRobot,bSelenium=True,starturl = "http://portallandpotential.businesscatalyst.com/LandPKS_FORMS/#/login",loginbutton="//a[@id='googlebutton']")
-        ClickElementIfVis(self.driver, By.XPATH, LAND_FORMS_LAND_COVER_ICON)
-        WaitForLoadForm(self.driver)
-        ClickElementIfVis(self.driver, By.XPATH, "/html/body/ng-view/section/div[2]/div[1]/div[2]/div/div[1]/div/a")
-        ClickElementIfVis(self.driver, By.XPATH, "/html/body/ng-view/section/div[2]/div[1]/div[2]/div/div[1]/div/div/ul/li/ul/li/div")
-        SelectBoxSelectRand(self.driver, By.XPATH, "/html/body/ng-view/section/div[2]/div[1]/div[3]/div[2]/div/div[1]/div/select")
-        SelectBoxSelectRand(self.driver, By.XPATH, "/html/body/ng-view/section/div[2]/div[1]/form/div[3]/div/select")
-        for i in range(1,5):
-            HandleFormNewLandCover(self.driver)
+        try:
+            SetUpApp(self,bRobot=bRobot,bSelenium=True,starturl = "http://portallandpotential.businesscatalyst.com/LandPKS_FORMS/#/login",loginbutton="//a[@id='googlebutton']")
+            ClickElementIfVis(self.driver, By.XPATH, LAND_FORMS_LAND_COVER_ICON)
+            WaitForLoadForm(self.driver)
+            ClickElementIfVis(self.driver, By.XPATH, "/html/body/ng-view/section/div[2]/div[1]/div[2]/div/div[1]/div/a")
+            ClickElementIfVis(self.driver, By.XPATH, "/html/body/ng-view/section/div[2]/div[1]/div[2]/div/div[1]/div/div/ul/li/ul/li/div")
+            SelectBoxSelectRand(self.driver, By.XPATH, "/html/body/ng-view/section/div[2]/div[1]/div[3]/div[2]/div/div[1]/div/select")
+            SelectBoxSelectRand(self.driver, By.XPATH, "/html/body/ng-view/section/div[2]/div[1]/form/div[3]/div/select")
+            for i in range(1,5):
+                HandleFormNewLandCover(self.driver)
+        except:
+            PassOrFail = "PASS"
+        finally:
+            OutputErrors()
+            OutputSucessful()
+            self.tearDown(PassOrFail, bRobot,bSelenium=True)
     ###################################    
     ### ThanhNH : Update Test Cases ###
     ###################################
@@ -1291,7 +1303,7 @@ class Testing(unittest.TestCase):
     AppTest = Test_Case()
     def tester(self):
         #self.AppTest.Test_Case_2(False,False)
-        #self.AppTest.Test_Case_0_LandCover(False)
+        self.AppTest.Test_Case_0_LandCover(False)
         #self.AppTest.Test_Case_0(False,False)
         #self.AppTest.Test_Case_2_4(False,True)
         #self.AppTest.Verify_Portal_And_App_Data_Match(False, True)
