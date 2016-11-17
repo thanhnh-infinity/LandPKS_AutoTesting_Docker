@@ -106,7 +106,7 @@ Portal LandCover Test Case 2.1.x Linux Chrome
 
 Portal Map Features 2.7.x Linux Chrome
     [Documentation]    All Portal Map Features: 2.7.1 : Display plots on Map; 2.7.2: Detailed Information of plot on map; 2.7.3: Display map at current location; 2.7.4: Show current location on map; 2.7.5: Put zoom control in the upper left corner
-    [Tags]    Forms
+    [Tags]    PortalMaps
     ${Creds}=    Get Sauce Creds Jenkins
     Set Browser    ${Creds}    bSelenium=True    platform=${Platform}    os=${OS}    browserName=${BrowserName}    browser-version=${BrowserVersion}
     PortalMap
