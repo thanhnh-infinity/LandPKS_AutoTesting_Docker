@@ -877,7 +877,7 @@ def SetConections(driver, iConnectionMode=6):
     driver.switch_to.context(curContext)
 def set_test_browser(remoteURL):
     Test_Case().set_browser(remoteURL)
-def MapTest(driver,PassOrFail):
+def MapTest(driver,PassOrFail,bPortal = False ):
     try:
         map = driver.find_element_by_xpath("//div[@id='map']")
         LogSuccess("Test Case 2.7.1 : (Display plots on map) is PASSED")
@@ -900,13 +900,13 @@ def MapTest(driver,PassOrFail):
     else:
         #PassOrFail = "FAIL"
         LogError("Test Case 2.7.4 : (Show current location on map) FAILED")
-        
-    if (checkZoomControlOnTopLeft(driver)):
-        #PassOrFail = "PASS"
-        LogSuccess("Test Case 2.7.5 : (On the display of the map put the zoom controls in the upper left corner.) is PASSED")
-    else:
-        PassOrFail = "FAIL"
-        LogError("Test Case 2.7.5 : (On the display of the map put the zoom controls in the upper left corner.) FAILED")
+    if(bPortal == False):
+        if (checkZoomControlOnTopLeft(driver)):
+            #PassOrFail = "PASS"
+            LogSuccess("Test Case 2.7.5 : (On the display of the map put the zoom controls in the upper left corner.) is PASSED")
+        else:
+            PassOrFail = "FAIL"
+            LogError("Test Case 2.7.5 : (On the display of the map put the zoom controls in the upper left corner.) FAILED")
     return PassOrFail
 class Test_Case:#(unittest.TestCase):
     plotNames = []
