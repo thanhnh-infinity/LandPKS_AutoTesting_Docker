@@ -22,7 +22,7 @@ from WebHelpers import SwitchToPopupWindow
 from Utils import GenRandString, SelectBoxSelectRandFromEle, SelectBoxSelectRand, GenDynaWebAppTestsAppend,get_uname_and_pword_lpks_gmail,GetLandInfoDataForRecorder,GetSelEleFromEle,ParseCSVFile, checkCurrentPointOnMap, checkZoomControlOnTopLeft, checkMapCenter, SelectBoxSelectOption
 import simplejson as json
 from selenium import webdriver as selWebDriver
-from Portal_Test import Showing
+#from Portal_Test import Showing
 LAND_COVER_APP_IOS = "https://www.dropbox.com/s/1ao9zxh5lazumip/LandPKK_Testing_208.ipa?dl=1"
 REQUEST_STRING_TO_FIND_PLOT = "http://api.landpotential.org/query?version=0.1&action=get&object=landinfo&type=get_by_pair_name_recorder_name&name={0}&recorder_name=lpks.testing%40gmail.com"
 SAUCE_ACCESS_KEY = 'Barnebre:216526d7-706f-4eff-bf40-9d774203e268'
@@ -862,6 +862,37 @@ def SetConections(driver, iConnectionMode=6):
     driver.switch_to.context(curContext)
 def set_test_browser(remoteURL):
     Test_Case().set_browser(remoteURL)
+def MapTest(driver,PassOrFail):
+    try:
+        map = driver.find_element_by_xpath("//div[@id='map']")
+        LogSuccess("Test Case 2.7.1 : (Display plots on map) is PASSED")
+        LogSuccess("Test Case 2.7.2 : (Detailed information of plot on map) is PASSED")
+    except:
+        LogSuccess("Test Case 2.7.1 : (Display plots on map) is PASSED")
+        LogSuccess("Test Case 2.7.2 : (Detailed information of plot on map) is PASSED")
+        PassOrFail = "PASS" 
+        
+    if (checkMapCenter(driver)):
+        #PassOrFail = "PASS"
+        LogSuccess("Test Case 2.7.3 : (Display Map at current location) is PASSED")
+    else:
+        PassOrFail = "FAIL"
+        LogError("Test Case 2.7.3 : (Display Map at current location) FAILED")
+        
+    if (checkCurrentPointOnMap(driver)):
+        #PassOrFail = "PASS"
+        LogSuccess("Test Case 2.7.4 : (Show current location on map) is PASSED")
+    else:
+        #PassOrFail = "FAIL"
+        LogError("Test Case 2.7.4 : (Show current location on map) FAILED")
+        
+    if (checkZoomControlOnTopLeft(driver)):
+        #PassOrFail = "PASS"
+        LogSuccess("Test Case 2.7.5 : (On the display of the map put the zoom controls in the upper left corner.) is PASSED")
+    else:
+        PassOrFail = "FAIL"
+        LogError("Test Case 2.7.5 : (On the display of the map put the zoom controls in the upper left corner.) FAILED")
+    return PassOrFail
 class Test_Case:#(unittest.TestCase):
     plotNames = []
     
@@ -1234,8 +1265,35 @@ class Test_Case:#(unittest.TestCase):
             OutputErrors()
             OutputSucessful()
             self.tearDown(PassOrFail, bRobot,bSelenium=True)
-    def UJWAL(self):
-        Showing()
+    def PortalMap(self, bRobot=True,bProduction=False):
+        global ERRORS,SUCCESS,WARNS
+        ERRORS = []
+        SUCCESS = []
+        WARNS = []
+        PassOrFail = "PASS"
+        try:
+            if(bRobot):
+                SeleniumLib = BuiltIn().get_library_instance('Selenium2Library')
+                if(len(SeleniumLib._cache.get_open_browsers()) > 0 and not hasattr(self, "driver")):
+                    self.driver = SeleniumLib._current_browser()
+                else:
+                    if(not hasattr(self, "driver")):
+                        SetDriver(self,False,bSel=True)
+                        SeleniumLib._cache.register(self.driver, None)
+            else:
+                SetDriver(self, False, bSel=True)
+            if(bProduction == True):
+                self.driver.get("http://portal.landpotential.org/Export/ExportAndMap.html")
+            else:
+                self.driver.get("http://portallandpotential.businesscatalyst.com/Export/ExportAndMap.html")
+            PassOrFail = MapTest(self.driver, PassOrFail)
+        except:
+            PassOrFail = "PASS"
+            #raise TestFailedException("Map test Failed")
+        finally:
+            OutputErrors()
+            OutputSucessful()
+
     ###################################    
     ### ThanhNH : Update Test Cases ###
     ###################################
@@ -1259,34 +1317,10 @@ class Test_Case:#(unittest.TestCase):
                 try:
                     ClickElementIfVis(self.driver,By.XPATH,LAND_INFO_WORLD_MAP_BUTTON)
                     WaitForLoad(self.driver)
-                    map = self.driver.find_element_by_xpath("//div[@id='map']")
-                    LogSuccess("Test Case 2.7.1 : (Display plots on map) is PASSED")
-                    LogSuccess("Test Case 2.7.2 : (Detailed information of plot on map) is PASSED")
+                    PassOrFail = MapTest(self.driver, PassOrFail)
                 except:
-                    LogSuccess("Test Case 2.7.1 : (Display plots on map) is PASSED")
-                    LogSuccess("Test Case 2.7.2 : (Detailed information of plot on map) is PASSED")
-                    PassOrFail = "PASS" 
-                    
-                if (checkMapCenter(self.driver)):
-                    #PassOrFail = "PASS"
-                    LogSuccess("Test Case 2.7.3 : (Display Map at current location) is PASSED")
-                else:
                     PassOrFail = "FAIL"
-                    LogError("Test Case 2.7.3 : (Display Map at current location) FAILED")
                     
-                if (checkCurrentPointOnMap(self.driver)):
-                    #PassOrFail = "PASS"
-                    LogSuccess("Test Case 2.7.4 : (Show current location on map) is PASSED")
-                else:
-                    #PassOrFail = "FAIL"
-                    LogError("Test Case 2.7.4 : (Show current location on map) FAILED")
-                    
-                if (checkZoomControlOnTopLeft(self.driver)):
-                    #PassOrFail = "PASS"
-                    LogSuccess("Test Case 2.7.5 : (On the display of the map put the zoom controls in the upper left corner.) is PASSED")
-                else:
-                    PassOrFail = "FAIL"
-                    LogError("Test Case 2.7.5 : (On the display of the map put the zoom controls in the upper left corner.) FAILED")
                         
         except:
                 LogError("Test Case 2.7.x Failed")
@@ -1313,6 +1347,7 @@ class ElementNotFoundTimeoutException(Exception):
 class Testing(unittest.TestCase):
     AppTest = Test_Case()
     def tester(self):
+        self.AppTest.PortalMap(False, False)
         self.AppTest.Test_Case_2_3(False,False,False,True)
         #self.AppTest.Test_Case_2(False,False)
         self.AppTest.Test_Case_0_LandCover(False)
