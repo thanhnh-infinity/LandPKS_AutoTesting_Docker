@@ -635,6 +635,20 @@ def FillPlotData(driver, Airplane = False, bFullPlot = False):
 def SendTextToEle(weEle, strValue):
     log.info("Sending {0} to WebElement {1}".format(strValue, weEle))
     weEle.send_keys(strValue)
+def GetPlot(driver,plotName):
+    String = "{0}{1}".format(LANDCOVER_PLOT_LIST,"[contains(.,'{0}')]".format(plotName))
+    try:
+        PlotFound = GetEleIfVis(driver, By.XPATH, String)
+        return PlotFound
+    except TimeoutException:
+        LogError( "Plot '{0}' was not found.".format(plotName) )
+def GetFirstPlot(driver):
+    String = "{0}{1}".format(LANDCOVER_PLOT_LIST,"[{0}]".format("1"))
+    try:
+        PlotFound = GetEleIfVis(driver, By.XPATH, String)
+        return PlotFound
+    except TimeoutException:
+        LogError( "Error! No plot {0} was not found.".format(String) )
 def LandCover(driver, plots, Airplane=False):
     if(Airplane):
         try:
