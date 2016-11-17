@@ -683,7 +683,7 @@ def LandCover(driver, plots, Airplane=False):
     ClickGoBackLandInfo(driver)
 def WaitForLoad(driver):
     wait = WebDriverWait(driver, 30)
-    wait.until(EC.presence_of_element_located((By.XPATH, "//div[@class='loading-container']")),"")
+    #wait.until(EC.presence_of_element_located((By.XPATH, "//div[@class='loading-container']")),"")
     wait.until(EC.invisibility_of_element_located((By.XPATH, "//div[@class='loading-container']")),"")
 def WaitForEleLoad(driver,Ele, ByType=By.XPATH):
     wait = WebDriverWait(driver, 30)
