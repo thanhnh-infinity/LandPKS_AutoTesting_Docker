@@ -21,11 +21,11 @@ All LandInfo's Map Features 2.7.x Linux Chrome
     Test Case 2 7    bSelenium=True
 
 Metric Units Features 10.10.x Linux Chrome
-    [Documentation]    Metrics Unit Features: 
+    [Documentation]    Metrics Unit Features:
     [Tags]    WebApp
     ${Creds}=    Get Sauce Creds Jenkins
     Set Browser    ${Creds}    bSelenium=True    platform=${Platform}    os=${OS}    browserName=${BrowserName}    browser-version=${BrowserVersion}
-    Test Case 10 10    bSelenium=True    
+    Test Case 10 10    bSelenium=True
 
 Web App Test Case 2.3.x Linux Chrome
     [Documentation]    Launches Web App directly and Runs tests in category 2.3 of manual test plan. Library and test structure is in library Test_case.py. Return what tests failed and were successful. Test Fails if Critical test is a failure.
@@ -105,7 +105,7 @@ Portal LandCover Test Case 2.1.x Linux Chrome
     Test Case 0 LandCover
 
 Portal Map Features 2.7.x Linux Chrome
-    [Documentation]    [Documentation] Launches Portal Land Cover Form directly and tests addition of a plot and Runs tests in category 2 of manual test plan on form tests This test takes a good while on phone emulation.. Library and test structure is in library Test case.py. Return what tests failed and were successful. Test Fails if Critical test is a failure.
+    [Documentation]    All Portal Map Features: 2.7.1 : Display plots on Map; 2.7.2: Detailed Information of plot on map; 2.7.3: Display map at current location; 2.7.4: Show current location on map; 2.7.5: Put zoom control in the upper left corner
     [Tags]    Forms
     ${Creds}=    Get Sauce Creds Jenkins
     Set Browser    ${Creds}    bSelenium=True    platform=${Platform}    os=${OS}    browserName=${BrowserName}    browser-version=${BrowserVersion}
