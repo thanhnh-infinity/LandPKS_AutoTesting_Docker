@@ -92,7 +92,7 @@ Web App Prod Test Case 3.1.x Linux Chrome
 
 Portal LandCover Test Case 2.1.x Linux Chrome
     [Documentation]    [Documentation] Launches Portal Land Cover Form directly and tests addition of a plot and Runs tests in category 2 of manual test plan on form tests This test takes a good while on phone emulation.. Library and test structure is in library Test case.py. Return what tests failed and were successful. Test Fails if Critical test is a failure.
-    [Tags]    Forms
+    [Tags]    FormsTest
     ${Creds}=    Get Sauce Creds Jenkins
     Set Browser    ${Creds}    bSelenium=True    platform=${Platform}    os=${OS}    browserName=${BrowserName}    browser-version=${BrowserVersion}
     Test Case 0 LandCover
