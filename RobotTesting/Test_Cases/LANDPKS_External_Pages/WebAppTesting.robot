@@ -20,6 +20,13 @@ All LandInfo's Map Features 2.7.x Linux Chrome
     Set Browser    ${Creds}    bSelenium=True    platform=${Platform}    os=${OS}    browserName=${BrowserName}    browser-version=${BrowserVersion}
     Test Case 2 7    bSelenium=True
 
+Metric Units Features 10.10.x Linux Chrome
+    [Documentation]    Metrics Unit Features: 
+    [Tags]    WebApp
+    ${Creds}=    Get Sauce Creds Jenkins
+    Set Browser    ${Creds}    bSelenium=True    platform=${Platform}    os=${OS}    browserName=${BrowserName}    browser-version=${BrowserVersion}
+    Test Case 10 10    bSelenium=True    
+
 Web App Test Case 2.3.x Linux Chrome
     [Documentation]    Launches Web App directly and Runs tests in category 2.3 of manual test plan. Library and test structure is in library Test_case.py. Return what tests failed and were successful. Test Fails if Critical test is a failure.
     [Tags]    WebApp

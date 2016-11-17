@@ -32,6 +32,7 @@ LAND_COVER_ANDROID_PACKAGE = 'org.landpotential.lpks.landcover'
 LAND_INFO_ADD_PLOT_BUTTON = "//div[@nav-bar='active']//span[@class='right-buttons']/a[@class='button button-icon ion-plus-round']"
 LAND_INFO_SETTINGS_BUTTON = "//div[@nav-bar='active']//span[@class='right-buttons']/a[@class='button button-icon ion-gear-b']"
 LAND_INFO_LOGOUT_LINK = "//div[@nav-view='active']//div[@class='scroll']/a[@ng-click='landinfo_logout();']"
+LAND_INFO_APPLICATION_SETTING = "//div[@nav-view='active']//div[@class='scroll']/a[@ui-sref='landpks.landpks_app_setting']"
 LAND_INFO_WORLD_MAP_BUTTON = "//div[@nav-bar='active']//span[@class='right-buttons']/a[@class='button button-icon ion-ios-world']"
 LAND_INFO_LOCAL_CLIMATE_BUTTON = "//div[@nav-bar='active']//span[@class='right-buttons']/a[@class='button button-icon ion-ios-rainy']"
 #LAND_COVER_ANDROID_PACKAGE = 'org.apache.cordova.splashscreen'
@@ -1297,6 +1298,46 @@ class Test_Case:#(unittest.TestCase):
     ###################################    
     ### ThanhNH : Update Test Cases ###
     ###################################
+    def Test_Case_10_10(self, bRobot = True, bSelenium=False,bProduction=False):
+        global ERRORS,SUCCESS,WARNS
+        ERRORS = []
+        SUCCESS = []
+        WARNS = []
+        PassOrFail = "PASS"
+        try:
+                if(bProduction):
+                    SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium,starturl = "http://apps.landpotential.org")
+                else:
+                    SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium)
+                    
+                ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[contains(@ng-show,'device')][not(contains(@class,'hide'))]/img[@src='landpks_img/landinfo_logo.png']") 
+                WaitForLoad(self.driver)    
+                
+                try:
+                    # Go to settings
+                    ClickElementIfVis(self.driver,By.XPATH,LAND_INFO_SETTINGS_BUTTON)
+                    WaitForLoad(self.driver)
+                    # Go to Application Settings
+                    ClickElementIfVis(self.driver,By.XPATH,LAND_INFO_APPLICATION_SETTING)
+                    WaitForLoad(self.driver)
+                    
+                    #Find to see Units toggle button
+                    try: 
+                        self.driver.find_element_by_xpath("//div[@class='item item-toggle toggle-large ng-valid']")
+                        LogSuccess("Test Case 10.10.x Passed : See Units toggle button in Application Settings")
+                    except:
+                        LogError("Test Case 10.10.x Failed : Do not see Units Toggle Button in Application Settings") 
+                        PassOrFail = "FAIL" 
+                except:
+                    PassOrFail = "FAIL"            
+        except:
+                LogError("Test Case 10.10.x Failed")
+                PassOrFail = "FAIL"
+        finally:
+                OutputErrors()
+                OutputSucessful()
+                OutputWarns()
+                self.tearDown(PassOrFail, bRobot,bSelenium=bSelenium)
     def Test_Case_2_7(self, bRobot = True, bSelenium=False,bProduction=False):
         self.plotNames = []
         global ERRORS,SUCCESS,WARNS
