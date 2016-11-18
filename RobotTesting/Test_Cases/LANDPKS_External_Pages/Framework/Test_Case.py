@@ -1464,7 +1464,7 @@ class Test_Case:#(unittest.TestCase):
                             LogError("--AWC Unit is IN-correct")
                             #PassOrFail = "FAIL"
                            
-                        inside_units_name = self.driver.find_elements_by_xpath("//p[@ng-show='GLOBAL_METRIC_CONFIG === 'US_METRICS'']")
+                        inside_units_name = self.driver.find_elements_by_xpath('//p[@ng-show="GLOBAL_METRIC_CONFIG === "US_METRICS""]')
                         elevation = inside_units_name[0]
                         avg = inside_units_name[1]
                         awc_2 = inside_units_name[2] 
