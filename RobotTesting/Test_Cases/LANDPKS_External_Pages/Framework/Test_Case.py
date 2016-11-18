@@ -1451,14 +1451,14 @@ class Test_Case:#(unittest.TestCase):
                             PassOrFail = "FAIL"
                         temp_text = graph_name[1]
                         LogSuccess(temp_text.text)
-                        if (temp_text.text == 'Temperature (°C)'):
+                        if ("C" in temp_text.text):
                             LogSuccess("--Temperature Unit is Correct")
                         else:
                             LogError("--Temperature Unit is IN-correct")
                             PassOrFail = "FAIL"
                         awc = graph_name[2]
                         LogSuccess(awc.text)
-                        if (awc.text == 'Temperature (°C)'):
+                        if (awc.text == 'Available water (cm) '):
                             LogSuccess("--AWC Unit is Correct")
                         else:
                             LogError("--AWC Unit is IN-correct")
@@ -1469,8 +1469,23 @@ class Test_Case:#(unittest.TestCase):
                         avg = inside_units_name[1]
                         awc_2 = inside_units_name[2] 
                         LogSuccess(elevation.text)
+                        if ("m" in elevation.text):
+                            LogSuccess("--Elevation Unit is Correct")
+                        else:
+                            LogError("--Elevation Unit is IN-correct")
+                            PassOrFail = "FAIL"
                         LogSuccess(avg.text)
+                        if ("mm" in avg.text):
+                            LogSuccess("--Average annual precipitation Unit is Correct")
+                        else:
+                            LogError("--Average annual precipitation Unit is IN-correct")
+                            PassOrFail = "FAIL"
                         LogSuccess(awc_2.text)
+                        if ("cm" in awc_2.text):
+                            LogSuccess("--AWC Unit is Correct")
+                        else:
+                            LogError("--AWC Unit is IN-correct")
+                            PassOrFail = "FAIL"
                         
                         if (PassOrFail == "PASS"):   
                             LogSuccess("Test Case 10.10.3 Passed :  Result page - Submitted plot (Access from LandInfo side), check Metrics is correct for 3 Graph : Temperature, Precipitation, AWC  and 3 units : avg precipitation, awc value and elevation")
