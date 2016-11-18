@@ -1467,7 +1467,7 @@ class Test_Case:#(unittest.TestCase):
                         inside_units_name = self.driver.find_elements_by_xpath("//p[@class='othercomponent ng-binding'][not(contains(@class,'ng-hide'))]")
                         elevation = inside_units_name[2]
                         avg = inside_units_name[3]
-                        awc_2 = inside_units_name[5] 
+                        awc_2 = inside_units_name[6] 
                         LogSuccess(elevation.text)
                          
                         if ("m" in elevation.text):
