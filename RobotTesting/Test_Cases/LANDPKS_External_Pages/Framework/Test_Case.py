@@ -1421,13 +1421,30 @@ class Test_Case:#(unittest.TestCase):
                             LogError("--Layer 1 Name is IN-correct")
                             PassOrFail = "FAIL"
                         # Check to see Metrics Unit for bedrock or stopped digging
-                        
                         try:
                             PassOrFail = checkMetricsAllLayers(self.driver, PassOrFail)         
                         except:
                             LogSuccess("There is an layer has issues")
+                         
+                        if (PassOrFail == "PASS"):   
+                            LogSuccess("Test Case 10.10.2 Passed :  Review page - Submitted plot (Access from LandInfo side), check Metrics for Soil layer names, bedrock depth and stopped digging depth")
+                        else:
+                            LogError("Test Case 10.10.2 Failed : Do not see correct Metrics in review page")
+                            
                         
-                        LogSuccess("Test Case 10.10.2 Passed :  Review page - Submitted plot (Access from LandInfo side), check Metrics for Soil layer names, bedrock depth and stopped digging depth")
+                        # Select Result
+                        ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[@class='scroll']/a[@href='#/landpks/landinfo_results']")
+                        WaitForLoad(self.driver)
+                        LogSuccess("--Select Result is done")
+                        
+                        graph_name = self.driver.find_elements_by_xpath("//div[@nav-view='active']//div[@class='scroll']/p[@class='lpks-p']/b[@class='ng-binding']")
+                        pre_text = graph_name[0]
+                        LogSuccess(pre_text.text)
+                        temp_text = graph_name[1]
+                        LogSuccess(temp_text.text)
+                        awc = graph_name[2]
+                        LogSuccess(awc.text)
+                        
                     except:
                         LogError("Test Case 10.10.2 Failed : Do not see correct Metrics in review page") 
                         PassOrFail = "FAIL"
