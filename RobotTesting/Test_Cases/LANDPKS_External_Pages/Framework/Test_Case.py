@@ -1433,7 +1433,7 @@ class Test_Case:#(unittest.TestCase):
                             
                         
                         # Select Result
-                        ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[@class='scroll']/a[@href='#/landpks/landinfo_results']")
+                        ClickElementIfVis(self.driver,By.XPATH,"///a[@href='#/landpks/landinfo_results']")
                         WaitForLoad(self.driver)
                         LogSuccess("--Select Result is done")
                         
