@@ -1338,10 +1338,32 @@ class Test_Case:#(unittest.TestCase):
                     #Find to see Units toggle button
                     try: 
                         self.driver.find_element_by_xpath("//div[@class='item item-toggle toggle-large ng-valid']")
-                        LogSuccess("Test Case 10.10.x Passed : See Units toggle button in Application Settings")
+                        LogSuccess("Test Case 10.10.1 Passed : See Units toggle button in Application Settings")
                     except:
-                        LogError("Test Case 10.10.x Failed : Do not see Units Toggle Button in Application Settings") 
+                        LogError("Test Case 10.10.1 Failed : Do not see Units Toggle Button in Application Settings") 
                         PassOrFail = "FAIL" 
+                    
+                    #Click and view the first plot of List
+                    try:
+                        # Select one of plot
+                        detectFirstPlotinList = "{0}{1}".format(LANDCOVER_PLOT_LIST,"[{0}]".format("1"))
+                        ClickElementIfVis(self.driver,By.XPATH,detectFirstPlotinList)
+                        WaitForLoad(self.driver)
+                        LogSuccess("--Select plot is done")
+                        # Select review
+                        ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[@class='scroll']/a[@ui-sref='landpks.landinfo_review-results']")
+                        WaitForLoad(self.driver)
+                        LogSuccess("--Select Review is done")
+                        # Check to see Metrics Unit for Soillayer name
+                        layer_1 = self.driver.find_element_by_xpath("//div[@nav-view='active']//div[@ng-show='selectedPlot.rock_fragment.soil_horizon_1 || selectedPlot.texture.soil_horizon_1']/p[@class='lpks-p']/b[@class='ng-binding']")
+                        LogSuccess("--Check name layer is done")
+                        LogSuccess(layer_1.get_attribute("value"))
+                        # Check to see Metrics Unit for bedrock or stopped digging
+                        
+                        LogSuccess("Test Case 10.10.2 Passed :  Review page - Submitted plot (Access from LandInfo side), check Metrics for Soil layer names, bedrock depth and stopped digging depth")
+                    except:
+                        LogError("Test Case 10.10.2 Failed : Do not see Units Toggle Button in Application Settings") 
+                        PassOrFail = "FAIL"
                 except:
                     PassOrFail = "FAIL"            
         except:
