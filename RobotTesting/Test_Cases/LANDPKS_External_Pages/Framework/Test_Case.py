@@ -1458,7 +1458,7 @@ class Test_Case:#(unittest.TestCase):
                             PassOrFail = "FAIL"
                         awc = graph_name[2]
                         LogSuccess(awc.text)
-                        if (awc.text == 'Available water (cm) '):
+                        if ("cm" in awc.text):
                             LogSuccess("--AWC Unit is Correct")
                         else:
                             LogError("--AWC Unit is IN-correct")
@@ -1482,9 +1482,9 @@ class Test_Case:#(unittest.TestCase):
                             PassOrFail = "FAIL"
                         LogSuccess(awc_2.text)
                         if ("cm" in awc_2.text):
-                            LogSuccess("--AWC Unit is Correct")
+                            LogSuccess("--AWC Unit is Correct--")
                         else:
-                            LogError("--AWC Unit is IN-correct")
+                            LogError("--AWC Unit is IN-correct--")
                             PassOrFail = "FAIL"
                         
                         if (PassOrFail == "PASS"):   
