@@ -1469,7 +1469,7 @@ class Test_Case:#(unittest.TestCase):
                         avg = inside_units_name[3]
                         awc_2 = inside_units_name[5] 
                         LogSuccess(elevation.text)
-                        ''' 
+                         
                         if ("m" in elevation.text):
                             LogSuccess("--Elevation Unit is Correct")
                         else:
@@ -1487,7 +1487,7 @@ class Test_Case:#(unittest.TestCase):
                         else:
                             LogError("--AWC Unit is IN-correct--")
                             #PassOrFail = "FAIL"
-                        '''
+                        
                         if (PassOrFail == "PASS"):   
                             LogSuccess("Test Case 10.10.3 Passed :  Result page - Submitted plot (Access from LandInfo side), check Metrics is correct for 3 Graph : Temperature, Precipitation, AWC  and 3 units : avg precipitation, awc value and elevation")
                         else:
