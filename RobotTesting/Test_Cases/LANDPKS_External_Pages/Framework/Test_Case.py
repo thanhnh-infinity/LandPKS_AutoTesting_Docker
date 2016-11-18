@@ -1367,8 +1367,10 @@ class Test_Case:#(unittest.TestCase):
                         # Check to see Metrics Unit for bedrock or stopped digging
                         
                         try:
-                            
+                            layer_2 = self.driver.find_element_by_xpath("//div[@nav-view='active']//div[@ng-show='selectedPlot.rock_fragment.soil_horizon_2 || selectedPlot.texture.soil_horizon_2']/p[@class='lpks-p']/b[@class='ng-binding']")       
+                            LogSuccess(layer_2.get_attribute("value"))
                         except:
+                            LogSuccess("Layer 2 has issuse")
                         
                         LogSuccess("Test Case 10.10.2 Passed :  Review page - Submitted plot (Access from LandInfo side), check Metrics for Soil layer names, bedrock depth and stopped digging depth")
                     except:
