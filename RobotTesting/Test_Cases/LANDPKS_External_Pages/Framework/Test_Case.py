@@ -1356,25 +1356,30 @@ class Test_Case:#(unittest.TestCase):
                         ClickElementIfVis(self.driver,By.XPATH,detectFirstPlotinList)
                         WaitForLoad(self.driver)
                         LogSuccess("--Select plot is done")
+                        
                         # Select review
                         ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[@class='scroll']/a[@ui-sref='landpks.landinfo_review-results']")
                         WaitForLoad(self.driver)
                         LogSuccess("--Select Review is done")
+                        
                         # Check to see Metrics Unit for Soillayer name 1 - Mandatory
                         layer_1 = self.driver.find_element_by_xpath("//div[@nav-view='active']//div[@ng-show='selectedPlot.rock_fragment.soil_horizon_1 || selectedPlot.texture.soil_horizon_1']/p[@class='lpks-p']/b[@class='ng-binding']")
-                        LogSuccess("--Check name layer 1 is done")
-                        LogSuccess(layer_1.get_attribute("value"))
+                        LogSuccess(layer_1.text)
+                        if (layer_1.text == '0-1 cm'):
+                            LogSuccess("--Check name layer 1 is done")
+                        else:
+                            PassOrFail = "FAIL"
                         # Check to see Metrics Unit for bedrock or stopped digging
                         
                         try:
                             layer_2 = self.driver.find_element_by_xpath("//div[@nav-view='active']//div[@ng-show='selectedPlot.rock_fragment.soil_horizon_2 || selectedPlot.texture.soil_horizon_2']/p[@class='lpks-p']/b[@class='ng-binding']")       
                             LogSuccess(layer_2.get_attribute("value"))
                         except:
-                            LogSuccess("Layer 2 has issuse")
+                            LogSuccess("Layer 2 has issues")
                         
                         LogSuccess("Test Case 10.10.2 Passed :  Review page - Submitted plot (Access from LandInfo side), check Metrics for Soil layer names, bedrock depth and stopped digging depth")
                     except:
-                        LogError("Test Case 10.10.2 Failed : Do not see Metrics in review page") 
+                        LogError("Test Case 10.10.2 Failed : Do not see correct Metrics in review page") 
                         PassOrFail = "FAIL"
                 except:
                     PassOrFail = "FAIL"            
