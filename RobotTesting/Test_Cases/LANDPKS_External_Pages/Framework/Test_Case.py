@@ -877,6 +877,74 @@ def SetConections(driver, iConnectionMode=6):
     driver.switch_to.context(curContext)
 def set_test_browser(remoteURL):
     Test_Case().set_browser(remoteURL)
+def checkMetricsAllLayers(driver, PassOrFail):
+    layer_2 = driver.find_element_by_xpath("//div[@nav-view='active']//div[@ng-show='selectedPlot.rock_fragment.soil_horizon_2 || selectedPlot.texture.soil_horizon_2']/p[@class='lpks-p']/b[@class='ng-binding']")       
+    if (layer_2 is None):
+        LogSuccess("--Check name layer 2 is done - There is no Layer 2")
+    else:
+        LogSuccess(layer_2.text)
+        if (layer_2.text == '1-10 cm'):
+            LogSuccess("--Layer 2 name is Correct")
+        else:
+            LogError("--Layer 2 Name is IN-correct")
+            PassOrFail = "FAIL"
+            
+    layer_3 = driver.find_element_by_xpath("//div[@nav-view='active']//div[@ng-show='selectedPlot.rock_fragment.soil_horizon_3 || selectedPlot.texture.soil_horizon_3']/p[@class='lpks-p']/b[@class='ng-binding']")       
+    if (layer_3 is None):
+        LogSuccess("--Check name layer 3 is done - There is no Layer 3")
+    else:
+        LogSuccess(layer_3.text)
+        if (layer_3.text == '10-20 cm'):
+            LogSuccess("--Layer 3 name is Correct")
+        else:
+            LogError("--Layer 3 Name is IN-correct")
+            PassOrFail = "FAIL"
+    
+    layer_4 = driver.find_element_by_xpath("//div[@nav-view='active']//div[@ng-show='selectedPlot.rock_fragment.soil_horizon_4 || selectedPlot.texture.soil_horizon_4']/p[@class='lpks-p']/b[@class='ng-binding']")       
+    if (layer_4 is None):
+        LogSuccess("--Check name layer 4 is done - There is no Layer 4")
+    else:
+        LogSuccess(layer_4.text)
+        if (layer_4.text == '20-50 cm'):
+            LogSuccess("--Layer 4 name is Correct")
+        else:
+            LogError("--Layer 4 Name is IN-correct")
+            PassOrFail = "FAIL"
+    
+    layer_5 = driver.find_element_by_xpath("//div[@nav-view='active']//div[@ng-show='selectedPlot.rock_fragment.soil_horizon_5 || selectedPlot.texture.soil_horizon_5']/p[@class='lpks-p']/b[@class='ng-binding']")       
+    if (layer_5 is None):
+        LogSuccess("--Check name layer 5 is done - There is no Layer 5")
+    else:
+        LogSuccess(layer_5.text)
+        if (layer_5.text == '50-70 cm'):
+            LogSuccess("--Layer 5 name is Correct")
+        else:
+            LogError("--Layer 5 Name is IN-correct")
+            PassOrFail = "FAIL"
+    
+    layer_6 = driver.find_element_by_xpath("//div[@nav-view='active']//div[@ng-show='selectedPlot.rock_fragment.soil_horizon_6 || selectedPlot.texture.soil_horizon_6']/p[@class='lpks-p']/b[@class='ng-binding']")       
+    if (layer_6 is None):
+        LogSuccess("--Check name layer 6 is done - There is no Layer 6")
+    else:
+        LogSuccess(layer_6.text)
+        if (layer_6.text == '70-100 cm'):
+            LogSuccess("--Layer 6 name is Correct")
+        else:
+            LogError("--Layer 6 Name is IN-correct")
+            PassOrFail = "FAIL"
+            
+    layer_7 = driver.find_element_by_xpath("//div[@nav-view='active']//div[@ng-show='selectedPlot.rock_fragment.soil_horizon_7 || selectedPlot.texture.soil_horizon_7']/p[@class='lpks-p']/b[@class='ng-binding']")       
+    if (layer_7 is None):
+        LogSuccess("--Check name layer 7 is done - There is no Layer 7")
+    else:
+        LogSuccess(layer_7.text)
+        if (layer_7.text == '100-120 cm'):
+            LogSuccess("--Layer 7 name is Correct")
+        else:
+            LogError("--Layer 7 Name is IN-correct")
+            PassOrFail = "FAIL"        
+            
+    return PassOrFail  
 def MapTest(driver,PassOrFail,bPortal = False ):
     try:
         map = driver.find_element_by_xpath("//div[@id='map']")
@@ -1366,16 +1434,16 @@ class Test_Case:#(unittest.TestCase):
                         layer_1 = self.driver.find_element_by_xpath("//div[@nav-view='active']//div[@ng-show='selectedPlot.rock_fragment.soil_horizon_1 || selectedPlot.texture.soil_horizon_1']/p[@class='lpks-p']/b[@class='ng-binding']")
                         LogSuccess(layer_1.text)
                         if (layer_1.text == '0-1 cm'):
-                            LogSuccess("--Check name layer 1 is done")
+                            LogSuccess("--Layer 1 name is Correct")
                         else:
+                            LogError("--Layer 1 Name is IN-correct")
                             PassOrFail = "FAIL"
                         # Check to see Metrics Unit for bedrock or stopped digging
                         
                         try:
-                            layer_2 = self.driver.find_element_by_xpath("//div[@nav-view='active']//div[@ng-show='selectedPlot.rock_fragment.soil_horizon_2 || selectedPlot.texture.soil_horizon_2']/p[@class='lpks-p']/b[@class='ng-binding']")       
-                            LogSuccess(layer_2.get_attribute("value"))
+                            PassOrFail = checkMetricsAllLayers(self.driver, PassOrFail)         
                         except:
-                            LogSuccess("Layer 2 has issues")
+                            LogSuccess("There is an layer has issues")
                         
                         LogSuccess("Test Case 10.10.2 Passed :  Review page - Submitted plot (Access from LandInfo side), check Metrics for Soil layer names, bedrock depth and stopped digging depth")
                     except:
