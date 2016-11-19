@@ -1513,7 +1513,7 @@ class Test_Case:#(unittest.TestCase):
                         LogSuccess("--Out of Review + Result Page - Current in List Page")
                         
                         # Click to Local Climate
-                        ClickElementIfVis(self.drive,By.XPATH,LAND_INFO_LOCAL_CLIMATE_BUTTON)
+                        ClickElementIfVis(self.driver,By.XPATH,LAND_INFO_LOCAL_CLIMATE_BUTTON)
                         WaitForLoad(self.driver)
                         LogSuccess("--In Local Climate Page")
                         
@@ -1553,14 +1553,14 @@ class Test_Case:#(unittest.TestCase):
                             PassOrFail = "FAIL"
                         
                         if (PassOrFail == "PASS"):   
-                            LogSuccess("Test Case 10.10.3 Passed :  Result page - Submitted plot (Access from LandInfo side), check Metrics is correct for 3 Graph : Temperature, Precipitation, AWC  and 3 units : avg precipitation, awc value and elevation")
+                            LogSuccess("Test Case 10.10.4 Passed :  Local Climate feature, check Metrics is correct for 2 Graph : Temperature, Precipitation  and 2 units : avg precipitation, awc value and elevation")
                         else:
-                            LogError("Test Case 10.10.3 Failed : Do not see correct Metrics in Result page - 1")
+                            LogError("Test Case 10.10.4 Failed : Do not see correct Metrics in Result page - 1")
                         
                         
                     except Exception,e:
                         LogError(str(e))
-                        LogError("Test Case 10.10.3 Failed : Do not see correct Metrics in Result page - 2") 
+                        LogError("Test Case 10.10.4 Failed : Do not see correct Metrics in Result page - 2") 
                         PassOrFail = "FAIL"   
                 except:
                     PassOrFail = "FAIL"            
