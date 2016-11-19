@@ -1502,12 +1502,14 @@ class Test_Case:#(unittest.TestCase):
                     # Test Case 10.10.4    
                     try:
                         # Back to List
-                        ClickElementIfVis(self.driver,By.XPATH,"//a[@class='button button-icon'][@ng-click='goBack()']")
-                        WaitForLoad(self.driver)
+                        #ClickElementIfVis(self.driver,By.XPATH,"//a[@class='button button-icon'][@ng-click='goBack()']")
+                        #WaitForLoad(self.driver)
+                        ClickGoBackLandInfo(self.driver)
                         LogSuccess("--Out of Result Page")
                         
-                        ClickElementIfVis(self.driver,By.XPATH,"//a[@class='button button-icon'][@ng-click='goBack();']")
-                        WaitForLoad(self.driver)
+                        #ClickElementIfVis(self.driver,By.XPATH,"//a[@class='button button-icon'][@ng-click='goBack();']")
+                        #WaitForLoad(self.driver)
+                        ClickGoBackLandInfo(self.driver)
                         LogSuccess("--Out of Review + Result Page - Current in List Page")
                         
                         # Click to Local Climate
