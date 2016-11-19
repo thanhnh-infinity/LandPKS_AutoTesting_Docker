@@ -1496,7 +1496,70 @@ class Test_Case:#(unittest.TestCase):
                     except Exception,e:
                         LogError(str(e))
                         LogError("Test Case 10.10.3 Failed : Do not see correct Metrics in Result page - 2") 
-                        PassOrFail = "FAIL"    
+                        PassOrFail = "FAIL"
+                      
+                       
+                    # Test Case 10.10.4    
+                    try:
+                        # Back to List
+                        ClickElementIfVis(self.driver,By.XPATH,"//a[@ng-click='goBack()']")
+                        WaitForLoad(self.driver)
+                        LogSuccess("--Out of Result Page")
+                        
+                        ClickElementIfVis(self.driver,By.XPATH,"//a[@ng-click='goBack();']")
+                        WaitForLoad(self.driver)
+                        LogSuccess("--Out of Review + Result Page - Current in List Page")
+                        
+                        # Click to Local Climate
+                        ClickElementIfVis(self.drive,By.XPATH,LAND_INFO_LOCAL_CLIMATE_BUTTON)
+                        WaitForLoad(self.driver)
+                        LogSuccess("--In Local Climate Page")
+                        
+                        graph_name = self.driver.find_elements_by_xpath("//div[@nav-view='active']//div[@class='scroll']/p[@class='lpks-p']/b[@class='ng-binding']")
+                        pre_text = graph_name[0]
+                        LogSuccess(pre_text.text)
+                        if (pre_text.text == 'Precipitation (mm)'):
+                            LogSuccess("--Precipitation Unit is Correct")
+                        else:
+                            LogError("--Precipitation Unit is IN-correct")
+                            PassOrFail = "FAIL"
+                        
+                        temp_text = graph_name[1]
+                        LogSuccess(temp_text.text)
+                        if ("C" in temp_text.text):
+                            LogSuccess("--Temperature Unit is Correct")
+                        else:
+                            LogError("--Temperature Unit is IN-correct")
+                            PassOrFail = "FAIL"
+                       
+                           
+                        inside_units_name = self.driver.find_elements_by_xpath("//p[@class='othercomponent ng-binding'][not(contains(@class,'ng-hide'))]")
+                        elevation = inside_units_name[2]
+                        avg = inside_units_name[3]
+                         
+                        LogSuccess(elevation.text) 
+                        if ("m" in elevation.text):
+                            LogSuccess("--Elevation Unit is Correct")
+                        else:
+                            LogError("--Elevation Unit is IN-correct")
+                            PassOrFail = "FAIL"
+                        LogSuccess(avg.text)
+                        if ("mm" in avg.text):
+                            LogSuccess("--Average annual precipitation Unit is Correct")
+                        else:
+                            LogError("--Average annual precipitation Unit is IN-correct")
+                            PassOrFail = "FAIL"
+                        
+                        if (PassOrFail == "PASS"):   
+                            LogSuccess("Test Case 10.10.3 Passed :  Result page - Submitted plot (Access from LandInfo side), check Metrics is correct for 3 Graph : Temperature, Precipitation, AWC  and 3 units : avg precipitation, awc value and elevation")
+                        else:
+                            LogError("Test Case 10.10.3 Failed : Do not see correct Metrics in Result page - 1")
+                        
+                        
+                    except Exception,e:
+                        LogError(str(e))
+                        LogError("Test Case 10.10.3 Failed : Do not see correct Metrics in Result page - 2") 
+                        PassOrFail = "FAIL"   
                 except:
                     PassOrFail = "FAIL"            
         except:
