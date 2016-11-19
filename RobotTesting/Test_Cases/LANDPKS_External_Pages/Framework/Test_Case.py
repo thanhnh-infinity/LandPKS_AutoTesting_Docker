@@ -1556,7 +1556,60 @@ class Test_Case:#(unittest.TestCase):
                     except Exception,e:
                         LogError(str(e))
                         LogError("Test Case 10.10.4 Failed :  Do not see correct Metrics in Local Climate page - 2") 
-                        PassOrFail = "FAIL"   
+                        PassOrFail = "FAIL"
+                        
+                        
+                    # Test Case 10.10.5    
+                    try:
+                        # Back to List
+                        ClickGoBackLandInfo(self.driver)
+                        LogSuccess("--Out of Local Climate")
+                        ClickElementIfVis(self.driver,By.XPATH,"//a[@ui-sref='landpks.landpks_select_apps']")
+                        WaitForLoad(self.driver)
+                        LogSuccess("--Out of landInfo plots list")
+                        
+                        # Select LandCover application
+                        ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[contains(@ng-show,'device')][not(contains(@class,'hide'))]/img[@src='landpks_img/landcover_logo.png']") 
+                        WaitForLoad(self.driver) 
+                        
+                        # Select the first plot
+                        detectFirstPlotinList = "{0}{1}".format(LANDCOVER_PLOT_LIST,"[{0}]".format("1"))
+                        ClickElementIfVis(self.driver,By.XPATH,detectFirstPlotinList)
+                        WaitForLoad(self.driver)
+                        LogSuccess("--Select plot is done")
+                        
+                        # Select to switch LandInfo
+                        ClickElementIfVis(self.driver,By.XPATH,"//img[@id='imgLandInfo']")
+                        WaitForLoad(self.driver)
+                        LogSuccess("--Switch to LandInfo is done")
+                        
+                        # Select review
+                        ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[@class='scroll']/a[@ui-sref='landpks.landcover_review-results']")
+                        WaitForLoad(self.driver)
+                        LogSuccess("--Select Review is done")
+                        
+                        # Check to see Metrics Unit for Soillayer name 1 - Mandatory
+                        layer_1 = self.driver.find_element_by_xpath("//div[@nav-view='active']//div[@ng-show='selectedPlot.rock_fragment.soil_horizon_1 || selectedPlot.texture.soil_horizon_1']/p[@class='lpks-p']/b[@class='ng-binding']")
+                        LogSuccess(layer_1.text)
+                        if (layer_1.text == '0-1 cm'):
+                            LogSuccess("--Layer 1 name is Correct")
+                        else:
+                            LogError("--Layer 1 Name is IN-correct")
+                            PassOrFail = "FAIL"
+                        # Check to see Metrics Unit for bedrock or stopped digging
+                        try:
+                            PassOrFail = checkMetricsAllLayers(self.driver, PassOrFail)         
+                        except:
+                            LogSuccess("There is an layer has issues")
+                         
+                        if (PassOrFail == "PASS"):   
+                            LogSuccess("Test Case 10.10.5 Passed :  Review page - Submitted plot (Access from LandCover side), check Metrics is correct for Soil layer names, bedrock depth and stopped digging depth")
+                        else:
+                            LogError("Test Case 10.10.5 Failed : Do not see correct Metrics in review page (landcover side) - 1")
+                    except Exception,e:
+                        LogError(str(e))
+                        LogError("Test Case 10.10.5 Failed :  Do not see correct Metrics in Review Page - LandCover Side - 2") 
+                        PassOrFail = "FAIL"  
                 except:
                     PassOrFail = "FAIL"            
         except:
