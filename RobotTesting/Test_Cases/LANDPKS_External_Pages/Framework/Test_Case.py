@@ -1614,7 +1614,7 @@ class Test_Case:#(unittest.TestCase):
                     #Test Case 10.10.6
                     try:
                         # Select Result
-                        ClickElementIfVis(self.driver,By.XPATH,"//a[@href='#/landpks/landcover_review-results']")
+                        ClickElementIfVis(self.driver,By.XPATH,"//a[@ui-sref='landpks.landcover_results']")
                         WaitForLoad(self.driver)
                         LogSuccess("--Select Result is done")
                         
