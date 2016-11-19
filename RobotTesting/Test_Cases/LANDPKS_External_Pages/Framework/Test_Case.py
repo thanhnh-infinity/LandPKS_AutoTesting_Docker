@@ -1501,14 +1501,9 @@ class Test_Case:#(unittest.TestCase):
                        
                     # Test Case 10.10.4    
                     try:
-                        # Back to List
-                        ClickElementIfVis(self.driver,By.XPATH,"//a[@class='button button-icon'][@ng-click='goBack()']")
+                        goToAppSelection(self.driver)
+                        ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[contains(@ng-show,'device')][not(contains(@class,'hide'))]/img[@src='landpks_img/landinfo_logo.png']") 
                         WaitForLoad(self.driver)
-                        LogSuccess("--Out of Result Page")
-                        
-                        ClickElementIfVis(self.driver,By.XPATH,"//a[@class='button button-icon'][@ng-click='goBack();']")
-                        WaitForLoad(self.driver)
-                        LogSuccess("--Out of Review + Result Page - Current in List Page")
                         
                         # Click to Local Climate
                         ClickElementIfVis(self.drive,By.XPATH,LAND_INFO_LOCAL_CLIMATE_BUTTON)
