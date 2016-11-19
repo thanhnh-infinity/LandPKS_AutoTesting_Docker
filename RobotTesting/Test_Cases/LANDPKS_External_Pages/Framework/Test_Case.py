@@ -1614,7 +1614,10 @@ class Test_Case:#(unittest.TestCase):
                     #Test Case 10.10.6
                     try:
                         # Select Result
-                        ClickElementIfVis(self.driver,By.XPATH,"//a[@ui-sref='landpks.landcover_results']")
+                        ClickGoBackLandInfo(self.driver)
+                        LogSuccess("--Out of Review")
+                        
+                        ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[@class='scroll']/a[@ui-sref='landpks.landcover_results']")
                         WaitForLoad(self.driver)
                         LogSuccess("--Select Result is done")
                         
