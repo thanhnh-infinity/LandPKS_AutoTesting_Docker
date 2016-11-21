@@ -137,7 +137,7 @@ def HandleFormNewLandCover(driver,Transect):
     stickSegs = GetElesIfVis(driver,By.XPATH, "{0}//button".format(baseSeg))
     for i in range(1, len(stickSegs) + 1):
         GetEleIfVis(driver,By.XPATH, "{0}[{1}]//button".format(baseSeg,i)).click()
-        PathToSelOption = "//div[@class='ng-scope']//div[contains(@id,'stick-segment')][contains(@id,'{0}')][{1}]//div[@class='checkboxLayer show']/div[@class='checkBoxContainer']//div[@class='multiSelectItem ng-scope vertical'][{2}]".format(Transect,i,random.randint(1,8))
+        PathToSelOption = "//div[@class='ng-scope']//div[contains(@id,'stick-segment')][contains(@id,'{0}')][{1}]//div[@class='checkboxLayer show']/div[@class='checkBoxContainer']//div[@class='multiSelectItem ng-scope vertical' or @class='multiSelectItem ng-scope selected vertical'][{2}]".format(Transect,i,random.randint(1,8))
         #PathToSelOption = "//div[@class='ng-scope']//div[contains(@id,'stick-segment')][contains(@id,'{0}')][{1}]//div[@class='checkboxLayer show']/div[@class='checkBoxContainer']//div[{2}]//input".format(Transect,i,random.randint(1,8))
         ClickElementIfVis(driver, By.XPATH,PathToSelOption)
         GetEleIfVis(driver,By.XPATH, "{0}[{1}]//button".format(baseSeg,i)).click()
@@ -1325,6 +1325,8 @@ class Test_Case:#(unittest.TestCase):
                 Trans = GetSelectBoxSelectedOption(self.driver, By.XPATH, '/html/body/ng-view/section/div[2]/div[1]/form/div[3]/div/select').text.lower()
                 HandleFormNewLandCover(self.driver,Trans)
             ClickElementIfVis(self.driver, By.XPATH, "//button[@id='update']")
+            ClickElementIfVis(self.driver, By.XPATH, "//div[@class='ui-dialog-buttonset']/button/span[contains(.,'Yes')]")
+            WaitUntilElementLocated(self.driver, By.XPATH, "//div[@class='col-md-8 alert alert-success']")
         except:
             PassOrFail = "Fail"
         finally:
