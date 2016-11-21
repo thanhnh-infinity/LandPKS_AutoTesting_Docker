@@ -134,8 +134,8 @@ def HandleExportFromPortalCSV(driver, portalData,Uname=""):
 def HandleFormNewLandCover(driver,Transect):
     #ClickElementIfVis(driver, By.XPATH, "//div[@class='ng-scope']//div[contains(@id,'5m-stick-segment')]/span")
     baseSeg = "//div[@class='ng-scope']//div[contains(@id,'stick-segment')][contains(@id,'{0}')]".format(Transect)
-    stickSegs = GetElesIfVis(driver,By.XPATH, baseSeg)
-    for i in range(1, len(stickSegs)):
+    stickSegs = GetElesIfVis(driver,By.XPATH, "{0}//button".format(baseSeg))
+    for i in range(1, len(stickSegs) + 1):
         GetEleIfVis(driver,By.XPATH, "{0}[{1}]//button".format(baseSeg,i)).click()
         PathToSelOption = "//div[@class='ng-scope']//div[contains(@id,'stick-segment')][contains(@id,'{0}')][{1}]//div[@class='checkboxLayer show']/div[@class='checkBoxContainer']//div[@class='multiSelectItem ng-scope vertical'][{2}]".format(Transect,i,random.randint(1,8))
         #PathToSelOption = "//div[@class='ng-scope']//div[contains(@id,'stick-segment')][contains(@id,'{0}')][{1}]//div[@class='checkboxLayer show']/div[@class='checkBoxContainer']//div[{2}]//input".format(Transect,i,random.randint(1,8))
@@ -1320,15 +1320,16 @@ class Test_Case:#(unittest.TestCase):
             ClickElementIfVis(self.driver, By.XPATH, "/html/body/ng-view/section/div[2]/div[1]/div[2]/div/div[1]/div/a")
             ClickElementIfVis(self.driver, By.XPATH, "/html/body/ng-view/section/div[2]/div[1]/div[2]/div/div[1]/div/div/ul/li/ul/li/div")
             SelectBoxSelectRand(self.driver, By.XPATH, "/html/body/ng-view/section/div[2]/div[1]/div[3]/div[2]/div/div[1]/div/select")
-            for i in range(1,4):
+            for i in range(1,5):
                 SelectBoxSelectIndex(self.driver, By.XPATH, "/html/body/ng-view/section/div[2]/div[1]/form/div[3]/div/select", i)
                 Trans = GetSelectBoxSelectedOption(self.driver, By.XPATH, '/html/body/ng-view/section/div[2]/div[1]/form/div[3]/div/select').text.lower()
                 HandleFormNewLandCover(self.driver,Trans)
+            ClickElementIfVis(self.driver, By.XPATH, "//button[@id='update']")
         except:
-            PassOrFail = "PASS"
+            PassOrFail = "Fail"
         finally:
             for str in LAND_COVER_FORM_TESTS:
-                LogSuccess(str)
+                LogSuccess("Test {0} Pass".format(str))
             OutputErrors()
             OutputSucessful()
             self.tearDown(PassOrFail, bRobot,bSelenium=True)
