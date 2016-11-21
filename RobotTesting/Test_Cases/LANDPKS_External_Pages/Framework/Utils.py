@@ -295,15 +295,25 @@ def GetDate():
 def SelectBoxSelectOption(driver,ByType,ElePath,option):
     selEle = GetSelEle(driver, ByType, ElePath)
     selEle.select_by_value(option)
+def GetSelectBoxSelectedOption(driver,ByType,ElePath):
+    selEle = GetSelEle(driver, ByType, ElePath)
+    return selEle.first_selected_option
 def SelectBoxSelectRand(driver,ByType,ElePath):
     selEle = GetSelEle(driver, ByType, ElePath)
     _SetSelectRand(selEle)
+def SelectBoxSelectIndex(driver,ByType,ElePath,iDx = 0):
+    selEle = GetSelEle(driver, ByType, ElePath)
+    _SetSelectIndex(selEle,iDx)
 def _SetSelectRand(selEle):
     if( selEle.is_multiple ):
         selEle.deselect_all()
     options = len(selEle.options)
     selIndex = random.randint(0,options-1)
     selEle.select_by_index(selIndex)
+def _SetSelectIndex(selEle,iDx):
+    if( selEle.is_multiple ):
+        selEle.deselect_all()
+    selEle.select_by_index(iDx)
 def CheckDeselect(selEle,SelIndex):
     selEle.deselect_by_index(SelIndex)
     SelectOption = selEle.all_selected_options()
