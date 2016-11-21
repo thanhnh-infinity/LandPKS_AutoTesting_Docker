@@ -7,6 +7,8 @@ import simplejson as json
 from selenium.webdriver.support.ui import Select
 from NetUtils import GetPortalInfo
 import csv
+from selenium.webdriver.common.by import By
+from appium.webdriver.webdriver import WebDriver
 #REQUEST_API_LAND_INFO_BY_RECORDER = "http://testapi.landpotential.org:8080/query?version=0.1&action=get&object=landinfo&type=get_by_recorder_name&recorder_name={0}"
 REQUEST_API_LAND_INFO_BY_RECORDER = "http://testapi.landpotential.org:8080/query?&action=get&object=landinfo&type=get_by_recorder_name&recorder_name={0}"
 REQUEST_API_LAND_INFO_BY_RECORDER_PRODUCTION = "http://api.landpotential.org/query?&action=get&object=landinfo&type=get_by_recorder_name&recorder_name={0}"
@@ -400,4 +402,17 @@ def checkZoomControlOnTopLeft(driver):
         return True
 def checkMapCenter(driver):
     return True
+def GetAllLinks(driver):
+    retDict = []
+    Links = driver.find_elements(By.XPATH, "//a")
+    for Link in Links:
+        href = Link.get_attribute('href')
+        if retDict.has_key(href):
+            continue
+        else:
+            retDict.append(href)
+            driver.Get(href)
+            GetAllLinks(driver)
+            driver.back()
+        
     
