@@ -104,6 +104,13 @@ Portal LandCover Test Case 0.x Linux Chrome
     Set Browser    ${Creds}    bSelenium=True    platform=${Platform}    os=${OS}    browserName=${BrowserName}    browser-version=${BrowserVersion}
     Test Case 0 LandCover
 
+Portal LandCover Test Case 0.1.x Use Deleted Plot in Landcover Form Linux Chrome
+    [Documentation]    [Documentation] Launches Portal Land Cover Form directly and landinfo deletes plot from landinfo and attempts to use it in landcover. Fails if plot is available
+    [Tags]    FormsTest
+    ${Creds}=    Get Sauce Creds Jenkins
+    Set Browser    ${Creds}    bSelenium=True    platform=${Platform}    os=${OS}    browserName=${BrowserName}    browser-version=${BrowserVersion}
+    Update LandInfo Stats So That They Use The LPKS API
+
 Portal Map Features 2.7.x Linux Chrome
     [Documentation]    All Portal Map Features: 2.7.1 : Display plots on Map; 2.7.2: Detailed Information of plot on map; 2.7.3: Display map at current location; 2.7.4: Show current location on map
     [Tags]    PortalMaps

@@ -1372,26 +1372,27 @@ class Test_Case:#(unittest.TestCase):
             SetUpApp(self,bRobot=bRobot,bSelenium=True,starturl = "http://portallandpotential.businesscatalyst.com/LandPKS_FORMS/#/login",loginbutton="//a[@id='googlebutton']")
             ClickElementIfVis(self.driver, By.XPATH, LAND_FORMS_LAND_COVER_ICON)
             self.driver.execute_script("$(window.open('http://portallandpotential.businesscatalyst.com/LandPKS_FORMS/#/landinfo'))")
+            self.driver.switch_to_window(self.driver.window_handles[-1])
             WaitForLoadForm(self.driver)
-            ClickElementIfVis(self.driver, By.XPATH, "//div[@class='inputgroup']/div[contains(@class,'ui-select-container ui-select-multiple ui-select-bootstrap dropdown form-control')]")
-            ClickElementIfVis(self.driver, By.XPATH, "//div[@class='inputgroup']//ul[contains(@class,'ui-select-choices ui-select-choices-content ui-select-dropdown dropdown-menu ng-scope')]//a")
-            ClickElementIfVis(self.driver, By.XPATH, "/html/body/ng-view/section/div[2]/div[1]/div[2]/div/div[1]/div/a")
-            ClickElementIfVis(self.driver, By.XPATH, "//div[@class='inputgroup']//a[@uib-tooltip='Delete selected plots!']")
+            ClickElementIfVis(self.driver, By.XPATH, "//div[@class='input-group']//input[contains(@class,'ui-select-search input-xs')]")
+            ClickElementIfVis(self.driver, By.XPATH, "//div[@class='input-group']//ul[contains(@class,'ui-select-choices ui-select-choices-content')]//a")
+            ClickElementIfVis(self.driver, By.XPATH, "//div[@class='input-group']//a[@uib-tooltip='Delete selected plots!']")
             ClickElementIfVis(self.driver, By.XPATH, "//div[@class='ui-dialog-buttonset']/button/span[contains(.,'Yes')]")
-            ClickElementIfVis(self.driver, By.XPATH, "/html/body/ng-view/section/div[2]/div[1]/div[2]/div/div[1]/div/div/ul/li/ul/li/div")
-            SelectBoxSelectRand(self.driver, By.XPATH, "/html/body/ng-view/section/div[2]/div[1]/div[3]/div[2]/div/div[1]/div/select")
-            for i in range(1,5):
-                SelectBoxSelectIndex(self.driver, By.XPATH, "/html/body/ng-view/section/div[2]/div[1]/form/div[3]/div/select", i)
-                Trans = GetSelectBoxSelectedOption(self.driver, By.XPATH, '/html/body/ng-view/section/div[2]/div[1]/form/div[3]/div/select').text.lower()
-                HandleFormNewLandCover(self.driver,Trans)
-            ClickElementIfVis(self.driver, By.XPATH, "//button[@id='update']")
-            ClickElementIfVis(self.driver, By.XPATH, "//div[@class='ui-dialog-buttonset']/button/span[contains(.,'Yes')]")
-            WaitUntilElementLocated(self.driver, By.XPATH, "//div[@class='col-md-8 alert alert-success']")
+            ClickElementIfVis(self.driver, By.XPATH, "//div[@class='ui-dialog-buttonset']/button/span[contains(.,'delete')]")
+            self.driver.switch_to_window(self.driver.window_handles[0])
+            try:
+                ClickElementIfVis(self.driver, By.XPATH, "/html/body/ng-view/section/div[2]/div[1]/div[2]/div/div[1]/div/a")
+                PassOrFail = "Fail"
+                LogError("Test for Deleted Plot in Landcover Failed... Plot was available for landcover info")
+                ClickElementIfVis(self.driver, By.XPATH, "/html/body/ng-view/section/div[2]/div[1]/div[2]/div/div[1]/div/div/ul/li/ul/li/div")
+                SelectBoxSelectRand(self.driver, By.XPATH, "/html/body/ng-view/section/div[2]/div[1]/div[3]/div[2]/div/div[1]/div/select")
+            except:
+                LogSuccess("Test for Deleted Plot in Landcover Passed")
+                pass
+                
         except:
             PassOrFail = "Fail"
         finally:
-            for str in LAND_COVER_FORM_TESTS:
-                LogSuccess("Test {0} Pass".format(str))
             OutputErrors()
             OutputSucessful()
             self.tearDown(PassOrFail, bRobot,bSelenium=True)
