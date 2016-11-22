@@ -104,7 +104,7 @@ Portal LandCover Test Case 0.x Linux Chrome
     Set Browser    ${Creds}    bSelenium=True    platform=${Platform}    os=${OS}    browserName=${BrowserName}    browser-version=${BrowserVersion}
     Test Case 0 LandCover
 
-Portal LandCover Test Case 0.1.x Use Deleted Plot in Landcover Form Linux Chrome
+Portal LandCover Test Case Use Deleted Plot in Landcover Form 0.1.x Linux Chrome
     [Documentation]    [Documentation] Launches Portal Land Cover Form directly and landinfo simultaneously, deletes plot from landinfo and attempts to use it in landcover. Fails if plot is available
     [Tags]    FormsTest
     ${Creds}=    Get Sauce Creds Jenkins
