@@ -10,7 +10,6 @@ import random
 import re
 import unittest
 from appium import webdriver
-from appium.webdriver.webelement import WebElement
 import requests
 from robot.api import logger as log
 from robot.libraries.BuiltIn import BuiltIn
@@ -1363,6 +1362,39 @@ class Test_Case:#(unittest.TestCase):
         finally:
             OutputErrors()
             OutputSucessful()
+    def Update_LandInfo_Stats_so_that_they_use_the_LPKS_API(self, bRobot=True):
+        global ERRORS,SUCCESS,WARNS
+        ERRORS = []
+        SUCCESS = []
+        WARNS = []
+        PassOrFail = "PASS"
+        try:
+            SetUpApp(self,bRobot=bRobot,bSelenium=True,starturl = "http://portallandpotential.businesscatalyst.com/LandPKS_FORMS/#/login",loginbutton="//a[@id='googlebutton']")
+            ClickElementIfVis(self.driver, By.XPATH, LAND_FORMS_LAND_COVER_ICON)
+            self.driver.execute_script("$(window.open('http://portallandpotential.businesscatalyst.com/LandPKS_FORMS/#/landinfo'))")
+            WaitForLoadForm(self.driver)
+            ClickElementIfVis(self.driver, By.XPATH, "//div[@class='inputgroup']/div[contains(@class,'ui-select-container ui-select-multiple ui-select-bootstrap dropdown form-control')]")
+            ClickElementIfVis(self.driver, By.XPATH, "//div[@class='inputgroup']//ul[contains(@class,'ui-select-choices ui-select-choices-content ui-select-dropdown dropdown-menu ng-scope')]//a")
+            ClickElementIfVis(self.driver, By.XPATH, "/html/body/ng-view/section/div[2]/div[1]/div[2]/div/div[1]/div/a")
+            ClickElementIfVis(self.driver, By.XPATH, "//div[@class='inputgroup']//a[@uib-tooltip='Delete selected plots!']")
+            ClickElementIfVis(self.driver, By.XPATH, "//div[@class='ui-dialog-buttonset']/button/span[contains(.,'Yes')]")
+            ClickElementIfVis(self.driver, By.XPATH, "/html/body/ng-view/section/div[2]/div[1]/div[2]/div/div[1]/div/div/ul/li/ul/li/div")
+            SelectBoxSelectRand(self.driver, By.XPATH, "/html/body/ng-view/section/div[2]/div[1]/div[3]/div[2]/div/div[1]/div/select")
+            for i in range(1,5):
+                SelectBoxSelectIndex(self.driver, By.XPATH, "/html/body/ng-view/section/div[2]/div[1]/form/div[3]/div/select", i)
+                Trans = GetSelectBoxSelectedOption(self.driver, By.XPATH, '/html/body/ng-view/section/div[2]/div[1]/form/div[3]/div/select').text.lower()
+                HandleFormNewLandCover(self.driver,Trans)
+            ClickElementIfVis(self.driver, By.XPATH, "//button[@id='update']")
+            ClickElementIfVis(self.driver, By.XPATH, "//div[@class='ui-dialog-buttonset']/button/span[contains(.,'Yes')]")
+            WaitUntilElementLocated(self.driver, By.XPATH, "//div[@class='col-md-8 alert alert-success']")
+        except:
+            PassOrFail = "Fail"
+        finally:
+            for str in LAND_COVER_FORM_TESTS:
+                LogSuccess("Test {0} Pass".format(str))
+            OutputErrors()
+            OutputSucessful()
+            self.tearDown(PassOrFail, bRobot,bSelenium=True)
 
     ###################################    
     ### ThanhNH : Update Test Cases ###
@@ -1745,7 +1777,7 @@ class Testing(unittest.TestCase):
         #self.AppTest.PortalMap(False, False)
         #self.AppTest.Test_Case_2_3(False,False,False,True)
         #self.AppTest.Test_Case_2(False,False)
-        self.AppTest.Test_Case_0_LandCover(False)
+        self.AppTest.Update_LandInfo_Stats_so_that_they_use_the_LPKS_API(False)
         #self.AppTest.Test_Case_0(False,False)
         #self.AppTest.Test_Case_2_4(False,True)
         #self.AppTest.Verify_Portal_And_App_Data_Match(False, True)

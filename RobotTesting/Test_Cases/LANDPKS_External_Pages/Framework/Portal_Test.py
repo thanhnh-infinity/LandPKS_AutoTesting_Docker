@@ -1,3 +1,4 @@
+from Test_Case import Test_Case
 from Test_Case import SetUpApp
 from selenium.webdriver.common.by import By
 ERRORS = []
@@ -10,7 +11,8 @@ def Showing( bRobot=True):
         WARNS = []
         PassOrFail = "PASS"
         try:
-            SetUpApp(bRobot=bRobot,bSelenium=True,starturl = "http://portallandpotential.businesscatalyst.com/LandPKS_FORMS/#/login",loginbutton="//a[@id='googlebutton']")
+            Test = Test_Case
+            SetUpApp(Test,bRobot=bRobot,bSelenium=True,starturl = "http://portallandpotential.businesscatalyst.com/LandPKS_FORMS/#/login",loginbutton="//a[@id='googlebutton']")
             #########
             # Your Stuff
             #########
