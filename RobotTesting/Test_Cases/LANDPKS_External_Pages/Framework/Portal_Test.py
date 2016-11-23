@@ -1,18 +1,14 @@
 from Test_Case import *
 from Test_Case import SetUpApp
 from selenium.webdriver.common.by import By
-import os
 from selenium import webdriver
-
-
-chromedriver = "C:\Users\Ujjwal\Downloads\chromedriver_win32\chromedriver"
-os.environ["webdriver.chrome.driver"] = chromedriver
 
 ERRORS = []
 SUCCESS = []
 WARNS=[]
 url = "http://portallandpotential.businesscatalyst.com/LandPKS_FORMS/#/"
 landcover_img_xpath = '//*[@id="landpks-page"]/div[2]/div[3]/a'
+chromedriver = "C:\Users\Ujjwal\Downloads\chromedriver_win32\chromedriver"
 
 class Portal_Test:
     def Showing(self,bRobot=True):
