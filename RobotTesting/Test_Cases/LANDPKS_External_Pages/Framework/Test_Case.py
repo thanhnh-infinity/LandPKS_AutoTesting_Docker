@@ -137,6 +137,7 @@ def HandleFormNewLandCover(driver,Transect,PlotName):
     #ClickElementIfVis(driver, By.XPATH, "//div[@class='ng-scope']//div[contains(@id,'5m-stick-segment')]/span")
     baseSeg = "//div[@class='ng-scope']//div[contains(@id,'stick-segment')][contains(@id,'{0}')]".format(Transect)
     stickSegs = GetElesIfVis(driver,By.XPATH, "{0}//button".format(baseSeg))
+    SelOptionTexts = driver.find_elements(By.XPATH, "{0}//button".format(baseSeg))
     for i in range(1, len(stickSegs) + 1):
         GetEleIfVis(driver,By.XPATH, "{0}[{1}]//button".format(baseSeg,i)).click()
         
@@ -144,24 +145,28 @@ def HandleFormNewLandCover(driver,Transect,PlotName):
         #PathToSelOption = "//div[@class='ng-scope']//div[contains(@id,'stick-segment')][contains(@id,'{0}')][{1}]//div[@class='checkboxLayer show']/div[@class='checkBoxContainer']//div[{2}]//input".format(Transect,i,random.randint(1,8))
         try:
             
-            
-            SelEles = driver.find_elements( By.XPATH, "//div[@class='ng-scope']//div[contains(@id,'stick-segment')][contains(@id,'{0}')][{1}]//div[@class='checkboxLayer show']/div[@class='checkBoxContainer']//div[contains(@class,'multiSelectItem ng-scope') and contains(@class,'selected')]//label/span".format(Transect,i))
-            if len(SelEles) == 0:
-                PathToSelOption = "//div[@class='ng-scope']//div[contains(@id,'stick-segment')][contains(@id,'{0}')][{1}]//div[@class='checkboxLayer show']/div[@class='checkBoxContainer']//div[@class='multiSelectItem ng-scope vertical'][{2}]".format(Transect,i,random.randint(1,5))
-            elif("Bare" in SelEles[0].text):
-                ClickElementIfVis(driver, By.XPATH, "//div[@class='ng-scope']//div[contains(@id,'stick-segment')][contains(@id,'{0}')][{1}]//div[@class='checkboxLayer show']/div[@class='checkBoxContainer']//div[contains(@class,'multiSelectItem ng-scope') and contains(@class,'selected')]".format(Transect,i))
-                PathToSelOption = "//div[@class='ng-scope']//div[contains(@id,'stick-segment')][contains(@id,'{0}')][{1}]//div[@class='checkboxLayer show']/div[@class='checkBoxContainer']//div[@class='multiSelectItem ng-scope vertical'][{2}]".format(Transect,i,random.randint(1,5))
-            elif(len(SelEles)) >= 2:
-                PathToSelOption = "//div[@class='ng-scope']//div[contains(@id,'stick-segment')][contains(@id,'{0}')][{1}]//div[@class='checkboxLayer show']/div[@class='checkBoxContainer']//div[@class='multiSelectItem ng-scope vertical' or (contains(@class,'multiSelectItem ng-scope') and contains(@class,'selected'))][{2}]".format(Transect,i,random.randint(1,8))
+            PathToSelOption = "{0}[{1}]//div[@class='checkboxLayer show']/div[@class='checkBoxContainer']//div[@class='multiSelectItem ng-scope vertical'][{2}]".format(baseSeg,i,random.randint(1,8))
+            SelOptionText = SelOptionTexts[i-1].text.lower()
+            if( not ("none" in SelOptionText )):
+                SelEles = driver.find_elements( By.XPATH, "{0}[{1}]//div[@class='checkboxLayer show']/div[@class='checkBoxContainer']//div[contains(@class,'multiSelectItem ng-scope') and contains(@class,'selected')]//label/span".format(baseSeg,i))
+                if len(SelEles) > 0:
+                    for SelEle in SelEles:
+                        SelEle.click()
+                #elif("Bare" in SelEles[0].text):
+                #    ClickElementIfVis(driver, By.XPATH, "{0}[{1}]//div[@class='checkboxLayer show']/div[@class='checkBoxContainer']//div[contains(@class,'multiSelectItem ng-scope') and contains(@class,'selected')]".format(Transect,i))
+                #    PathToSelOption = "//div[@class='ng-scope']//div[contains(@id,'stick-segment')][contains(@id,'{0}')][{1}]//div[@class='checkboxLayer show']/div[@class='checkBoxContainer']//div[@class='multiSelectItem ng-scope vertical'][{2}]".format(Transect,i,random.randint(1,5))
+                #elif(len(SelEles)) >= 2:
+                #    PathToSelOption = "//div[@class='ng-scope']//div[contains(@id,'stick-segment')][contains(@id,'{0}')][{1}]//div[@class='checkboxLayer show']/div[@class='checkBoxContainer']//div[@class='multiSelectItem ng-scope vertical' or (contains(@class,'multiSelectItem ng-scope') and contains(@class,'selected'))][{2}]".format(Transect,i,random.randint(1,8))
         except:
-            PathToSelOption = "//div[@class='ng-scope']//div[contains(@id,'stick-segment')][contains(@id,'{0}')][{1}]//div[@class='checkboxLayer show']/div[@class='checkBoxContainer']//div[@class='multiSelectItem ng-scope vertical'][{2}]".format(Transect,i,random.randint(1,8))
+            PathToSelOption = "{0}[{1}]//div[@class='checkboxLayer show']/div[@class='checkBoxContainer']//div[@class='multiSelectItem ng-scope vertical'][{2}]".format(baseSeg,i,random.randint(1,8))
             pass
         ClickElementIfVis(driver, By.XPATH,PathToSelOption)
         GetEleIfVis(driver,By.XPATH, "{0}[{1}]//button".format(baseSeg,i)).click()
-        StickSegNum = 1
-    for Label in GetElesIfVis(driver,By.XPATH, "{0}//button/div[@class='buttonLabel']".format(baseSeg)):
-            StickSegNum +=1
-            FORM_PLOT_DICT[PlotName][Transect][i] = Label.text
+        FORM_PLOT_DICT[PlotName][Transect][i] = SelOptionTexts[i-1].text
+    #StickSegNum = 1
+    #for Label in GetElesIfVis(driver,By.XPATH, "{0}//button".format(baseSeg)):
+    #        StickSegNum +=1
+    #        FORM_PLOT_DICT[PlotName][Transect][i] = SelOptionTexts[i-1].text
     return
 def HandleFormNewLandInfo(driver):
     InputsCounts = len(driver.find_elements_by_tag_name("input"))
