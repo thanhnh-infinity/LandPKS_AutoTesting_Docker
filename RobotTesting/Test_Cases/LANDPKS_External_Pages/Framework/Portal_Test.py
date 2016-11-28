@@ -27,7 +27,10 @@ adviceUserMessage = 'please logout and login'
 
 class Portal_Test:
     def Advise_User_Logout_Login(self, bRobot=True):
-
+        global ERRORS,SUCCESS,WARNS
+        ERRORS = []
+        SUCCESS = []
+        WARNS = []
         PassOrFail = "PASS"
         try:
             # self.driver = webdriver.Chrome(chromedriver)
@@ -49,7 +52,6 @@ class Portal_Test:
             ClickElementIfVis(self.driver, By.XPATH, yesBotton_Dialog)
             element = WebDriverWait(self.driver, 20).until(
                 EC.element_to_be_clickable((By.XPATH, sucessMessageBoxCancel)))
-            LogSuccess("Advise User Login Logout: Pass7")
             text = self.driver.find_element_by_xpath(sucessMessageDiv).text
             if not (adviceUserMessage in text):
                 PassOrFail = "FAIL"
@@ -65,16 +67,23 @@ class Portal_Test:
         return PassOrFail
 
     def Landinfo_MultiDelete_DownloadPhoto(self, bRobot=True):
-
+        global ERRORS,SUCCESS,WARNS
+        ERRORS = []
+        SUCCESS = []
+        WARNS = []
         PassOrFail = "PASS"
         try:
             # self.driver = webdriver.Chrome(chromedriver)
 
             SetUpApp(self, bRobot=bRobot, bSelenium=True, starturl=url + "login", loginbutton="//a[@id='googlebutton']")
             time.sleep(1)
+            LogSuccess("Test Multi Plots Delete: Pass-1")
+
             win = self.driver.window_handles
 
             self.driver.switch_to.window(win[0])
+            LogSuccess("Test Multi Plots Delete: Pass-2")
+
             ClickElementIfVis(self.driver, By.XPATH, LAND_FORMS_LAND_INFO_ICON)
             WaitForLoadForm(self.driver)
             time.sleep(1)
