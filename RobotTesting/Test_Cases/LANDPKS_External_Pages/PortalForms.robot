@@ -16,16 +16,11 @@ ${Capa}             None
 ${webdriver}        None
 
 *** Test Cases ***
-Portal Advise User to Logout/Login
-    [Documentation]    Checks the form for logout/login message after data edit
+Portal Advise User to Logout/Login, Landinfo MultiDelete and Photos Download
+    [Documentation]    Checks the form for logout/login message after data edit, Allow users delete multiple plots, Allow users to download photos from landinfo form on Chrome
     [Tags]    FormsTest
-    ${x} =  Advise User Logout Login
+    ${x} =  Advise User Logout Login Multidelete PhotosDownload
     should be equal as strings       ${x}        PASS
 
-Portal Landinfo MultiDelete And Photos Download
-    [Documentation]    Allow users delete multiple plots, Allow users to download photos from landinfo form on Chrome
-    [Tags]    FormsTest
-    ${x}=      landinfo multidelete downloadphoto
-    should be equal as strings  ${x}        PASS
 
 *** Keywords ***
