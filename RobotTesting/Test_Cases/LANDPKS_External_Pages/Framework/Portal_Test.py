@@ -42,19 +42,13 @@ class Portal_Test:
             ClickElementIfVis(self.driver, By.XPATH, dropdown_xpath)
             time.sleep(1)
             self.driver.find_element_by_xpath(searchbox_xpath).send_keys(plot_name)
-            LogSuccess("Advise User Login Logout: Pass1")
 
             ClickElementIfVis(self.driver, By.XPATH, plot_xpath)
-            LogSuccess("Advise User Login Logout: Pass2")
 
             ClickElementIfVis(self.driver, By.ID, datebox_id)
-            LogSuccess("Advise User Login Logout: Pass3")
             ClickElementIfVis(self.driver, By.XPATH, date_xpath)
-            LogSuccess("Advise User Login Logout: Pass4")
             ClickElementIfVis(self.driver, By.ID, botton_id)
-            LogSuccess("Advise User Login Logout: Pass5")
             ClickElementIfVis(self.driver, By.XPATH, yesBotton_Dialog)
-            LogSuccess("Advise User Login Logout: Pass6")
             element = WebDriverWait(self.driver, 20).until(
                 EC.element_to_be_clickable((By.XPATH, sucessMessageBoxCancel)))
             LogSuccess("Advise User Login Logout: Pass7")
@@ -84,23 +78,37 @@ class Portal_Test:
             SetUpApp(self, bRobot=bRobot, bSelenium=True, starturl=url + "login", loginbutton="//a[@id='googlebutton']")
             time.sleep(1)
             win = self.driver.window_handles
+            LogSuccess("Test Download Photo Chrome: Pass0")
+
+
             self.driver.switch_to.window(win[0])
+            LogSuccess("Test Download Photo Chrome: Pass1")
             ClickElementIfVis(self.driver, By.XPATH, LAND_FORMS_LAND_INFO_ICON)
+            LogSuccess("Test Download Photo Chrome: Pass2")
             WaitForLoadForm(self.driver)
+            LogSuccess("Test Download Photo Chrome: Pass3")
             time.sleep(1)
             ClickElementIfVis(self.driver, By.XPATH, multidelete_xpathLandinfo)
+            LogSuccess("Test Download Photo Chrome: Pass4")
+
             time.sleep(1)
             ClickElementIfVis(self.driver, By.XPATH, multidelete_xpathPlot)
+            LogSuccess("Test Download Photo Chrome: Pass5")
             time.sleep(1)
             ClickElementIfVis(self.driver, By.XPATH, multidelete_xpathPlot)
+            LogSuccess("Test Download Photo Chrome: Pass6")
             time.sleep(5)
             ClickElementIfVis(self.driver, By.XPATH, dropdown_xpathLandinfo)
+            LogSuccess("Test Download Photo Chrome: Pass7")
             time.sleep(1)
             self.driver.find_element_by_xpath(searchbox_xpathLandinfo).send_keys(plot_name)
+            LogSuccess("Test Download Photo Chrome: Pass8")
             ClickElementIfVis(self.driver, By.XPATH, plot_xpathLandinfo)
+            LogSuccess("Test Download Photo Chrome: Pass9")
             self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
             LogSuccess("Test Multi Plots Delete: Pass")
             LogSuccess("Test Download Photo Chrome: Pass")
+
 
 
         except  Exception as e:
