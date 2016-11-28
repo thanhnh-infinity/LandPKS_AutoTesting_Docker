@@ -70,6 +70,7 @@ LAND_INFO_LOCAL_CLIMATE_LAT = "//div[@class='scroll']/p[contains(.,'Latitude')]"
 LAND_FORMS_LAND_INFO_ICON = "//a[@ng-click='landinfoSelect()']/img"
 LAND_FORMS_LAND_COVER_ICON = "//a[@ng-click='landcoverSelect()']/img"
 TITLE_LAND_INFO_PAGE_XPATH = LAND_INFO_BACK_BUTTON + "/p"
+FORM_PLOT_DICT = {}
 LAND_COVER_FORM_TESTS = ['0.0    Open Form','0.1    Log out','0.2    Application selection page','1.1    Home button','1.2    Log out','2    Select a plot to insert/update','2.1    Edit submitted LandCover data','2.1.0    Delete the plot','2.1.1    Dominant woody and non-dominant woody species','2.1.2    North','2.1.2.1    North 5m','2.1.2.1.1    Cover','2.1.2.1.2    Canopy Height','2.1.2.1.3    Basal Gap','2.1.2.1.4    Canopy Gap','2.1.2.1.5    Species 1','2.1.2.1.6    Species 2','2.1.2.2    North 10m','2.1.2.2.1    Cover','2.1.2.2.2    Canopy Height','2.1.2.2.3    Basal Gap','2.1.2.2.4    Canopy Gap','2.1.2.2.5    Species 1','2.1.2.2.6    Species 2','2.1.2.3    North 15m','2.1.2.3.1    Cover','2.1.2.3.2    Canopy Height','2.1.2.3.3    Basal Gap','2.1.2.3.4    Canopy Gap','2.1.2.3.5    Species 1','2.1.2.3.6    Species 2','2.1.2.4    North 20m','2.1.2.4.1    Cover','2.1.2.4.2    Canopy Height','2.1.2.4.3    Basal Gap','2.1.2.4.4    Canopy Gap','2.1.2.4.5    Species 1','2.1.2.4.6    Species 2','2.1.2.5    North 25m','2.1.2.5.1    Cover','2.1.2.5.2    Canopy Height','2.1.2.5.3    Basal Gap','2.1.2.5.4    Canopy Gap','2.1.2.5.5    Species 1','2.1.2.5.6    Species 2','2.1.3    South','2.1.3.1    South 5m','2.1.3.1.1    Cover','2.1.3.1.2    Canopy Height','2.1.3.1.3    Basal Gap','2.1.3.1.4    Canopy Gap','2.1.3.1.5    Species 1','2.1.3.1.6    Species 2','2.1.3.2    South 10m','2.1.3.2.1    Cover','2.1.3.2.2    Canopy Height','2.1.3.2.3    Basal Gap','2.1.3.2.4    Canopy Gap','2.1.3.2.5    Species 1','2.1.3.2.6    Species 2','2.1.3.3    South 15m','2.1.3.3.1    Cover','2.1.3.3.2    Canopy Height','2.1.3.3.3    Basal Gap','2.1.3.3.4    Canopy Gap','2.1.3.3.5    Species 1','2.1.3.3.6    Species 2','2.1.3.4    South 20m','2.1.3.4.1    Cover','2.1.3.4.2    Canopy Height','2.1.3.4.3    Basal Gap','2.1.3.4.4    Canopy Gap','2.1.3.4.5    Species 1','2.1.3.4.6    Species 2','2.1.3.5    South 25m','2.1.3.5.1    Cover','2.1.3.5.2    Canopy Height','2.1.3.5.3    Basal Gap','2.1.3.5.4    Canopy Gap','2.1.3.5.5    Species 1','2.1.3.5.6    Species 2','2.1.4    East','2.1.4.1    East 5m','2.1.4.1.1    Cover','2.1.4.1.2    Canopy Height','2.1.4.1.3    Basal Gap','2.1.4.1.4    Canopy Gap','2.1.4.1.5    Species 1','2.1.4.1.6    Species 2','2.1.4.2    East 10m','2.1.4.2.1    Cover','2.1.4.2.2    Canopy Height','2.1.4.2.3    Basal Gap','2.1.4.2.4    Canopy Gap','2.1.4.2.5    Species 1','2.1.4.2.6    Species 2','2.1.4.3    East 15m','2.1.4.3.1    Cover','2.1.4.3.2    Canopy Height','2.1.4.3.3    Basal Gap','2.1.4.3.4    Canopy Gap','2.1.4.3.5    Species 1','2.1.4.3.6    Species 2','2.1.4.4    East 20m','2.1.4.4.1    Cover','2.1.4.4.2    Canopy Height','2.1.4.4.3    Basal Gap','2.1.4.4.4    Canopy Gap','2.1.4.4.5    Species 1','2.1.4.4.6    Species 2','2.1.4.5    East 25m','2.1.4.5.1    Cover','2.1.4.5.2    Canopy Height','2.1.4.5.3    Basal Gap','2.1.4.5.4    Canopy Gap','2.1.4.5.5    Species 1','2.1.4.5.6    Species 2','2.1.5    West','2.1.5.1    West 5m','2.1.5.1.1    Cover','2.1.5.1.2    Canopy Height','2.1.5.1.3    Basal Gap','2.1.5.1.4    Canopy Gap','2.1.5.1.5    Species 1','2.1.5.1.6    Species 2','2.1.5.2    West 10m','2.1.5.2.1    Cover','2.1.5.2.2    Canopy Height','2.1.5.2.3    Basal Gap','2.1.5.2.4    Canopy Gap','2.1.5.2.5    Species 1','2.1.5.2.6    Species 2','2.1.5.3    West 15m','2.1.5.3.1    Cover','2.1.5.3.2    Canopy Height','2.1.5.3.3    Basal Gap','2.1.5.3.4    Canopy Gap','2.1.5.3.5    Species 1','2.1.5.3.6    Species 2','2.1.5.4    West 20m','2.1.5.4.1    Cover','2.1.5.4.2    Canopy Height','2.1.5.4.3    Basal Gap','2.1.5.4.4    Canopy Gap','2.1.5.4.5    Species 1','2.1.5.4.6    Species 2','2.1.5.5    West 25m','2.1.5.5.1    Cover','2.1.5.5.2    Canopy Height','2.1.5.5.3    Basal Gap','2.1.5.5.4    Canopy Gap','2.1.5.5.5    Species 1','2.1.5.5.6    Species 2','2.1.6    Update','2.2    Insert Data ','2.2.0    Select the date','2.2.1    Dominant woody and non-dominant woody species','2.2.2    North','2.2.2.2    North 5m','2.2.2.2.1    Cover','2.2.2.2.2    Canopy Height','2.2.2.2.3    Basal Gap','2.2.2.2.4    Canopy Gap','2.2.2.2.5    Species 1','2.2.2.2.6    Species 2','2.2.2.2    North 10m','2.2.2.2.2    Cover','2.2.2.2.2    Canopy Height','2.2.2.2.3    Basal Gap','2.2.2.2.4    Canopy Gap','2.2.2.2.5    Species 1','2.2.2.2.6    Species 2','2.2.2.3    North 15m','2.2.2.3.1    Cover','2.2.2.3.2    Canopy Height','2.2.2.3.3    Basal Gap','2.2.2.3.4    Canopy Gap','2.2.2.3.5    Species 1','2.2.2.3.6    Species 2','2.2.2.4    North 20m','2.2.2.4.1    Cover','2.2.2.4.2    Canopy Height','2.2.2.4.3    Basal Gap','2.2.2.4.4    Canopy Gap','2.2.2.4.5    Species 1','2.2.2.4.6    Species 2','2.2.2.5    North 25m','2.2.2.5.1    Cover','2.2.2.5.2    Canopy Height','2.2.2.5.3    Basal Gap','2.2.2.5.4    Canopy Gap','2.2.2.5.5    Species 1','2.2.2.5.6    Species 2','2.2.3    South','2.2.3.1    South 5m','2.2.3.1.1    Cover','2.2.3.1.2    Canopy Height','2.2.3.1.3    Basal Gap','2.2.3.1.4    Canopy Gap','2.2.3.1.5    Species 1','2.2.3.1.6    Species 2','2.2.3.2    South 10m','2.2.3.2.2    Cover','2.2.3.2.2    Canopy Height','2.2.3.2.3    Basal Gap','2.2.3.2.4    Canopy Gap','2.2.3.2.5    Species 1','2.2.3.2.6    Species 2','2.2.3.3    South 15m','2.2.3.3.1    Cover','2.2.3.3.2    Canopy Height','2.2.3.3.3    Basal Gap','2.2.3.3.4    Canopy Gap','2.2.3.3.5    Species 1','2.2.3.3.6    Species 2','2.2.3.4    South 20m','2.2.3.4.1    Cover','2.2.3.4.2    Canopy Height','2.2.3.4.3    Basal Gap','2.2.3.4.4    Canopy Gap','2.2.3.4.5    Species 1','2.2.3.4.6    Species 2','2.2.3.5    South 25m','2.2.3.5.1    Cover','2.2.3.5.2    Canopy Height','2.2.3.5.3    Basal Gap','2.2.3.5.4    Canopy Gap','2.2.3.5.5    Species 1','2.2.3.5.6    Species 2','2.2.4    East','2.2.4.1    East 5m','2.2.4.1.1    Cover','2.2.4.1.2    Canopy Height','2.2.4.1.3    Basal Gap','2.2.4.1.4    Canopy Gap','2.2.4.1.5    Species 1','2.2.4.1.6    Species 2','2.2.4.2    East 10m','2.2.4.2.2    Cover','2.2.4.2.2    Canopy Height','2.2.4.2.3    Basal Gap','2.2.4.2.4    Canopy Gap','2.2.4.2.5    Species 1','2.2.4.2.6    Species 2','2.2.4.3    East 15m','2.2.4.3.1    Cover','2.2.4.3.2    Canopy Height','2.2.4.3.3    Basal Gap','2.2.4.3.4    Canopy Gap','2.2.4.3.5    Species 1','2.2.4.3.6    Species 2','2.2.4.4    East 20m','2.2.4.4.1    Cover','2.2.4.4.2    Canopy Height','2.2.4.4.3    Basal Gap','2.2.4.4.4    Canopy Gap','2.2.4.4.5    Species 1','2.2.4.4.6    Species 2','2.2.4.5    East 25m','2.2.4.5.1    Cover','2.2.4.5.2    Canopy Height','2.2.4.5.3    Basal Gap','2.2.4.5.4    Canopy Gap','2.2.4.5.5    Species 1','2.2.4.5.6    Species 2','2.2.5    West','2.2.5.1    West 5m','2.2.5.1.1    Cover','2.2.5.1.2    Canopy Height','2.2.5.1.3    Basal Gap','2.2.5.1.4    Canopy Gap','2.2.5.1.5    Species 1','2.2.5.1.6    Species 2','2.2.5.2    West 10m','2.2.5.2.2    Cover','2.2.5.2.2    Canopy Height','2.2.5.2.3    Basal Gap','2.2.5.2.4    Canopy Gap','2.2.5.2.5    Species 1','2.2.5.2.6    Species 2','2.2.5.3    West 15m','2.2.5.3.1    Cover','2.2.5.3.2    Canopy Height','2.2.5.3.3    Basal Gap','2.2.5.3.4    Canopy Gap','2.2.5.3.5    Species 1','2.2.5.3.6    Species 2','2.2.5.4    West 20m','2.2.5.4.1    Cover','2.2.5.4.2    Canopy Height','2.2.5.4.3    Basal Gap','2.2.5.4.4    Canopy Gap','2.2.5.4.5    Species 1','2.2.5.4.6    Species 2','2.2.5.5    West 25m','2.2.5.5.1    Cover','2.2.5.5.2    Canopy Height','2.2.5.5.3    Basal Gap','2.2.5.5.4    Canopy Gap','2.2.5.5.5    Species 1','2.2.5.5.6    Species 2','2.2.6    Insert']
 DICT_MESSAGES_NO_DATA_KEY = {
                  False: {"SubmitPlotText" : "Plot is submitted"},
@@ -130,16 +131,37 @@ def HandleExportFromPortalCSV(driver, portalData,Uname=""):
     #WaitForEleLoad(driver, "//div[@class='progress-bar progress-bar-striped active']")
     CSVData = ParseCSVFile("Export_LandInfo_Data.csv")
     CheckCSVSameAsPortal(driver = driver, PortalData=portalData,CSVData=CSVData)
-def HandleFormNewLandCover(driver,Transect):
+def HandleFormNewLandCover(driver,Transect,PlotName):
+    global FORM_PLOT_DICT
+    FORM_PLOT_DICT[PlotName][Transect] = {}
     #ClickElementIfVis(driver, By.XPATH, "//div[@class='ng-scope']//div[contains(@id,'5m-stick-segment')]/span")
     baseSeg = "//div[@class='ng-scope']//div[contains(@id,'stick-segment')][contains(@id,'{0}')]".format(Transect)
     stickSegs = GetElesIfVis(driver,By.XPATH, "{0}//button".format(baseSeg))
     for i in range(1, len(stickSegs) + 1):
         GetEleIfVis(driver,By.XPATH, "{0}[{1}]//button".format(baseSeg,i)).click()
-        PathToSelOption = "//div[@class='ng-scope']//div[contains(@id,'stick-segment')][contains(@id,'{0}')][{1}]//div[@class='checkboxLayer show']/div[@class='checkBoxContainer']//div[@class='multiSelectItem ng-scope vertical' or @class='multiSelectItem ng-scope selected vertical'][{2}]".format(Transect,i,random.randint(1,8))
+        
+        #PathToSelOption = "//div[@class='ng-scope']//div[contains(@id,'stick-segment')][contains(@id,'{0}')][{1}]//div[@class='checkboxLayer show']/div[@class='checkBoxContainer']//div[@class='multiSelectItem ng-scope vertical' or @class='multiSelectItem ng-scope selected vertical'][{2}]".format(Transect,i,random.randint(1,8))
         #PathToSelOption = "//div[@class='ng-scope']//div[contains(@id,'stick-segment')][contains(@id,'{0}')][{1}]//div[@class='checkboxLayer show']/div[@class='checkBoxContainer']//div[{2}]//input".format(Transect,i,random.randint(1,8))
+        try:
+            
+            
+            SelEles = driver.find_elements( By.XPATH, "//div[@class='ng-scope']//div[contains(@id,'stick-segment')][contains(@id,'{0}')][{1}]//div[@class='checkboxLayer show']/div[@class='checkBoxContainer']//div[contains(@class,'multiSelectItem ng-scope') and contains(@class,'selected')]//label/span".format(Transect,i))
+            if len(SelEles) == 0:
+                PathToSelOption = "//div[@class='ng-scope']//div[contains(@id,'stick-segment')][contains(@id,'{0}')][{1}]//div[@class='checkboxLayer show']/div[@class='checkBoxContainer']//div[@class='multiSelectItem ng-scope vertical'][{2}]".format(Transect,i,random.randint(1,5))
+            elif("Bare" in SelEles[0].text):
+                ClickElementIfVis(driver, By.XPATH, "//div[@class='ng-scope']//div[contains(@id,'stick-segment')][contains(@id,'{0}')][{1}]//div[@class='checkboxLayer show']/div[@class='checkBoxContainer']//div[contains(@class,'multiSelectItem ng-scope') and contains(@class,'selected')]".format(Transect,i))
+                PathToSelOption = "//div[@class='ng-scope']//div[contains(@id,'stick-segment')][contains(@id,'{0}')][{1}]//div[@class='checkboxLayer show']/div[@class='checkBoxContainer']//div[@class='multiSelectItem ng-scope vertical'][{2}]".format(Transect,i,random.randint(1,5))
+            elif(len(SelEles)) >= 2:
+                PathToSelOption = "//div[@class='ng-scope']//div[contains(@id,'stick-segment')][contains(@id,'{0}')][{1}]//div[@class='checkboxLayer show']/div[@class='checkBoxContainer']//div[@class='multiSelectItem ng-scope vertical' or (contains(@class,'multiSelectItem ng-scope') and contains(@class,'selected'))][{2}]".format(Transect,i,random.randint(1,8))
+        except:
+            PathToSelOption = "//div[@class='ng-scope']//div[contains(@id,'stick-segment')][contains(@id,'{0}')][{1}]//div[@class='checkboxLayer show']/div[@class='checkBoxContainer']//div[@class='multiSelectItem ng-scope vertical'][{2}]".format(Transect,i,random.randint(1,8))
+            pass
         ClickElementIfVis(driver, By.XPATH,PathToSelOption)
         GetEleIfVis(driver,By.XPATH, "{0}[{1}]//button".format(baseSeg,i)).click()
+        StickSegNum = 1
+    for Label in GetElesIfVis(driver,By.XPATH, "{0}//button/div[@class='buttonLabel']".format(baseSeg)):
+            StickSegNum +=1
+            FORM_PLOT_DICT[PlotName][Transect][i] = Label.text
     return
 def HandleFormNewLandInfo(driver):
     InputsCounts = len(driver.find_elements_by_tag_name("input"))
@@ -830,8 +852,8 @@ def GetEleByTextValue(driver, ByType, Xpath, TextValue):
 def WaitUntilElementLocated(driver, ByType, Value):
     wait = WebDriverWait(driver, TIMEOUT)
     wait.until(EC.visibility_of_element_located((ByType, Value)), "")
-def GetElesIfVis(driver, ByType, Value):
-    wait = WebDriverWait(driver, TIMEOUT)
+def GetElesIfVis(driver, ByType, Value, time=TIMEOUT):
+    wait = WebDriverWait(driver, time)
     wait.until(EC.visibility_of_element_located((ByType, Value)), "")
     return driver.find_elements(ByType, Value)
 def ClickElementIfVis(driver, ByType, Value):
@@ -1307,7 +1329,8 @@ class Test_Case:#(unittest.TestCase):
         ClickElementIfVis(self.driver, By.XPATH, "//a[@href='#/landinfoadd']")
         HandleFormNewLandInfo(self.driver)
     def Test_Case_0_LandCover(self, bRobot=True):
-        global ERRORS,SUCCESS,WARNS
+        global ERRORS,SUCCESS,WARNS,FORM_PLOT_DICT
+        FORM_PLOT_DICT = {}
         ERRORS = []
         SUCCESS = []
         WARNS = []
@@ -1316,13 +1339,19 @@ class Test_Case:#(unittest.TestCase):
             SetUpApp(self,bRobot=bRobot,bSelenium=True,starturl = "http://portallandpotential.businesscatalyst.com/LandPKS_FORMS/#/login",loginbutton="//a[@id='googlebutton']")
             ClickElementIfVis(self.driver, By.XPATH, LAND_FORMS_LAND_COVER_ICON)
             WaitForLoadForm(self.driver)
-            ClickElementIfVis(self.driver, By.XPATH, "/html/body/ng-view/section/div[2]/div[1]/div[2]/div/div[1]/div/a")
-            ClickElementIfVis(self.driver, By.XPATH, "/html/body/ng-view/section/div[2]/div[1]/div[2]/div/div[1]/div/div/ul/li/ul/li/div")
+            ClickElementIfVis(self.driver, By.XPATH, "/html/body/ng-view/section/div[2]/div[1]/div[2]/div/div[1]/div/a")#select Box
+            #select Plot
+            #ClickElementIfVis(self.driver, By.XPATH, "/html/body/ng-view/section/div[2]/div[1]/div[2]/div/div[1]/div/div/ul/li/ul/li/div[{0}]".format(
+            #    random.randint(1,len(GetElesIfVis(self.driver, By.XPATH, "/html/body/ng-view/section/div[2]/div[1]/div[2]/div/div[1]/div/div/ul/li/ul/li/div")))))
+            GetElesIfVis(self.driver, By.XPATH, "//div[@ng-bind-html='myplot.plotname | highlight: $select.search']")[random.randint(0,len(GetElesIfVis(self.driver, By.XPATH, "//div[@ng-bind-html='myplot.plotname | highlight: $select.search']")))].click()
+            PlotName = GetEleIfVis(self.driver, By.XPATH, "//div[@class='form-group']//div[contains(@class,'ui-select-container select2 select2-container ng-valid ')]/a[@placeholder='Select or search a plot...']/span[contains(@class,'select2-chosen') and not(contains(@class,'ng-hide'))]/span").text
+            if(PlotName != ""):
+                FORM_PLOT_DICT[PlotName] = {}
             SelectBoxSelectRand(self.driver, By.XPATH, "/html/body/ng-view/section/div[2]/div[1]/div[3]/div[2]/div/div[1]/div/select")
             for i in range(1,5):
                 SelectBoxSelectIndex(self.driver, By.XPATH, "/html/body/ng-view/section/div[2]/div[1]/form/div[3]/div/select", i)
                 Trans = GetSelectBoxSelectedOption(self.driver, By.XPATH, '/html/body/ng-view/section/div[2]/div[1]/form/div[3]/div/select').text.lower()
-                HandleFormNewLandCover(self.driver,Trans)
+                HandleFormNewLandCover(self.driver,Trans,PlotName)
             ClickElementIfVis(self.driver, By.XPATH, "//button[@id='update']")
             ClickElementIfVis(self.driver, By.XPATH, "//div[@class='ui-dialog-buttonset']/button/span[contains(.,'Yes')]")
             WaitUntilElementLocated(self.driver, By.XPATH, "//div[@class='col-md-8 alert alert-success']")
@@ -1382,9 +1411,9 @@ class Test_Case:#(unittest.TestCase):
             self.driver.switch_to_window(self.driver.window_handles[0])
             try:
                 ClickElementIfVis(self.driver, By.XPATH, "/html/body/ng-view/section/div[2]/div[1]/div[2]/div/div[1]/div/a")
+                ClickElementIfVis(self.driver, By.XPATH, "/html/body/ng-view/section/div[2]/div[1]/div[2]/div/div[1]/div/div/ul/li/ul/li/div")
                 PassOrFail = "Fail"
                 LogError("Test for Deleted Plot in Landcover Failed... Plot was available for landcover info")
-                ClickElementIfVis(self.driver, By.XPATH, "/html/body/ng-view/section/div[2]/div[1]/div[2]/div/div[1]/div/div/ul/li/ul/li/div")
                 SelectBoxSelectRand(self.driver, By.XPATH, "/html/body/ng-view/section/div[2]/div[1]/div[3]/div[2]/div/div[1]/div/select")
             except:
                 LogSuccess("Test for Deleted Plot in Landcover Passed")
@@ -1778,6 +1807,7 @@ class Testing(unittest.TestCase):
         #self.AppTest.PortalMap(False, False)
         #self.AppTest.Test_Case_2_3(False,False,False,True)
         #self.AppTest.Test_Case_2(False,False)
+        self.AppTest.Test_Case_0_LandCover(False)
         self.AppTest.Update_LandInfo_Stats_so_that_they_use_the_LPKS_API(False)
         #self.AppTest.Test_Case_0(False,False)
         #self.AppTest.Test_Case_2_4(False,True)
