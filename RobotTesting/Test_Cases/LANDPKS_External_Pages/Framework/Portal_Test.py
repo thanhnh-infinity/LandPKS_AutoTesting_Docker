@@ -3,9 +3,6 @@ from Test_Case import SetUpApp
 from selenium.webdriver.common.by import By
 from selenium import webdriver
 
-ERRORS = []
-SUCCESS = []
-WARNS = []
 url = "http://portallandpotential.businesscatalyst.com/LandPKS_FORMS/#/"
 landcover_img_xpath = '//*[@id="landpks-page"]/div[2]/div[3]/a'
 dropdown_xpath = '//*[@id="plot-selection-div"]/div/div[1]/div/a'
@@ -30,14 +27,11 @@ adviceUserMessage = 'please logout and login'
 
 class Portal_Test:
     def Advise_User_Logout_Login(self, bRobot=True):
-        global ERRORS, SUCCESS, WARNS
-        ERRORS = []
-        SUCCESS = []
-        WARNS = []
+
         PassOrFail = "PASS"
         try:
             # Test = Test_Case
-            # self.driver = webdriver.Chrome(chromedriver)
+            self.driver = webdriver.Chrome(chromedriver)
 
             SetUpApp(self, bRobot=bRobot, bSelenium=True, starturl=url + "login", loginbutton="//a[@id='googlebutton']")
             time.sleep(1)
@@ -62,8 +56,11 @@ class Portal_Test:
 
 
         except  Exception as e:
-            log.error(e.message)
+            LogError(e.message)
             PassOrFail = "FAIL"
+        finally:
+            OutputErrors()
+            OutputSucessful()
         return PassOrFail, ERRORS, SUCCESS, WARNS
 
     def Landinfo_MultiDelete_DownloadPhoto(self, bRobot=True):
@@ -73,7 +70,7 @@ class Portal_Test:
         WARNS = []
         PassOrFail = "PASS"
         try:
-            # self.driver = webdriver.Chrome(chromedriver)
+            self.driver = webdriver.Chrome(chromedriver)
 
             SetUpApp(self, bRobot=bRobot, bSelenium=True, starturl=url + "login", loginbutton="//a[@id='googlebutton']")
             time.sleep(1)
@@ -81,15 +78,15 @@ class Portal_Test:
             self.driver.switch_to.window(win[0])
             ClickElementIfVis(self.driver, By.XPATH, LAND_FORMS_LAND_INFO_ICON)
             WaitForLoadForm(self.driver)
-            time.sleep(0.1)
+            time.sleep(1)
             ClickElementIfVis(self.driver, By.XPATH, multidelete_xpathLandinfo)
-            time.sleep(0.1)
+            time.sleep(1)
             ClickElementIfVis(self.driver, By.XPATH, multidelete_xpathPlot)
-            time.sleep(0.1)
+            time.sleep(1)
             ClickElementIfVis(self.driver, By.XPATH, multidelete_xpathPlot)
             time.sleep(5)
             ClickElementIfVis(self.driver, By.XPATH, dropdown_xpathLandinfo)
-            time.sleep(0.1)
+            time.sleep(1)
             self.driver.find_element_by_xpath(searchbox_xpathLandinfo).send_keys(plot_name)
             ClickElementIfVis(self.driver, By.XPATH, plot_xpathLandinfo)
             self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
@@ -98,8 +95,11 @@ class Portal_Test:
 
 
         except  Exception as e:
-            log.error(e.message)
+            LogError(e.message)
             PassOrFail = "FAIL"
+        finally:
+            OutputErrors()
+            OutputSucessful()
         return PassOrFail, ERRORS, SUCCESS, WARNS
 
 
