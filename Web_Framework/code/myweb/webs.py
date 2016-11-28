@@ -314,6 +314,39 @@ def getLastBuild(Jenkins,jobName):
             ReadableDate += ' - Build {0}'.format(BuildInfo)
         elif "LandPKS_Android_Mobile_Testing" in jobName and not "Production" in jobName :
             ReadableDate += ' - Build {0}'.format(BuildInfo)
+    elif meta._data['result'] == "ABORTED":
+        ReadableDate = '<font size="3" color="gray">{0}</font>'.format(datetime.datetime.fromtimestamp(
+                                                                                                      int(meta._data['timestamp']/1000)
+                                                                                                      ).strftime('%Y-%m-%d %H:%M:%S')
+                                                                      )
+        if "LandPKS_Web_App_Testing" in jobName and not "Production" in jobName:
+            ReadableDate += ' - Build {0}'.format(BuildInfo)
+        elif "LandPKS_Android_Mobile_Testing" in jobName and not "Production" in jobName :
+            ReadableDate += ' - Build {0}'.format(BuildInfo)
+    elif meta._data['building']:
+        ReadableDate = """
+<script type="text/javascript">
+  function blink() {
+    var blinks = document.getElementsByTagName('blink');
+    for (var i = blinks.length - 1; i >= 0; i--) {
+      var s = blinks[i];
+      s.style.visibility = (s.style.visibility === 'visible') ? 'hidden' : 'visible';
+    }
+    window.setTimeout(blink, 1000);
+  }
+  if (document.addEventListener) document.addEventListener("DOMContentLoaded", blink, false);
+  else if (window.addEventListener) window.addEventListener("load", blink, false);
+  else if (window.attachEvent) window.attachEvent("onload", blink);
+  else window.onload = blink;
+</script>
+<blink><font size="3" color="blue">%s</font></blink>"""% datetime.datetime.fromtimestamp(
+                                                                                                      int(meta._data['timestamp']/1000)
+                                                                                                      ).strftime('%Y-%m-%d %H:%M:%S')
+                                    #                                  )
+        if "LandPKS_Web_App_Testing" in jobName :
+            ReadableDate += ' - Build {0}'.format(BuildInfo)
+        elif "LandPKS_Android_Mobile_Testing" in jobName :
+            ReadableDate += ' - Build {0}'.format(BuildInfo)
     else:
         ReadableDate = '<font face="verdana" color="green">{0}</font>'.format(datetime.datetime.fromtimestamp(
                                                                                                       int(meta._data['timestamp']/1000)
