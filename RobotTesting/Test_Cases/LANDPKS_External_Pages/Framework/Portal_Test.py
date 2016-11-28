@@ -34,7 +34,7 @@ class Portal_Test:
         WARNS = []
         PassOrFail = "PASS"
         try:
-            self.driver = webdriver.Chrome(chromedriver)
+            # self.driver = webdriver.Chrome(chromedriver)
             SetUpApp(self, bRobot=bRobot, bSelenium=True, starturl=url + "login", loginbutton="//a[@id='googlebutton']")
             time.sleep(1)
             win = self.driver.window_handles
