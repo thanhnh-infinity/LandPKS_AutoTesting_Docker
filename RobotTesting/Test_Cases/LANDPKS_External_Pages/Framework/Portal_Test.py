@@ -31,8 +31,7 @@ class Portal_Test:
         PassOrFail = "PASS"
         try:
             # Test = Test_Case
-            self.driver = webdriver.Chrome(chromedriver)
-
+            # self.driver = webdriver.Chrome(chromedriver)
             SetUpApp(self, bRobot=bRobot, bSelenium=True, starturl=url + "login", loginbutton="//a[@id='googlebutton']")
             time.sleep(1)
             win = self.driver.window_handles
@@ -67,19 +66,16 @@ class Portal_Test:
         return PassOrFail, ERRORS, SUCCESS, WARNS
 
     def Landinfo_MultiDelete_DownloadPhoto(self, bRobot=True):
-        global ERRORS, SUCCESS, WARNS
-        ERRORS = []
-        SUCCESS = []
-        WARNS = []
+
         PassOrFail = "PASS"
         try:
-            self.driver = webdriver.Chrome(chromedriver)
+            # self.driver = webdriver.Chrome(chromedriver)
+            LogSuccess("Test Download Photo Chrome: Pass-2")
 
             SetUpApp(self, bRobot=bRobot, bSelenium=True, starturl=url + "login", loginbutton="//a[@id='googlebutton']")
             time.sleep(1)
             win = self.driver.window_handles
-            LogSuccess("Test Download Photo Chrome: Pass0")
-
+            LogSuccess("Test Download Photo Chrome: Pass-1")
 
             self.driver.switch_to.window(win[0])
             LogSuccess("Test Download Photo Chrome: Pass1")
