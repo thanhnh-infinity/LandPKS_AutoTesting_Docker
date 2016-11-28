@@ -30,7 +30,6 @@ class Portal_Test:
 
         PassOrFail = "PASS"
         try:
-            # Test = Test_Case
             # self.driver = webdriver.Chrome(chromedriver)
             SetUpApp(self, bRobot=bRobot, bSelenium=True, starturl=url + "login", loginbutton="//a[@id='googlebutton']")
             time.sleep(1)
@@ -63,58 +62,44 @@ class Portal_Test:
         finally:
             OutputErrors()
             OutputSucessful()
-        return PassOrFail, ERRORS, SUCCESS, WARNS
+        return PassOrFail
 
     def Landinfo_MultiDelete_DownloadPhoto(self, bRobot=True):
 
         PassOrFail = "PASS"
         try:
             # self.driver = webdriver.Chrome(chromedriver)
-            LogSuccess("Test Download Photo Chrome: Pass-2")
 
             SetUpApp(self, bRobot=bRobot, bSelenium=True, starturl=url + "login", loginbutton="//a[@id='googlebutton']")
             time.sleep(1)
             win = self.driver.window_handles
-            LogSuccess("Test Download Photo Chrome: Pass-1")
 
             self.driver.switch_to.window(win[0])
-            LogSuccess("Test Download Photo Chrome: Pass1")
             ClickElementIfVis(self.driver, By.XPATH, LAND_FORMS_LAND_INFO_ICON)
-            LogSuccess("Test Download Photo Chrome: Pass2")
             WaitForLoadForm(self.driver)
-            LogSuccess("Test Download Photo Chrome: Pass3")
             time.sleep(1)
             ClickElementIfVis(self.driver, By.XPATH, multidelete_xpathLandinfo)
-            LogSuccess("Test Download Photo Chrome: Pass4")
-
             time.sleep(1)
             ClickElementIfVis(self.driver, By.XPATH, multidelete_xpathPlot)
-            LogSuccess("Test Download Photo Chrome: Pass5")
             time.sleep(1)
             ClickElementIfVis(self.driver, By.XPATH, multidelete_xpathPlot)
-            LogSuccess("Test Download Photo Chrome: Pass6")
             time.sleep(5)
             ClickElementIfVis(self.driver, By.XPATH, dropdown_xpathLandinfo)
-            LogSuccess("Test Download Photo Chrome: Pass7")
             time.sleep(1)
             self.driver.find_element_by_xpath(searchbox_xpathLandinfo).send_keys(plot_name)
-            LogSuccess("Test Download Photo Chrome: Pass8")
             ClickElementIfVis(self.driver, By.XPATH, plot_xpathLandinfo)
-            LogSuccess("Test Download Photo Chrome: Pass9")
             self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
             LogSuccess("Test Multi Plots Delete: Pass")
             LogSuccess("Test Download Photo Chrome: Pass")
 
-
-
         except  Exception as e:
             LogError(e.message)
             PassOrFail = "FAIL"
+
         finally:
             OutputErrors()
             OutputSucessful()
-        return PassOrFail, ERRORS, SUCCESS, WARNS
-
+        return PassOrFail
 
 if __name__ == '__main__':
     test = Portal_Test()
