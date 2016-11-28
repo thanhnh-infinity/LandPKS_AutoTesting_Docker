@@ -42,13 +42,22 @@ class Portal_Test:
             ClickElementIfVis(self.driver, By.XPATH, dropdown_xpath)
             time.sleep(1)
             self.driver.find_element_by_xpath(searchbox_xpath).send_keys(plot_name)
+            LogSuccess("Advise User Login Logout: Pass1")
+
             ClickElementIfVis(self.driver, By.XPATH, plot_xpath)
+            LogSuccess("Advise User Login Logout: Pass2")
+
             ClickElementIfVis(self.driver, By.ID, datebox_id)
+            LogSuccess("Advise User Login Logout: Pass3")
             ClickElementIfVis(self.driver, By.XPATH, date_xpath)
+            LogSuccess("Advise User Login Logout: Pass4")
             ClickElementIfVis(self.driver, By.ID, botton_id)
+            LogSuccess("Advise User Login Logout: Pass5")
             ClickElementIfVis(self.driver, By.XPATH, yesBotton_Dialog)
+            LogSuccess("Advise User Login Logout: Pass6")
             element = WebDriverWait(self.driver, 20).until(
                 EC.element_to_be_clickable((By.XPATH, sucessMessageBoxCancel)))
+            LogSuccess("Advise User Login Logout: Pass7")
             text = self.driver.find_element_by_xpath(sucessMessageDiv).text
             if not (adviceUserMessage in text):
                 PassOrFail = "FAIL"
