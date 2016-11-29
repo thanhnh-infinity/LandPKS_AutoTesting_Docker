@@ -3108,7 +3108,8 @@ class Test_Case:#(unittest.TestCase):
                         # Click to change English Units
                         #ClickElementIfVis(self.driver,By.XPATH,"//div[@class='item item-toggle toggle-large ng-valid']/label[@class='toggle toggle-calm disable-user-behavior']")
                         #ClickElementIfVis(self.driver,By.XPATH,"//input[@ng-model='bUSorENMetric'][@type='checkbox']")
-                        self.driver.find_element_by_xpath("//label[contains(@class,'toggle']").click()
+                        toggle_button = self.driver.find_element_by_xpath("//input[@ng-model='bUSorENMetric'][@type='checkbox']")
+                        self.driver.execute_script("$(arguments[0]).click();", toggle_button)
                         #print("Da tim thay check box")
                         #WaitForLoad(self.driver)     
                         #unit_is = self.driver.find_element_by_xpath("//span[@class='ng-binding']")
