@@ -3101,15 +3101,20 @@ class Test_Case:#(unittest.TestCase):
                     except:
                         LogError("Test Case 10.10.1 Failed : Do not see Units Toggle Button in Application Settings") 
                         PassOrFail = "FAIL"
-                        
-                    # Click to change English Units
-                    ClickElementIfVis(self.driver,By.XPATH,"//div[@class='item item-toggle toggle-large ng-valid']/label[@class='toggle toggle-calm disable-user-behavior']")
-                    WaitForLoad(self.driver)     
-                    unit_is = self.driver.find_element_by_xpath("//div[@class='item item-toggle toggle-large ng-valid']/span[@class='ng-binding']")
-                    if ('English' in unit_is):
-                        LogSuccess("-- Using English Units---")
-                    else:
-                        LogSuccess("-- Using Metrics Units---")
+                     
+                    try:    
+                        # Click to change English Units
+                        ClickElementIfVis(self.driver,By.XPATH,"//div[@class='item item-toggle toggle-large ng-valid']/label[@class='toggle toggle-calm disable-user-behavior']")
+                        WaitForLoad(self.driver)     
+                        unit_is = self.driver.find_element_by_xpath("//div[@class='item item-toggle toggle-large ng-valid']/span[@class='ng-binding']")
+                        if ('English' in unit_is):
+                            LogSuccess("-- Using English Units---")
+                        else:
+                            LogSuccess("-- Using Metrics Units---")
+                    except Exception,e:
+                        LogError(str(e))
+                        LogError("Test Case 10.10.1 Failed : CANNOT click Units Toggle Button in Application Settings") 
+                        PassOrFail = "FAIL"
                     
                     # Go back to landInfo page
                     ClickElementIfVis(self.driver,By.XPATH,"//a[@ui-sref='landpks.landpks_select_apps']")
