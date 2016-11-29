@@ -1748,9 +1748,34 @@ class Test_Case:#(unittest.TestCase):
                     except Exception,e:
                         LogError(str(e))
                         LogError("Test Case 10.10.6 Failed : Do not see correct Metrics in Result page (LandCover side) - 2") 
+                        PassOrFail = "FAIL"
+                        
+                    #Test Case 10.10.7 : 
+                    try:
+                        # Select North Transects
+                        ClickGoBackLandInfo(self.driver)
+                        LogSuccess("--Out of Result")
+                        
+                        ClickGoBackLandInfo(self.driver)
+                        LogSuccess("--Back to LandCover Main Transect page")
+                        
+                        ClickElementIfVis(self.driver,By.XPATH,"//img[@id='imgNorth']")
+                        WaitForLoad(self.driver)
+                        LogSuccess("--Go inside North Transect")
+                        
+                        segment_parts = self.driver.find_elements_by_xpath("//div[@nav-view='active']//div[@class='scroll']/a[@class='item item-icon-right soillayer ng-binding']")
+                        segment_1 = segment_parts[0]
+                        LogSuccess(segment_1.text)
+                        
+                        
+                    except Exception,e:
+                        LogError(str(e))
+                        LogError("Test Case 10.10.7 Failed : Do not see correct Metrics in North transect page - 2") 
                         PassOrFail = "FAIL"  
                 except:
-                    PassOrFail = "FAIL"            
+                    PassOrFail = "FAIL"
+                    
+                        
         except:
                 LogError("Test Case 10.10.x Failed")
                 PassOrFail = "FAIL"
