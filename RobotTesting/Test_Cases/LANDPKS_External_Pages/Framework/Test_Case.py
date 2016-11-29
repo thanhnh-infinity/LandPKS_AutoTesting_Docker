@@ -1958,10 +1958,59 @@ class Test_Case:#(unittest.TestCase):
                         ClickGoBackLandInfo(self.driver)
                         LogSuccess("--Back to LandCover Main Transect page")
                         
+                        if (PassOrFail == "PASS"):   
+                            LogSuccess("Test Case 10.10.7 Passed :  North/East/South/West Transects page, check Metrics is correct for 5 segments each transect")
+                        else:
+                            LogError("Test Case 10.10.7 Failed : Do not see correct Metrics in North/East/South/West Transect page (Add new LandCover records) - 1")
+                        
                     except Exception,e:
                         LogError(str(e))
-                        LogError("Test Case 10.10.7 Failed : Do not see correct Metrics in North/East/South/West Transect page - 2") 
-                        PassOrFail = "FAIL"  
+                        LogError("Test Case 10.10.7 Failed : Do not see correct Metrics in North/East/South/West Transect page (Add new LandCover records) - 2") 
+                        PassOrFail = "FAIL"
+                    
+                    #Test Case 10.10.8 : 
+                    try:   
+                        if (PassOrFail == "PASS"):   
+                            LogSuccess("Test Case 10.10.8 Passed :  North/East/South/West Transects page, check Metrics is correct for 5 segments each transect - Review old LandCover records")
+                        else:
+                            LogError("Test Case 10.10.8 Failed : Do not see correct Metrics in North/East/South/West Transect page (review old records) - 1")
+                    except Exception,e:
+                        LogError(str(e))
+                        LogError("Test Case 10.10.8 Failed : Do not see correct Metrics in North/East/South/West Transect page (review old records) - 2") 
+                        PassOrFail = "FAIL"
+                        
+                     
+                    #Test Case 10.10.9 : 
+                    try: 
+                        # Select North Transect
+                        ClickElementIfVis(self.driver,By.XPATH,"//img[@id='imgNorth']")
+                        WaitForLoad(self.driver)
+                        LogSuccess("--Go inside North Transect")
+                        
+                        # North - Select segment 1 
+                        ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[@class='scroll']/a[@class='item item-icon-right soillayer ng-binding'][contains(@ng-click,'m5')]")
+                        WaitForLoad(self.driver)
+                        LogSuccess("--Go inside Segment 1 - Transect cover")
+                        
+                        # North - Segment 1 - Collect Sticks 1-> 5        
+                        stick_parts =  self.driver.find_elements_by_xpath("//div[@nav-view='active']//div[@class='scroll']//div[@class='row']//div[@class='col col-20']/b[@class='ng-binding']")
+                        LogSuccess(stick_parts[0].text)
+                        LogSuccess(stick_parts[1].text)
+                        LogSuccess(stick_parts[2].text)
+                        LogSuccess(stick_parts[3].text)
+                        LogSuccess(stick_parts[4].text)
+                        
+                        ClickGoBackLandInfo(self.driver)
+                        LogSuccess("--Back to North Transect")
+                          
+                        if (PassOrFail == "PASS"):   
+                            LogSuccess("Test Case 10.10.9 Passed :  Stick is metrics correctly in Transect Cover page North/East/South/West/Transect")
+                        else:
+                            LogError("Test Case 10.10.8 Failed : Do not see correct Metrics for stick in Transect Cover (Add new landCover records) - 1")
+                    except Exception,e:
+                        LogError(str(e))
+                        LogError("Test Case 10.10.8 Failed : Do not see correct Metrics for stick in Transect Cover (Add new landCover records) - 2") 
+                        PassOrFail = "FAIL"   
                 except:
                     PassOrFail = "FAIL"
                     
