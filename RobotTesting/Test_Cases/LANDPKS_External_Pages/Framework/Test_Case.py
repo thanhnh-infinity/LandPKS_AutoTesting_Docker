@@ -3105,7 +3105,7 @@ class Test_Case:#(unittest.TestCase):
                     try:    
                         # Click to change English Units
                         #ClickElementIfVis(self.driver,By.XPATH,"//div[@class='item item-toggle toggle-large ng-valid']/label[@class='toggle toggle-calm disable-user-behavior']")
-                        ClickElementIfVis(self.driver,By.XPATH,"//div[@class='item item-toggle toggle-large ng-valid']/input[@ng-model='bUSorENMetric'][@type='checkbox']")
+                        ClickElementIfVis(self.driver,By.XPATH,"//input[@ng-model='bUSorENMetric'][@type='checkbox']")
                         WaitForLoad(self.driver)     
                         unit_is = self.driver.find_element_by_xpath("//div[@class='item item-toggle toggle-large ng-valid']/span[@class='ng-binding']")
                         if ('English' in unit_is):
