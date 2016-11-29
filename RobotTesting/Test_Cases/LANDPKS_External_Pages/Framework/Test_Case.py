@@ -1992,6 +1992,13 @@ class Test_Case:#(unittest.TestCase):
                         WaitForLoad(self.driver)
                         LogSuccess("--Go inside Segment 1 - Transect cover")
                         
+                        # North - Segement 1 - Check label
+                        north_seg_label = self.driver.find_element_by_xpath("//div[@nav-bar='active']//a[@class='button button-icon'][contains(@ng-click,'completeAddData_Transect')]/p[@class='ng-binding']")
+                        if ('5m' not in north_seg_label.text):
+                            LogError("-- North Segment 1 - Label is incorrect")
+                        else:
+                            LogSuccess("-- North Segment 1 - Label is correct")
+                        
                         # North - Segment 1 - Collect Sticks 1-> 5        
                         stick_parts =  self.driver.find_elements_by_xpath("//div[@nav-view='active']//div[@class='scroll']//div[@class='row']//div[@class='col col-20']/b[@class='ng-binding']")
                         LogSuccess(stick_parts[0].text)
@@ -2034,6 +2041,13 @@ class Test_Case:#(unittest.TestCase):
                         WaitForLoad(self.driver)
                         LogSuccess("--Go inside Segment 2 - Transect cover")
                         
+                        # North - Segement 2 - Check label
+                        north_seg_label = self.driver.find_element_by_xpath("//div[@nav-bar='active']//a[@class='button button-icon'][contains(@ng-click,'completeAddData_Transect')]/p[@class='ng-binding']")
+                        if ('10m' not in north_seg_label.text):
+                            LogError("-- North Segment 2 - Label is incorrect")
+                        else:
+                            LogSuccess("-- North Segment 2 - Label is correct")
+                        
                         # North - Segment 2 - Collect Sticks 1-> 5        
                         stick_parts =  self.driver.find_elements_by_xpath("//div[@nav-view='active']//div[@class='scroll']//div[@class='row']//div[@class='col col-20']/b[@class='ng-binding']")
                         LogSuccess(stick_parts[0].text)
@@ -2074,6 +2088,13 @@ class Test_Case:#(unittest.TestCase):
                         ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[@class='scroll']/a[@class='item item-icon-right othercomponent ng-binding'][contains(@ng-click,'m15')]")
                         WaitForLoad(self.driver)
                         LogSuccess("--Go inside Segment 3 - Transect cover")
+                        
+                        # North - Segement 3 - Check label
+                        north_seg_label = self.driver.find_element_by_xpath("//div[@nav-bar='active']//a[@class='button button-icon'][contains(@ng-click,'completeAddData_Transect')]/p[@class='ng-binding']")
+                        if ('15m' not in north_seg_label.text):
+                            LogError("-- North Segment 3 - Label is incorrect")
+                        else:
+                            LogSuccess("-- North Segment 3 - Label is correct")
                         
                         # North - Segment 3 - Collect Sticks 1-> 5        
                         stick_parts =  self.driver.find_elements_by_xpath("//div[@nav-view='active']//div[@class='scroll']//div[@class='row']//div[@class='col col-20']/b[@class='ng-binding']")
@@ -2116,6 +2137,13 @@ class Test_Case:#(unittest.TestCase):
                         WaitForLoad(self.driver)
                         LogSuccess("--Go inside Segment 4 - Transect cover")
                         
+                        # North - Segement 4 - Check label
+                        north_seg_label = self.driver.find_element_by_xpath("//div[@nav-bar='active']//a[@class='button button-icon'][contains(@ng-click,'completeAddData_Transect')]/p[@class='ng-binding']")
+                        if ('20m' not in north_seg_label.text):
+                            LogError("-- North Segment 4 - Label is incorrect")
+                        else:
+                            LogSuccess("-- North Segment 4 - Label is correct")
+                        
                         # North - Segment 4 - Collect Sticks 1-> 5        
                         stick_parts =  self.driver.find_elements_by_xpath("//div[@nav-view='active']//div[@class='scroll']//div[@class='row']//div[@class='col col-20']/b[@class='ng-binding']")
                         LogSuccess(stick_parts[0].text)
@@ -2156,6 +2184,13 @@ class Test_Case:#(unittest.TestCase):
                         ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[@class='scroll']/a[@class='item item-icon-right othercomponent ng-binding'][contains(@ng-click,'m25')]")
                         WaitForLoad(self.driver)
                         LogSuccess("--Go inside Segment 5 - Transect cover")
+                        
+                        # North - Segement 5 - Check label
+                        north_seg_label = self.driver.find_element_by_xpath("//div[@nav-bar='active']//a[@class='button button-icon'][contains(@ng-click,'completeAddData_Transect')]/p[@class='ng-binding']")
+                        if ('25m' not in north_seg_label.text):
+                            LogError("-- North Segment 5 - Label is incorrect")
+                        else:
+                            LogSuccess("-- North Segment 5 - Label is correct")
                         
                         # North - Segment 5 - Collect Sticks 1-> 5        
                         stick_parts =  self.driver.find_elements_by_xpath("//div[@nav-view='active']//div[@class='scroll']//div[@class='row']//div[@class='col col-20']/b[@class='ng-binding']")
@@ -2206,6 +2241,13 @@ class Test_Case:#(unittest.TestCase):
                         WaitForLoad(self.driver)
                         LogSuccess("--Go inside Segment 1 - Transect cover")
                         
+                        # East - Segement 1 - Check label
+                        east_seg_label = self.driver.find_element_by_xpath("//div[@nav-bar='active']//a[@class='button button-icon'][contains(@ng-click,'completeAddData_Transect')]/p[@class='ng-binding']")
+                        if ('5m' not in east_seg_label.text):
+                            LogError("-- East Segment 1 - Label is incorrect")
+                        else:
+                            LogSuccess("-- East Segment 1 - Label is correct")
+                        
                         # East - Segment 1 - Collect Sticks 1-> 5        
                         stick_parts =  self.driver.find_elements_by_xpath("//div[@nav-view='active']//div[@class='scroll']//div[@class='row']//div[@class='col col-20']/b[@class='ng-binding']")
                         LogSuccess(stick_parts[0].text)
@@ -2248,6 +2290,13 @@ class Test_Case:#(unittest.TestCase):
                         WaitForLoad(self.driver)
                         LogSuccess("--Go inside Segment 2 - Transect cover")
                         
+                        # East - Segement 2 - Check label
+                        east_seg_label = self.driver.find_element_by_xpath("//div[@nav-bar='active']//a[@class='button button-icon'][contains(@ng-click,'completeAddData_Transect')]/p[@class='ng-binding']")
+                        if ('10m' not in east_seg_label.text):
+                            LogError("-- East Segment 2 - Label is incorrect")
+                        else:
+                            LogSuccess("-- East Segment 2 - Label is correct")
+                        
                         # East - Segment 2 - Collect Sticks 1-> 5        
                         stick_parts =  self.driver.find_elements_by_xpath("//div[@nav-view='active']//div[@class='scroll']//div[@class='row']//div[@class='col col-20']/b[@class='ng-binding']")
                         LogSuccess(stick_parts[0].text)
@@ -2288,6 +2337,13 @@ class Test_Case:#(unittest.TestCase):
                         ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[@class='scroll']/a[@class='item item-icon-right othercomponent ng-binding'][contains(@ng-click,'15m')]")
                         WaitForLoad(self.driver)
                         LogSuccess("--Go inside Segment 3 - Transect cover")
+                        
+                        # East - Segement 3 - Check label
+                        east_seg_label = self.driver.find_element_by_xpath("//div[@nav-bar='active']//a[@class='button button-icon'][contains(@ng-click,'completeAddData_Transect')]/p[@class='ng-binding']")
+                        if ('15m' not in east_seg_label.text):
+                            LogError("-- East Segment 3 - Label is incorrect")
+                        else:
+                            LogSuccess("-- East Segment 3 - Label is correct")
                         
                         # East - Segment 3 - Collect Sticks 1-> 5        
                         stick_parts =  self.driver.find_elements_by_xpath("//div[@nav-view='active']//div[@class='scroll']//div[@class='row']//div[@class='col col-20']/b[@class='ng-binding']")
@@ -2330,6 +2386,13 @@ class Test_Case:#(unittest.TestCase):
                         WaitForLoad(self.driver)
                         LogSuccess("--Go inside Segment 4 - Transect cover")
                         
+                        # East - Segement 4 - Check label
+                        east_seg_label = self.driver.find_element_by_xpath("//div[@nav-bar='active']//a[@class='button button-icon'][contains(@ng-click,'completeAddData_Transect')]/p[@class='ng-binding']")
+                        if ('20m' not in east_seg_label.text):
+                            LogError("-- East Segment 4 - Label is incorrect")
+                        else:
+                            LogSuccess("-- East Segment 4 - Label is correct")
+                        
                         # East - Segment 4 - Collect Sticks 1-> 5        
                         stick_parts =  self.driver.find_elements_by_xpath("//div[@nav-view='active']//div[@class='scroll']//div[@class='row']//div[@class='col col-20']/b[@class='ng-binding']")
                         LogSuccess(stick_parts[0].text)
@@ -2370,6 +2433,13 @@ class Test_Case:#(unittest.TestCase):
                         ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[@class='scroll']/a[@class='item item-icon-right othercomponent ng-binding'][contains(@ng-click,'25m')]")
                         WaitForLoad(self.driver)
                         LogSuccess("--Go inside Segment 5 - Transect cover")
+                        
+                        # East - Segement 5 - Check label
+                        east_seg_label = self.driver.find_element_by_xpath("//div[@nav-bar='active']//a[@class='button button-icon'][contains(@ng-click,'completeAddData_Transect')]/p[@class='ng-binding']")
+                        if ('25m' not in east_seg_label.text):
+                            LogError("-- East Segment 5 - Label is incorrect")
+                        else:
+                            LogSuccess("-- East Segment 5 - Label is correct")
                         
                         # East - Segment 5 - Collect Sticks 1-> 5        
                         stick_parts =  self.driver.find_elements_by_xpath("//div[@nav-view='active']//div[@class='scroll']//div[@class='row']//div[@class='col col-20']/b[@class='ng-binding']")
@@ -2420,6 +2490,13 @@ class Test_Case:#(unittest.TestCase):
                         WaitForLoad(self.driver)
                         LogSuccess("--Go inside Segment 1 - Transect cover")
                         
+                        # East - Segement 1 - Check label
+                        south_seg_label = self.driver.find_element_by_xpath("//div[@nav-bar='active']//a[@class='button button-icon'][contains(@ng-click,'completeAddData_Transect')]/p[@class='ng-binding']")
+                        if ('5m' not in south_seg_label.text):
+                            LogError("-- East Segment 1 - Label is incorrect")
+                        else:
+                            LogSuccess("-- East Segment 1 - Label is correct")
+                        
                         # South - Segment 1 - Collect Sticks 1-> 5        
                         stick_parts =  self.driver.find_elements_by_xpath("//div[@nav-view='active']//div[@class='scroll']//div[@class='row']//div[@class='col col-20']/b[@class='ng-binding']")
                         LogSuccess(stick_parts[0].text)
@@ -2462,6 +2539,13 @@ class Test_Case:#(unittest.TestCase):
                         WaitForLoad(self.driver)
                         LogSuccess("--Go inside Segment 2 - Transect cover")
                         
+                        # South - Segement 2 - Check label
+                        south_seg_label = self.driver.find_element_by_xpath("//div[@nav-bar='active']//a[@class='button button-icon'][contains(@ng-click,'completeAddData_Transect')]/p[@class='ng-binding']")
+                        if ('10m' not in south_seg_label.text):
+                            LogError("-- East Segment 2 - Label is incorrect")
+                        else:
+                            LogSuccess("-- East Segment 2 - Label is correct")
+                        
                         # South - Segment 2 - Collect Sticks 1-> 5        
                         stick_parts =  self.driver.find_elements_by_xpath("//div[@nav-view='active']//div[@class='scroll']//div[@class='row']//div[@class='col col-20']/b[@class='ng-binding']")
                         LogSuccess(stick_parts[0].text)
@@ -2502,6 +2586,13 @@ class Test_Case:#(unittest.TestCase):
                         ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[@class='scroll']/a[@class='item item-icon-right othercomponent ng-binding'][contains(@ng-click,'15m')]")
                         WaitForLoad(self.driver)
                         LogSuccess("--Go inside Segment 3 - Transect cover")
+                        
+                        # South - Segement 3 - Check label
+                        south_seg_label = self.driver.find_element_by_xpath("//div[@nav-bar='active']//a[@class='button button-icon'][contains(@ng-click,'completeAddData_Transect')]/p[@class='ng-binding']")
+                        if ('15m' not in south_seg_label.text):
+                            LogError("-- East Segment 3 - Label is incorrect")
+                        else:
+                            LogSuccess("-- East Segment 3 - Label is correct")
                         
                         # South - Segment 3 - Collect Sticks 1-> 5        
                         stick_parts =  self.driver.find_elements_by_xpath("//div[@nav-view='active']//div[@class='scroll']//div[@class='row']//div[@class='col col-20']/b[@class='ng-binding']")
@@ -2544,6 +2635,13 @@ class Test_Case:#(unittest.TestCase):
                         WaitForLoad(self.driver)
                         LogSuccess("--Go inside Segment 4 - Transect cover")
                         
+                        # South - Segement 4 - Check label
+                        south_seg_label = self.driver.find_element_by_xpath("//div[@nav-bar='active']//a[@class='button button-icon'][contains(@ng-click,'completeAddData_Transect')]/p[@class='ng-binding']")
+                        if ('20m' not in south_seg_label.text):
+                            LogError("-- East Segment 4 - Label is incorrect")
+                        else:
+                            LogSuccess("-- East Segment 4 - Label is correct")
+                        
                         # South - Segment 4 - Collect Sticks 1-> 5        
                         stick_parts =  self.driver.find_elements_by_xpath("//div[@nav-view='active']//div[@class='scroll']//div[@class='row']//div[@class='col col-20']/b[@class='ng-binding']")
                         LogSuccess(stick_parts[0].text)
@@ -2584,6 +2682,13 @@ class Test_Case:#(unittest.TestCase):
                         ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[@class='scroll']/a[@class='item item-icon-right othercomponent ng-binding'][contains(@ng-click,'25m')]")
                         WaitForLoad(self.driver)
                         LogSuccess("--Go inside Segment 5 - Transect cover")
+                        
+                        # South - Segement 5 - Check label
+                        south_seg_label = self.driver.find_element_by_xpath("//div[@nav-bar='active']//a[@class='button button-icon'][contains(@ng-click,'completeAddData_Transect')]/p[@class='ng-binding']")
+                        if ('25m' not in south_seg_label.text):
+                            LogError("-- East Segment 5 - Label is incorrect")
+                        else:
+                            LogSuccess("-- East Segment 5 - Label is correct")
                         
                         # South - Segment 5 - Collect Sticks 1-> 5        
                         stick_parts =  self.driver.find_elements_by_xpath("//div[@nav-view='active']//div[@class='scroll']//div[@class='row']//div[@class='col col-20']/b[@class='ng-binding']")
@@ -2634,6 +2739,14 @@ class Test_Case:#(unittest.TestCase):
                         WaitForLoad(self.driver)
                         LogSuccess("--Go inside Segment 1 - Transect cover")
                         
+                        
+                        # West - Segement 1 - Check label
+                        west_seg_label = self.driver.find_element_by_xpath("//div[@nav-bar='active']//a[@class='button button-icon'][contains(@ng-click,'completeAddData_Transect')]/p[@class='ng-binding']")
+                        if ('5m' not in west_seg_label.text):
+                            LogError("-- East Segment 1 - Label is incorrect")
+                        else:
+                            LogSuccess("-- East Segment 1 - Label is correct")
+                        
                         # West - Segment 1 - Collect Sticks 1-> 5        
                         stick_parts =  self.driver.find_elements_by_xpath("//div[@nav-view='active']//div[@class='scroll']//div[@class='row']//div[@class='col col-20']/b[@class='ng-binding']")
                         LogSuccess(stick_parts[0].text)
@@ -2676,6 +2789,13 @@ class Test_Case:#(unittest.TestCase):
                         WaitForLoad(self.driver)
                         LogSuccess("--Go inside Segment 2 - Transect cover")
                         
+                        # West - Segement 2 - Check label
+                        west_seg_label = self.driver.find_element_by_xpath("//div[@nav-bar='active']//a[@class='button button-icon'][contains(@ng-click,'completeAddData_Transect')]/p[@class='ng-binding']")
+                        if ('10m' not in west_seg_label.text):
+                            LogError("-- East Segment 2 - Label is incorrect")
+                        else:
+                            LogSuccess("-- East Segment 2 - Label is correct")
+                        
                         # West - Segment 2 - Collect Sticks 1-> 5        
                         stick_parts =  self.driver.find_elements_by_xpath("//div[@nav-view='active']//div[@class='scroll']//div[@class='row']//div[@class='col col-20']/b[@class='ng-binding']")
                         LogSuccess(stick_parts[0].text)
@@ -2716,6 +2836,13 @@ class Test_Case:#(unittest.TestCase):
                         ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[@class='scroll']/a[@class='item item-icon-right othercomponent ng-binding'][contains(@ng-click,'15m')]")
                         WaitForLoad(self.driver)
                         LogSuccess("--Go inside Segment 3 - Transect cover")
+                        
+                        # West - Segment 3 - Check label
+                        west_seg_label = self.driver.find_element_by_xpath("//div[@nav-bar='active']//a[@class='button button-icon'][contains(@ng-click,'completeAddData_Transect')]/p[@class='ng-binding']")
+                        if ('15m' not in west_seg_label.text):
+                            LogError("-- East Segment 3 - Label is incorrect")
+                        else:
+                            LogSuccess("-- East Segment 3 - Label is correct")
                         
                         # West - Segment 3 - Collect Sticks 1-> 5        
                         stick_parts =  self.driver.find_elements_by_xpath("//div[@nav-view='active']//div[@class='scroll']//div[@class='row']//div[@class='col col-20']/b[@class='ng-binding']")
@@ -2758,6 +2885,13 @@ class Test_Case:#(unittest.TestCase):
                         WaitForLoad(self.driver)
                         LogSuccess("--Go inside Segment 4 - Transect cover")
                         
+                        # West - Segment 4 - Check label
+                        west_seg_label = self.driver.find_element_by_xpath("//div[@nav-bar='active']//a[@class='button button-icon'][contains(@ng-click,'completeAddData_Transect')]/p[@class='ng-binding']")
+                        if ('20m' not in west_seg_label.text):
+                            LogError("-- East Segment 4 - Label is incorrect")
+                        else:
+                            LogSuccess("-- East Segment 4 - Label is correct")
+                        
                         # West - Segment 4 - Collect Sticks 1-> 5        
                         stick_parts =  self.driver.find_elements_by_xpath("//div[@nav-view='active']//div[@class='scroll']//div[@class='row']//div[@class='col col-20']/b[@class='ng-binding']")
                         LogSuccess(stick_parts[0].text)
@@ -2798,6 +2932,13 @@ class Test_Case:#(unittest.TestCase):
                         ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[@class='scroll']/a[@class='item item-icon-right othercomponent ng-binding'][contains(@ng-click,'25m')]")
                         WaitForLoad(self.driver)
                         LogSuccess("--Go inside Segment 5 - Transect cover")
+                        
+                        # West - Segment 5 - Check label
+                        west_seg_label = self.driver.find_element_by_xpath("//div[@nav-bar='active']//a[@class='button button-icon'][contains(@ng-click,'completeAddData_Transect')]/p[@class='ng-binding']")
+                        if ('25m' not in west_seg_label.text):
+                            LogError("-- East Segment 5 - Label is incorrect")
+                        else:
+                            LogSuccess("-- East Segment 5 - Label is correct")
                         
                         # West - Segment 5 - Collect Sticks 1-> 5        
                         stick_parts =  self.driver.find_elements_by_xpath("//div[@nav-view='active']//div[@class='scroll']//div[@class='row']//div[@class='col col-20']/b[@class='ng-binding']")
