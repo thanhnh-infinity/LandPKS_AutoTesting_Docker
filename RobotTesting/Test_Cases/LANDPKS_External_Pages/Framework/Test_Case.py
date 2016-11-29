@@ -3098,14 +3098,18 @@ class Test_Case:#(unittest.TestCase):
                     try: 
                         self.driver.find_element_by_xpath("//div[@class='item item-toggle toggle-large ng-valid']")
                         LogSuccess("Test Case 10.10.1 Passed : See Units toggle button in Application Settings")
+                        print("See Units toggle button")
                     except:
-                        LogError("Test Case 10.10.1 Failed : Do not see Units Toggle Button in Application Settings") 
+                        LogError("Test Case 10.10.1 Failed : Do not see Units Toggle Button in Application Settings")
+                        print("DONOT see units toggle button")
                         PassOrFail = "FAIL"
                      
                     try:    
                         # Click to change English Units
                         #ClickElementIfVis(self.driver,By.XPATH,"//div[@class='item item-toggle toggle-large ng-valid']/label[@class='toggle toggle-calm disable-user-behavior']")
-                        ClickElementIfVis(self.driver,By.XPATH,"//input[@ng-model='bUSorENMetric'][@type='checkbox']")
+                        #ClickElementIfVis(self.driver,By.XPATH,"//input[@ng-model='bUSorENMetric'][@type='checkbox']")
+                        self.driver.find_element_by_xpath("//input[@ng-model='bUSorENMetric'][@type='checkbox']")
+                        print("Da tim thay check box")
                         WaitForLoad(self.driver)     
                         unit_is = self.driver.find_element_by_xpath("//div[@class='item item-toggle toggle-large ng-valid']/span[@class='ng-binding']")
                         if ('English' in unit_is):
