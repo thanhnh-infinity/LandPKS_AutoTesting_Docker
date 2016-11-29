@@ -3110,7 +3110,7 @@ class Test_Case:#(unittest.TestCase):
                         #ClickElementIfVis(self.driver,By.XPATH,"//input[@ng-model='bUSorENMetric'][@type='checkbox']")
                     #toggle_button = self.driver.find_element_by_xpath("//input[@ng-model='bUSorENMetric'][@type='checkbox']")
                     LogSuccess("da tim thay checkbox quan trong")
-                    self.driver.execute_script('document.getElementsByClassName("ng-untouched ng-valid ng-dirty ng-valid-parse")[0].checked = false;')
+                    self.driver.execute_script('document.getElementsByClassName("ng-untouched ng-valid ng-dirty ng-valid-parse")[0].checked = true;')
                     LogSuccess("da click vao checkbox")
                         #print("Da tim thay check box")
                         #WaitForLoad(self.driver)     
