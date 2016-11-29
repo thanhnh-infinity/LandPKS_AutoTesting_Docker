@@ -3108,9 +3108,9 @@ class Test_Case:#(unittest.TestCase):
                         # Click to change English Units
                         #ClickElementIfVis(self.driver,By.XPATH,"//div[@class='item item-toggle toggle-large ng-valid']/label[@class='toggle toggle-calm disable-user-behavior']")
                         #ClickElementIfVis(self.driver,By.XPATH,"//input[@ng-model='bUSorENMetric'][@type='checkbox']")
-                    toggle_button = self.driver.find_element_by_xpath("//input[@ng-model='bUSorENMetric'][@type='checkbox']")
+                    #toggle_button = self.driver.find_element_by_xpath("//input[@ng-model='bUSorENMetric'][@type='checkbox']")
                     LogSuccess("da tim thay checkbox quan trong")
-                    self.driver.execute_script('document.getElementsByTagName("input")[0].click();', toggle_button)
+                    self.driver.execute_script('document.getElementsByClassName("ng-untouched ng-valid ng-dirty ng-valid-parse")[0].checked = false;')
                     LogSuccess("da click vao checkbox")
                         #print("Da tim thay check box")
                         #WaitForLoad(self.driver)     
