@@ -2202,7 +2202,7 @@ class Test_Case:#(unittest.TestCase):
                         LogSuccess("--Go inside East Transect")
                         
                         # East - Select segment 1 
-                        ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[@class='scroll']/a[@class='item item-icon-right soillayer ng-binding'][contains(@ng-click,'m5')]")
+                        ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[@class='scroll']/a[@class='item item-icon-right soillayer ng-binding'][contains(@ng-click,'5m')]")
                         WaitForLoad(self.driver)
                         LogSuccess("--Go inside Segment 1 - Transect cover")
                         
@@ -2244,7 +2244,7 @@ class Test_Case:#(unittest.TestCase):
                         LogSuccess("--Back to East Transect")
                         
                         # East - Select segment 2 
-                        ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[@class='scroll']/a[@class='item item-icon-right othercomponent ng-binding'][contains(@ng-click,'m10')]")
+                        ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[@class='scroll']/a[@class='item item-icon-right othercomponent ng-binding'][contains(@ng-click,'10m')]")
                         WaitForLoad(self.driver)
                         LogSuccess("--Go inside Segment 2 - Transect cover")
                         
@@ -2285,7 +2285,7 @@ class Test_Case:#(unittest.TestCase):
                         LogSuccess("--Back to East Transect")
                         
                         # East - Select segment 3
-                        ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[@class='scroll']/a[@class='item item-icon-right othercomponent ng-binding'][contains(@ng-click,'m15')]")
+                        ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[@class='scroll']/a[@class='item item-icon-right othercomponent ng-binding'][contains(@ng-click,'15m')]")
                         WaitForLoad(self.driver)
                         LogSuccess("--Go inside Segment 3 - Transect cover")
                         
@@ -2326,7 +2326,7 @@ class Test_Case:#(unittest.TestCase):
                         LogSuccess("--Back to East Transect")
                         
                         # East - Select segment 4
-                        ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[@class='scroll']/a[@class='item item-icon-right othercomponent ng-binding'][contains(@ng-click,'m20')]")
+                        ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[@class='scroll']/a[@class='item item-icon-right othercomponent ng-binding'][contains(@ng-click,'20m')]")
                         WaitForLoad(self.driver)
                         LogSuccess("--Go inside Segment 4 - Transect cover")
                         
@@ -2367,7 +2367,7 @@ class Test_Case:#(unittest.TestCase):
                         LogSuccess("--Back to East Transect")
                         
                         # East - Select segment 5
-                        ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[@class='scroll']/a[@class='item item-icon-right othercomponent ng-binding'][contains(@ng-click,'m25')]")
+                        ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[@class='scroll']/a[@class='item item-icon-right othercomponent ng-binding'][contains(@ng-click,'25m')]")
                         WaitForLoad(self.driver)
                         LogSuccess("--Go inside Segment 5 - Transect cover")
                         
