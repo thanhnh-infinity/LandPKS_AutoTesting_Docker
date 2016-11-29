@@ -3100,7 +3100,8 @@ class Test_Case:#(unittest.TestCase):
                         self.driver.find_element_by_xpath("//input[@ng-model='bUSorENMetric'][@type='checkbox']")     
                         self.driver.execute_script('document.getElementsByClassName("ng-untouched ng-valid ng-dirty ng-valid-parse")[0].checked = true;')
                         LogSuccess("Test Case 10.10.1 Passed : See Units toggle button in Application Settings AND click to change ENGLISH Units")
-                    except:
+                    except Exception,e:
+                        LogError(str(e))
                         LogError("Test Case 10.10.1 Failed : Do not see Units Toggle Button in Application Settings OR cannot change to English")                        
                         PassOrFail = "FAIL"
                      
