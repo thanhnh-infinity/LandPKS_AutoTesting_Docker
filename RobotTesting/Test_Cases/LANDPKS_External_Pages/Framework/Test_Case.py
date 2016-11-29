@@ -3096,22 +3096,19 @@ class Test_Case:#(unittest.TestCase):
                     
                     #Find to see Units toggle button
                     try: 
-                        self.driver.find_element_by_xpath("//div[@class='item item-toggle toggle-large ng-valid']")
-                        LogSuccess("Test Case 10.10.1 Passed : See Units toggle button in Application Settings")
-                        print("See Units toggle button")
+                        #self.driver.find_element_by_xpath("//div[@class='item item-toggle toggle-large ng-valid']")
+                        self.driver.find_element_by_xpath("//input[@ng-model='bUSorENMetric'][@type='checkbox']")     
+                        self.driver.execute_script('document.getElementsByClassName("ng-untouched ng-valid ng-dirty ng-valid-parse")[0].checked = true;')
+                        LogSuccess("Test Case 10.10.1 Passed : See Units toggle button in Application Settings AND click to change ENGLISH Units")
                     except:
-                        LogError("Test Case 10.10.1 Failed : Do not see Units Toggle Button in Application Settings")
-                        print("DONOT see units toggle button")
+                        LogError("Test Case 10.10.1 Failed : Do not see Units Toggle Button in Application Settings OR cannot change to English")                        
                         PassOrFail = "FAIL"
                      
                     #try:    
                         # Click to change English Units
                         #ClickElementIfVis(self.driver,By.XPATH,"//div[@class='item item-toggle toggle-large ng-valid']/label[@class='toggle toggle-calm disable-user-behavior']")
                         #ClickElementIfVis(self.driver,By.XPATH,"//input[@ng-model='bUSorENMetric'][@type='checkbox']")
-                    #toggle_button = self.driver.find_element_by_xpath("//input[@ng-model='bUSorENMetric'][@type='checkbox']")
-                    LogSuccess("da tim thay checkbox quan trong")
-                    self.driver.execute_script('document.getElementsByClassName("ng-untouched ng-valid ng-dirty ng-valid-parse")[0].checked = true;')
-                    LogSuccess("da click vao checkbox")
+                    
                         #print("Da tim thay check box")
                         #WaitForLoad(self.driver)     
                         #unit_is = self.driver.find_element_by_xpath("//span[@class='ng-binding']")
