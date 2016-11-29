@@ -2407,6 +2407,434 @@ class Test_Case:#(unittest.TestCase):
                         ClickGoBackLandInfo(self.driver)
                         LogSuccess("--Back to East Transect")
                         
+                        ClickGoBackLandInfo(self.driver)
+                        LogSuccess("--Back to MAIN Transect")
+                        
+                        # Select South Transect
+                        ClickElementIfVis(self.driver,By.XPATH,"//img[@id='imgSouth']")
+                        WaitForLoad(self.driver)
+                        LogSuccess("--Go inside South Transect")
+                        
+                        # South - Select segment 1 
+                        ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[@class='scroll']/a[@class='item item-icon-right soillayer ng-binding'][contains(@ng-click,'5m')]")
+                        WaitForLoad(self.driver)
+                        LogSuccess("--Go inside Segment 1 - Transect cover")
+                        
+                        # South - Segment 1 - Collect Sticks 1-> 5        
+                        stick_parts =  self.driver.find_elements_by_xpath("//div[@nav-view='active']//div[@class='scroll']//div[@class='row']//div[@class='col col-20']/b[@class='ng-binding']")
+                        LogSuccess(stick_parts[0].text)
+                        if "10cm" not in stick_parts[0].text: 
+                            LogError("-- South Segment 1 - Stick 1 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--South Segment 1 - Stick 1 is correct")
+                        LogSuccess(stick_parts[1].text)
+                        if "30cm" not in stick_parts[1].text: 
+                            LogError("-- South Segment 1 - Stick 2 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--South Segment 1 - Stick 2 is correct")
+                        LogSuccess(stick_parts[2].text)
+                        if "50cm" not in stick_parts[2].text: 
+                            LogError("-- South Segment 1 - Stick 3 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--South Segment 1 - Stick 3 is correct")
+                        LogSuccess(stick_parts[3].text)
+                        if "70cm" not in stick_parts[3].text: 
+                            LogError("-- South Segment 1 - Stick 4 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--South Segment 1 - Stick 4 is correct")
+                        LogSuccess(stick_parts[4].text)
+                        if "90cm" not in stick_parts[4].text: 
+                            LogError("-- South Segment 1 - Stick 5 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--South Segment 1 - Stick 5 is correct")
+                        
+                        #ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-bar='active']//a[@class='button button-icon'][contains(@ng-click,'completeAddData_Transect')]")
+                        ClickGoBackLandInfo(self.driver)
+                        LogSuccess("--Back to South Transect")
+                        
+                        # South - Select segment 2 
+                        ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[@class='scroll']/a[@class='item item-icon-right othercomponent ng-binding'][contains(@ng-click,'10m')]")
+                        WaitForLoad(self.driver)
+                        LogSuccess("--Go inside Segment 2 - Transect cover")
+                        
+                        # South - Segment 2 - Collect Sticks 1-> 5        
+                        stick_parts =  self.driver.find_elements_by_xpath("//div[@nav-view='active']//div[@class='scroll']//div[@class='row']//div[@class='col col-20']/b[@class='ng-binding']")
+                        LogSuccess(stick_parts[0].text)
+                        if "10cm" not in stick_parts[0].text: 
+                            LogError("-- South Segment 2 - Stick 1 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--South Segment 2 - Stick 1 is correct")
+                        LogSuccess(stick_parts[1].text)
+                        if "30cm" not in stick_parts[1].text: 
+                            LogError("-- South Segment 2 - Stick 2 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--South Segment 2 - Stick 2 is correct")
+                        LogSuccess(stick_parts[2].text)
+                        if "50cm" not in stick_parts[2].text: 
+                            LogError("-- South Segment 2 - Stick 3 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--South Segment 2 - Stick 3 is correct")
+                        LogSuccess(stick_parts[3].text)
+                        if "70cm" not in stick_parts[3].text: 
+                            LogError("-- South Segment 2 - Stick 4 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--South Segment 2 - Stick 4 is correct")
+                        LogSuccess(stick_parts[4].text)
+                        if "90cm" not in stick_parts[4].text: 
+                            LogError("-- South Segment 2 - Stick 5 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--South Segment 2 - Stick 5 is correct")
+                        
+                        ClickGoBackLandInfo(self.driver)
+                        LogSuccess("--Back to South Transect")
+                        
+                        # South - Select segment 3
+                        ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[@class='scroll']/a[@class='item item-icon-right othercomponent ng-binding'][contains(@ng-click,'15m')]")
+                        WaitForLoad(self.driver)
+                        LogSuccess("--Go inside Segment 3 - Transect cover")
+                        
+                        # South - Segment 3 - Collect Sticks 1-> 5        
+                        stick_parts =  self.driver.find_elements_by_xpath("//div[@nav-view='active']//div[@class='scroll']//div[@class='row']//div[@class='col col-20']/b[@class='ng-binding']")
+                        LogSuccess(stick_parts[0].text)
+                        if "10cm" not in stick_parts[0].text: 
+                            LogError("-- South Segment 3 - Stick 1 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--South Segment 3 - Stick 1 is correct")
+                        LogSuccess(stick_parts[1].text)
+                        if "30cm" not in stick_parts[1].text: 
+                            LogError("-- South Segment 3 - Stick 2 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--South Segment 3 - Stick 2 is correct")
+                        LogSuccess(stick_parts[2].text)
+                        if "50cm" not in stick_parts[2].text: 
+                            LogError("-- South Segment 3 - Stick 3 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--South Segment 3 - Stick 3 is correct")
+                        LogSuccess(stick_parts[3].text)
+                        if "70cm" not in stick_parts[3].text: 
+                            LogError("-- South Segment 3 - Stick 4 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--South Segment 3 - Stick 4 is correct")
+                        LogSuccess(stick_parts[4].text)
+                        if "90cm" not in stick_parts[4].text: 
+                            LogError("-- South Segment 3 - Stick 5 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--South Segment 3 - Stick 5 is correct")
+                        
+                        ClickGoBackLandInfo(self.driver)
+                        LogSuccess("--Back to South Transect")
+                        
+                        # South - Select segment 4
+                        ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[@class='scroll']/a[@class='item item-icon-right othercomponent ng-binding'][contains(@ng-click,'20m')]")
+                        WaitForLoad(self.driver)
+                        LogSuccess("--Go inside Segment 4 - Transect cover")
+                        
+                        # South - Segment 4 - Collect Sticks 1-> 5        
+                        stick_parts =  self.driver.find_elements_by_xpath("//div[@nav-view='active']//div[@class='scroll']//div[@class='row']//div[@class='col col-20']/b[@class='ng-binding']")
+                        LogSuccess(stick_parts[0].text)
+                        if "10cm" not in stick_parts[0].text: 
+                            LogError("-- South Segment 4 - Stick 1 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--South Segment 4 - Stick 1 is correct")
+                        LogSuccess(stick_parts[1].text)
+                        if "30cm" not in stick_parts[1].text: 
+                            LogError("-- South Segment 4 - Stick 2 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--South Segment 4 - Stick 2 is correct")
+                        LogSuccess(stick_parts[2].text)
+                        if "50cm" not in stick_parts[2].text: 
+                            LogError("-- South Segment 4 - Stick 3 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--South Segment 4 - Stick 3 is correct")
+                        LogSuccess(stick_parts[3].text)
+                        if "70cm" not in stick_parts[3].text: 
+                            LogError("-- South Segment 4 - Stick 4 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--South Segment 4 - Stick 4 is correct")
+                        LogSuccess(stick_parts[4].text)
+                        if "90cm" not in stick_parts[4].text: 
+                            LogError("-- South Segment 4 - Stick 5 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--South Segment 4 - Stick 5 is correct")
+                        
+                        ClickGoBackLandInfo(self.driver)
+                        LogSuccess("--Back to South Transect")
+                        
+                        # South - Select segment 5
+                        ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[@class='scroll']/a[@class='item item-icon-right othercomponent ng-binding'][contains(@ng-click,'25m')]")
+                        WaitForLoad(self.driver)
+                        LogSuccess("--Go inside Segment 5 - Transect cover")
+                        
+                        # South - Segment 5 - Collect Sticks 1-> 5        
+                        stick_parts =  self.driver.find_elements_by_xpath("//div[@nav-view='active']//div[@class='scroll']//div[@class='row']//div[@class='col col-20']/b[@class='ng-binding']")
+                        LogSuccess(stick_parts[0].text)
+                        if "10cm" not in stick_parts[0].text: 
+                            LogError("-- South Segment 5 - Stick 1 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--South Segment 5 - Stick 1 is correct")
+                        LogSuccess(stick_parts[1].text)
+                        if "30cm" not in stick_parts[1].text: 
+                            LogError("-- South Segment 5 - Stick 2 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--South Segment 5 - Stick 2 is correct")
+                        LogSuccess(stick_parts[2].text)
+                        if "50cm" not in stick_parts[2].text: 
+                            LogError("-- South Segment 5 - Stick 3 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--South Segment 5 - Stick 3 is correct")
+                        LogSuccess(stick_parts[3].text)
+                        if "70cm" not in stick_parts[3].text: 
+                            LogError("-- South Segment 5 - Stick 4 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--South Segment 5 - Stick 4 is correct")
+                        LogSuccess(stick_parts[4].text)
+                        if "90cm" not in stick_parts[4].text: 
+                            LogError("-- South Segment 5 - Stick 5 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--South Segment 5 - Stick 5 is correct")
+                        
+                        ClickGoBackLandInfo(self.driver)
+                        LogSuccess("--Back to South Transect")
+                        
+                        ClickGoBackLandInfo(self.driver)
+                        LogSuccess("--Back to MAIN Transect")
+                        
+                        # Select West Transect
+                        ClickElementIfVis(self.driver,By.XPATH,"//img[@id='imgWest']")
+                        WaitForLoad(self.driver)
+                        LogSuccess("--Go inside West Transect")
+                        
+                        # West - Select segment 1 
+                        ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[@class='scroll']/a[@class='item item-icon-right soillayer ng-binding'][contains(@ng-click,'5m')]")
+                        WaitForLoad(self.driver)
+                        LogSuccess("--Go inside Segment 1 - Transect cover")
+                        
+                        # West - Segment 1 - Collect Sticks 1-> 5        
+                        stick_parts =  self.driver.find_elements_by_xpath("//div[@nav-view='active']//div[@class='scroll']//div[@class='row']//div[@class='col col-20']/b[@class='ng-binding']")
+                        LogSuccess(stick_parts[0].text)
+                        if "10cm" not in stick_parts[0].text: 
+                            LogError("-- West Segment 1 - Stick 1 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--West Segment 1 - Stick 1 is correct")
+                        LogSuccess(stick_parts[1].text)
+                        if "30cm" not in stick_parts[1].text: 
+                            LogError("-- West Segment 1 - Stick 2 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--West Segment 1 - Stick 2 is correct")
+                        LogSuccess(stick_parts[2].text)
+                        if "50cm" not in stick_parts[2].text: 
+                            LogError("-- West Segment 1 - Stick 3 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--West Segment 1 - Stick 3 is correct")
+                        LogSuccess(stick_parts[3].text)
+                        if "70cm" not in stick_parts[3].text: 
+                            LogError("-- West Segment 1 - Stick 4 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--West Segment 1 - Stick 4 is correct")
+                        LogSuccess(stick_parts[4].text)
+                        if "90cm" not in stick_parts[4].text: 
+                            LogError("-- West Segment 1 - Stick 5 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--West Segment 1 - Stick 5 is correct")
+                        
+                        #ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-bar='active']//a[@class='button button-icon'][contains(@ng-click,'completeAddData_Transect')]")
+                        ClickGoBackLandInfo(self.driver)
+                        LogSuccess("--Back to West Transect")
+                        
+                        # West - Select segment 2 
+                        ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[@class='scroll']/a[@class='item item-icon-right othercomponent ng-binding'][contains(@ng-click,'10m')]")
+                        WaitForLoad(self.driver)
+                        LogSuccess("--Go inside Segment 2 - Transect cover")
+                        
+                        # West - Segment 2 - Collect Sticks 1-> 5        
+                        stick_parts =  self.driver.find_elements_by_xpath("//div[@nav-view='active']//div[@class='scroll']//div[@class='row']//div[@class='col col-20']/b[@class='ng-binding']")
+                        LogSuccess(stick_parts[0].text)
+                        if "10cm" not in stick_parts[0].text: 
+                            LogError("-- West Segment 2 - Stick 1 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--West Segment 2 - Stick 1 is correct")
+                        LogSuccess(stick_parts[1].text)
+                        if "30cm" not in stick_parts[1].text: 
+                            LogError("-- West Segment 2 - Stick 2 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--West Segment 2 - Stick 2 is correct")
+                        LogSuccess(stick_parts[2].text)
+                        if "50cm" not in stick_parts[2].text: 
+                            LogError("-- West Segment 2 - Stick 3 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--West Segment 2 - Stick 3 is correct")
+                        LogSuccess(stick_parts[3].text)
+                        if "70cm" not in stick_parts[3].text: 
+                            LogError("-- West Segment 2 - Stick 4 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--West Segment 2 - Stick 4 is correct")
+                        LogSuccess(stick_parts[4].text)
+                        if "90cm" not in stick_parts[4].text: 
+                            LogError("-- West Segment 2 - Stick 5 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--West Segment 2 - Stick 5 is correct")
+                        
+                        ClickGoBackLandInfo(self.driver)
+                        LogSuccess("--Back to West Transect")
+                        
+                        # West - Select segment 3
+                        ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[@class='scroll']/a[@class='item item-icon-right othercomponent ng-binding'][contains(@ng-click,'15m')]")
+                        WaitForLoad(self.driver)
+                        LogSuccess("--Go inside Segment 3 - Transect cover")
+                        
+                        # West - Segment 3 - Collect Sticks 1-> 5        
+                        stick_parts =  self.driver.find_elements_by_xpath("//div[@nav-view='active']//div[@class='scroll']//div[@class='row']//div[@class='col col-20']/b[@class='ng-binding']")
+                        LogSuccess(stick_parts[0].text)
+                        if "10cm" not in stick_parts[0].text: 
+                            LogError("-- West Segment 3 - Stick 1 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--West Segment 3 - Stick 1 is correct")
+                        LogSuccess(stick_parts[1].text)
+                        if "30cm" not in stick_parts[1].text: 
+                            LogError("-- West Segment 3 - Stick 2 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--West Segment 3 - Stick 2 is correct")
+                        LogSuccess(stick_parts[2].text)
+                        if "50cm" not in stick_parts[2].text: 
+                            LogError("-- West Segment 3 - Stick 3 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--West Segment 3 - Stick 3 is correct")
+                        LogSuccess(stick_parts[3].text)
+                        if "70cm" not in stick_parts[3].text: 
+                            LogError("-- West Segment 3 - Stick 4 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--West Segment 3 - Stick 4 is correct")
+                        LogSuccess(stick_parts[4].text)
+                        if "90cm" not in stick_parts[4].text: 
+                            LogError("-- West Segment 3 - Stick 5 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--West Segment 3 - Stick 5 is correct")
+                        
+                        ClickGoBackLandInfo(self.driver)
+                        LogSuccess("--Back to West Transect")
+                        
+                        # West - Select segment 4
+                        ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[@class='scroll']/a[@class='item item-icon-right othercomponent ng-binding'][contains(@ng-click,'20m')]")
+                        WaitForLoad(self.driver)
+                        LogSuccess("--Go inside Segment 4 - Transect cover")
+                        
+                        # West - Segment 4 - Collect Sticks 1-> 5        
+                        stick_parts =  self.driver.find_elements_by_xpath("//div[@nav-view='active']//div[@class='scroll']//div[@class='row']//div[@class='col col-20']/b[@class='ng-binding']")
+                        LogSuccess(stick_parts[0].text)
+                        if "10cm" not in stick_parts[0].text: 
+                            LogError("-- West Segment 4 - Stick 1 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--West Segment 4 - Stick 1 is correct")
+                        LogSuccess(stick_parts[1].text)
+                        if "30cm" not in stick_parts[1].text: 
+                            LogError("-- West Segment 4 - Stick 2 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--West Segment 4 - Stick 2 is correct")
+                        LogSuccess(stick_parts[2].text)
+                        if "50cm" not in stick_parts[2].text: 
+                            LogError("-- West Segment 4 - Stick 3 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--West Segment 4 - Stick 3 is correct")
+                        LogSuccess(stick_parts[3].text)
+                        if "70cm" not in stick_parts[3].text: 
+                            LogError("-- West Segment 4 - Stick 4 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--West Segment 4 - Stick 4 is correct")
+                        LogSuccess(stick_parts[4].text)
+                        if "90cm" not in stick_parts[4].text: 
+                            LogError("-- West Segment 4 - Stick 5 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--West Segment 4 - Stick 5 is correct")
+                        
+                        ClickGoBackLandInfo(self.driver)
+                        LogSuccess("--Back to West Transect")
+                        
+                        # West - Select segment 5
+                        ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[@class='scroll']/a[@class='item item-icon-right othercomponent ng-binding'][contains(@ng-click,'25m')]")
+                        WaitForLoad(self.driver)
+                        LogSuccess("--Go inside Segment 5 - Transect cover")
+                        
+                        # West - Segment 5 - Collect Sticks 1-> 5        
+                        stick_parts =  self.driver.find_elements_by_xpath("//div[@nav-view='active']//div[@class='scroll']//div[@class='row']//div[@class='col col-20']/b[@class='ng-binding']")
+                        LogSuccess(stick_parts[0].text)
+                        if "10cm" not in stick_parts[0].text: 
+                            LogError("-- West Segment 5 - Stick 1 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--West Segment 5 - Stick 1 is correct")
+                        LogSuccess(stick_parts[1].text)
+                        if "30cm" not in stick_parts[1].text: 
+                            LogError("-- West Segment 5 - Stick 2 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--West Segment 5 - Stick 2 is correct")
+                        LogSuccess(stick_parts[2].text)
+                        if "50cm" not in stick_parts[2].text: 
+                            LogError("-- West Segment 5 - Stick 3 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--West Segment 5 - Stick 3 is correct")
+                        LogSuccess(stick_parts[3].text)
+                        if "70cm" not in stick_parts[3].text: 
+                            LogError("-- West Segment 5 - Stick 4 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--West Segment 5 - Stick 4 is correct")
+                        LogSuccess(stick_parts[4].text)
+                        if "90cm" not in stick_parts[4].text: 
+                            LogError("-- West Segment 5 - Stick 5 is incorrect name")
+                            PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--West Segment 5 - Stick 5 is correct")
+                        
+                        ClickGoBackLandInfo(self.driver)
+                        LogSuccess("--Back to West Transect")
+                        
                         if (PassOrFail == "PASS"):   
                             LogSuccess("Test Case 10.10.9 Passed :  Stick is metrics correctly in Transect Cover page North/East/South/West/Transect - Add new LandCover Records")
                         else:
