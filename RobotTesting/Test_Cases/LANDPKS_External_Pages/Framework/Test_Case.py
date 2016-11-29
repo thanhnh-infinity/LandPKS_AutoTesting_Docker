@@ -3104,12 +3104,14 @@ class Test_Case:#(unittest.TestCase):
                         print("DONOT see units toggle button")
                         PassOrFail = "FAIL"
                      
-                    try:    
+                    #try:    
                         # Click to change English Units
                         #ClickElementIfVis(self.driver,By.XPATH,"//div[@class='item item-toggle toggle-large ng-valid']/label[@class='toggle toggle-calm disable-user-behavior']")
                         #ClickElementIfVis(self.driver,By.XPATH,"//input[@ng-model='bUSorENMetric'][@type='checkbox']")
-                        toggle_button = self.driver.find_element_by_xpath("//input[@ng-model='bUSorENMetric'][@type='checkbox']")
-                        self.driver.execute_script("$(arguments[0]).click();", toggle_button)
+                    toggle_button = self.driver.find_element_by_xpath("//input[@ng-model='bUSorENMetric'][@type='checkbox']")
+                    LogSuccess("da tim thay checkbox quan trong")
+                    self.driver.execute_script("$(arguments[0]).click();", toggle_button)
+                    LogSuccess("da click vao checkbox")
                         #print("Da tim thay check box")
                         #WaitForLoad(self.driver)     
                         #unit_is = self.driver.find_element_by_xpath("//span[@class='ng-binding']")
@@ -3118,10 +3120,10 @@ class Test_Case:#(unittest.TestCase):
                         #else:
                         #    LogSuccess("-- Using Metrics Units---")
                         #return
-                    except Exception,e:
-                        LogError(str(e))
-                        LogError("Test Case 10.10.1 Failed : CANNOT click Units Toggle Button in Application Settings") 
-                        PassOrFail = "FAIL"
+                    #except Exception,e:
+                    #    LogError(str(e))
+                    #    LogError("Test Case 10.10.1 Failed : CANNOT click Units Toggle Button in Application Settings") 
+                    #    PassOrFail = "FAIL"
                     
                     # Go back to landInfo page
                     ClickElementIfVis(self.driver,By.XPATH,"//a[@ui-sref='landpks.landpks_select_apps']")
