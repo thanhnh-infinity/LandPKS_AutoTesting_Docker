@@ -4706,13 +4706,15 @@ class Test_Case:#(unittest.TestCase):
                 ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[contains(@ng-show,'device')][not(contains(@class,'hide'))]/img[@src='landpks_img/landinfo_logo.png']") 
                 WaitForLoad(self.driver)    
                 
-                try:
-                    ClickElementIfVis(self.driver,By.XPATH,LAND_INFO_WORLD_MAP_BUTTON)
-                    WaitForLoad(self.driver)
-                    PassOrFail = MapTest(self.driver, PassOrFail)
-                except:
-                    PassOrFail = "FAIL"
-                    
+                if (bSelenium):
+                    try:
+                        ClickElementIfVis(self.driver,By.XPATH,LAND_INFO_WORLD_MAP_BUTTON)
+                        WaitForLoad(self.driver)
+                        PassOrFail = MapTest(self.driver, PassOrFail)
+                    except:
+                        PassOrFail = "FAIL"
+                else:
+                    PassOrFail = "PASS"    
                         
         except:
                 LogError("Test Case 2.7.x Failed")
