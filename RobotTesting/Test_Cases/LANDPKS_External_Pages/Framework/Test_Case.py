@@ -897,7 +897,7 @@ def HandleGoogleLogin(driver, bRequireApprove=True):
         ClickElementIfVis(driver,By.ID,"signIn")
         if (bRequireApprove):
             #try:
-                if (checkToSeeElement(driver,"submit_approve_access")):
+                #if (checkToSeeElement(driver,"submit_approve_access")):
                     ClickElementIfVis(driver,By.ID,"submit_approve_access")
                   
             #except:
