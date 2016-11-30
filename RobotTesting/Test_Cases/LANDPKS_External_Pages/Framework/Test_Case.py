@@ -888,7 +888,10 @@ def HandleGoogleLogin(driver, bRequireApprove=True):
         ele.send_keys(Creds["PWord"])
         ClickElementIfVis(driver,By.ID,"signIn")
         if (bRequireApprove):
-            ClickElementIfVis(driver,By.ID,"submit_approve_access")
+            try:
+                ClickElementIfVis(driver,By.ID,"submit_approve_access")
+            except:
+                pass    
         win = driver.window_handles
         driver.switch_to.window(win[0])
     except:        
