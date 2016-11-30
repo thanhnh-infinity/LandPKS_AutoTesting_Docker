@@ -1522,7 +1522,8 @@ class Test_Case:#(unittest.TestCase):
                     
                     #Find to see Units toggle button
                     try: 
-                        self.driver.find_element_by_xpath("//div[@class='item item-toggle toggle-large ng-valid']")
+                        #self.driver.find_element_by_xpath("//div[@class='item item-toggle toggle-large ng-valid']")
+                        self.driver.find_element_by_xpath("//input[@ng-model='bUSorENMetric'][@type='checkbox']")
                         LogSuccess("Test Case 10.10.1 Passed : See Units toggle button in Application Settings")
                     except:
                         LogError("Test Case 10.10.1 Failed : Do not see Units Toggle Button in Application Settings") 
@@ -3300,7 +3301,7 @@ class Test_Case:#(unittest.TestCase):
                             if (PassOrFail == "PASS"):   
                                 LogSuccess("Test Case 10.10.4 Passed :  Local Climate feature, check English is correct for 2 Graph : Temperature, Precipitation  and 2 units : avg precipitation, awc value and elevation")
                             else:
-                                LogError("Test Case 10.10.4 Failed : Do not see correct Metrics in Local Climate page - 1")
+                                LogError("Test Case 10.10.4 Failed : Do not see correct English in Local Climate page - 1")
                         
                     except Exception,e:
                         LogError(str(e))
