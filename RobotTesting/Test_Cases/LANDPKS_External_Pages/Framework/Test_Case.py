@@ -3098,8 +3098,9 @@ class Test_Case:#(unittest.TestCase):
                     try: 
                         #self.driver.find_element_by_xpath("//div[@class='item item-toggle toggle-large ng-valid']")
                         self.driver.find_element_by_xpath("//input[@ng-model='bUSorENMetric'][@type='checkbox']")     
-                        #self.driver.execute_script('document.getElementsByClassName("ng-untouched ng-valid ng-dirty ng-valid-parse")[0].checked = true;')
-                        self.driver.execute_script('document.getElementsByTagName("input")[0].checked = true')
+                        self.driver.execute_script('document.getElementsByClassName("ng-untouched ng-valid ng-dirty ng-valid-parse")[0].checked = true;')
+                        self.driver.execute_script('window.localStorage.setItem("GLOBAL_CONFIG_METRICS_UNITS","EN_METRICS");')
+                        
                         LogSuccess("Test Case 10.10.1 Passed : See Units toggle button in Application Settings AND click to change ENGLISH Units")
                     except Exception,e:
                         LogError(str(e))
