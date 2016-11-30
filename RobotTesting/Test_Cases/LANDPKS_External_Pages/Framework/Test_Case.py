@@ -3107,23 +3107,7 @@ class Test_Case:#(unittest.TestCase):
                         LogError("Test Case 10.10.1 Failed : Do not see Units Toggle Button in Application Settings OR cannot change to English")                        
                         PassOrFail = "FAIL"
                      
-                    #try:    
-                        # Click to change English Units
-                        #ClickElementIfVis(self.driver,By.XPATH,"//div[@class='item item-toggle toggle-large ng-valid']/label[@class='toggle toggle-calm disable-user-behavior']")
-                        #ClickElementIfVis(self.driver,By.XPATH,"//input[@ng-model='bUSorENMetric'][@type='checkbox']")
-                    
-                        #print("Da tim thay check box")
-                        #WaitForLoad(self.driver)     
-                        #unit_is = self.driver.find_element_by_xpath("//span[@class='ng-binding']")
-                        #if ('English' in unit_is):
-                        #    LogSuccess("-- Using English Units---")
-                        #else:
-                        #    LogSuccess("-- Using Metrics Units---")
-                        #return
-                    #except Exception,e:
-                    #    LogError(str(e))
-                    #    LogError("Test Case 10.10.1 Failed : CANNOT click Units Toggle Button in Application Settings") 
-                    #    PassOrFail = "FAIL"
+                   
                     
                     # Go back to landInfo page
                     ClickElementIfVis(self.driver,By.XPATH,"//a[@ui-sref='landpks.landpks_select_apps']")
