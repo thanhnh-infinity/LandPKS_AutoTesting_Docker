@@ -7,12 +7,39 @@ from robot.api import logger
 from robot.libraries.BuiltIn import BuiltIn
 from robot.libraries.BuiltIn import logger
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import time
 import urllib
 import httplib
 import simplejson as json
 from selenium.webdriver.remote.webdriver import WebDriver
-
+TIMEOUT = 10
+def GetEleAttribIfVis(driver, ByType, Value, Attirb):
+    wait = WebDriverWait(driver, TIMEOUT)
+    wait.until(EC.visibility_of_element_located((ByType, Value)), "")
+    return driver.find_element(ByType, Value) 
+def GetEleIfVis(driver, ByType, Value):
+    wait = WebDriverWait(driver, TIMEOUT)
+    wait.until(EC.visibility_of_element_located((ByType, Value)), "")
+    return driver.find_element(ByType, Value) 
+def GetEleByTextValue(driver, ByType, Xpath, TextValue):
+    StringEle = "{0}{1}".format(Xpath,"[contains(.,'{0}')]".format(TextValue))
+    wait = WebDriverWait(driver, TIMEOUT)
+    wait.until(EC.visibility_of_element_located((ByType, StringEle)), "")
+    return driver.find_element(ByType, StringEle) 
+def WaitUntilElementLocated(driver, ByType, Value):
+    wait = WebDriverWait(driver, TIMEOUT)
+    wait.until(EC.visibility_of_element_located((ByType, Value)), "")
+def ClickEleIfVis(driver, ByType, Value):
+    wait = WebDriverWait(driver, TIMEOUT)
+    #wait.until(EC.presence_of_element_located((ByType, Value)), "")
+    wait.until(EC.visibility_of_element_located((ByType, Value)), "")
+    wait.until(EC.element_to_be_clickable((ByType, Value)), "")
+    driver.find_element(ByType,Value).click()
+def GetElesIfVis(driver, ByType, Value, time=TIMEOUT):
+    wait = WebDriverWait(driver, time)
+    wait.until(EC.visibility_of_element_located((ByType, Value)), "")
+    return driver.find_elements(ByType, Value)
 def get_google_token():
         try:
             secrets = {

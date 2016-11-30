@@ -21,6 +21,7 @@ from WebHelpers import SwitchToPopupWindow
 from Utils import GenRandString, SelectBoxSelectRandFromEle, SelectBoxSelectRand, GenDynaWebAppTestsAppend,get_uname_and_pword_lpks_gmail,GetLandInfoDataForRecorder,GetSelEleFromEle,ParseCSVFile, checkCurrentPointOnMap, checkZoomControlOnTopLeft, checkMapCenter, SelectBoxSelectOption, SelectBoxSelectIndex, GetSelectBoxSelectedOption
 import simplejson as json
 from selenium import webdriver as selWebDriver
+from WebHelpers import GetEleAttribIfVis,GetEleByTextValue,GetEleIfVis,GetElesIfVis,WaitUntilElementLocated,ClickEleIfVis
 #from Portal_Test import Showing
 LAND_COVER_APP_IOS = "https://www.dropbox.com/s/1ao9zxh5lazumip/LandPKK_Testing_208.ipa?dl=1"
 REQUEST_STRING_TO_FIND_PLOT = "http://api.landpotential.org/query?version=0.1&action=get&object=landinfo&type=get_by_pair_name_recorder_name&name={0}&recorder_name=lpks.testing%40gmail.com"
@@ -841,33 +842,10 @@ def SetDriver(Test,AirplaneMode, bSel = False,bIOS = False):
                                       desired_capabilities=desired_caps)
     #if not AirplaneMode:
     Test.driver.implicitly_wait(30)
-def GetEleAttribIfVis(driver, ByType, Value, Attirb):
-    wait = WebDriverWait(driver, TIMEOUT)
-    wait.until(EC.visibility_of_element_located((ByType, Value)), "")
-    return driver.find_element(ByType, Value) 
-def GetEleIfVis(driver, ByType, Value):
-    wait = WebDriverWait(driver, TIMEOUT)
-    wait.until(EC.visibility_of_element_located((ByType, Value)), "")
-    return driver.find_element(ByType, Value) 
-def GetEleByTextValue(driver, ByType, Xpath, TextValue):
-    StringEle = "{0}{1}".format(Xpath,"[contains(.,'{0}')]".format(TextValue))
-    wait = WebDriverWait(driver, TIMEOUT)
-    wait.until(EC.visibility_of_element_located((ByType, StringEle)), "")
-    return driver.find_element(ByType, StringEle) 
-def WaitUntilElementLocated(driver, ByType, Value):
-    wait = WebDriverWait(driver, TIMEOUT)
-    wait.until(EC.visibility_of_element_located((ByType, Value)), "")
-def GetElesIfVis(driver, ByType, Value, time=TIMEOUT):
-    wait = WebDriverWait(driver, time)
-    wait.until(EC.visibility_of_element_located((ByType, Value)), "")
-    return driver.find_elements(ByType, Value)
+
 def ClickElementIfVis(driver, ByType, Value):
     try:
-        wait = WebDriverWait(driver, TIMEOUT)
-        #wait.until(EC.presence_of_element_located((ByType, Value)), "")
-        wait.until(EC.visibility_of_element_located((ByType, Value)), "")
-        wait.until(EC.element_to_be_clickable((ByType, Value)), "")
-        driver.find_element(ByType,Value).click()
+        ClickEleIfVis(driver,ByType,Value)
     except TimeoutException as TE:
         raise ElementNotFoundTimeoutException(EleKey=Value)
     except WebDriverException as WDE:
@@ -904,7 +882,9 @@ def HandleGoogleLogin(driver, bRequireApprove=True):
             #   pass    
         win = driver.window_handles
         driver.switch_to.window(win[0])
-    except:        
+    except:
+        Sourcey = driver.page_source
+        LogWarn(driver.page_source) 
         raise TestFailedException("Error logging in using google")
 def SetConections(driver, iConnectionMode=6):
     curContext = driver.context
@@ -4743,8 +4723,8 @@ class Testing(unittest.TestCase):
     def tester(self):
         #self.AppTest.PortalMap(False, False)
         #self.AppTest.Test_Case_2_3(False,False,False,True)
-        #self.AppTest.Test_Case_2(False,False)
-        self.AppTest.Test_Case_0_LandCover(False)
+        self.AppTest.Test_Case_2(False,True)
+        #self.AppTest.Test_Case_0_LandCover(False)
         self.AppTest.Update_LandInfo_Stats_so_that_they_use_the_LPKS_API(False)
         #self.AppTest.Test_Case_0(False,False)
         #self.AppTest.Test_Case_2_4(False,True)

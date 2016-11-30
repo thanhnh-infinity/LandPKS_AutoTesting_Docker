@@ -48,6 +48,7 @@ TestTypes = {
                   ]
               }
              }
+
 def GenDynaAndroidTestsAppend():
     TestTypesBrowsered = {}
     ExecCommand = "pybot {0}"
@@ -339,6 +340,14 @@ def get_uname_and_pword_lpks_gmail():
     loginCred = {
         "UName" : os.environ.get("LPKS_TEST_UNAME"),
         "PWord" : os.environ.get("LPKS_TEST_PWORD")
+        }
+    return loginCred
+def Get_UNAMES_And_Pick():
+    UNAMES = os.environ.get("LPKS_TEST_UNAMES")
+    Uname = UNAMES[random.randint(0,len(UNAMES)-1)]
+    loginCred = {
+        "UName" : Uname["LPKS_TEST_UNAME"],
+        "PWord" : Uname["LPKS_TEST_PWORD"]
         }
     return loginCred
 def Get_Environ_Var(Key):

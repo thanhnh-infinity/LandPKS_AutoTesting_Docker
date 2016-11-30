@@ -278,6 +278,13 @@ def buildTable(Jenkins,jobName):
     HtmlString += "</tbody></table></body></html>"
     return HtmlString
 def getLastBuild(Jenkins,jobName):
+    ReadableDate = """
+    <script type="text/javascript">
+    setTimeout(function(){
+    window.location.reload(1);
+    }, 20000);
+    </script>
+    """
     if "LandPKS_Web_App_Testing" in jobName and not "Production" in jobName:
         StringBuild = GetBuildInfo("http://128.123.177.36:8080/job/LandCover_Mobile_Andoird_App/ws/www/js/configuration.js")
         StartInt = StringBuild.find("var LANDPKS_MOBILE_APP_VERSION = '") + len("var LANDPKS_MOBILE_APP_VERSION = '")
@@ -306,7 +313,7 @@ def getLastBuild(Jenkins,jobName):
     #    int(meta._data['timestamp']/1000)
     #    ).strftime('%Y-%m-%d %H:%M:%S')
     if meta._data['result'] == "FAILURE":
-        ReadableDate = '<font size="3" color="red">{0}</font>'.format(datetime.datetime.fromtimestamp(
+        ReadableDate += '<font size="3" color="red">{0}</font>'.format(datetime.datetime.fromtimestamp(
                                                                                                       int(meta._data['timestamp']/1000)
                                                                                                       ).strftime('%Y-%m-%d %H:%M:%S')
                                                                       )
@@ -315,7 +322,7 @@ def getLastBuild(Jenkins,jobName):
         elif "LandPKS_Android_Mobile_Testing" in jobName and not "Production" in jobName :
             ReadableDate += ' - Build {0}'.format(BuildInfo)
     elif meta._data['result'] == "ABORTED":
-        ReadableDate = '<font size="3" color="gray">{0}</font>'.format(datetime.datetime.fromtimestamp(
+        ReadableDate += '<font size="3" color="gray">{0}</font>'.format(datetime.datetime.fromtimestamp(
                                                                                                       int(meta._data['timestamp']/1000)
                                                                                                       ).strftime('%Y-%m-%d %H:%M:%S')
                                                                       )
@@ -324,7 +331,7 @@ def getLastBuild(Jenkins,jobName):
         elif "LandPKS_Android_Mobile_Testing" in jobName and not "Production" in jobName :
             ReadableDate += ' - Build {0}'.format(BuildInfo)
     elif meta._data['building']:
-        ReadableDate = """
+        ReadableDate += """
 <script type="text/javascript">
   function blink() {
     var blinks = document.getElementsByTagName('blink');
@@ -348,7 +355,7 @@ def getLastBuild(Jenkins,jobName):
         elif "LandPKS_Android_Mobile_Testing" in jobName :
             ReadableDate += ' - Build {0}'.format(BuildInfo)
     else:
-        ReadableDate = '<font face="verdana" color="green">{0}</font>'.format(datetime.datetime.fromtimestamp(
+        ReadableDate += '<font face="verdana" color="green">{0}</font>'.format(datetime.datetime.fromtimestamp(
                                                                                                       int(meta._data['timestamp']/1000)
                                                                                                       ).strftime('%Y-%m-%d %H:%M:%S')
                                                                       )
