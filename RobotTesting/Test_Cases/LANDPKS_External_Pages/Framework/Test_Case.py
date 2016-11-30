@@ -873,6 +873,14 @@ def ClickElementIfVis(driver, ByType, Value):
     except WebDriverException as WDE:
         log.error("WebDriver exception unknown error while finding element {0} by {1}".format(Value,ByType))
         raise Exception
+def checkToSeeElement(driver,element_id):
+    try:
+        driver.implicitly_wait(10)
+        driver.find_element_by_id(element_id)
+        driver.implicitly_wait(10)
+        return True
+    except:
+        return False
 def HandleGoogleLogin(driver, bRequireApprove=True):
     try:
         Creds = get_uname_and_pword_lpks_gmail()
@@ -889,7 +897,9 @@ def HandleGoogleLogin(driver, bRequireApprove=True):
         ClickElementIfVis(driver,By.ID,"signIn")
         if (bRequireApprove):
             try:
-                ClickElementIfVis(driver,By.ID,"submit_approve_access")
+                if (checkToSeeElement("submit_approve_access")):
+                    ClickElementIfVis(driver,By.ID,"submit_approve_access")
+                  
             except:
                 pass    
         win = driver.window_handles
