@@ -30,6 +30,13 @@ def GetEleByTextValue(driver, ByType, Xpath, TextValue):
 def WaitUntilElementLocated(driver, ByType, Value):
     wait = WebDriverWait(driver, TIMEOUT)
     wait.until(EC.visibility_of_element_located((ByType, Value)), "")
+def CheckIfEleExist(driver,ByType, Value,WaitTime = 2):
+    try:
+        wait = WebDriverWait(driver, WaitTime)
+        wait.until(EC.visibility_of_element_located((ByType, Value)), "")
+        return True
+    except:
+        return False
 def ClickEleIfVis(driver, ByType, Value):
     wait = WebDriverWait(driver, TIMEOUT)
     #wait.until(EC.presence_of_element_located((ByType, Value)), "")

@@ -22,6 +22,7 @@ from Utils import GenRandString, SelectBoxSelectRandFromEle, SelectBoxSelectRand
 import simplejson as json
 from selenium import webdriver as selWebDriver
 from WebHelpers import GetEleAttribIfVis,GetEleByTextValue,GetEleIfVis,GetElesIfVis,WaitUntilElementLocated,ClickEleIfVis
+from NetUtils import GoogleLogin
 #from Portal_Test import Showing
 LAND_COVER_APP_IOS = "https://www.dropbox.com/s/1ao9zxh5lazumip/LandPKK_Testing_208.ipa?dl=1"
 REQUEST_STRING_TO_FIND_PLOT = "http://api.landpotential.org/query?version=0.1&action=get&object=landinfo&type=get_by_pair_name_recorder_name&name={0}&recorder_name=lpks.testing%40gmail.com"
@@ -746,18 +747,25 @@ def SetUpApp(Test, AirplaneMode=False, bRobot = True, iConnection=None, bSeleniu
         else:
             if(not hasattr(Test, "driver")):
                 SetDriver(Test, AirplaneMode,bSel=bSelenium)
-        try:
-            #Test.driver.set_speed(.5)
-            Test.driver.get("http://testlpks.landpotential.org:8105/#/landpks/landpks_entry_page" if not Params.has_key("starturl") else Params["starturl"])
-            Test.driver.switch_to.default_content
-            ClickElementIfVis(Test.driver, By.XPATH, "//div[@nav-view='active']//div[@class='scroll']//img[@src='landpks_img/landinfo_logo.png']" if not Params.has_key("loginbutton") else Params["loginbutton"])
-            if not Params.has_key("loginbutton"):
-                ClickElementIfVis(Test.driver,By.XPATH,"//Button[contains(@id, 'loginGoogle')][@style='display: block;']")
-                HandleGoogleLogin(Test.driver)
-            else:
-                HandleGoogleLogin(Test.driver, False)
-        except TimeoutException as Te:
-            log.info("Login not required")
+        bNotLogged = True
+        iTimesTried = 0
+        while bNotLogged and iTimesTried <= 5:
+            try:
+                #Test.driver.set_speed(.5)
+                iTimesTried += 1
+                Test.driver.get("http://testlpks.landpotential.org:8105/#/landpks/landpks_entry_page" if not Params.has_key("starturl") else Params["starturl"])
+                Test.driver.switch_to.default_content
+                
+                ClickElementIfVis(Test.driver, By.XPATH, "//div[@nav-view='active']//div[@class='scroll']//img[@src='landpks_img/landinfo_logo.png']" if not Params.has_key("loginbutton") else Params["loginbutton"])
+                if not Params.has_key("loginbutton"):
+                    ClickElementIfVis(Test.driver,By.XPATH,"//Button[contains(@id, 'loginGoogle')][@style='display: block;']")
+                    bNotLogged = HandleGoogleLogin(Test.driver)
+                else:
+                    bNotLogged = HandleGoogleLogin(Test.driver, False)
+            except TimeoutException as Te:
+                log.info("Login not required")
+                win = Test.driver.window_handles
+                Test.driver.switch_to.window(win[0])
         win = Test.driver.window_handles
         Test.driver.switch_to.window(win[-1])
     else:
@@ -860,32 +868,18 @@ def checkToSeeElement(driver,element_id):
     except:
         return False
 def HandleGoogleLogin(driver, bRequireApprove=True):
+    bNotLogged = True
     try:
         Creds = get_uname_and_pword_lpks_gmail()
         LogSuccess("Test 2.1.1 Pass")
-        
-        SwitchToPopupWindow(driver)
-        time.sleep(2)
-        ele = GetEleIfVis(driver,By.ID,"Email")
-        time.sleep(1)
-        ele.send_keys(Creds["UName"])
-        ClickElementIfVis(driver,By.ID,"next")
-        ele = GetEleIfVis(driver,By.ID,"Passwd")
-        ele.send_keys(Creds["PWord"])
-        ClickElementIfVis(driver,By.ID,"signIn")
-        if (bRequireApprove):
-            #try:
-                #if (checkToSeeElement(driver,"submit_approve_access")):
-                    ClickElementIfVis(driver,By.ID,"submit_approve_access")
-                  
-            #except:
-            #   pass    
-        win = driver.window_handles
-        driver.switch_to.window(win[0])
-    except:
+        LoginClass = GoogleLogin(driver)
+        bNotLogged=LoginClass.HandleLogin(Creds, bRequireApprove)
+    except Exception as e:
         Sourcey = driver.page_source
         LogWarn(driver.page_source) 
-        raise TestFailedException("Error logging in using google")
+    finally:
+        return bNotLogged
+        #raise TestFailedException("Error logging in using google")
 def SetConections(driver, iConnectionMode=6):
     curContext = driver.context
     driver.switch_to.context("NATIVE_APP")

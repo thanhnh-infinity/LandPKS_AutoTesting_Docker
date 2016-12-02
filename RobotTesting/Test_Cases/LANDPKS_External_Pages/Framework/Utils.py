@@ -336,6 +336,7 @@ def GetSauceCreds():
                              os.environ.get("SAUCE_ACCESS_KEY")
                              )
     return creds
+
 def get_uname_and_pword_lpks_gmail():
     loginCred = {
         "UName" : os.environ.get("LPKS_TEST_UNAME"),
