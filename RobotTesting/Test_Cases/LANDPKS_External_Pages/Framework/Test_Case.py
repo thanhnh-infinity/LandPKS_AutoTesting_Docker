@@ -747,25 +747,18 @@ def SetUpApp(Test, AirplaneMode=False, bRobot = True, iConnection=None, bSeleniu
         else:
             if(not hasattr(Test, "driver")):
                 SetDriver(Test, AirplaneMode,bSel=bSelenium)
-        bNotLogged = True
-        iTimesTried = 0
-        while bNotLogged and iTimesTried <= 5:
-            try:
-                #Test.driver.set_speed(.5)
-                iTimesTried += 1
-                Test.driver.get("http://testlpks.landpotential.org:8105/#/landpks/landpks_entry_page" if not Params.has_key("starturl") else Params["starturl"])
-                Test.driver.switch_to.default_content
-                
-                ClickElementIfVis(Test.driver, By.XPATH, "//div[@nav-view='active']//div[@class='scroll']//img[@src='landpks_img/landinfo_logo.png']" if not Params.has_key("loginbutton") else Params["loginbutton"])
-                if not Params.has_key("loginbutton"):
-                    ClickElementIfVis(Test.driver,By.XPATH,"//Button[contains(@id, 'loginGoogle')][@style='display: block;']")
-                    bNotLogged = HandleGoogleLogin(Test.driver)
-                else:
-                    bNotLogged = HandleGoogleLogin(Test.driver, False)
-            except TimeoutException as Te:
-                log.info("Login not required")
-                win = Test.driver.window_handles
-                Test.driver.switch_to.window(win[0])
+        try:
+            #Test.driver.set_speed(.5)
+            Test.driver.get("http://testlpks.landpotential.org:8105/#/landpks/landpks_entry_page" if not Params.has_key("starturl") else Params["starturl"])
+            Test.driver.switch_to.default_content
+            ClickElementIfVis(Test.driver, By.XPATH, "//div[@nav-view='active']//div[@class='scroll']//img[@src='landpks_img/landinfo_logo.png']" if not Params.has_key("loginbutton") else Params["loginbutton"])
+            if not Params.has_key("loginbutton"):
+                ClickElementIfVis(Test.driver,By.XPATH,"//Button[contains(@id, 'loginGoogle')][@style='display: block;']")
+                HandleGoogleLogin(Test.driver)
+            else:
+                HandleGoogleLogin(Test.driver, False)
+        except TimeoutException as Te:
+            log.info("Login not required")
         win = Test.driver.window_handles
         Test.driver.switch_to.window(win[-1])
     else:
@@ -868,18 +861,15 @@ def checkToSeeElement(driver,element_id):
     except:
         return False
 def HandleGoogleLogin(driver, bRequireApprove=True):
-    bNotLogged = True
     try:
         Creds = get_uname_and_pword_lpks_gmail()
         LogSuccess("Test 2.1.1 Pass")
         LoginClass = GoogleLogin(driver)
-        bNotLogged=LoginClass.HandleLogin(Creds, bRequireApprove)
+        LoginClass.HandleLogin(Creds, bRequireApprove)
     except Exception as e:
         Sourcey = driver.page_source
         LogWarn(driver.page_source) 
-    finally:
-        return bNotLogged
-        #raise TestFailedException("Error logging in using google")
+        raise TestFailedException("Error logging in using google")
 def SetConections(driver, iConnectionMode=6):
     curContext = driver.context
     driver.switch_to.context("NATIVE_APP")
