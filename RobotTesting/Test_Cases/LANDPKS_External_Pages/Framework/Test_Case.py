@@ -3040,10 +3040,20 @@ class Test_Case:#(unittest.TestCase):
                     try:
                         if (not support_checking.checkSoillayerName_Tab(self.driver,PassOrFail)):
                             PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--Soil Layer 1's name is correct")
+                            LogSuccess("--Soil Layer 2's name is correct")
+                            LogSuccess("--Soil Layer 3's name is correct")
+                            LogSuccess("--Soil Layer 4's name is correct")
+                            LogSuccess("--Soil Layer 5's name is correct")
+                            LogSuccess("--Soil Layer 6's name is correct")
+                            LogSuccess("--Soil Layer 7's name is correct")
                         
                         if (not support_checking.checkGuideMe_RibbonLength(self.driver,PassOrFail)):
                             PassOrFail = "FAIL"
-                                                 
+                        else:
+                            LogSuccess("--Ribbon length is correct unit")
+                                                     
                         if (PassOrFail == "PASS"):   
                             LogSuccess("Test Case 10.10.11 Passed :  Add New landInfo Plot - Soillayer page - All units are metrics - Correctly")
                         else:
@@ -3057,6 +3067,8 @@ class Test_Case:#(unittest.TestCase):
                     try:
                         if (not support_checking.checkSiteSummary(self.driver, PassOrFail)):
                             PassOrFail = "FAIL"
+                        else:
+                            LogSuccess("--Site summary is ok")
                                                  
                         if (PassOrFail == "PASS"):   
                             LogSuccess("Test Case 10.10.12 Passed :  Site Summary - Correct Metrics Units")
