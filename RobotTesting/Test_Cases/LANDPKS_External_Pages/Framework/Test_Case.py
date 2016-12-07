@@ -23,6 +23,7 @@ import simplejson as json
 from selenium import webdriver as selWebDriver
 from WebHelpers import GetEleAttribIfVis,GetEleByTextValue,GetEleIfVis,GetElesIfVis,WaitUntilElementLocated,ClickEleIfVis
 from NetUtils import GoogleLogin
+import support_checking
 #from Portal_Test import Showing
 LAND_COVER_APP_IOS = "https://www.dropbox.com/s/1ao9zxh5lazumip/LandPKK_Testing_208.ipa?dl=1"
 REQUEST_STRING_TO_FIND_PLOT = "http://api.landpotential.org/query?version=0.1&action=get&object=landinfo&type=get_by_pair_name_recorder_name&name={0}&recorder_name=lpks.testing%40gmail.com"
@@ -3034,11 +3035,15 @@ class Test_Case:#(unittest.TestCase):
                         LogError(str(e))
                         LogError("Test Case 10.10.10 Failed : Stick is metrics IN-correctly in Transect Cover page North/East/South/West/Transect - Review Old LandCover Records - 2") 
                         PassOrFail = "FAIL"
-                        
+   
                     #Test Case 10.10.11 :
-                    try: 
+                    try:
+                        if (not support_checking.checkSoillayerName_Tab(self.driver,PassOrFail)):
+                            PassOrFail = "FAIL"
                         
-                          
+                        if (not support_checking.checkGuideMe_RibbonLength(self.driver,PassOrFail)):
+                            PassOrFail = "FAIL"
+                                                 
                         if (PassOrFail == "PASS"):   
                             LogSuccess("Test Case 10.10.11 Passed :  Add New landInfo Plot - Soillayer page - All units are metrics - Correctly")
                         else:
@@ -3046,7 +3051,21 @@ class Test_Case:#(unittest.TestCase):
                     except Exception,e:
                         LogError(str(e))
                         LogError("Test Case 10.10.11 - Failed : Add New landInfo Plot - Soillayer page - There are some units in-correct Metrics Units - 2") 
-                        PassOrFail = "FAIL"   
+                        PassOrFail = "FAIL"
+                        
+                    #Test Case 10.10.12 :
+                    try:
+                        if (not support_checking.checkSiteSummary(self.driver, PassOrFail)):
+                            PassOrFail = "FAIL"
+                                                 
+                        if (PassOrFail == "PASS"):   
+                            LogSuccess("Test Case 10.10.12 Passed :  Site Summary - Correct Metrics Units")
+                        else:
+                            LogError("Test Case 10.10.12 - Failed : Site Summary - There are some units in-correct Metrics Units - 1")
+                    except Exception,e:
+                        LogError(str(e))
+                        LogError("Test Case 10.10.12 - Failed : Site Summary - There are some units in-correct Metrics Units - 2") 
+                        PassOrFail = "FAIL" 
                        
                 except:
                     PassOrFail = "FAIL"
@@ -4639,7 +4658,36 @@ class Test_Case:#(unittest.TestCase):
                         LogError("Test Case 10.10.10 Failed : Stick is English IN-correctly in Transect Cover page North/East/South/West/Transect - Review Old LandCover Records - 2") 
                         PassOrFail = "FAIL"
                         
+                    #Test Case 10.10.11 :
+                    try:
+                        if (not support_checking.checkSoillayerName_Tab(self.driver,PassOrFail)):
+                            PassOrFail = "FAIL"
                         
+                        if (not support_checking.checkGuideMe_RibbonLength(self.driver,PassOrFail)):
+                            PassOrFail = "FAIL"
+                                                 
+                        if (PassOrFail == "PASS"):   
+                            LogSuccess("Test Case 10.10.11 Passed :  Add New landInfo Plot - Soillayer page - All units are English - Correctly")
+                        else:
+                            LogError("Test Case 10.10.11 - Failed : Add New landInfo Plot - Soillayer page - There are some units in-correct English Units - 1")
+                    except Exception,e:
+                        LogError(str(e))
+                        LogError("Test Case 10.10.11 - Failed : Add New landInfo Plot - Soillayer page - There are some units in-correct English Units - 2") 
+                        PassOrFail = "FAIL"
+                        
+                    #Test Case 10.10.12 :
+                    try:
+                        if (not support_checking.checkSiteSummary(self.driver, PassOrFail)):
+                            PassOrFail = "FAIL"
+                                                 
+                        if (PassOrFail == "PASS"):   
+                            LogSuccess("Test Case 10.10.12 Passed :  Site Summary - Correct English Units")
+                        else:
+                            LogError("Test Case 10.10.12 - Failed : Site Summary - There are some units in-correct English Units - 1")
+                    except Exception,e:
+                        LogError(str(e))
+                        LogError("Test Case 10.10.12 - Failed : Site Summary - There are some units in-correct English Units - 2") 
+                        PassOrFail = "FAIL"     
                        
                 except:
                     PassOrFail = "FAIL"
