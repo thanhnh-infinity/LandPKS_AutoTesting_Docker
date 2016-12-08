@@ -757,7 +757,7 @@ def SetUpApp(Test, AirplaneMode=False, bRobot = True, iConnection=None, bSeleniu
                 ClickElementIfVis(Test.driver,By.XPATH,"//Button[contains(@id, 'loginGoogle')][@style='display: block;']")
                 HandleGoogleLogin(Test.driver)
             else:
-                HandleGoogleLogin(Test.driver, False)
+                HandleGoogleLogin(Test.driver)
         except TimeoutException as Te:
             log.info("Login not required")
         win = Test.driver.window_handles
@@ -4767,8 +4767,8 @@ class Testing(unittest.TestCase):
     def tester(self):
         #self.AppTest.PortalMap(False, False)
         #self.AppTest.Test_Case_2_3(False,False,False,True)
-        self.AppTest.Test_Case_2(False,True)
-        #self.AppTest.Test_Case_0_LandCover(False)
+        #$self.AppTest.Test_Case_2(False,True)
+        self.AppTest.Test_Case_0_LandCover(False)
         self.AppTest.Update_LandInfo_Stats_so_that_they_use_the_LPKS_API(False)
         #self.AppTest.Test_Case_0(False,False)
         #self.AppTest.Test_Case_2_4(False,True)
