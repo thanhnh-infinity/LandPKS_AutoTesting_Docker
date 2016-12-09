@@ -4812,11 +4812,11 @@ class Test_Case:#(unittest.TestCase):
                     notes_text_are = self.driver.find_element_by_xpath("//div[@class='popup']//div[@class='popup-body']/textarea[@class='ng-pristine ng-untouched ng-valid']")
                     save_button = self.driver.find_element_by_xpath("//div[@class='popup']//div[@class='popup-buttons']/button[@class='button ng-binding button-positive']")
                     notes_content = notes_text_are.get_attribute('value')
-                    LogSuccess(notes_content)
+                    #LogSuccess(notes_content)
                     if ("CHECK LANDCOVER TRANSECT NOTES DATA" not in notes_content):
                         PassOrFail = "FAIL"
                     else:
-                        LogSuccess("---Date in notes field is Correct") 
+                        LogSuccess("---Data in notes field is Correct") 
                         
                     save_button.click()
                     
@@ -4843,11 +4843,13 @@ class Test_Case:#(unittest.TestCase):
                     notes_text_are = self.driver.find_element_by_xpath("//div[@class='popup']//div[@class='popup-body']/textarea[@class='ng-pristine ng-untouched ng-valid']")
                     save_button = self.driver.find_element_by_xpath("//div[@class='popup']//div[@class='popup-buttons']/button[@class='button ng-binding button-positive']")
                     notes_content = notes_text_are.get_attribute('value')
-                    LogSuccess(notes_content)
+                    #LogSuccess(notes_content)
                     if ("CHECK LANDCOVER TRANSECT NOTES DATA" not in notes_content):
                         PassOrFail = "FAIL"
                     else:
-                        LogSuccess("---Date in notes field is Correct")
+                        LogSuccess("---Data in notes field is Correct")
+                    
+                    save_button.click()
                         
                     if (PassOrFail == "PASS"):
                         LogSuccess("---Test Case 2.5.2 is PASSED ; Notes Data have been saved in Local Caching for every cases")   
@@ -4857,13 +4859,51 @@ class Test_Case:#(unittest.TestCase):
                     LogError(str(e))
                     LogError("---Test Case 2.5.2 is FAILED ; Cannot input notes or notes data is not stored in Local Cache to prepare submitting - 2")    
                     PassOrFail = "FAIL"   
+                
+                # Test 2.5.3 : Submit Notes and Retrieve to check    
+                try:
+                    LogSuccess("--Fill all data landcover")
+                    LogSuccess("--Submit LandCover Plots with Notes")
+                    # Submit LAndCover Plot
+                    ClickElementIfVis(self.driver,By.XPATH,"//button[@id='btnSubmitLandCover']")
+                    WaitForLoad(self.driver)
+                    
+                    ClickElementIfVis(self.driver,By.XPATH,"//div[@class='popup']//div[@class='popup-buttons']/button[@class='button ng-binding button-positive']")
+                    WaitForLoad(self.driver)
+                    
+                    # Retrieve from datastore again (have to updated)
+                    
+                    # Select notes button
+                    ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-bar='active']//span[@class='right-buttons']/a[@class='button button-icon ion-compose']")
+                    WaitForLoad(self.driver)
+                    
+                    notes_text_are = self.driver.find_element_by_xpath("//div[@class='popup']//div[@class='popup-body']/textarea[@class='ng-pristine ng-untouched ng-valid']")
+                    save_button = self.driver.find_element_by_xpath("//div[@class='popup']//div[@class='popup-buttons']/button[@class='button ng-binding button-positive']")
+                    notes_content = notes_text_are.get_attribute('value')
+                    #LogSuccess(notes_content)
+                    if ("CHECK LANDCOVER TRANSECT NOTES DATA" not in notes_content):
+                        PassOrFail = "FAIL"
+                    else:
+                        LogSuccess("---Data in notes field is Correct")
+                    
+                    save_button.click()
+                    
+                    if (PassOrFail == "PASS"):
+                        LogSuccess("---Test Case 2.5.3 is PASSED ; Notes Data have been saved in Global DataStore and retrieved correctly")
+                    else:
+                        LogError("---Test Case 2.5.3 is FAILED ; Notes data is not correct after submitting - 1 OR Cannot submit LandCover plot today")  
+                except Exception,e:
+                    LogError(str(e))
+                    LogError("---Test Case 2.5.3 is FAILED ; Notes data is not correct after submitting - 2 OR Cannot submit LandCover plot today")    
+                    PassOrFail = "FAIL"
+                
                  
                 if (PassOrFail == "PASS"):    
                     LogSuccess("Test Case 2.5.x Passed : All notes feature for LandCover transects is working well")
                 else:
                     LogError("Test Case 2.5.1 is FAILED ; LandCover notes feature does not work")
                 
-                        
+                           
         except:
                 LogError("Test Case 2.5.x Failed")
                 PassOrFail = "FAIL"
