@@ -71,6 +71,13 @@ English Units Features 10.10.x Linux Chrome
     Set Browser    ${Creds}    platformName=${PLATFORM}    appiumVersion=${appiumVersion}    platformVersion=${platformVersion}    deviceName=Android Emulator    app=${APP}
     Test Case 10 10 English
 
+LandCover Add Notes for Transects Features 2.5.x Linux Chrome
+    [Documentation]    Testing script for LandCover Transects Notes feature
+    [Tags]    Appium
+    ${Creds}=    Get Sauce Creds Jenkins
+    Set Browser    ${Creds}    platformName=${PLATFORM}    appiumVersion=${appiumVersion}    platformVersion=${platformVersion}    deviceName=Android Emulator    app=${APP}
+    Test Case 2 5
+
 Android Test Case 3.1.x Android 5.1
     [Documentation]    Launches App pulled directly from jenkins and tests addition of a plot and Runs tests in category 0 of manual test plan on app tests this includes airplane testing. Library and test structure is in library Test case.py. Return what tests failed and were successful. Test Fails if Critical test is a failure.
     [Tags]    Appium Production
