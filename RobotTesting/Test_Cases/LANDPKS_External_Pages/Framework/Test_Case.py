@@ -4811,7 +4811,7 @@ class Test_Case:#(unittest.TestCase):
                     
                     notes_text_are = self.driver.find_element_by_xpath("//div[@class='popup']//div[@class='popup-body']/textarea[@class='ng-pristine ng-untouched ng-valid']")
                     save_button = self.driver.find_element_by_xpath("//div[@class='popup']//div[@class='popup-buttons']/button[@class='button ng-binding button-positive']")
-                    notes_content = notes_text_are.text()
+                    notes_content = notes_text_are.get_attribute('value')
                     LogSuccess(notes_content)
                     if ("CHECK LANDCOVER TRANSECT NOTES DATA" not in notes_content):
                         PassOrFail = "FAIL"
@@ -4842,7 +4842,7 @@ class Test_Case:#(unittest.TestCase):
                     
                     notes_text_are = self.driver.find_element_by_xpath("//div[@class='popup']//div[@class='popup-body']/textarea[@class='ng-pristine ng-untouched ng-valid']")
                     save_button = self.driver.find_element_by_xpath("//div[@class='popup']//div[@class='popup-buttons']/button[@class='button ng-binding button-positive']")
-                    notes_content = notes_text_are.text()
+                    notes_content = notes_text_are.get_attribute('value')
                     LogSuccess(notes_content)
                     if ("CHECK LANDCOVER TRANSECT NOTES DATA" not in notes_content):
                         PassOrFail = "FAIL"
