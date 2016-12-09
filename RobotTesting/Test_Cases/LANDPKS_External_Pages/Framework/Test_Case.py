@@ -4778,16 +4778,90 @@ class Test_Case:#(unittest.TestCase):
                 # Test 2.5.1: Check to see Notes area
                 try:
                     notes_text_are = self.driver.find_element_by_xpath("//div[@class='popup']//div[@class='popup-body']/textarea[@class='ng-pristine ng-untouched ng-valid']")
+                    save_button = self.driver.find_element_by_xpath("//div[@class='popup']//div[@class='popup-buttons']/button[@class='button ng-binding button-positive']")
+                    cancel_button = self.driver.find_element_by_xpath("//div[@class='popup']//div[@class='popup-buttons']/button[@class='button ng-binding button-default']")
+                    
+                    LogSuccess("---Test Case 2.5.1 is PASSED ; Notes and button components are ready")
                 except Exception,e:
                     LogError(str(e))
-                    LogError("---Test Case 2.5.1 is FAILED ; Cannot see notes textarea")    
+                    LogError("---Test Case 2.5.1 is FAILED ; Cannot see notes textarea or popup buttons")    
                     PassOrFail = "FAIL"
-                 
+                
+                # Test 2.5.2 : Input data notes area - Save to Local Caching - Retest again    
+                try:
+                    notes_text_are.send_keys("CHECK LANDCOVER TRANSECT NOTES DATA TESTING")
+                    save_button.click()
                     
+                    #Back outof plot
+                    ClickGoBackLandInfo(self.driver)
+                    LogSuccess("--Out of LandCover plot")
+                    
+                    #Reselect again
+                    # Select the first plot
+                    detectFirstPlotinList = "{0}{1}".format(LANDCOVER_PLOT_LIST,"[{0}]".format("1"))
+                    ClickElementIfVis(self.driver,By.XPATH,detectFirstPlotinList)
+                    WaitForLoad(self.driver)
+                    LogSuccess("--Select plot is done")
+                    
+                    
+                    # Select notes button
+                    ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-bar='active']//span[@class='right-buttons']/a[@class='button button-icon ion-compose']")
+                    WaitForLoad(self.driver)
+                    
+                    
+                    notes_text_are = self.driver.find_element_by_xpath("//div[@class='popup']//div[@class='popup-body']/textarea[@class='ng-pristine ng-untouched ng-valid']")
+                    save_button = self.driver.find_element_by_xpath("//div[@class='popup']//div[@class='popup-buttons']/button[@class='button ng-binding button-positive']")
+                    notes_content = notes_text_are.text()
+                    LogSuccess(notes_content)
+                    if ("CHECK LANDCOVER TRANSECT NOTES DATA" not in notes_content):
+                        PassOrFail = "FAIL"
+                    else:
+                        LogSuccess("---Date in notes field is Correct") 
+                        
+                    save_button.click()
+                    
+                    # Select West Transect
+                    ClickElementIfVis(self.driver,By.XPATH,"//img[@id='imgWest']")
+                    WaitForLoad(self.driver)
+                    LogSuccess("--Go inside West Transect")
+                        
+                    # West - Select segment 1 
+                    ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[@class='scroll']/a[@class='item item-icon-right soillayer ng-binding'][contains(@ng-click,'5m')]")
+                    WaitForLoad(self.driver)
+                    LogSuccess("--Go inside West - Segment 1 - Transect cover") 
+                    
+                    ClickGoBackLandInfo(self.driver)
+                    LogSuccess("--Back to West Transect")
+                    
+                    ClickGoBackLandInfo(self.driver)
+                    LogSuccess("--Back to Main LandCover Transect Page")
+                    
+                    # Select notes button
+                    ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-bar='active']//span[@class='right-buttons']/a[@class='button button-icon ion-compose']")
+                    WaitForLoad(self.driver)
+                    
+                    notes_text_are = self.driver.find_element_by_xpath("//div[@class='popup']//div[@class='popup-body']/textarea[@class='ng-pristine ng-untouched ng-valid']")
+                    save_button = self.driver.find_element_by_xpath("//div[@class='popup']//div[@class='popup-buttons']/button[@class='button ng-binding button-positive']")
+                    notes_content = notes_text_are.text()
+                    LogSuccess(notes_content)
+                    if ("CHECK LANDCOVER TRANSECT NOTES DATA" not in notes_content):
+                        PassOrFail = "FAIL"
+                    else:
+                        LogSuccess("---Date in notes field is Correct")
+                        
+                    if (PassOrFail == "PASS"):
+                        LogSuccess("---Test Case 2.5.2 is PASSED ; Notes Data have been saved in Local Caching for every cases")   
+                    else:
+                        LogError("---Test Case 2.5.2 is FAILED ; Cannot input notes or notes data is not stored in Local Cache to prepare submitting - 1")
+                except Exception,e:
+                    LogError(str(e))
+                    LogError("---Test Case 2.5.2 is FAILED ; Cannot input notes or notes data is not stored in Local Cache to prepare submitting - 2")    
+                    PassOrFail = "FAIL"   
+                 
                 if (PassOrFail == "PASS"):    
                     LogSuccess("Test Case 2.5.x Passed : All notes feature for LandCover transects is working well")
                 else:
-                    LogError("---Test Case 2.5.1 is FAILED ; Cannot see notes textarea")
+                    LogError("Test Case 2.5.1 is FAILED ; LandCover notes feature does not work")
                 
                         
         except:
