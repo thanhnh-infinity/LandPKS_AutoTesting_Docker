@@ -4747,6 +4747,56 @@ class Test_Case:#(unittest.TestCase):
                 OutputErrors()
                 OutputSucessful()
                 OutputWarns()
+                self.tearDown(PassOrFail, bRobot,bSelenium=bSelenium)
+    def Test_Case_2_5(self, bRobot = True, bSelenium=False,bProduction=False):
+        self.plotNames = []
+        global ERRORS,SUCCESS,WARNS
+        ERRORS = []
+        SUCCESS = []
+        WARNS = []
+        PassOrFail = "PASS"
+
+        try:
+                if(bProduction):
+                    SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium,starturl = "http://apps.landpotential.org")
+                else:
+                    SetUpApp(self,bRobot=bRobot,bSelenium=bSelenium)
+                    
+                ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-view='active']//div[contains(@ng-show,'device')][not(contains(@class,'hide'))]/img[@src='landpks_img/landcover_logo.png']") 
+                WaitForLoad(self.driver)    
+               
+                # Select the first plot
+                detectFirstPlotinList = "{0}{1}".format(LANDCOVER_PLOT_LIST,"[{0}]".format("1"))
+                ClickElementIfVis(self.driver,By.XPATH,detectFirstPlotinList)
+                WaitForLoad(self.driver)
+                LogSuccess("--Select plot is done")
+                
+                # Select notes button
+                ClickElementIfVis(self.driver,By.XPATH,"//div[@nav-bar='active']//span[@class='right-buttons']/a[@class='button button-icon ion-compose']")
+                WaitForLoad(self.driver)
+                
+                # Test 2.5.1: Check to see Notes area
+                try:
+                    notes_text_are = self.driver.find_element_by_xpath("//div[@class='popup']//div[@class='popup-body']/textarea[@class='ng-pristine ng-untouched ng-valid']")
+                except Exception,e:
+                    LogError(str(e))
+                    LogError("---Test Case 2.5.1 is FAILED ; Cannot see notes textarea")    
+                    PassOrFail = "FAIL"
+                 
+                    
+                if (PassOrFail == "PASS"):    
+                    LogSuccess("Test Case 2.5.x Passed : All notes feature for LandCover transects is working well")
+                else:
+                    LogError("---Test Case 2.5.1 is FAILED ; Cannot see notes textarea")
+                
+                        
+        except:
+                LogError("Test Case 2.5.x Failed")
+                PassOrFail = "FAIL"
+        finally:
+                OutputErrors()
+                OutputSucessful()
+                OutputWarns()
                 self.tearDown(PassOrFail, bRobot,bSelenium=bSelenium)         
     def check_interuptions(self):
         SetUpApp(self)
